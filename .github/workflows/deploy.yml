@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - mergeNewWithOld
+      
 
 jobs:
   ftp-deploy:
