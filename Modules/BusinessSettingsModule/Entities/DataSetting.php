@@ -24,10 +24,7 @@ class DataSetting extends Model
     {
         return $this->morphMany(Translation::class, 'translationable');
     }
-    public function storage()
-    {
-        return $this->hasOne(Storage::class, 'model_id');
-    }
+
     public function getValueAttribute($value){
         if (count($this->translations) > 0) {
             foreach ($this->translations as $translation) {

@@ -46,16 +46,6 @@ class CustomerController extends Controller
     {
         if (in_array($request->user()->user_type, CUSTOMER_USER_TYPES)) {
             $customer = $this->customer->withCount('bookings')->where('id', auth()->user()->id)->first();
-
-            $lastIncompleteOfflineBooking = Booking::where('customer_id', auth()->user()->id)
-                ->where('payment_method', 'offline_payment')
-                ->whereNotIn('booking_status', ['completed', 'canceled'])
-                ->whereDoesntHave('booking_offline_payments')
-                ->with(['booking_offline_payments', 'booking_partial_payments'])
-                ->first();
-
-            $customer->last_incomplete_offline_booking = $lastIncompleteOfflineBooking;
-
             return response()->json(response_formatter(DEFAULT_200, $customer), 200);
         }
         return response()->json(response_formatter(DEFAULT_403), 401);
@@ -305,6 +295,42 @@ class CustomerController extends Controller
         }
 
         return response()->json(response_formatter(DEFAULT_200), 200);
+    }
+    
+    // add to wallet
+        public function addWallet(Request $request){
+        $userId = auth('api')->user()->id;
+        $reference = 'By Customer';
+        addFundTransaction($userId, $request['amount'], $reference);
+        return response()->json([
+            'message' => 'Successfully added'
+        ], 200);
+    }
+    
+    
+    // remove from wallet
+    public function removeFromWallet(Request $request){
+        $user = auth('api')->user();
+        if($request['amount'] < 0){
+            return response()->json([
+                'message' => 'Invalid amount'
+            ], 400);
+        }
+        if($user->wallet_balance == 0){
+            return response()->json([
+                'message' => 'Insufficient balance in wallet'
+            ], 400);
+        }else{
+            $newwalletBalance = $user->wallet_balance - $request['amount'];
+            $user->wallet_balance = $newwalletBalance;
+            $user->save();
+            return response()->json([
+                'message' => 'Successfully removed',
+                'data' => [
+                    'current  wallet balance' => $user->wallet_balance
+                ]
+            ], 200);
+        }
     }
 
 

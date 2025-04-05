@@ -31,7 +31,7 @@
                                 <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}
                             </span>
                         @endif
-                        @if ($booking['payment_method'] == 'cash_after_service' && $booking->is_verified == '2')
+                        @if ($booking['payment_method'] == 'payment_after_service' && $booking->is_verified == '2')
                             <span class="btn btn--primary change-booking-request" data-id="{{ $booking->id }}"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal--{{ $booking->id }}">
                                 <span class="material-icons">done</span>{{ translate('Change Request Status') }}
@@ -88,6 +88,15 @@
                                 </button>
                             @endcan
                         @endif
+                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
+                            @can('booking_edit')
+                                <button class="btn btn--primary" data-bs-toggle="modal"
+                                    data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
+                                    title="{{ translate('Add or remove services') }}">
+                                    <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
+                                </button>
+                            @endcan
+                        @endif
                         <a href="{{ route('admin.booking.single_invoice', [$booking->id]) }}" class="btn btn-primary"
                             target="_blank">
                             <span class="material-icons">description</span>{{ translate('Invoice') }}
@@ -113,6 +122,15 @@
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'cash_after_service' &&
+                        $max_booking_amount <= $booking->total_booking_amount)
+                    <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
+                        <span class="text-danger"># {{ translate('Note: ') }}</span>
+                        <span>{{ $booking?->bookingDeniedNote?->value }}</span>
+                    </div>
+                @endif
+                @if (
+                    $booking->is_verified == 2 &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>

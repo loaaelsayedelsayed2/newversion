@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/owl.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/main.css"/>
+    {{--  <link rel="stylesheet" href="{{ asset('assets/landing/css/main.css') }}"/>  --}}
 
     <link rel="shortcut icon"
           href="{{asset('storage/app/public/business')}}/{{bs_data($settings,'business_favicon', 1)}}"
@@ -144,11 +145,71 @@
                             <span>{{translate('privacy_policy')}}</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{route('page.terms-and-conditions')}}" class="{{request()->is('page/terms-and-conditions')?'active':''}}">
-                            <span>{{translate('terms_&_conditions')}}</span>
-                        </a>
-                    </li>
+                    @if($settings->where('key_name', 'terms_and_conditions')->first()->is_active == '1')
+                        <li>
+                            <a href="{{route('page.terms-and-conditions')}}"
+                               class="{{request()->is('page/terms-and-conditions')?'active':''}}">
+                                <span>{{translate('terms_&_conditions')}}</span>
+                            </a>
+                        </li>
+                    @endif
+                    {{-- old language dropdown --}}
+                    {{-- <li class="nav-item max-sm-m-0">
+                        <div class="hs-unfold">
+                            <div>
+                                @php( $local = session()->has('landing_local')?session('landing_local'):'en')
+                                @php($siteDirection = session()->has('landing_site_direction')?session('landing_site_direction'):'ltr')
+                                @php($lang = Modules\BusinessSettingsModule\Entities\BusinessSettings::where('key_name','system_language')->first())
+                                @if ($lang)
+                                    <div class="topbar-text dropdown d-flex">
+                                        <a class="topbar-link dropdown-toggle d-flex align-items-center title-color gap-1 lagn-drop-btn justify-content-between align-items-center"
+                                           href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            @foreach ($lang['live_values'] as $data)
+                                                @if($data['code']==$local)
+                                                    @php($language = collect(LANGUAGES)->where('code', $data['code'])->first())
+                                                    @if($language)
+                                                        <span class="d-flex align-items-center gap-2">
+                                                            <span class="material-icons">language</span>
+                                                            {{ $language['nativeName'] }}
+                                                            <span class="fz-10">({{ $data['code'] }})</span>
+                                                        </span>
+                                                    @else
+                                                        {{ $data['code'] }}
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        </a>
+                                        <ul class="dropdown-menu lang-menu">
+                                            @foreach($lang['live_values'] as $key =>$data)
+                                                @if($data['status']==1)
+                                                    @php($language = collect(LANGUAGES)->where('code', $data['code'])->first())
+                                                    <li>
+                                                        <a class="dropdown-item d-flex gap-2 align-items-center py-2 justify-content-between"
+                                                           href="{{route('lang',[$data['code']])}}">
+                                                           <div class="d-flex gap-2 align-items-center">
+                                                            @if($language)
+                                                                <span class="text-capitalize">
+                                                                    {{ $language['nativeName'] }}
+                                                                    <span class="fz-10">({{ $data['code'] }})</span>
+                                                                </span>
+
+                                                                @else
+                                                                    <span class="text-capitalize">{{ $data['code'] }}</span>
+                                                                @endif
+                                                           </div>
+                                                           <span class="material-symbols-outlined text-muted">check_circle</span>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                            </div>
+                        </div>
+                    </li> --}}
+                    {{-- old language dropdown ends --}}
                 </ul>
                 <div class="nav-toggle d-lg-none ms-auto me-2 me-sm-4">
                     <span></span>
@@ -202,15 +263,17 @@
                         <li>
                             <a href="{{route('page.privacy-policy')}}">{{translate('privacy_policy')}}</a>
                         </li>
-                        <li>
-                            <a href="{{route('page.terms-and-conditions')}}">{{translate('terms_&_conditions')}}</a>
-                        </li>
-                        @if(\Modules\BusinessSettingsModule\Entities\DataSetting::where('key', 'cancellation_policy')->first()->is_active == '1')
+                        @if($settings->where('key_name', 'terms_and_conditions')->first()->is_active == '1')
+                            <li>
+                                <a href="{{route('page.terms-and-conditions')}}">{{translate('terms_&_conditions')}}</a>
+                            </li>
+                        @endif
+                        @if($settings->where('key_name', 'cancellation_policy')->first()->is_active == '1')
                             <li>
                                 <a href="{{route('page.cancellation-policy')}}">{{translate('cancellation_policy')}}</a>
                             </li>
                         @endif
-                        @if(\Modules\BusinessSettingsModule\Entities\DataSetting::where('key', 'refund_policy')->first()->is_active == '1')
+                        @if($settings->where('key_name', 'refund_policy')->first()->is_active == '1')
                             <li>
                                 <a href="{{route('page.refund-policy')}}">{{translate('refund_policy')}}</a>
                             </li>

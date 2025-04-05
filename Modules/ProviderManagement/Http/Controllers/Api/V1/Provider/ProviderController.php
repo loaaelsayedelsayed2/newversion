@@ -146,11 +146,14 @@ class ProviderController extends Controller
                 ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                     $query->where(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'cash_after_service')
+                        ->where('payment_method', 'payment_after_service')
                             ->where(function ($query) use ($maxBookingAmount) {
                                 $query->where('is_verified', 1)
                                     ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                             })
-                            ->orWhere('payment_method', '<>', 'cash_after_service');
+                            ->orWhere('payment_method', '<>', 'cash_after_service')
+                            ->orWhere('payment_method', '<>', 'payment_after_service')
+                            ;
                     });
                 })
                 ->whereDoesntHave('ignores', function ($query) use ($request) {
@@ -252,11 +255,14 @@ class ProviderController extends Controller
                 ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                     $query->where(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'cash_after_service')
+                        ->where('payment_method', 'payment_after_service')
                             ->where(function ($query) use ($maxBookingAmount) {
                                 $query->where('is_verified', 1)
                                     ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                             })
-                            ->orWhere('payment_method', '<>', 'cash_after_service');
+                            ->orWhere('payment_method', '<>', 'cash_after_service')
+                            ->orWhere('payment_method', '<>', 'payment_after_service')
+                            ;
                     });
                 })
                 ->where('zone_id', $request->user()->provider->zone_id)
@@ -614,18 +620,12 @@ class ProviderController extends Controller
         $subscribed = $this->subscribedService->where('provider_id', $request->user()->provider->id)
             ->with(['sub_category' => function ($query) {
                 return $query->withCount('services')->with(['services']);
-            }])
-            ->whereHas('category', function ($query) {
+            }])->whereHas('category', function ($query) {
                 $query->where('is_active', 1);
-            })
-            ->whereHas('sub_category', function ($query) {
+            })->whereHas('sub_category', function ($query) {
                 $query->where('is_active', 1);
             })
             ->ofStatus(1)
-            ->withCount(['ongoing_booking', 'completed_booking', 'canceled_booking'])
-            ->when(isset($request['category_id']) && ($request['category_id'] != null), function ($query) use ($request) {
-                $query->where('category_id', $request['category_id']);
-            })
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
 
         return response()->json(response_formatter(DEFAULT_200, $subscribed), 200);

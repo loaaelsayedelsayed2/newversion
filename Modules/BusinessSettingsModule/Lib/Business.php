@@ -107,7 +107,7 @@ if (!function_exists('with_currency_symbol')) {
     {
         $position = business_config('currency_symbol_position', 'business_information')['live_values']??'right';
         $decimal_point = business_config('currency_decimal_point', 'business_information')['live_values']??2;
-        $code = business_config('currency_code', 'business_information')['live_values'];
+        $code = business_config('currency_code', 'business_information')['live_values'] ?? 'USD';
         $symbol = '$';
         foreach (CURRENCIES as $currency) {
             if ($currency['code'] == $code) {

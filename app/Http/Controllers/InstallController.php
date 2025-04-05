@@ -179,7 +179,7 @@ class InstallController extends Controller
                     BUYER_USERNAME=' . session('username') . '
                     SOFTWARE_ID=NDAyMjQ3NzI=
 
-                    SOFTWARE_VERSION=3.1
+                    SOFTWARE_VERSION=3.0
                     ';
             $file = fopen(base_path('.env'), 'w');
             fwrite($file, $output);

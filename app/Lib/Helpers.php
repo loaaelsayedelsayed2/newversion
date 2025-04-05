@@ -735,41 +735,6 @@ if (!function_exists('getBusinessSettingsImageFullPath')) {
         }
     }
 }
-if (!function_exists('getDataSettingsImageFullPath')) {
-    function getDataSettingsImageFullPath($key, $settingType, $path, $defaultPath = null)
-    {
-        $image = \Modules\BusinessSettingsModule\Entities\DataSetting::with('storage')->where(['key' => $key, 'type' => $settingType])->first();
-        if (!$image) {
-            if (request()->is('api/*')) {
-                return null;
-            }
-            return asset($defaultPath);
-        }
-
-        $imagePath = $path . $image->value;
-        $s3Storage = $image->storage;
-
-        try {
-            if ($s3Storage && $s3Storage->storage_type == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
-                return Storage::disk('s3')->url($imagePath);
-//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                $awsBucket = config('filesystems.disks.s3.bucket');
-//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
-            }
-        }catch(\Exception $exception){
-            //
-        }
-
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($imagePath)) {
-            return asset('storage/app/public/' . $imagePath);
-        } else {
-            if (request()->is('api/*')) {
-                return null;
-            }
-            return asset($defaultPath);
-        }
-    }
-}
 
 if (!function_exists('getPaymentGatewayImageFullPath')) {
     function getPaymentGatewayImageFullPath($key, $settingsType, $defaultPath = null)

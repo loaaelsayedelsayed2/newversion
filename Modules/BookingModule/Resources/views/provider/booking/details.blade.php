@@ -36,7 +36,7 @@
                     <div class="d-flex gap-3">
                         @php($provider_can_edit_booking = (int)(business_config('provider_can_edit_booking', 'provider_config'))?->live_values)
 
-                        @if($provider_can_edit_booking && in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking->booking_partial_payments->isEmpty() && empty($booking->customizeBooking))
+                        @if($provider_can_edit_booking && in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking->booking_partial_payments->isEmpty())
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{$booking['id']}}"
                                     data-toggle="tooltip"
@@ -86,33 +86,16 @@
                                     </p>
                                     @if($booking->payment_method == 'offline_payment')
                                         <h4 class="mb-2">{{translate('Payment_Info')}}</h4>
-                                        @if($booking->booking_offline_payments->isNotEmpty())
-                                            <div class="d-flex gap-1 flex-column">
-                                                @foreach($booking?->booking_offline_payments?->first()?->customer_information??[] as $key=>$item)
-                                                    <div><span>{{translate($key)}}</span>:
-                                                        <span>{{translate($item)}}</span>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @else
-                                            <p class="text-muted">{{ translate('Customer did not submit any payment information yet') }}</p>
-                                        @endif
+                                        <div class="d-flex gap-1 flex-column">
+                                            @foreach($booking?->booking_offline_payments?->first()?->customer_information??[] as $key=>$item)
+                                                <div><span>{{translate($key)}}</span>:
+                                                    <span>{{translate($item)}}</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @endif
                                 </div>
                                 <div>
-                                    @if($booking->payment_method == 'offline_payment' && $booking->booking_offline_payments->isNotEmpty())
-                                        <p class="mb-2"><span>{{ translate('Request Verify Status') }} :</span>
-                                            @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
-                                                <span class="text-info text-capitalize fw-bold">{{ translate('Pending') }}</span>
-                                            @endif
-                                            @if($booking->booking_offline_payments?->first()?->payment_status == 'denied')
-                                                <span class="text-danger text-capitalize fw-bold">{{ translate('Denied') }}</span>
-                                            @endif
-                                            @if($booking->booking_offline_payments?->first()?->payment_status == 'approved')
-                                                <span class="text-primary text-capitalize fw-bold">{{ translate('Approved') }}</span>
-                                            @endif
-                                        </p>
-                                    @endif
                                     <p class="mb-2">
                                         <span>{{translate('Payment_Status')}} : </span>
                                         <span class="text-{{$booking->is_paid ? 'success' : 'danger'}}"
@@ -265,11 +248,14 @@
                                                 $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                                             }
 
-                                            if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
+                                            if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                                                 $dueAmount += $booking->additional_charge;
                                             }
 
                                             if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
+                                                $dueAmount = $booking->total_booking_amount;
+                                            }
+                                            if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
                                                 $dueAmount = $booking->total_booking_amount;
                                             }
                                             ?>
@@ -281,7 +267,7 @@
                                                 </tr>
                                             @endif
 
-                                            @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                                            @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                                                 <tr>
                                                     <td>{{translate('Refund')}}</td>
                                                     <td>{{with_currency_symbol(abs($booking->additional_charge))}}</td>

@@ -27,7 +27,6 @@ use Modules\UserManagement\Entities\Serviceman;
 use Modules\UserManagement\Entities\User;
 use Modules\ZoneManagement\Entities\Zone;
 use Carbon\Carbon;
-use Stevebauman\Location\Facades\Location;
 
 class RegisterController extends Controller
 {
@@ -105,10 +104,6 @@ class RegisterController extends Controller
      */
     public function providerSelfRegisterForm(Request $request): Application|Factory|View
     {
-        $location = Location::get($request->ip());
-        $defaultLatitude = data_get($location, 'latitude', '');
-        $defaultLongitude = data_get($location, 'longitude', '');
-
         $zones = $this->zone->get();
         $digitalPayment = (int)((business_config('digital_payment', 'service_setup'))->live_values ?? null);
         $commission = (int)((business_config('provider_commision', 'provider_config'))->live_values ?? null);
@@ -136,7 +131,7 @@ class RegisterController extends Controller
                 $query['label'] = ucwords(str_replace('_', ' ', $query['gateway']));
                 return $query;
             })->values();
-        return view('auth::provider-register', compact('zones','commission','subscription','formattedPackages','paymentGateways', 'duration', 'freeTrialStatus', 'digitalPayment', 'defaultLatitude', 'defaultLongitude'));
+        return view('auth::provider-register', compact('zones','commission','subscription','formattedPackages','paymentGateways', 'duration', 'freeTrialStatus', 'digitalPayment'));
     }
 
 

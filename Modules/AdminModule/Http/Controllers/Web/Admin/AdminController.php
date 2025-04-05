@@ -71,18 +71,12 @@ class AdminController extends Controller
      */
     public function dashboard(Request $request, Transaction $transaction): View|Factory|Application
     {
-        $baseQuery = BookingDetailsAmount::whereHas('booking', function ($query) use ($request) {
+        $commission_earning = BookingDetailsAmount::whereHas('booking', function ($query) use ($request) {
             $query->ofBookingStatus('completed');
             })->orWhereHas('repeat', function ($subQuery) {
             $subQuery->ofBookingStatus('completed');
-        });
-            //->sum('admin_commission');
-        $admin_commission = $baseQuery->sum('admin_commission');
-        $discount_by_admin = $baseQuery->sum('discount_by_admin');
-        $coupon_discount_by_admin = $baseQuery->sum('coupon_discount_by_admin');
-        $campaign_discount_by_admin = $baseQuery->sum('campaign_discount_by_admin');
-
-        $commission_earning = $admin_commission - $discount_by_admin - $coupon_discount_by_admin - $campaign_discount_by_admin;
+        })
+            ->sum('admin_commission');
 
         $fee_amounts = $this->transaction->where('trx_type', TRX_TYPE['received_extra_fee'])->sum('credit');
         $subscription_amounts = $this->transaction->whereIn('trx_type', ['subscription_purchase', 'subscription_renew', 'subscription_shift'])->sum('credit');

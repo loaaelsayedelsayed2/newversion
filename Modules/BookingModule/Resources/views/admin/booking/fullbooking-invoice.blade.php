@@ -157,13 +157,13 @@
             padding: 0 !important
         }
         .invoice_details-table {
-                    width: 100%; 
-                    table-layout: fixed; 
+                    width: 100%;
+                    table-layout: fixed;
                 }
         .invoice_details-table td {
-            text-align: left; 
-            white-space: normal; 
-            word-wrap: break-word; 
+            text-align: left;
+            white-space: normal;
+            word-wrap: break-word;
         }
 
         .invoice_details-table td div {
@@ -370,7 +370,7 @@
                             <td class="fw-700 border-top">{{with_currency_symbol($booking->total_booking_amount)}}</td>
                         </tr>
 
-                        @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                        @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="fw-700">{{translate('Refund')}}</td>

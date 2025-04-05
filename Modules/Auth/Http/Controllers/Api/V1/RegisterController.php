@@ -17,6 +17,11 @@ use Modules\ProviderManagement\Emails\NewJoiningRequestMail;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\UserManagement\Entities\Serviceman;
 use Modules\UserManagement\Entities\User;
+use Modules\UserManagement\Entities\UserVerification;
+    use Illuminate\Support\Facades\Http;
+    use GuzzleHttp\Client;
+
+
 
 class RegisterController extends Controller
 {
@@ -77,6 +82,8 @@ class RegisterController extends Controller
         $user->password = bcrypt($request->password);
         $user->user_type = 'customer';
         $user->is_active = 1;
+        
+
 
         if ($request->has('referral_code')) {
             $customerReferralEarning = business_config('customer_referral_earning', 'customer_config')->live_values ?? 0;
@@ -116,13 +123,6 @@ class RegisterController extends Controller
         $user->referred_by = $userWhoRerreded->id ?? null;
         $user->save();
 
-        $phoneVerification = login_setup('phone_verification')?->value ?? 0;
-        $emailVerification = login_setup('email_verification')?->value ?? 0;
-
-        if (!$phoneVerification && !$emailVerification){
-            $loginData = ['token' => $user->createToken(CUSTOMER_PANEL_ACCESS)->accessToken, 'is_active' => $user['is_active']];
-            return response()->json(response_formatter(REGISTRATION_200, $loginData), 200);
-        }
 
         return response()->json(response_formatter(REGISTRATION_200), 200);
     }
@@ -133,7 +133,105 @@ class RegisterController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function providerRegister(Request $request): JsonResponse
+    // public function providerRegister(Request $request): JsonResponse
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'contact_person_name' => 'required',
+    //         'contact_person_phone' => 'required',
+    //         'contact_person_email' => 'required',
+
+    //         'account_first_name' => 'nullable|max:191',
+    //         'account_last_name' => 'nullable|max:191',
+    //         'zone_id' => 'required|uuid',
+    //         'account_email' => 'required|email',
+    //         'account_phone' => 'required',
+    //         'password' => 'required|min:8',
+    //         'confirm_password' => 'required|same:password',
+
+    //         'company_name' => 'required',
+    //         'company_phone' => 'required',
+    //         'company_address' => 'required',
+    //         'company_email' => 'required|email',
+    //         'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+
+    //         'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+    //         'identity_number' => 'required',
+    //         'identity_images' => 'required|array',
+    //         'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
+
+    //         'latitude' => 'required',
+    //         'longitude' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
+    //     }
+    //     DB::beginTransaction();
+    //     try{
+    //         if (User::where('email', $request['email'])->exists()) {
+    //             return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "email", "message" => translate('Email already taken')]]), 400);
+    //         }
+    //         if (User::where('phone', $request['phone'])->exists()) {
+    //             return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "phone", "message" => translate('Phone already taken')]]), 400);
+    //         }
+
+    //         $user = $this->user;
+    //         $user->first_name = $request->first_name;
+    //         $user->last_name = $request->last_name;
+    //         $user->email = $request->email;
+    //         $user->phone = $request->phone;
+    //         $user->profile_image = $request->has('profile_image') ? file_uploader('user/profile_image/', 'png', $request->profile_image) : 'default.png';
+    //         $user->date_of_birth = $request->date_of_birth;
+    //         $user->gender = $request->gender ?? 'male';
+    //         $user->password = bcrypt($request->password);
+    //         $user->user_type = 'customer';
+    //         $user->is_active = 1;
+    //         if ($request->has('referral_code')) {
+    //             $customerReferralEarning = business_config('customer_referral_earning', 'customer_config')->live_values ?? 0;
+    //             $amount = business_config('referral_value_per_currency_unit', 'customer_config')->live_values ?? 0;
+    //             $userWhoRerreded = User::where('ref_code', $request['referral_code'])->first();
+
+    //             if (is_null($userWhoRerreded)) {
+    //                 return response()->json(response_formatter(REFERRAL_CODE_INVALID_400), 404);
+    //             }
+
+    //             if ($customerReferralEarning == 1 && isset($userWhoRerreded)){
+
+    //                 referralEarningTransactionDuringRegistration($userWhoRerreded, $amount);
+
+    //                 $userRefund  = isNotificationActive(null, 'refer_earn', 'notification', 'user');
+    //                 $title = get_push_notification_message('referral_code_used', 'customer_notification', $user?->current_language_key);
+    //                 if ($title && $userWhoRerreded->fcm_token && $userRefund) {
+    //                     device_notification($userWhoRerreded->fcm_token, $title, null, null, null, 'general', null, $userWhoRerreded->id);
+    //                 }
+
+    //                 $pushNotification = new PushNotification();
+    //                 $pushNotification->title = translate('Your Referral Code Has Been Used!');
+    //                 $pushNotification->description = translate("Congratulations! Your referral code was used by a new user. Get ready to earn rewards when they complete their first booking.");
+    //                 $pushNotification->to_users = ['customer'];
+    //                 $pushNotification->zone_ids = [config('zone_id') == null ? $request['zone_id'] : config('zone_id')];
+    //                 $pushNotification->is_active = 1;
+    //                 $pushNotification->cover_image = asset('/public/assets/admin/img/referral_2.png');
+    //                 $pushNotification->save();
+
+    //                 $pushNotificationUser = new PushNotificationUser();
+    //                 $pushNotificationUser->push_notification_id = $pushNotification->id;
+    //                 $pushNotificationUser->user_id = $userWhoRerreded->id;
+    //                 $pushNotificationUser->save();
+    //             }
+    //         }
+
+    //         $user->referred_by = $userWhoRerreded->id ?? null;
+    //         $user->save();
+    //         DB::commit();
+    //         return response()->json(response_formatter(REGISTRATION_200), 200);
+    //     }catch(\Exception $e){
+    //         DB::rollback();
+    //         return response()->json(response_formatter(PROBLEM_400 .' '.$e), 400);
+    //     }
+    // }
+    
+        public function providerRegister(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
@@ -168,7 +266,12 @@ class RegisterController extends Controller
         }
 
         if (User::where('email', $request['account_email'])->exists()) {
-            return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_email", "message" => translate('Email already taken')]]), 400);
+            return response()->json(response_formatter(DEFAULT_400, null, [
+                [
+                    "error_code" => "account_email",
+                    "message" => translate('Email already taken')
+                ]
+            ]), 400);
         }
         if (User::where('phone', $request['account_phone'])->exists()) {
             return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_phone", "message" => translate('Phone already taken')]]), 400);
@@ -293,5 +396,10 @@ class RegisterController extends Controller
 
         return response()->json(response_formatter(DEFAULT_404), 200);
     }
+    
+
+    
+
+
 
 }

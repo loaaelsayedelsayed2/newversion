@@ -20,6 +20,8 @@ class CreateBookingsTable extends Migration
             $table->foreignUuid('zone_id')->nullable();
             $table->string('booking_status')->default('pending');
             $table->boolean('is_paid')->default(0);
+            $table->enum('paid_by',['customer','provider'])->nullable()->default('provider');
+            $table->string('reason_cancel')->nullable();
             $table->string('payment_method')->default('cash');
             $table->string('transaction_id')->nullable();
             $table->decimal('total_order_amount',24,3)->default(0);

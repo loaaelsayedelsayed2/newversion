@@ -3,9 +3,8 @@
 @section('title',translate('terms_and_conditions'))
 
 @section('content')
-    @php($image = getDataSettingsImageFullPath(key: 'terms_and_conditions_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')))
     <div class="container pt-3">
-        <section class="page-header bg__img" data-img="{{ $image }}">
+        <section class="page-header bg__img" data-img="{{asset('public/assets/landing')}}/img/terms-page-header.png">
             <h3 class="title">{{translate('terms_and_conditions')}}</h3>
         </section>
     </div>

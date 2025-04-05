@@ -40,7 +40,7 @@
                         @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
+                            $booking['payment_method'] == 'payment_after_service' &&
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -106,7 +106,7 @@
                             </div>
                         @endif
                         @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
+                            $booking['payment_method'] == 'payment_after_service' &&
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -159,7 +159,7 @@
                             </div>
                         @endif
 
-                            @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'cash_after_service')
+                            @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'payment_after_service')
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                         data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -192,7 +192,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-                        $booking->payment_method == 'cash_after_service' &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -411,7 +411,7 @@
                                                 @if ($booking->booking_status != 'completed'
                                                     && isset($booking->nextService)
                                                     && !$booking->nextService['is_paid']
-                                                    && $booking->nextService['payment_method'] == 'cash_after_service')
+                                                    && $booking->nextService['payment_method'] == 'payment_after_service')
                                                     <option value="canceled"
                                                         {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
                                                         {{ translate('Booking_Status') }}: {{ translate('Canceled') }}

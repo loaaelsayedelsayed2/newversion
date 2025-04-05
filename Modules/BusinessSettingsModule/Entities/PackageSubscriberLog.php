@@ -14,12 +14,13 @@ class PackageSubscriberLog extends Model
     use HasFactory;
     use HasUuid;
 
-    protected $fillable = [];
+    //protected $fillable = [];
+    protected $guarded = ['id'];
 
 
     public function payment(): BelongsTo
     {
-        return $this->belongsTo(PaymentRequest::class,'payment_id', );
+        return $this->belongsTo(PaymentRequest::class,'payment_id');
     }
     public function provider(): BelongsTo
     {

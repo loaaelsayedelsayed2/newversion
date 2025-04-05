@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Modules\Gateways\Http\Controllers\PaymobController;
@@ -52,12 +51,7 @@ if (!$isPublished) {
         //RAZOR-PAY
         Route::group(['prefix' => 'razor-pay', 'as' => 'razor-pay.'], function () {
             Route::get('pay', [RazorPayController::class, 'index']);
-            Route::post('payment', [RazorPayController::class, 'payment'])->name('payment')
-                ->withoutMiddleware([VerifyCsrfToken::class]);
-            Route::post('callback', [RazorPayController::class, 'callback'])->name('callback')
-                ->withoutMiddleware([VerifyCsrfToken::class]);
-            Route::any('cancel', [RazorPayController::class, 'cancel'])->name('cancel')
-                ->withoutMiddleware([VerifyCsrfToken::class]);
+            Route::post('payment', [RazorPayController::class, 'payment'])->name('payment');
         });
 
         //SENANG-PAY

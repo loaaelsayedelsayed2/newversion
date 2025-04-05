@@ -399,12 +399,12 @@
             }
         }
 
-        document.addEventListener('click', function(event) {
-            if (event.target.closest('.service-ajax-remove-variant')) {
-                var route = event.target.closest('.service-ajax-remove-variant').getAttribute('data-route');
-                var id = event.target.closest('.service-ajax-remove-variant').getAttribute('data-id');
+        document.querySelectorAll('.service-ajax-remove-variant').forEach(function(element) {
+            element.addEventListener('click', function() {
+                var route = this.getAttribute('data-route');
+                var id = this.getAttribute('data-id');
                 ajax_remove_variant(route, id);
-            }
+            });
         });
 
 

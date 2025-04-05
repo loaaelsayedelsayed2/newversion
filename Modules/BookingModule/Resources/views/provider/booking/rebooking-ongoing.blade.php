@@ -50,6 +50,13 @@
                 </div>
                 <div class="d-flex flex-wrap flex-xxl-nowrap gap-3">
                     <div class="d-flex flex-wrap gap-3">
+                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
+                            <button class="btn btn--primary" data-bs-toggle="modal"
+                                    data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
+                                    title="{{ translate('Add or remove services') }}">
+                                <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
+                            </button>
+                        @endif
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'])
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -78,6 +85,15 @@
                 </ul>
                 @php($max_booking_amount = business_config('max_booking_amount', 'booking_setup')->live_values ?? 0)
 
+                @if (
+                    $booking->is_verified == 2 &&
+                        $booking->payment_method == 'payment_after_service' &&
+                        $max_booking_amount <= $booking->total_booking_amount)
+                    <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
+                        <span class="text-danger"># {{ translate('Note: ') }}</span>
+                        <span>{{ $booking?->bookingDeniedNote?->value }}</span>
+                    </div>
+                @endif
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'cash_after_service' &&
@@ -132,6 +148,8 @@
                                             <span class="ms-3 badge badge-{{ $booking->is_paid ? 'success' : 'danger' }}"
                                                   id="payment_status__span">{{ $booking->is_paid ? translate('Paid') : translate('Unpaid') }}</span>
                                         </p>
+                                        <p class="mb-2"><span>{{ translate('Booking_Otp') }} :</span> <span
+                                                class="c1 text-capitalize">{{ $booking?->booking_otp ?? '' }}</span></p>
 
                                             @if($booking?->scheduleHistories->count() > 1)
                                                 <h5 class="d-flex gap-1 flex-wrap align-items-center">
@@ -311,7 +329,7 @@
                                                 </td>
                                             </tr>
 
-                                            @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                                            @if ($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                                                 <tr>
                                                     <td>{{ translate('Refund') }}</td>
                                                     <td class="text--end pe--4">
@@ -370,6 +388,9 @@
                                                     value="ongoing" {{$booking['booking_status'] == 'ongoing' ? 'selected' : ''}}>{{translate('Ongoing')}}</option>
                                             <option
                                                     value="completed" {{$booking['booking_status'] == 'completed' ? 'selected' : ''}}>{{translate('Completed')}}</option>
+                                            @endif
+                                            @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'payment_after_service')
+                                                <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>
                                             @endif
                                             @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'cash_after_service')
                                                 <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>

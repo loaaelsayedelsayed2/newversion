@@ -227,7 +227,9 @@ h1, h2,h3,h4, h5, h6 {
                             <td>
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
-                                    <div class="mt-1">{{ str_replace(['_', '-'], ' ', $booking->payment_method) }}</div>
+                                    <div class="mt-1">
+                                        Moyasar
+         </div>
                                 </div>
                                 <div class="mt-3">
                                     <div class="fs-9">{{translate('Reference ID')}}</div>
@@ -260,6 +262,7 @@ h1, h2,h3,h4, h5, h6 {
                             <th class="text-center text-uppercase">{{translate('qty')}}</th>
                             <th class="text-right text-uppercase">{{translate('cost')}}</th>
                             <th class="text-right text-uppercase">{{translate('total')}}</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -309,6 +312,11 @@ h1, h2,h3,h4, h5, h6 {
                             <td class="">{{translate('Vat_/_Tax')}} (%)</td>
                             <td>+ {{with_currency_symbol($booking->total_tax_amount)}}</td>
                         </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td class="">{{translate('Addattion_Cost')}}</td>
+                            <td>+ {{with_currency_symbol($booking->additional_fees)}}</td>
+                        </tr>
                         @if ($booking->extra_fee > 0)
                             @php($additional_charge_label_name = business_config('additional_charge_label_name', 'booking_setup')->live_values??'Fee')
                             <tr>
@@ -339,11 +347,11 @@ h1, h2,h3,h4, h5, h6 {
                             $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                         }
 
-                        if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
+                        if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                             $dueAmount += $booking->additional_charge;
                         }
 
-                        if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
+                        if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
                             $dueAmount = $booking->total_booking_amount;
                         }
                         ?>
@@ -355,7 +363,7 @@ h1, h2,h3,h4, h5, h6 {
                             </tr>
                         @endif
 
-                        @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                        @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="fw-700">{{translate('Refund')}}</td>

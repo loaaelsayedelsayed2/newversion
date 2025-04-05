@@ -26,15 +26,15 @@
                 </div>
                 <div class="d-flex flex-wrap flex-xxl-nowrap gap-3">
                     <div class="d-flex flex-wrap gap-3">
-{{--                        @if ($booking['payment_method'] == 'offline_payment' && !$booking['is_paid'])--}}
-{{--                            <span class="btn btn--primary offline-payment" data-id="{{ $booking->id }}">--}}
-{{--                                <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}--}}
-{{--                            </span>--}}
-{{--                        @endif--}}
+                        @if ($booking['payment_method'] == 'offline_payment' && !$booking['is_paid'])
+                            <span class="btn btn--primary offline-payment" data-id="{{ $booking->id }}">
+                                <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}
+                            </span>
+                        @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
 
                         @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
+                            $booking['payment_method'] == 'payment_after_service' &&
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                         @endif
-                        @if ($booking['payment_method'] == 'cash_after_service' && $booking->is_verified == '2')
+                        @if ($booking['payment_method'] == 'payment_after_service' && $booking->is_verified == '2')
                             <span class="btn btn--primary change-booking-request" data-id="{{ $booking->id }}"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal--{{ $booking->id }}">
                                 <span class="material-icons">done</span>{{ translate('Change Request Status') }}
@@ -147,7 +147,7 @@
                         @endif
 
                         @if (in_array($booking['booking_status'], ['pending', 'accepted', 'ongoing']) &&
-                                $booking->booking_partial_payments->isEmpty() && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'] && empty($booking->customizeBooking))
+                                $booking->booking_partial_payments->isEmpty() && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -180,7 +180,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-                        $booking->payment_method == 'cash_after_service' &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -190,7 +190,7 @@
 
                 @if (
                     $booking->is_verified == 0 &&
-                        $booking->payment_method == 'cash_after_service' &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -201,21 +201,12 @@
                     </div>
                 @endif
 
-                @if ($booking->booking_offline_payments->isNotEmpty() && $booking->payment_method == 'offline_payment' && $booking?->booking_offline_payments?->first()?->payment_status != 'approved')
+                @if ($booking->is_paid == 0 && $booking->payment_method == 'offline_payment')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
-                        @if($booking?->booking_offline_payments?->first()?->payment_status == 'pending')
-                            <span>
-                                <span class="text-danger fw-semibold"> # {{ translate('Note: ') }} </span>
-                                {{ translate('Please Check & Verify the payment information weather it is correct or not before confirm the booking. ') }}
-                            </span>
-                        @endif
-                        @if($booking?->booking_offline_payments?->first()?->payment_status == 'denied')
-                            <span>
-                                <span class="text-danger fw-semibold"> # {{ translate('Denied Note: ') }} </span>
-                                {{ $booking?->booking_offline_payments?->first()?->denied_note }}
-                            </span>
-                        @endif
-
+                        <span>
+                            <span class="text-danger fw-semibold"> # {{ translate('Note: ') }} </span>
+                            {{ translate('Please Check & Verify the payment information weather it is correct or not before confirm the booking. ') }}
+                        </span>
                     </div>
                 @endif
 
@@ -241,22 +232,18 @@
                                             <span>{{ translate('Amount') }} : </span>
                                             {{ with_currency_symbol($booking->total_booking_amount) }}
                                         </p>
+                                        @if ($booking->payment_method == 'offline_payment')
+                                            <h4 class="mb-2">{{ translate('Payment_Info') }}</h4>
+                                            <div class="d-flex gap-1 flex-column">
+                                                @foreach ($booking?->booking_offline_payments?->first()?->customer_information ?? [] as $key => $item)
+                                                    <div><span>{{ translate($key) }}</span>:
+                                                        <span>{{ translate($item) }}</span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="text-start text-sm-end">
-                                        @if($booking->payment_method == 'offline_payment' && $booking->booking_offline_payments->isNotEmpty())
-                                            <p class="mb-2"><span>{{ translate('Request Verify Status') }} :</span>
-                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
-                                                    <span class="text-info text-capitalize fw-bold">{{ translate('Pending') }}</span>
-                                                @endif
-                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'denied')
-                                                    <span class="text-danger text-capitalize fw-bold">{{ translate('Denied') }}</span>
-                                                @endif
-                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'approved')
-                                                    <span class="text-primary text-capitalize fw-bold">{{ translate('Approved') }}</span>
-                                                @endif
-                                            </p>
-                                        @endif
-
                                         <p class="mb-2">
                                             <span>{{ translate('Payment_Status') }} : </span>
                                             <span class="text-{{ $booking->is_paid ? 'success' : 'danger' }}"
@@ -353,72 +340,9 @@
                             <hr>
 
                             <div class="py-3 d-flex flex-column gap-3 mb-2">
-
-                                @if($booking->payment_method == 'offline_payment')
-                                    <div class="border border-color-primary">
-                                        <div class="card text-center">
-                                            <div class="card-header">
-                                                <h5 class="font-weight-bold">{{ translate('Verification of Offline Payment') }}</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                @if($booking->booking_offline_payments->isNotEmpty())
-                                                    <div class="d-flex gap-1 flex-column">
-                                                        @php($offlinePaymentNote = '')
-                                                        @foreach ($booking?->booking_offline_payments?->first()?->customer_information ?? [] as $key => $item)
-                                                            <div class="d-flex gap-2">
-                                                                @if ($key != 'payment_note' )
-                                                                    <span class="w-100px d-flex justify-content-start">{{ translate($key) }}</span>
-                                                                    <span>: {{ translate($item) }}</span>
-                                                                @endif
-                                                            </div>
-                                                                <?php
-                                                                if ($key == 'payment_note' ){
-                                                                    $offlinePaymentNote = $item;
-                                                                }
-                                                                ?>
-                                                        @endforeach
-                                                    </div>
-                                                    @if($offlinePaymentNote != '')
-                                                        <div class="badge-warning px-3 py-3 rounded title-color mt-3">
-                                                        <span>
-                                                            <span class="fw-semibold"> # {{ translate('Payment Note') }}:  </span>
-                                                            {{ $offlinePaymentNote }}
-                                                        </span>
-                                                        </div>
-                                                    @endif
-
-                                                    @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
-                                                        <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                                                            <button class="btn badge-danger flex-grow-1 py-3" data-bs-toggle="modal"
-                                                                    data-bs-target="#deniedModal-{{$booking->id}}">{{ translate('deny') }}</button>
-                                                            <button class="btn badge-info flex-grow-1 py-3 offline-payment">{{ translate('approve') }}</button>
-                                                        </div>
-                                                    @elseif($booking->booking_offline_payments?->first()?->payment_status == 'denied')
-                                                        @if($booking['booking_status'] != 'canceled')
-                                                            <div class="d-flex flex-column gap-2 mt-4">
-                                                                <button class="btn badge-info w-100 py-3 switch-to-cash-after-service">{{ translate('Switch to Cash after Service') }}</button>
-                                                                <button class="btn badge-danger w-100 py-3 change-booking-status">{{ translate('Cancel Booking') }}</button>
-                                                            </div>
-                                                        @endif
-                                                    @endif
-
-                                                @else
-                                                    <img src="{{ asset('public/assets/admin-module/img/offline-payment.png') }}" alt="Payment Icon" class="mb-3">
-                                                    <p class="text-muted">{{ translate('Customer did not submit any payment information yet') }}</p>
-                                                    @if($booking['booking_status'] != 'canceled')
-                                                        <div class="d-flex flex-column gap-2 mt-4">
-                                                            <button class="btn badge-info w-100 py-3 switch-to-cash-after-service">{{ translate('Switch to Cash after Service') }}</button>
-                                                            <button class="btn badge-danger w-100 py-3 change-booking-status">{{ translate('Cancel Booking') }}</button>
-                                                        </div>
-                                                    @endif
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
                                 <div class="c1-light-bg radius-10">
-                                    <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
+                                    <div
+                                        class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
                                         <h4 class="d-flex align-items-center gap-2">
                                             <span class="material-icons title-color">person</span>
                                             {{ translate('Customer_Information') }}
@@ -697,82 +621,11 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="deniedModal-{{$booking->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body pt-5 p-md-5">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="d-flex justify-content-center mb-4">
-                        <img width="75" height="75" src="{{asset('public/assets/admin-module/img/icons/info-round.svg')}}" class="rounded-circle" alt="">
-                    </div>
-
-                    <h3 class="text-start mb-1 fw-medium text-center">{{translate('Are you sure you want to deny?')}}</h3>
-                    <p class="text-start fs-12 fw-medium text-muted text-center">{{translate('Please insert the deny note for this payment request')}}</p>
-                    <form method="post" action="{{route('admin.booking.offline-payment.verify',['booking_id' => $booking->id, 'payment_status' => 'denied'])}}">
-                        @csrf
-                        <div class="form-floating">
-                            <textarea class="form-control h-69px" placeholder="{{translate('Type here your note')}}" name="note" id="add-your-note" maxlength="255" required></textarea>
-                            <label for="add-your-note" class="d-flex align-items-center gap-1">{{translate('Deny Note')}}</label>
-                            <div class="d-flex justify-content-center mt-3 gap-3">
-                                <button type="button" class="btn btn--secondary min-w-92px px-2" data-bs-dismiss="modal" aria-label="Close">{{translate('Not Now')}}</button>
-                                <button type="submit" class="btn btn-primary min-w-92px">{{translate('Submit')}}</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('script')
     <script>
         'use strict'
-
-        $(".change-booking-status").on('click', function() {
-            var booking_status = 'canceled';
-            var route = '{{ route('admin.booking.status_update', [$booking->id]) }}' + '?booking_status=' + booking_status;
-            update_booking_details(route, '{{ translate('want_to_cancel_booking_status') }}', 'booking_status', booking_status);
-        });
-
-        $(".switch-to-cash-after-service").on('click', function() {
-            var payment_method = 'cash_after_service';
-            var route = '{{ route('admin.booking.switch-payment-method', [$booking->id]) }}' + '?payment_method=' + payment_method;
-            update_booking_details(route, '{{ translate('want_to_switch_payment_method_to_cash_after_service') }}', 'payment_method', payment_method);
-        });
-
-        function update_booking_details(route, message, componentId, updatedValue) {
-            Swal.fire({
-                title: "{{ translate('are_you_sure') }}?",
-                text: message,
-                type: 'warning',
-                showCancelButton: true,
-                cancelButtonColor: 'var(--c2)',
-                confirmButtonColor: 'var(--c1)',
-                cancelButtonText: '{{ translate('Cancel') }}',
-                confirmButtonText: '{{ translate('Yes') }}',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.value) {
-                    $.get({
-                        url: route,
-                        dataType: 'json',
-                        data: {},
-                        beforeSend: function() {},
-                        success: function(data) {
-                            toastr.success(data.message, {
-                                CloseButton: true,
-                                ProgressBar: true
-                            });
-                            location.reload();
-                        },
-                        complete: function() {},
-                    });
-                }
-            })
-        }
-
 
         $('.reassign-provider').on('click', function() {
             let id = $(this).data('provider-reassign');
@@ -780,7 +633,7 @@
         })
 
         $('.offline-payment').on('click', function() {
-            let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}'+ '&payment_status=' + 'approved';
+            let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}';
             route_alert_reload(route, '{{ translate('Want to verify the payment') }}', true);
         })
 

@@ -30,7 +30,7 @@ class FirebaseServiceProvider extends ServiceProvider
             }
 
             $jsonDecodeKey = json_decode($serviceAccountKey['service_file_content'], true);
-            if(isset($jsonDecodeKey) && count($jsonDecodeKey)>0){
+            if(count($jsonDecodeKey)>0){
                 $serviceAccount = $jsonDecodeKey;
                 return (new Factory)
                     ->withServiceAccount($serviceAccount)

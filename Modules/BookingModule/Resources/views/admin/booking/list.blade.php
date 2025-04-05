@@ -185,6 +185,7 @@
                                             <th>{{ translate('Provider_Info') }}</th>
                                             <th>{{ translate('Total_Amount') }}</th>
                                             <th>{{ translate('Payment_Status') }}</th>
+                                            <th>{{ translate('Reason_for_canceled') }}</th>
                                             <th>{{ translate('Action') }}</th>
                                         </tr>
                                     </thead>
@@ -332,6 +333,8 @@
                                                         {{ $booking->is_paid ? translate('paid') : translate('unpaid') }}
                                                     </span>
                                                 </td>
+                                                <td>{{ $booking->reason_cancel }}</td>
+
                                                 <td>
                                                     <div class="table-actions d-flex gap-2">
                                                         @if($booking->is_repeated)

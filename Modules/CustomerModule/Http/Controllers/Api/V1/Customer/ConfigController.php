@@ -23,7 +23,6 @@ use Stevebauman\Location\Facades\Location;
 class ConfigController extends Controller
 {
     use MaintenanceModeTrait;
-
     private $googleMap;
     private $googleMapBaseApi;
 
@@ -47,22 +46,21 @@ class ConfigController extends Controller
 
         $socialMediaSettings = login_setup('social_media_for_login');
         $getValue = json_decode($socialMediaSettings['value'], true);
-        $googleSocialLogin = $getValue['google'];
+        $googleSocialLogin =  $getValue['google'];
         $facebookSocialLogin = $getValue['facebook'];
         $appleSocialLogin = $getValue['apple'];
 
-        $advancedBooking = [
-            'advanced_booking_restriction_value' => (int)business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
-            'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
-        ];
+        $advancedBooking =  [
+                'advanced_booking_restriction_value' => (int) business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
+                'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
+            ];
 
         //payment gateways
         $isPublished = 0;
         try {
             $full_data = include('Modules/Gateways/Addon/info.php');
             $isPublished = $full_data['is_published'] == 1 ? 1 : 0;
-        } catch (\Exception $exception) {
-        }
+        } catch (\Exception $exception) {}
 
         $payment_gateways = collect($this->getPaymentMethods())
             ->filter(function ($query) use ($isPublished) {
@@ -110,9 +108,9 @@ class ConfigController extends Controller
         }
         $emailConfig = business_config('email_config_status', 'email_config')?->live_values;
         $firebaseOtpConfig = business_config('firebase_otp_verification', 'third_party');
-        $firebaseOtpStatus = (int)$firebaseOtpConfig?->live_values['status'] ?? null;
+        $firebaseOtpStatus =(int) $firebaseOtpConfig?->live_values['status'] ?? null;
 
-        if ($firebaseOtpStatus == 1) {
+        if ($firebaseOtpStatus == 1){
             $count = 1;
         }
 
@@ -128,8 +126,8 @@ class ConfigController extends Controller
             ],
             'maintenance' => $this->checkMaintenanceMode(),
             'business_name' => (business_config('business_name', 'business_information'))->live_values ?? null,
-            'logo_full_path' => getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'business_information', path: 'business/', defaultPath: 'public/assets/admin-module/img/media/banner-upload-file.png'),
-            'favicon_full_path' => getBusinessSettingsImageFullPath(key: 'business_favicon', settingType: 'business_information', path: 'business/', defaultPath: 'public/assets/admin-module/img/media/upload-file.png'),
+            'logo_full_path' => getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/media/banner-upload-file.png'),
+            'favicon_full_path' =>  getBusinessSettingsImageFullPath(key: 'business_favicon', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/media/upload-file.png'),
             'country_code' => (business_config('country_code', 'business_information'))->live_values ?? null,
             'business_address' => (business_config('business_address', 'business_information'))->live_values ?? null,
             'business_phone' => (business_config('business_phone', 'business_information'))->live_values ?? null,
@@ -141,9 +139,9 @@ class ConfigController extends Controller
             'currency_symbol_position' => (business_config('currency_symbol_position', 'business_information'))->live_values ?? null,
             'about_us' => route('about-us'),
             'privacy_policy' => route('privacy-policy'),
-            'terms_and_conditions' =>  route('terms-and-conditions'),
-            'refund_policy' => DataSetting::where('key', 'refund_policy')->first()->is_active == '1' ? route('refund-policy') : "",
-            'cancellation_policy' => DataSetting::where('key', 'cancellation_policy')->first()->is_active == '1' ? route('cancellation-policy') : "",
+            'terms_and_conditions' => (business_config('terms_and_conditions', 'pages_setup'))->is_active ? route('terms-and-conditions') : "",
+            'refund_policy' => (business_config('refund_policy', 'pages_setup'))->is_active ? route('refund-policy') : "",
+            'cancellation_policy' => (business_config('cancellation_policy', 'pages_setup'))->is_active ? route('cancellation-policy') : "",
             'pagination_limit' => (int)pagination_limit(),
             'time_format' => (business_config('time_format', 'business_information'))->live_values ?? '24h',
             'payment_gateways' => $payment_gateways,
@@ -154,9 +152,9 @@ class ConfigController extends Controller
             'app_url_playstore' => $playstore->is_active ? $playstore->live_values : null,
             'app_url_appstore' => $appstore->is_active ? $appstore->live_values : null,
             'web_url' => (business_config('web_url', 'landing_button_and_links'))->is_active == '1' ? (business_config('web_url', 'landing_button_and_links'))->live_values : null,
-            'google_social_login' => (int)($googleSocialLogin ?? 0),
-            'facebook_social_login' => (int)($facebookSocialLogin ?? 0),
-            'apple_social_login' => (int)($appleSocialLogin ?? 0),
+            'google_social_login' => (int) ($googleSocialLogin ?? 0),
+            'facebook_social_login' => (int) ($facebookSocialLogin ?? 0),
+            'apple_social_login' => (int) ($appleSocialLogin ?? 0),
             'phone_number_visibility_for_chatting' => (int)((business_config('phone_number_visibility_for_chatting', 'business_information'))->live_values ?? 0),
             'wallet_status' => (int)((business_config('customer_wallet', 'customer_config'))->live_values ?? 0),
             'add_to_fund_wallet' => (int)((business_config('add_to_fund_wallet', 'customer_config'))->live_values ?? 0),
@@ -167,24 +165,25 @@ class ConfigController extends Controller
             'phone_verification' => (int)((login_setup('phone_verification'))->value ?? 0),
             'email_verification' => (int)((login_setup('email_verification'))->value ?? 0),
             'cash_after_service' => (int)((business_config('cash_after_service', 'service_setup'))->live_values ?? 0),
+                        'payment_after_service' => (int)((business_config('payment_after_service', 'service_setup'))->live_values ?? 0),
             'digital_payment' => (int)((business_config('digital_payment', 'service_setup'))->live_values ?? 0),
             'wallet_payment' => (int)((business_config('wallet_payment', 'service_setup'))->live_values ?? 0),
             'social_media' => (business_config('social_media', 'landing_social_media'))->live_values ?? null,
-            'otp_resend_time' => (int)(business_config('otp_resend_time', 'otp_login_setup'))?->live_values ?? null,
-            'max_booking_amount' => (float)(business_config('max_booking_amount', 'booking_setup'))?->live_values ?? null,
-            'min_booking_amount' => (float)(business_config('min_booking_amount', 'booking_setup'))?->live_values ?? null,
-            'guest_checkout' => (int)(business_config('guest_checkout', 'service_setup'))?->live_values ?? null,
-            'partial_payment' => (int)(business_config('partial_payment', 'service_setup'))?->live_values ?? null,
-            'booking_additional_charge' => (int)(business_config('booking_additional_charge', 'booking_setup'))?->live_values ?? null,
-            'additional_charge_label_name' => (string)(business_config('additional_charge_label_name', 'booking_setup'))?->live_values ?? null,
-            'additional_charge_fee_amount' => (float)(business_config('additional_charge_fee_amount', 'booking_setup'))?->live_values ?? null,
-            'offline_payment' => (int)(business_config('offline_payment', 'service_setup'))?->live_values ?? null,
-            'partial_payment_combinator' => (string)(business_config('partial_payment_combinator', 'service_setup'))?->live_values ?? null,
-            'provider_self_registration' => (int)business_config('provider_self_registration', 'provider_config')?->live_values,
-            'confirm_otp_for_complete_service' => (int)business_config('booking_otp', 'booking_setup')?->live_values,
-            'instant_booking' => (int)business_config('instant_booking', 'booking_setup')?->live_values,
-            'schedule_booking' => (int)business_config('schedule_booking', 'booking_setup')?->live_values,
-            'schedule_booking_time_restriction' => (int)business_config('schedule_booking_time_restriction', 'booking_setup')?->live_values,
+            'otp_resend_time' => (int) (business_config('otp_resend_time', 'otp_login_setup'))?->live_values ?? null,
+            'max_booking_amount' => (float) (business_config('max_booking_amount', 'booking_setup'))?->live_values ?? null,
+            'min_booking_amount' => (float) (business_config('min_booking_amount', 'booking_setup'))?->live_values ?? null,
+            'guest_checkout' => (int) (business_config('guest_checkout', 'service_setup'))?->live_values ?? null,
+            'partial_payment' => (int) (business_config('partial_payment', 'service_setup'))?->live_values ?? null,
+            'booking_additional_charge' => (int) (business_config('booking_additional_charge', 'booking_setup'))?->live_values ?? null,
+            'additional_charge_label_name' => (string) (business_config('additional_charge_label_name', 'booking_setup'))?->live_values ?? null,
+            'additional_charge_fee_amount' => (float) (business_config('additional_charge_fee_amount', 'booking_setup'))?->live_values ?? null,
+            'offline_payment' => (int) (business_config('offline_payment', 'service_setup'))?->live_values ?? null,
+            'partial_payment_combinator' => (string) (business_config('partial_payment_combinator', 'service_setup'))?->live_values ?? null,
+            'provider_self_registration' => (int) business_config('provider_self_registration', 'provider_config')?->live_values,
+            'confirm_otp_for_complete_service' => (int) business_config('booking_otp', 'booking_setup')?->live_values,
+            'instant_booking' => (int) business_config('instant_booking', 'booking_setup')?->live_values,
+            'schedule_booking' => (int) business_config('schedule_booking', 'booking_setup')?->live_values,
+            'schedule_booking_time_restriction' => (int) business_config('schedule_booking_time_restriction', 'booking_setup')?->live_values,
             'advanced_booking' => $advancedBooking,
             'system_language' => $country,
             'login_setup' => $customerLogin,
@@ -192,8 +191,7 @@ class ConfigController extends Controller
             'forgot_password_verification_method' => $forgotPasswordVerificationMethod,
             'error_logs' => $errorLogs,
             'app_environment' => env('APP_ENV'),
-            'repeat_booking' => (int)business_config('repeat_booking', 'booking_setup')?->live_values,
-            'create_user_account_from_guest_info' => (int)(business_config('create_user_account_from_guest_info', 'business_information'))?->live_values ?? 0
+            'repeat_booking' => (int) business_config('repeat_booking', 'booking_setup')?->live_values,
         ]), 200);
     }
 
@@ -206,14 +204,6 @@ class ConfigController extends Controller
             'return_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'return_policy')->first(),
             'cancellation_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'cancellation_policy')->first(),
             'privacy_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'privacy_policy')->first(),
-            'images' => collect([
-                'about_us' => getDataSettingsImageFullPath(key: 'about_us_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-                'terms_and_conditions' => getDataSettingsImageFullPath(key: 'terms_and_conditions_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-                'refund_policy' => getDataSettingsImageFullPath(key: 'refund_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-                'return_policy' => getDataSettingsImageFullPath(key: 'return_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-                'cancellation_policy' => getDataSettingsImageFullPath(key: 'cancellation_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-                'privacy_policy' => getDataSettingsImageFullPath(key: 'privacy_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
-            ])
         ]), 200);
     }
 
@@ -234,8 +224,8 @@ class ConfigController extends Controller
         if ($zone) {
             $zone['formatted_coordinates'] = formatCoordinates($zone->coordinates);
 
-            $services = Service::withoutGlobalScope('zone_wise_data')->where('is_active', 1)->whereHas('category', function ($query) use ($zone) {
-                $query->OfStatus(1)->withoutGlobalScope('zone_wise_data')->whereHas('zones', function ($query) use ($zone) {
+            $services = Service::withoutGlobalScope('zone_wise_data')->where('is_active', 1)->whereHas('category', function($query) use ($zone) {
+                $query->OfStatus(1)->withoutGlobalScope('zone_wise_data')->whereHas('zones', function($query) use ($zone) {
                     $query->where('zone_id', $zone->id);
                 });
             })->count();

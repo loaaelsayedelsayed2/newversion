@@ -11,7 +11,9 @@ class PackageSubscriberFeature extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['provider_id','package_subscriber_log_id','feature'];
+    //protected $guarded = ['id'];
+
     use HasUuid;
 
     protected static function newFactory()

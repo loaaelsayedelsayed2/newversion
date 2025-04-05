@@ -270,7 +270,7 @@ class BookingController extends Controller
                 })->when($type == 'denied', function ($query) {
                     $query->where('is_verified', '2');
                 })
-                    ->where('payment_method', 'cash_after_service')
+                    ->where('payment_method', 'payment_after_service')
                     ->Where('total_booking_amount', '>', $maxBookingAmount)
                     ->whereIn('booking_status', ['pending', 'accepted']);
             })
@@ -949,7 +949,7 @@ class BookingController extends Controller
             $bookingStatusHistory->booking_repeat_id = $repeatBooking->id;
 
             if ($repeatBooking->isDirty('booking_status')) {
-                DB::transaction(function () use ($bookingStatusHistory, $repeatBooking) {
+                DB::transaction(function () use ($bookingStatusHistory, $repeatBooking,) {
                     $repeatBooking->save();
                     $bookingStatusHistory->save();
                 });
@@ -1987,9 +1987,14 @@ class BookingController extends Controller
         return back();
     }
 
-
-    public function verifyOfflinePayment(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function verifyOfflinePayment(Request $request): JsonResponse
     {
+
         $this->authorize('booking_can_manage_status');
 
         $validator = Validator::make($request->all(), [
@@ -2001,40 +2006,19 @@ class BookingController extends Controller
         }
 
         $booking = $this->booking->find($request['booking_id']);
-
-        if (!$booking) {
-            return response()->json(response_formatter(DEFAULT_404, 'Booking not found'), 404);
-        }
-
-        // Update booking payment status
-        $isApproved = $request->payment_status == 'approved';
-        $booking->is_paid = $isApproved ? 1 : 0;
+        $booking->is_paid = 1;
         $booking->save();
 
-        // Update offline payment status
-        $offlinePayment = $booking->booking_offline_payments?->first();
-        if ($offlinePayment) {
-            $offlinePayment->payment_status = $request->payment_status;
-            $offlinePayment->denied_note = !$isApproved ? ($request->note ?? null) : null;
-            $offlinePayment->save();
+        $user = $booking->customer;
+        $offline = isNotificationActive(null, 'booking', 'notification', 'user');
+        $title = get_push_notification_message('offline_payment_approved', 'customer_notification', $user?->current_language_key);
+        if ($user?->fcm_token && $title && $offline) {
+            device_notification($user?->fcm_token, $title, null, null, $booking->id, 'booking', null, $user->id);
         }
 
-        // Handle notifications and transactions for approved payments
-        if ($isApproved) {
-            $user = $booking->customer;
-            $offline = isNotificationActive(null, 'booking', 'notification', 'user');
-            $title = get_push_notification_message('offline_payment_approved', 'customer_notification', $user?->current_language_key);
-            if ($user?->fcm_token && $title && $offline) {
-                device_notification($user?->fcm_token, $title, null, null, $booking->id, 'booking', null, $user->id);
-            }
+        placeBookingTransactionForDigitalPayment($booking);
 
-            placeBookingTransactionForDigitalPayment($booking);
-
-            return response()->json(response_formatter(DEFAULT_UPDATE_200, null), 200);
-        }
-
-        Toastr::success(translate(DEFAULT_UPDATE_200['message']));
-        return back();
+        return response()->json(response_formatter(DEFAULT_UPDATE_200, null), 200);
     }
 
     public function reBookingDetails(Request $request, $id)
@@ -2154,21 +2138,5 @@ class BookingController extends Controller
     public function reBookingOngoing()
     {
         return view('bookingmodule::admin.booking.rebooking-ongoing');
-    }
-
-    public function switchPaymentMethod($bookingId, Request $request)
-    {
-        $this->authorize('booking_can_manage_status');
-
-        $validated = $request->validate([
-            'payment_method' => 'required'
-        ]);
-
-        $booking = $this->booking->find($bookingId);
-        $booking->payment_method = $request->payment_method;
-        $booking->is_verified = 1;
-        $booking->save();
-
-        return response()->json(response_formatter(PAYMENT_METHOD_UPDATE_200), 200);
     }
 }

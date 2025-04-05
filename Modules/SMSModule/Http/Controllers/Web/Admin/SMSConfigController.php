@@ -96,8 +96,7 @@ class SMSConfigController extends Controller
         } elseif ($request['gateway'] == '2factor') {
             $additionalData = [
                 'status' => 'required|in:1,0',
-                'api_key' => 'required_if:status,1',
-                'otp_template' => 'required_if:status,1'
+                'api_key' => 'required_if:status,1'
             ];
         } elseif ($request['gateway'] == 'msg91') {
             $additionalData = [

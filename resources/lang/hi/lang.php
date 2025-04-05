@@ -891,6 +891,7 @@ return array (
   'update_discount' => 'अद्यतन छूट',
   'Discount' => 'छूट',
   'cash_after_service' => 'सेवा के बाद नकद',
+  "payment_after_service" => "सेवा के बाद भुगतान",
   'stripe' => 'धारी',
   'ssl_commerz' => 'sslcommerz',
   'Provider_Information' => 'प्रदाता सूचना',

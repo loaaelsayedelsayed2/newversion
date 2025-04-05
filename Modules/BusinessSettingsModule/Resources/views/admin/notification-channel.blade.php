@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between align-items-center">
                             <div class="d-flex gap-2 fw-medium me-auto">
-
+                                {{translate('Notifications')}}:
                             </div>
                             <form action="{{ url()->current() }}" class="search-form search-form_style-two" method="get">
                                 <div class="input-group search-form__input_group">

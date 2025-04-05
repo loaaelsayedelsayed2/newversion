@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Validation\ValidationException;
-use Modules\BookingModule\Entities\Booking;
 use Modules\BookingModule\Entities\BookingRepeat;
 use Modules\CustomerModule\Traits\CustomerAddressTrait;
 use Illuminate\Support\Facades\Validator;
@@ -55,14 +54,7 @@ class PaymentController extends Controller
                 'payment_platform' => 'nullable|in:web,app',
                 'booking_repeat_id' => 'required|uuid',
             ]);
-        } elseif ($request->has('switch_offline_to_digital')) {
-            $validator = Validator::make($request->all(), [
-                'access_token' => '',
-                'payment_method' => 'required|in:' . implode(',', array_column(GATEWAYS_PAYMENT_METHODS, 'key')),
-                'payment_platform' => 'nullable|in:web,app',
-                'booking_id' => 'required|uuid',
-            ]);
-        }else {
+        } else {
             $validator = Validator::make($request->all(), [
                 'access_token' => '',
                 'zone_id' => 'required|uuid',
@@ -97,7 +89,7 @@ class PaymentController extends Controller
         }else{
             if ($validator->fails()) {
                 if ($request->has('callback')) return redirect($request['callback'] . '?flag=fail');
-                else return response()->json(response_formatter(DEFAULT_400), 400);
+            else return response()->json(response_formatter(DEFAULT_400), 400);
             }
         }
 
@@ -107,8 +99,6 @@ class PaymentController extends Controller
         $is_add_fund = $request['is_add_fund'] == 1 ? 1 : 0;
         $is_pay_to_admin = $request['is_pay_to_admin'] == true ? 1 : 0;
         $is_repeat_single_booking = $request['is_repeat_single_booking'] == true ? 1 : 0;
-        $switch_offline_to_digital = $request['switch_offline_to_digital'] ? 1 : 0;
-
         //==========>>>>>> IF ADD FUND <<<<<<<==============
 
         //add fund
@@ -197,7 +187,7 @@ class PaymentController extends Controller
                     additional_data: $additional_data,
                     payment_amount: $amount,
                     external_redirect_link: $request['callback'] ?? null,
-                    attribute: 'booking_id',
+                    attribute: 'booking_repeat_id',
                     attribute_id: time()
                 );
 
@@ -207,60 +197,6 @@ class PaymentController extends Controller
             } else {
                 return redirect()->back()->withErrors(translate('Provider Not Found'));
             }
-
-        }
-
-        //==========>>>>>> Switch Offline to Digital Payment <<<<<<<==============
-
-        if ($switch_offline_to_digital) {
-            $booking = Booking::where('id', $request['booking_id'])->first();
-
-            if (!isset($booking)){
-                return redirect()->back()->withErrors(translate('Booking Not Found'));
-            }
-
-            $payer = new Payer('first name' . ' ' . 'last name', 'first@last.com', '1234567890', '');
-            $additional_data = $request->all();
-
-            $total_booking_amount = $booking->total_booking_amount;
-            $amount_to_pay = $total_booking_amount;
-
-            if ($request['is_partial']){
-                $customer_wallet_balance = User::find($customer_user_id)?->wallet_balance;
-
-                //partial validation
-                if (!$is_guest && $request['is_partial'] && ($customer_wallet_balance <= 0 || $customer_wallet_balance >= $total_booking_amount)) {
-                    return response()->json(response_formatter(DEFAULT_400), 400);
-                }
-
-                $amount_to_pay -= $customer_wallet_balance;
-
-                $data = [
-                    'wallet_paid_amount' => $customer_wallet_balance,
-                    'digitally_paid_amount' => $amount_to_pay,
-                ];
-
-                $additional_data = array_merge($additional_data, $data);
-            }
-
-            $payment_info = new Payment(
-                success_hook: 'switch_offline_to_digital_payment_success',
-                failure_hook: 'switch_offline_to_digital_payment_fail',
-                currency_code: currency_code(),
-                payment_method: $request['payment_method'],
-                payment_platform: 'web',
-                payer_id: $customer_user_id,
-                receiver_id: null,
-                additional_data: $additional_data,
-                payment_amount: $amount_to_pay,
-                external_redirect_link: $request['callback'] ?? null,
-                attribute: 'booking',
-                attribute_id: time()
-            );
-
-            $receiver_info = new Receiver('receiver_name', 'example.png');
-            $redirect_link = PaymentTrait::generate_link($payer, $payment_info, $receiver_info);
-            return redirect($redirect_link);
 
         }
 
@@ -279,18 +215,7 @@ class PaymentController extends Controller
             if ($request->has('callback')) return redirect($request['callback'] . '?flag=fail');
             else return response()->json(response_formatter(DEFAULT_400), 400);
         }
-
-        // Register new user from guest info
-        $newUserInfo = json_decode(base64_decode($request['new_user_info']), true);
-
-        if($newUserInfo != null){
-            $new_data = [
-                'register_new_customer' => 1
-            ];
-            $query_params = array_merge($validator->validated(), ['service_address_id' => $request['service_address_id']], $newUserInfo, $new_data);
-        }else{
-            $query_params = array_merge($validator->validated(), ['service_address_id' => $request['service_address_id']]);
-        }
+        $query_params = array_merge($validator->validated(), ['service_address_id' => $request['service_address_id']]);
 
         //guest user check
         if ($is_guest) {

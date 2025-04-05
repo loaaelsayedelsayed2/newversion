@@ -111,6 +111,7 @@
                                 </div>
                             </div>
                             <div class="grid-columns">
+                       
 
                                 @foreach(PACKAGE_FEATURES as $feature)
                                     @php
@@ -120,6 +121,7 @@
                                     @endphp
 
                                     @if($featureExists)
+                                    
                                         <div class="d-flex gap-2 lh-1 align-items-center">
                                             <span class="material-icons c1 fs-16">check_circle</span>
                                             <span>{{ $feature['value'] }}</span>
