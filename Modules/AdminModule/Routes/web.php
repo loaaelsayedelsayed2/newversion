@@ -20,10 +20,6 @@ use Modules\AdminModule\Http\Controllers\Web\Admin\Report\TransactionReportContr
 |
 */
 
-Route::get('/testnew',function(){
-    return 'hello developer 1';
-});
-
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin', 'middleware' => ['admin']], function () {
     Route::post('search-routing', 'AdminController@searchRouting')->name('search.routing');
     Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
