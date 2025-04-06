@@ -581,17 +581,7 @@ const MAINTENANCE_MODE = [
     'message' => 'Sorry for the inconvenience! We are currently undergoing scheduled maintenance to improve our services. We will be back shortly. Thank you for your patience'
 ];
 
-const USER_EXIST_400 = [
-    'response_code' => 'user_exist_400',
-    'message' => 'invalid or missing information'
-];
-
-const OFFLINE_PAYMENT_SUCCESS_200 = [
-    'response_code' => 'offline_payment_success_200',
-    'message' => 'payment confirm successfully'
-];
-
-const PAYMENT_METHOD_UPDATE_200 = [
-    'response_code' => 'payment_method_update_200',
-    'message' => 'payment method updated successfully'
+const PROBLEM_400 = [
+    'response_code' => 'problem_400',
+    'message' => 'happen error doing register'
 ];

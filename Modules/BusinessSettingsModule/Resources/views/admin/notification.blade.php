@@ -83,7 +83,8 @@
                                                             </label>
                                                         @endcan
                                                     </div>
-                                                    <input type="hidden" name="id" value="{{ $userNotification['key'] }}">
+                                                    <input type="hidden" name="id"
+                                                            value="{{ $userNotification['key'] }}">
                                                     <div class="form-floating">
                                                         <textarea class="form-control"
                                                                     id="{{ $userNotification['key'] }}_message"
@@ -148,7 +149,8 @@
                                                             </div>
                                                         @endcan
                                                     </div>
-                                                    <input type="hidden" name="lang[]" value="{{$lang['code']}}">
+                                                    <input type="hidden" name="lang[]"
+                                                            value="{{$lang['code']}}">
                                                 @endforeach
                                             @else
                                                 <div class="mb-30 lang-form">
@@ -407,7 +409,8 @@
                                                             <span class="switcher_control"></span>
                                                         </label>
                                                     </div>
-                                                    <input type="hidden" name="id" value="{{ $servicemanNotification['key'] }}">
+                                                    <input type="hidden" name="id"
+                                                            value="{{ $servicemanNotification['key'] }}">
                                                     <div class="form-floating">
                                                         <textarea class="form-control"
                                                                     id="{{ $servicemanNotification['key'] }}_message"
@@ -691,10 +694,9 @@
                             id: id,
                             status: $('#' + id + '_status').is(':checked') === true ? 1 : 0,
                             message: $('#' + id + '_message').val(),
-                            type: "{{$queryParams}}",
-                            change_type: "status"
+                            type: "{{$queryParams}}"
                         },
-                        type: 'post',
+                        type: 'PUT',
                         success: function (response) {
                             console.log(response)
                             toastr.success('{{translate('successfully_updated')}}')

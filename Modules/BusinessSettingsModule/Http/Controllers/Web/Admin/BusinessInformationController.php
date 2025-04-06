@@ -51,14 +51,12 @@ class BusinessInformationController extends Controller
     private BusinessSettings $businessSetting;
     private DataSetting $dataSetting;
     private NotificationSetup $notificationSetup;
-    private Provider $provider;
 
-    public function __construct(BusinessSettings $businessSetting, DataSetting $dataSetting, NotificationSetup $notificationSetup, Provider $provider)
+    public function __construct(BusinessSettings $businessSetting, DataSetting $dataSetting, NotificationSetup $notificationSetup)
     {
         $this->businessSetting = $businessSetting;
         $this->dataSetting = $dataSetting;
         $this->notificationSetup = $notificationSetup;
-        $this->provider = $provider;
 
         if (request()->isMethod('get')) {
             $response = $this->actch();
@@ -185,7 +183,6 @@ class BusinessInformationController extends Controller
         $webPage = $request->has('web_page') ? $request['web_page'] : 'business_setup';
         $businessLogoFullPath = '';
         $businessFaviconFullPath = '';
-        $providerCount = $this->provider->count();
 
         if ($webPage == 'business_setup') {
             $dataValues = $this->businessSetting->where('settings_type', 'business_information')->get();
@@ -205,7 +202,7 @@ class BusinessInformationController extends Controller
             $dataValues = $this->businessSetting->whereIn('settings_type', ['booking_setup', 'bidding_system'])->get();
         }
 
-        return view('businesssettingsmodule::admin.business', compact('dataValues', 'webPage', 'businessLogoFullPath', 'businessFaviconFullPath','config', 'providerCount'));
+        return view('businesssettingsmodule::admin.business', compact('dataValues', 'webPage', 'businessLogoFullPath', 'businessFaviconFullPath','config'));
     }
 
     /**
@@ -225,9 +222,6 @@ class BusinessInformationController extends Controller
         }
         if (!$request->has('booking_notification')) {
             $request['booking_notification'] = '0';
-        }
-        if (!$request->has('create_user_account_from_guest_info')) {
-            $request['create_user_account_from_guest_info'] = '0';
         }
 
         $validator = Validator::make($request->all(), [
@@ -254,7 +248,6 @@ class BusinessInformationController extends Controller
             'direct_provider_booking' => 'required|in:0,1',
             'booking_notification_type' => 'required',
             'booking_notification' => 'required|in:0,1',
-            'create_user_account_from_guest_info' => 'required|in:0,1',
         ]);
 
         if ($validator->fails()) {
@@ -450,13 +443,15 @@ class BusinessInformationController extends Controller
         $this->authorize('business_update');
         collect([
             'cash_after_service',
+            'payment_after_service',
             'digital_payment', 'partial_payment', 'offline_payment', 'guest_checkout'
         ])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
         $validator = Validator::make($request->all(), [
-            'cash_after_service' => 'required|in:1,0',
+            'cash_after_service' => 'nullable|in:1,0',
+            'payment_after_service' => 'required|in:1,0',
             'digital_payment' => 'required|in:1,0',
             'partial_payment' => 'required|in:1,0',
-            'partial_payment_combinator' => 'required|in:digital_payment,cash_after_service,offline_payment,all',
+            'partial_payment_combinator' => 'required|in:digital_payment,cash_after_service,offline_payment,all,payment_after_service',
             'offline_payment' => 'required|in:1,0',
             'guest_checkout' => 'required|in:1,0',
         ]);
@@ -651,6 +646,7 @@ class BusinessInformationController extends Controller
 
             //payment
             'cash_after_service' => 'in:0,1',
+            'payment_after_service' => 'in:0,1',
             'digital_payment' => 'in:0,1',
             'wallet_payment' => 'in:0,1',
         ]);
@@ -774,8 +770,7 @@ class BusinessInformationController extends Controller
         $this->authorize('page_view');
         $webPage = $request->has('web_page') ? $request['web_page'] : 'about_us';
         $dataValues = $this->dataSetting->where('type', 'pages_setup')->withoutGlobalScope('translate')->with('translations')->orderBy('key')->get();
-        $dataImages = $this->dataSetting->where('type', 'pages_setup_image')->orderBy('key')->get();
-        return view('businesssettingsmodule::admin.page-settings', compact('dataValues', 'webPage','dataImages'));
+        return view('businesssettingsmodule::admin.page-settings', compact('dataValues', 'webPage'));
     }
 
     /**
@@ -790,12 +785,9 @@ class BusinessInformationController extends Controller
         $request->validate([
             'page_name' => 'required|in:about_us,privacy_policy,terms_and_conditions,refund_policy,cancellation_policy',
             'page_content.0' => 'required',
-            'cover_image' =>'nullable|image|mimes:jpeg,jpg,png,gif|max:10240',
         ], [
             'page_content.0.required' => 'The default content is required.',
         ]);
-
-
 
         $businessData = $this->dataSetting->updateOrCreate(['key' => $request['page_name'], 'type' => 'pages_setup'], [
             'key' => $request['page_name'],
@@ -803,25 +795,7 @@ class BusinessInformationController extends Controller
             'type' => 'pages_setup',
             'is_active' => $request['is_active'] ?? 0,
         ]);
-        $page = $this->dataSetting->where(['key' => $request['page_name'].'_image', 'type' => 'pages_setup_image'])->first();
-        if ($request->has('cover_image')) {
-            if (isset($page)) {
-                file_remover('page-setup/', $page?->value);
-            }
-            $image = file_uploader('page-setup/', 'png', $request->file('cover_image'));
 
-
-            $page = $this->dataSetting->updateOrCreate(['key' => $request['page_name'].'_image', 'type' => 'pages_setup_image'], [
-                'key' => $request['page_name'].'_image',
-                'value' => $image,
-                'type' => 'pages_setup_image',
-                'is_active' => $businessData->is_active,
-            ]);
-            $storageType = getDisk();
-            if($image && $storageType != 'public'){
-                saveBusinessImageDataToStorage(model: $page, modelColumn : 'cover_image', storageType : $storageType);
-            }
-        }
         $defaultLanguage = str_replace('_', '-', app()->getLocale());
 
         foreach ($request->lang as $index => $key) {

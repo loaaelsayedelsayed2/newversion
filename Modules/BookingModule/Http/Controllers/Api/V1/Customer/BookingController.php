@@ -7,13 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Modules\BidModule\Entities\PostBid;
 use Illuminate\Support\Facades\Validator;
-use Modules\BookingModule\Entities\BookingOfflinePayment;
-use Modules\BookingModule\Entities\BookingPartialPayment;
 use Modules\BookingModule\Entities\BookingRepeat;
-use Modules\PaymentModule\Entities\PaymentRequest;
 use Modules\UserManagement\Entities\User;
 use Modules\BookingModule\Entities\Booking;
 use Modules\PaymentModule\Entities\OfflinePayment;
@@ -21,6 +17,8 @@ use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\CustomerModule\Traits\CustomerAddressTrait;
 use Modules\BookingModule\Entities\BookingStatusHistory;
 use Modules\BidModule\Http\Controllers\APi\V1\Customer\PostBidController;
+use Modules\TransactionModule\Entities\Account;
+
 
 class BookingController extends Controller
 {
@@ -62,8 +60,8 @@ class BookingController extends Controller
             'provider_id' => 'nullable|uuid',
 
             'guest_id' => $this->isCustomerLoggedIn ? 'nullable' : 'required|uuid',
-            //'offline_payment_id' => 'required_if:payment_method,offline_payment',
-            //'customer_information' => 'required_if:payment_method,offline_payment',
+            'offline_payment_id' => 'required_if:payment_method,offline_payment',
+            'customer_information' => 'required_if:payment_method,offline_payment',
             'service_address' => is_null($request['service_address_id']) ? [
                 'required',
                 'json',
@@ -91,40 +89,19 @@ class BookingController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
-//        if ($request['payment_method'] == 'offline_payment') {
-//            $offlinePaymentData = $this->offlinePayment->find($request['offline_payment_id']);
-//            $fields = array_column($offlinePaymentData->customer_information, 'field_name');
-//            $customerInformation = (array)json_decode(base64_decode($request['customer_information']))[0];
-//
-//            foreach ($fields as $field) {
-//                if (!key_exists($field, $customerInformation)) {
-//                    return response()->json(response_formatter(DEFAULT_400, $fields, null), 400);
-//                }
-//            }
-//        }
+        if ($request['payment_method'] == 'offline_payment') {
+            $offlinePaymentData = $this->offlinePayment->find($request['offline_payment_id']);
+            $fields = array_column($offlinePaymentData->customer_information, 'field_name');
+            $customerInformation = (array)json_decode(base64_decode($request['customer_information']))[0];
 
-        $newUserInfo = null;
-        // Additional validation and register for new_user_info
-        if ($request->has('new_user_info') && !empty($request->get('new_user_info')) && !$this->isCustomerLoggedIn) {
-            $newUserInfo = json_decode($request['new_user_info'], true);
-
-            if (json_last_error() !== JSON_ERROR_NONE || !is_array($newUserInfo)) {
-                return response()->json(response_formatter(DEFAULT_400, null, 'Invalid new_user_info format'), 400);
-            }
-
-            $newUserValidator = Validator::make($newUserInfo, [
-                'first_name' => 'required',
-                'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-                'password' => 'required|min:8',
-            ]);
-
-            if ($newUserValidator->fails()) {
-                return response()->json(response_formatter(DEFAULT_400, null, error_processor($newUserValidator)), 400);
+            foreach ($fields as $field) {
+                if (!key_exists($field, $customerInformation)) {
+                    return response()->json(response_formatter(DEFAULT_400, $fields, null), 400);
+                }
             }
         }
 
         $customerUserId = $this->customerUserId;
-
         if (is_null($request['service_address_id'])) {
             $request['service_address_id'] = $this->add_address(json_decode($request['service_address']), null, !$this->isCustomerLoggedIn);
         }
@@ -135,10 +112,9 @@ class BookingController extends Controller
         if (!isset($request['post_id']) && $minimumBookingAmount > 0 && $totalBookingAmount < $minimumBookingAmount) {
             return response()->json(response_formatter(MINIMUM_BOOKING_AMOUNT_200), 200);
         }
-
         if ($request['payment_method'] == 'wallet_payment') {
             if (!isset($request['post_id'])) {
-                $response = $this->placeBookingRequest(userId: $customerUserId, request: $request, transactionId: 'wallet_payment', newUserInfo: $newUserInfo);
+                $response = $this->placeBookingRequest($customerUserId, $request, 'wallet_payment');
             } else {
                 $postBid = PostBid::with(['post'])
                     ->where('post_id', $request['post_id'])
@@ -156,7 +132,10 @@ class BookingController extends Controller
                     'category_id' => $postBid->post->category_id,
                     'sub_category_id' => $postBid->post->category_id,
                     'service_address_id' => !is_null($request['service_address_id']) ? $request['service_address_id'] : $postBid->post->service_address_id,
-                    'is_partial' => $request['is_partial']
+                    'is_partial' => $request['is_partial'],
+                      'paid_by' => 'customer',
+
+
                 ];
 
                 $user = User::find($customerUserId);
@@ -172,9 +151,10 @@ class BookingController extends Controller
                 }
             }
 
-        } elseif ($request['payment_method'] == 'offline_payment') {
+
+        }elseif ($request['payment_method'] == 'offline_payment') {
             if (!isset($request['post_id'])) {
-                $response = $this->placeBookingRequest($customerUserId, $request, 'offline-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
+                $response = $this->placeBookingRequest($customerUserId, $request, 'offline-payment', !$this->isCustomerLoggedIn);
             } else {
                 $postBid = PostBid::with(['post'])
                     ->where('post_id', $request['post_id'])
@@ -203,9 +183,9 @@ class BookingController extends Controller
             }
         } else {
             if ($request['service_type'] == 'repeat'){
-                $response = $this->placeRepeatBookingRequest($customerUserId, $request, 'cash-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
+                $response = $this->placeRepeatBookingRequest($customerUserId, $request, 'cash-payment', !$this->isCustomerLoggedIn);
             }else{
-                $response = $this->placeBookingRequest($customerUserId, $request, 'cash-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
+                $response = $this->placeBookingRequest($customerUserId, $request, 'cash-payment', !$this->isCustomerLoggedIn);
             }
         }
 
@@ -278,20 +258,14 @@ class BookingController extends Controller
         ])->where(['id' => $id])->first();
 
         if (isset($booking)) {
-            $offlinePayment = $booking->booking_offline_payments?->first();
+            $offlinePayment = $booking->booking_offline_payments?->first()?->customer_information;
+            unset($booking->booking_offline_payments);
 
             if ($offlinePayment) {
-                $booking->booking_offline_payment_method = $offlinePayment->method_name;
-                $booking->booking_offline_payment = collect($offlinePayment->customer_information)->map(function ($value, $key) {
+                $booking->booking_offline_payment = collect($offlinePayment)->map(function ($value, $key) {
                     return ["key" => $key, "value" => $value];
                 })->values()->all();
-
-                $booking->offline_payment_id = $offlinePayment->offline_payment_id ?? null;
-                $booking->offline_payment_status = $offlinePayment->payment_status ?? null;
-                $booking->offline_payment_denied_note = $offlinePayment->denied_note ?? null;
             }
-
-            unset($booking->booking_offline_payments);
 
             if (isset($booking->provider)){
                 $booking->provider->chatEligibility = chatEligibility($booking->provider_id);
@@ -410,30 +384,30 @@ class BookingController extends Controller
     public function statusUpdate(Request $request, string $booking_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'booking_status' => 'required|in:canceled',
+            'booking_status' => 'required',
+            'reason_cancel' => 'required_if:booking_status,canceled|string'
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+
         $booking = $this->booking->where('id', $booking_id)->where('customer_id', $request->user()->id)->first();
-
         if (isset($booking)) {
-
             if($booking->booking_status == 'accepted' && $request['booking_status'] == 'canceled'){
                 return response()->json(response_formatter(BOOKING_ALREADY_ACCEPTED), 200);
             }
-
             if($booking->booking_status == 'ongoing' && $request['booking_status'] == 'canceled'){
                 return response()->json(response_formatter(BOOKING_ALREADY_ONGOING), 200);
             }
-
             if($booking->booking_status == 'completed' && $request['booking_status'] == 'canceled'){
                 return response()->json(response_formatter(BOOKING_ALREADY_COMPLETED), 200);
             }
-
             $booking->booking_status = $request['booking_status'];
+            $booking->reason_cancel = $request['reason_cancel']?? null;
+
+
 
             $bookingStatusHistory = $this->bookingStatusHistory;
             $bookingStatusHistory->booking_id = $booking_id;
@@ -495,234 +469,29 @@ class BookingController extends Controller
         return response()->json(response_formatter(DEFAULT_204), 200);
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function storeOfflinePaymentData(Request $request): JsonResponse
-    {
+    public function bookingUpdate(Request $request){
         $validator = Validator::make($request->all(), [
-            'offline_payment_id' => 'required',
-            'customer_information' => 'required',
-            'booking_id' => 'required',
-            'is_partial' => 'required|in:0,1',
+            'booking_id' => 'required|uuid',
+            'payment_status' => 'nullable|in:0,1'
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
+        $booking = $this->booking
+            ->with('detail')
+            ->where('id', $request['booking_id'])
+            ->where('customer_id', $request->user()->id)
+            ->first();
+        $booking->paid_by = 'customer';
 
-        // Retrieve booking
-        $booking = $this->booking->find($request->booking_id);
-        if (!$booking) {
-            return response()->json(response_formatter(DEFAULT_204), 200);
-        }
+        if(!isset($booking)) return response()->json(response_formatter(DEFAULT_204), 200);
+        if (!is_null($request['payment_status'])) $booking->is_paid = $request['payment_status'];
 
-        $offlinePaymentData = $this->offlinePayment->find($request['offline_payment_id']);
-        if (!$offlinePaymentData) {
-            return response()->json(response_formatter(DEFAULT_400, null, 'Invalid offline payment ID.'), 400);
-        }
-
-        $fields = array_column($offlinePaymentData->customer_information, 'field_name');
-        $customerInformation = (array)json_decode(base64_decode($request['customer_information']))[0];
-
-        foreach ($fields as $field) {
-            if (!key_exists($field, $customerInformation)) {
-                return response()->json(response_formatter(DEFAULT_400, $fields, null), 400);
-            }
-        }
-
-        // Handle partial payment if applicable
-        if ($request->is_partial) {
-            $user = auth('api')->user();
-            $walletBalance = $user->wallet_balance;
-
-            if ($walletBalance <= 0 || $walletBalance >= $booking->total_booking_amount) {
-                return response()->json(response_formatter(DEFAULT_400, null, 'Invalid partial payment data.'), 400);
-            }
-
-            $paidAmount = $walletBalance;
-            $dueAmount = $booking->total_booking_amount - $paidAmount;
-
-            // Save wallet payment
-            BookingPartialPayment::create([
-                'booking_id' => $booking->id,
-                'paid_with' => 'wallet',
-                'paid_amount' => $paidAmount,
-                'due_amount' => $dueAmount,
-            ]);
-
-            // Save remaining payment
-            BookingPartialPayment::create([
-                'booking_id' => $booking->id,
-                'paid_with' => 'offline_payment',
-                'paid_amount' => $dueAmount,
-                'due_amount' => 0,
-            ]);
-
-            placeBookingTransactionForPartialDigital($booking);
-        }
-
-        // Check if the booking_id already exists
-        $existingPayment = BookingOfflinePayment::where('booking_id', $request->booking_id)->first();
-
-        $customerInformation = (array)json_decode(base64_decode($request['customer_information']))[0];
-
-        if ($existingPayment) {
-            // If it exists, update with new data
-            $existingPayment->offline_payment_id = $request['offline_payment_id'];
-            $existingPayment->method_name = OfflinePayment::find($request['offline_payment_id'])?->method_name;
-            $existingPayment->customer_information = $customerInformation;
-            $existingPayment->payment_status = 'pending';
-            $existingPayment->save();
-        } else {
-            // If no existing record, create a new one
-            $bookingOfflinePayment = new BookingOfflinePayment();
-            $bookingOfflinePayment->booking_id = $request->booking_id;
-            $bookingOfflinePayment->offline_payment_id = $request['offline_payment_id'];
-            $bookingOfflinePayment->method_name = OfflinePayment::find($request['offline_payment_id'])?->method_name;
-            $bookingOfflinePayment->customer_information = $customerInformation;
-            $bookingOfflinePayment->payment_status = 'pending';
-            $bookingOfflinePayment->save();
-        }
-
-        $booking->update(['payment_method' => 'offline_payment']);
-
-        return response()->json(response_formatter(OFFLINE_PAYMENT_SUCCESS_200), 200);
+        $booking->save();
+        placeBookingTransactionForPaymentAfterService($booking);
+        return response()->json(response_formatter(BOOKING_STATUS_UPDATE_SUCCESS_200, $booking), 200);
     }
 
-    public function switchPaymentMethod(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'booking_id' => 'required',
-            'payment_method' => 'required',
-            'offline_payment_id' => 'required_if:payment_method,offline_payment',
-            'customer_information' => 'required_if:payment_method,offline_payment',
-            'is_partial' => 'required|in:0,1',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
-        }
-
-        // Retrieve booking
-        $booking = $this->booking->find($request->booking_id);
-        if (!$booking) {
-            return response()->json(response_formatter(DEFAULT_204), 200);
-        }
-
-        // Handle partial payment if applicable
-        if ($request->is_partial) {
-            $user = auth('api')->user();
-            $walletBalance = $user->wallet_balance;
-
-            if ($walletBalance <= 0 || $walletBalance >= $booking->total_booking_amount) {
-                return response()->json(response_formatter(DEFAULT_400, null, 'Invalid partial payment data.'), 400);
-            }
-
-            $paidAmount = $walletBalance;
-            $dueAmount = $booking->total_booking_amount - $paidAmount;
-
-            // Save wallet payment
-            BookingPartialPayment::create([
-                'booking_id' => $booking->id,
-                'paid_with' => 'wallet',
-                'paid_amount' => $paidAmount,
-                'due_amount' => $dueAmount,
-            ]);
-
-            // Save remaining payment
-            BookingPartialPayment::create([
-                'booking_id' => $booking->id,
-                'paid_with' => 'digital',
-                'paid_amount' => $dueAmount,
-                'due_amount' => 0,
-            ]);
-        }
-
-        // Handle payment method updates
-        if ($request->payment_method == 'cash_after_service') {
-            $booking->update(['payment_method' => 'cash_after_service', 'transaction_id' => 'cash-payment', 'is_verified' => 1]);
-            if ($booking->booking_partial_payments->isNotEmpty()) {
-                // Delete rows where `paid_with` is not 'wallet'
-                $booking->booking_partial_payments()
-                    ->where('paid_with', '!=', 'wallet')
-                    ->delete();
-            }
-            if ($request->is_partial) {
-                placeBookingTransactionForPartialCas($booking);
-            }
-
-        } elseif ($request->payment_method == 'wallet_payment') {
-            $booking->update(['payment_method' => 'wallet_payment', 'transaction_id' => 'wallet-payment']);
-            placeBookingTransactionForWalletPayment($booking);
-
-        }
-        else {
-            return response()->json(response_formatter(DEFAULT_400, null, 'Invalid payment method.'), 400);
-        }
-
-        return response()->json(response_formatter(PAYMENT_METHOD_UPDATE_200), 200);
-    }
-
-    public function digitalPaymentBookingResponse(Request $request): JsonResponse|array
-    {
-        $validator = Validator::make($request->all(), [
-            'transaction_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
-        }
-
-        $payment_info = PaymentRequest::where('transaction_id', $request->transaction_id)->first();
-
-        if (!$payment_info) {
-            return response()->json(response_formatter(DEFAULT_204), 200);
-        }
-
-        $additional_data = json_decode($payment_info->additional_data, true);
-
-        $booking_repeat_id = $additional_data['booking_repeat_id'] ?? null;
-        $register_new_customer = $additional_data['register_new_customer'] ?? 0;
-        $new_user_phone = $register_new_customer == 1 ? $additional_data['phone'] : null;
-
-        $booking = null;
-        $booking_id = null;
-        if (isset($payment_info) && $payment_info->attribute_id != null) {
-            $booking = Booking::where('readable_id', $payment_info->attribute_id)->first();
-            $booking_id = $booking ? $booking->id : null;
-        }
-
-        $loginToken = null;
-        if ($register_new_customer == 1 && $new_user_phone != null){
-            $user = new User();
-            $user->first_name = $additional_data['first_name'];
-            $user->last_name = '';
-            $user->phone = $additional_data['phone'];
-            $user->password = bcrypt($additional_data['password']);
-            $user->user_type = 'customer';
-            $user->is_active = 1;
-            $user->save();
-
-            if ($user && $booking) {
-                $booking->customer_id = $user->id;
-                $booking->is_guest = 0;
-                $booking->save();
-            }
-
-            $loginToken = $user->createToken('CUSTOMER_PANEL_ACCESS')->accessToken;
-        }
-
-        $response =  [
-            'booking_id' => $booking_id,
-            'booking_repeat_id' => $booking_repeat_id,
-            'new_user_phone' => $new_user_phone,
-            'login_token' => $loginToken,
-        ];
-
-        return response()->json(response_formatter(DEFAULT_200, $response), 200);
-
-    }
 
 }

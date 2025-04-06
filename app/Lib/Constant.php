@@ -61,6 +61,8 @@ const COUPON_TYPES_REACT_FORMAT = [
 
 const PAYMENT_METHODS = [
     ['key' => 'cash_after_service', 'value' => 'Cash After Service'],
+    ['key' => 'payment_after_service', 'value' => 'Payment After Service'],
+    ['key' => 'moyasar', 'value' => 'moyasar'],
     ['key' => 'ssl_commerz', 'value' => 'SSLCOMMERZ'],
     ['key' => 'stripe', 'value' => 'Stripe'],
     ['key' => 'paytm', 'value' => 'Paytm'],
@@ -69,6 +71,7 @@ const PAYMENT_METHODS = [
     ['key' => 'senang_pay', 'value' => 'Senang Pay'],
     ['key' => 'flutterwave', 'value' => 'Flutter Wave'],
     ['key' => 'wallet_payment', 'value' => 'wallet payment'],
+    ['key' => 'digital_payment', 'value' => 'Digital payment'],
     ['key' => 'offline_payment', 'value' => 'offline payment'],
 ];
 
@@ -817,6 +820,8 @@ const WALLET_TRX_TYPE = [
     'loyalty_point_earning' => 'loyalty_point_earning',
     'referral_earning' => 'referral_earning',
     'wallet_payment' => 'wallet_payment',
+    'moyasar_payment' => 'moyasar_payment',
+    'digital_payment' => 'digital_payment',
     'booking_refund' => 'booking_refund',
     'add_fund' => 'add_fund',
     'add_fund_bonus' => 'add_fund_bonus'

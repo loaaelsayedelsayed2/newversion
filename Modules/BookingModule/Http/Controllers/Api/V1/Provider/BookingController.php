@@ -76,7 +76,6 @@ class BookingController extends Controller
             'from_date' => 'date',
             'to_date' => 'date',
             'sub_category_ids' => 'array',
-            'sub_category_ids.*' => 'uuid',
             'category_ids' => 'array',
             'category_ids.*' => 'uuid'
         ]);
@@ -566,11 +565,8 @@ class BookingController extends Controller
 
         if (isset($booking)) {
 
-            if ($booking->payment_method == 'offline_payment' && $booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
-                if ($booking->booking_offline_payments->isEmpty()) {
-                    return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
-                }
-                if ($booking->booking_offline_payments->isNotEmpty() && $booking->booking_offline_payments?->first()?->payment_status != 'approved'){
+            if ($booking->booking_offline_payments->isNotEmpty()) {
+                if ($booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
                     return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
                 }
             }
@@ -605,11 +601,13 @@ class BookingController extends Controller
                 return response()->json(response_formatter(BOOKING_ALREADY_COMPLETED), 200);
             }
 
-            if ($booking->payment_method != 'cash_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0) {
+            if ($booking->payment_method != 'payment_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0) {
                 return response()->json(response_formatter(BOOKING_ALREADY_EDITED), 200);
             }
 
             $booking->booking_status = $request['booking_status'];
+                        $booking->paid_by = 'provider';
+
             $booking->evidence_photos = $evidence_photos;
 
             $bookingStatusHistory = $this->bookingStatusHistory;
@@ -677,7 +675,7 @@ class BookingController extends Controller
                 return response()->json(response_formatter(BOOKING_ALREADY_COMPLETED), 200);
             }
 
-            if ($booking->payment_method != 'cash_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0) {
+            if ($booking->payment_method != 'payment_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0) {
                 return response()->json(response_formatter(BOOKING_ALREADY_EDITED), 200);
             }
 
@@ -870,7 +868,7 @@ class BookingController extends Controller
                 $title = get_push_notification_message('otp', 'customer_notification', $bookingRepeat?->booking?->customer?->current_language_key) . ' ' . $bookingRepeat->booking_otp;
 
                 if ($fcmToken) {
-                    device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id, null, null, 'repeat');
+                    device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id);
                     return response()->json(response_formatter(NOTIFICATION_SEND_SUCCESSFULLY_200), 200);
 
                 } else {
@@ -981,7 +979,15 @@ class BookingController extends Controller
         if (!is_null($request['serviceman_id'])) $booking->serviceman_id = $request['serviceman_id'];
         if (!is_null($request['booking_status'])) $booking->booking_status = $request['booking_status'];
         if (!is_null($request['service_schedule'])) $booking->service_schedule = $request['service_schedule'];
+        $booking->payment_method = 'payment_after_service' ;
         $booking->save();
+
+        if($booking->payment_method == 'payment_after_service' && $booking->is_paid == 1){
+            placeBookingTransactionForPaymentAfterService($booking);
+        }
+        if($booking->payment_method == 'payment_after_service' && $booking->booking_status == 'completed'){
+            completeBookingTransactionForDigitalPayment($booking);
+        }
 
         $providerEditAccess = (boolean)business_config('provider_can_edit_booking', 'provider_config')?->live_values;
         $request['service_info'] = collect(json_decode($request['service_info'], true));
@@ -1088,6 +1094,9 @@ class BookingController extends Controller
         if (!is_null($request['booking_status'])) $booking->booking_status = $request['booking_status'];
         if (!is_null($request['service_schedule'])) $booking->service_schedule = $request['service_schedule'];
         $booking->save();
+        if($booking->payment_method == 'payment_after_service' && $booking->is_paid == 1 && $booking->booking_status == 'completed'){
+            completeBookingTransactionForDigitalPayment($booking);
+        }
 
         $providerEditAccess = (boolean)business_config('provider_can_edit_booking', 'provider_config')?->live_values;
         $request['service_info'] = collect(json_decode($request['service_info'], true));

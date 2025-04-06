@@ -45,10 +45,16 @@ class LoginController extends Controller
     {
         $validator = Validator::make($request->all(), $this->validation_array);
         if ($validator->fails()) return response()->json(response_formatter(AUTH_LOGIN_403, null, error_processor($validator)), 403);
-
-        $user = $this->user->where(['phone' => $request['email_or_phone']])
-            ->orWhere('email', $request['email_or_phone'])
+if($type == 'phone'){
+    
+           $user = $this->user->Where('phone', $request['email_or_phone'])
             ->ofType(ADMIN_USER_TYPES)->first();
+}else{
+    
+         $user = $this->user->Where('email', $request['email_or_phone'])
+            ->ofType(ADMIN_USER_TYPES)->first();
+}
+ 
 
         if (isset($user) && Hash::check($request['password'], $user['password'])) {
             if ($user->is_active && $user->roles->count() > 0 && $user->roles[0]->is_active || $user->user_type == 'super-admin') {
@@ -68,13 +74,26 @@ class LoginController extends Controller
     public function providerLogin(Request $request)
     {
         $type = $request['type'];
+        
         $validator = Validator::make($request->all(), $this->validation_array);
         if ($validator->fails()) return response()->json(response_formatter(AUTH_LOGIN_403, null, error_processor($validator)), 403);
+ 
+if($type == 'phone'){
 
-        $user = $this->user->with('provider')
-            ->where(['phone' => $request['email_or_phone']])
-            ->orWhere('email', $request['email_or_phone'])
-            ->ofType(['provider-admin'])->first();
+            $user = $this->user
+            ->with('provider')
+            ->where('phone' ,'=',$request['email_or_phone'])
+           ->ofType(['provider-admin']) ->first();
+           
+
+}else{
+    
+            $user = $this->user->with('provider')
+            ->Where('email', $request['email_or_phone'])
+           ->ofType(['provider-admin']) ->first();
+}
+
+
 
         if (!isset($user)) {
             return response()->json(response_formatter(AUTH_LOGIN_404), 404);
@@ -114,7 +133,7 @@ class LoginController extends Controller
             return response()->json(response_formatter(AUTH_LOGIN_401), 401);
         }
 
-        if ($user->provider->is_approved == '2') {
+        if (isset($user->provider->is_approved) && $user->provider->is_approved == '2') {
             self::updateUserHitCount($user);
             return response()->json(response_formatter(PROVIDER_ACCOUNT_NOT_APPROVED), 401);
         }
@@ -155,12 +174,9 @@ class LoginController extends Controller
             'guest_id' => 'required|uuid',
             'type' => 'required|in:phone,email'
         ]);
-
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
-
-
         $type = $request['type'];
         $validator = Validator::make($request->all(), $this->validation_array);
         if ($validator->fails()) return response()->json(response_formatter(AUTH_LOGIN_403, null, error_processor($validator)), 403);
@@ -402,10 +418,6 @@ class LoginController extends Controller
             return response()->json(response_formatter(AUTH_LOGIN_200, ['temporary_token' => $temporaryToken, 'status' => false, 'email' => $appleEmail], 200));
         }
 
-        if ($request['guest_id']){
-            $this->updateAddressAndCartUser($user->id, $request['guest_id']);
-        }
-
         if ($user->is_email_verified == 1){
             return response()->json(response_formatter(AUTH_LOGIN_200, self::authenticate($user, CUSTOMER_PANEL_ACCESS)), 200);
         }else{
@@ -456,6 +468,7 @@ class LoginController extends Controller
      */
     public function registrationWithSocialMedia(Request $request): JsonResponse
     {
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -494,10 +507,6 @@ class LoginController extends Controller
             'is_email_verified' => 1,
             'is_active' => 1,
         ]);
-
-        if ($request['guest_id']){
-            $this->updateAddressAndCartUser($user->id, $request['guest_id']);
-        }
 
         $phoneVerificationStatus = (int) $this->loginSetup->where(['key' => 'phone_verification'])?->first()->value ?? 0;
         if ($phoneVerificationStatus){

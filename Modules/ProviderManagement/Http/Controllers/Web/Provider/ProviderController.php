@@ -227,11 +227,14 @@ class ProviderController extends Controller
                 if (!$request->user()?->provider?->is_suspended || !business_config('suspend_on_exceed_cash_limit_provider', 'provider_config')->live_values) {
                     $query->where(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'cash_after_service')
+                        ->where('payment_method', 'payment_after_service')
                             ->where(function ($query) use ($maxBookingAmount) {
                                 $query->where('is_verified', 1)
                                     ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                             })
-                            ->orWhere('payment_method', '<>', 'cash_after_service');
+                            ->orWhere('payment_method', '<>', 'cash_after_service')
+                            ->orWhere('payment_method', '<>', 'payment_after_service')
+                            ;
                     });
                 } else {
                     $query->whereNull('id');
@@ -363,11 +366,14 @@ class ProviderController extends Controller
             ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                 $query->where(function ($query) use ($maxBookingAmount) {
                     $query->where('payment_method', 'cash_after_service')
+                    ->where('payment_method', 'payment_after_service')
                         ->where(function ($query) use ($maxBookingAmount) {
                             $query->where('is_verified', 1)
                                 ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                         })
-                        ->orWhere('payment_method', '<>', 'cash_after_service');
+                        ->orWhere('payment_method', '<>', 'cash_after_service')
+                        ->orWhere('payment_method', '<>', 'payment_after_service')
+                        ;
                 });
             })
             ->where('zone_id', $request->user()->provider->zone_id)

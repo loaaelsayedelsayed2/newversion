@@ -18,7 +18,6 @@ use Modules\BusinessSettingsModule\Entities\LandingPageSpeciality;
 use Modules\BusinessSettingsModule\Entities\LandingPageTestimonial;
 use Modules\BusinessSettingsModule\Entities\LoginSetup;
 use Modules\BusinessSettingsModule\Entities\NotificationSetup;
-use Modules\PaymentModule\Entities\Setting;
 use Modules\UserManagement\Entities\EmployeeRoleAccess;
 use Modules\UserManagement\Entities\EmployeeRoleSection;
 use Modules\UserManagement\Entities\Role;
@@ -43,7 +42,7 @@ class UpdateController extends Controller
         $this->setEnvironmentValue('SOFTWARE_ID', 'NDAyMjQ3NzI=');
         $this->setEnvironmentValue('BUYER_USERNAME', $request['username']);
         $this->setEnvironmentValue('PURCHASE_CODE', $request['purchase_key']);
-        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.1');
+        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.0');
         $this->setEnvironmentValue('APP_ENV', 'live');
         $this->setEnvironmentValue('APP_URL', url('/'));
 
@@ -311,6 +310,13 @@ class UpdateController extends Controller
             BusinessSettings::updateOrCreate(['key_name' => 'referral_discount_validity', 'settings_type' => 'customer_config'], [
                 'live_values' => 0,
                 'test_values' => 0
+            ]);
+        }
+        
+        if (BusinessSettings::where(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'])->first() == false) {
+            BusinessSettings::updateOrCreate(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'], [
+                'live_values' => 1,
+                'test_values' => 1
             ]);
         }
 
@@ -1337,18 +1343,6 @@ class UpdateController extends Controller
                 'live_values' => 0,
             ]);
         }
-
-        //version 3.1
-        $twoFactor = Setting::where(['key_name' => '2factor', 'settings_type' => 'sms_config'])->first();
-        if ($twoFactor && $twoFactor->live_values) {
-            $liveValues = is_array($twoFactor->live_values) ? $twoFactor->live_values : json_decode($twoFactor->live_values, true);
-            $liveValues['otp_template'] = $liveValues['otp_template'] ?? 'OTP1';
-            Setting::where(['key_name' => '2factor', 'settings_type' => 'sms_config'])->update([
-                'live_values' => json_encode($liveValues),
-                'test_values' => json_encode($liveValues),
-            ]);
-        }
-
 
         return redirect(env('APP_URL'));
     }

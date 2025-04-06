@@ -469,24 +469,6 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-md-6 col-12 mb-30">
-                                                        @php($value=$dataValues->where('key_name','create_user_account_from_guest_info')->first()->live_values??null)
-                                                        <div class="border p-3 rounded d-flex justify-content-between">
-                                                            <div class="d-flex align-items-center gap-2">{{translate('create_user_account_from_guest_info')}}
-                                                                <i class="material-icons" data-bs-toggle="tooltip"
-                                                                   data-bs-placement="top"
-                                                                   title="{{translate('Guest user will see an option in checkout page to create account by using guest info.')}}"
-                                                                >info</i>
-                                                            </div>
-                                                            <label class="switcher">
-                                                                <input class="switcher_input" type="checkbox"
-                                                                       name="create_user_account_from_guest_info" value="1"
-                                                                    {{isset($value) && $value == '1' ? 'checked' : ''}}>
-                                                                <span class="switcher_control"></span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
                                                     <div class="col-12 mb-30">
                                                         <div class="form-floating form-floating__icon">
                                                             <input type="text" class="form-control" name="footer_text"
@@ -538,6 +520,7 @@
                                             <div class="row">
                                                     <?php
                                                     $cashAfterService = collect([['key' => 'cash_after_service', 'info_message' => 'Customer can pay with cash after receiving the service', 'title' => 'Cash After Service']]);
+                                                    $paymentAfterService = collect([['key' => 'payment_after_service', 'info_message' => 'Customer can pay with payment after receiving the service', 'title' => 'Payment After Service']]);
                                                     $digitalPayment = collect([['key' => 'digital_payment', 'info_message' => 'Customers providers can pay with digital payments', 'title' => 'Digital Payment']]);
                                                     $partialPayment = collect([['key' => 'partial_payment', 'title' => 'Partial Payment', 'info_message' => 'Customer can pay partially with their wallet balance']]);
                                                     $partialPaymentCombinator = collect([['key' => 'partial_payment_combinator', 'title' => 'Can Combine Payment', 'info_message' => 'Admin can set how customers will make the partial payment by clicking on the preferred radio button. This section will be hidden if Partial Payment feature is disabled']]);
@@ -622,12 +605,19 @@
                                                     <div
                                                         class="border p-3 rounded d-flex justify-content-between gap-2">
                                                         <div class="d-flex align-items-start gap-3 gap-xl-4">
-                                                            <div class="custom-radio">
+                                                            {{-- <div class="custom-radio">
                                                                 <input type="radio" id="cash_after_service_combinator"
                                                                        name="partial_payment_combinator"
                                                                        value="cash_after_service" {{$dataValues->where('key_name', $partialPaymentCombinator[0]['key'])->first()->live_values == 'cash_after_service' ? 'checked' : ''}}>
                                                                 <label
                                                                     for="cash_after_service_combinator">{{translate('Cash After Service')}}</label>
+                                                            </div> --}}
+                                                            <div class="custom-radio">
+                                                                <input type="radio" id="payment_after_service_combinator"
+                                                                       name="partial_payment_combinator"
+                                                                       value="payment_after_service" {{$dataValues->where('key_name', $partialPaymentCombinator[0]['key'])->first()->live_values == 'payment_after_service' ? 'checked' : ''}}>
+                                                                <label
+                                                                    for="payment_after_service_combinator">{{translate('Cash After Service')}}</label>
                                                             </div>
                                                             <div class="custom-radio">
                                                                 <input type="radio" id="digital_payment_combinator"
@@ -1888,7 +1878,7 @@
                                                 <label class="switcher">
                                                     @php($value = $dataValues->where('key_name', $providerCommision[0]['key'])?->first()?->live_values ?? null)
                                                     <input class="switcher_input {{ $value ? '' : 'switch_alert' }}"
-                                                           @if($value && $providerCount > 0) data-bs-toggle="modal" data-bs-target="#commissionToSubscription" @endif
+                                                           @if($value) data-bs-toggle="modal" data-bs-target="#commissionToSubscription" @endif
                                                            id="{{$providerCommision[0]['key']}}"
                                                            type="checkbox"
                                                            name="{{$providerCommision[0]['key']}}"
@@ -1913,7 +1903,7 @@
                                                 <label class="switcher">
                                                     @php($value = $dataValues->where('key_name', $providerSubscription[0]['key'])?->first()?->live_values ?? null)
                                                     <input class="switcher_input {{ $value ? '' : 'switch_alert' }}"
-                                                           @if($value && $providerCount > 0) data-bs-toggle="modal" data-bs-target="#subscriptionToCommission" @endif
+                                                           @if($value) data-bs-toggle="modal" data-bs-target="#subscriptionToCommission" @endif
                                                            id="{{$providerSubscription[0]['key']}}"
                                                            type="checkbox"
                                                            name="{{$providerSubscription[0]['key']}}"
@@ -2063,7 +2053,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <form method="post" action="{{route('admin.business-settings.maintenance-mode-setup')}}" id="maintenanceModeForm">
+                <form method="post" action="{{route('admin.business-settings.maintenance-mode-setup')}}">
                         <?php
                             $selectedMaintenanceSystem      = ((business_config('maintenance_system_setup', 'maintenance_mode'))?->live_values) ?? [];
                             $selectedMaintenanceDuration    = ((business_config('maintenance_duration_setup', 'maintenance_mode'))?->live_values) ?? [];
@@ -2082,7 +2072,7 @@
                                         <h5 class="mb-0">{{translate('maintenance_mode')}}</h5>
 
                                         <label class="switcher ml-auto mb-0">
-                                            <input type="checkbox" class="switcher_input" name="maintenance_mode"  id="maintenance-mode-checkbox"
+                                            <input type="checkbox" class="switcher_input" name="maintenance_mode"
                                                 {{ $maintenanceMode ?'checked':''}}>
                                             <span class="switcher_control"></span>
                                         </label>
@@ -2256,7 +2246,7 @@
                     <div class="modal-footer">
                         <div class="btn--container justify-content-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ translate('Cancel') }}</button>
-                            <button type="{{env('APP_MODE')!='demo'?'button':'button'}}" onclick="validateMaintenanceMode()" class="btn btn--primary demo_check">{{ translate('Save') }}</button>
+                            <button type="{{env('APP_MODE')!='demo'?'submit':'button'}}" class="btn btn--primary demo_check">{{ translate('Save') }}</button>
                         </div>
                     </div>
                 </form>
@@ -2707,28 +2697,6 @@
     </script>
 
     <script>
-
-        function validateMaintenanceMode() {
-            const maintenanceModeChecked = $('#maintenance-mode-checkbox').is(':checked');
-
-            if (maintenanceModeChecked) {
-                const isAnySystemSelected = $('.system-checkbox').is(':checked');
-
-                if (!isAnySystemSelected) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '{{ translate("Please select a system") }}!',
-                        text: '{{ translate("You must select at least one system when activating Maintenance Mode.") }}',
-                        confirmButtonText: '{{ translate("OK") }}',
-                        confirmButtonColor: '#4153b3',
-                    });
-                    return false;
-                }
-            }
-
-            $('#maintenanceModeForm').submit();
-        }
-
         $(document).ready(function() {
 
             $('.route-alert-reload').on('click', function () {

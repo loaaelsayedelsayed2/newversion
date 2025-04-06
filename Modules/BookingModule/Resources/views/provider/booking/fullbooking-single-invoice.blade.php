@@ -323,7 +323,7 @@ h1, h2,h3,h4, h5, h6 {
                             <td class="fw-700 border-top">{{with_currency_symbol($booking->total_booking_amount)}}</td>
                         </tr>
 
-                        @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                        @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="fw-700">{{translate('Refund')}}</td>

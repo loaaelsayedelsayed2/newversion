@@ -9,11 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Application;
-use Modules\BookingModule\Entities\Booking;
 use Modules\PaymentModule\Entities\PaymentRequest;
 use Modules\PaymentModule\Entities\Setting;
 use Illuminate\Support\Facades\Storage;
-use Modules\UserManagement\Entities\User;
 
 trait  Processor
 {
@@ -84,10 +82,13 @@ trait  Processor
     public function payment_response($payment_info, $payment_flag): Application|JsonResponse|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $payment_info = PaymentRequest::find($payment_info->id);
+        $additional_data = json_decode($payment_info->additional_data, true);
+        $booking_repeat_id = $additional_data['booking_repeat_id'] ?? null;
 
         $token_string = 'payment_method=' . $payment_info->payment_method .
             '&&attribute_id=' . $payment_info->attribute_id .
-            '&&transaction_reference=' . $payment_info->transaction_id;
+            '&&transaction_reference=' . $payment_info->transaction_id .
+            ($booking_repeat_id ? '&&booking_repeat_id=' . $booking_repeat_id : '');
 
         if (in_array($payment_info->payment_platform, ['web', 'app']) && $payment_info['external_redirect_link'] != null) {
             return redirect($payment_info['external_redirect_link'] . '?flag=' . $payment_flag . '&&token=' . base64_encode($token_string));

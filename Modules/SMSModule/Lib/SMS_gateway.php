@@ -106,12 +106,9 @@ class SMS_gateway
         $response = 'error';
         if (isset($config) && $config['status'] == 1) {
             $api_key = $config['api_key'];
-            $otp_template = $config['otp_template'] ?? '';
-            $apiUrl = "https://2factor.in/API/V1/$api_key/SMS/$receiver/$otp/$otp_template";
-
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => $apiUrl,
+                CURLOPT_URL => "https://2factor.in/API/V1/" . $api_key . "/SMS/" . $receiver . "/" . $otp . "",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -119,7 +116,6 @@ class SMS_gateway
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
             ));
-
             $response = curl_exec($curl);
             $err = curl_error($curl);
             curl_close($curl);

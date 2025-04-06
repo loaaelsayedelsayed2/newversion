@@ -82,10 +82,20 @@ class PasswordResetController extends Controller
                 if (isset($paymentPublishedStatus[0]['is_published'])) {
                     $publishedStatus = $paymentPublishedStatus[0]['is_published'];
                 }
-                if ($publishedStatus == 1) {
-                    $response = SmsGateway::send($request['identity'], $otp);
-                } else {
-                    $response = SMS_gateway::send($request['identity'], $otp);
+                // if ($publishedStatus == 1) {
+                //     $response = SmsGateway::send($request['identity'], $otp);
+                // } else {
+                //     $response = SMS_gateway::send($request['identity'], $otp);
+                // }
+                $message = "مرحبا بك " . $user->user_name . "," . ' ' .
+                        "نشكرك علي استخدام تطبيق ضبطني" . ' ' .
+                        "استخدم هذا الرمز $otp من فضلك  لتغير كلمه السر" . ' ' .
+                        "من فضلك لا تشاركه مع احد ";
+                $result = $this->sendWhatsappMessage($request['identity'],$message);
+                if(json_decode($result)->status == 'success'){
+                    $response = 'success';
+                }else{
+                    $response = 'error';
                 }
             }
 
@@ -244,5 +254,15 @@ class PasswordResetController extends Controller
             ->where(['otp' => $request['otp']])->delete();
 
         return response()->json(response_formatter(DEFAULT_PASSWORD_RESET_200), 200);
+    }
+    
+    
+
+     public function sendWhatsappMessage($number, $message){
+         $number = ltrim($number, '+');
+        $encodedMessage = urlencode($message);
+        $url = "https://app.arrivewhats.com/api/send?number=$number&type=text&message=$encodedMessage&instance_id=679543498E1CE&access_token=675489055c30b";
+        $response = file_get_contents($url);
+        return $response;
     }
 }

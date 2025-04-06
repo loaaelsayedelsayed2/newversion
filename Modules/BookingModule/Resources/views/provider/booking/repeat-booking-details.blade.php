@@ -59,6 +59,13 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                          @endif
+                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'payment_after_service')
+                            <button class="btn btn--primary" data-bs-toggle="modal"
+                                data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
+                                title="{{ translate('Add or remove services') }}">
+                                <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
+                            </button>
+                         @endif
                         <a href="{{ route('provider.booking.full_repeat_invoice', [$booking->id]) }}" class="btn btn-primary"
                             target="_blank">
                             <span class="material-icons">description</span>{{ translate('Invoice') }}
@@ -83,6 +90,15 @@
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'cash_after_service' &&
+                        $max_booking_amount <= $booking->total_booking_amount)
+                    <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
+                        <span class="text-danger"># {{ translate('Note: ') }}</span>
+                        <span>{{ $booking?->bookingDeniedNote?->value }}</span>
+                    </div>
+                @endif
+                @if (
+                    $booking->is_verified == 2 &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -396,7 +412,7 @@
                                                     </tr>
                                                 @endif
 
-                                                @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                                                @if ($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'payment_after_service'  && $booking->additional_charge < 0)
                                                     <tr>
                                                         <td>{{ translate('Refund') }}</td>
                                                         <td class="text--end pe--4">
@@ -433,14 +449,24 @@
                                                 {{ $booking['booking_status'] == 'canceled' ? 'selected' : '' }}>
                                                 {{ translate('Booking_Status') }}: {{ translate('Canceled') }}</option>
                                         @endif
-                                            @if ($booking->booking_status != 'completed' && $booking->booking_status != 'accepted' &&
-                                                        isset($booking->nextService) &&
-                                                        !$booking->nextService['is_paid'] &&
-                                                        $booking->nextService['payment_method'] == 'cash_after_service')
-                                                <option value="canceled"
-                                                    {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
-                                                    {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
-                                                </option>
+                                        @if (
+                                            $booking->booking_status != 'completed' &&
+                                                isset($booking->nextService) &&
+                                                !$booking->nextService['is_paid'] &&
+                                                $booking->nextService['payment_method'] == 'cash_after_service')
+                                            <option value="canceled"
+                                                {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
+                                                {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
+                                            </option>
+                                        @elseif (
+                                            $booking->booking_status != 'completed' &&
+                                                isset($booking->nextService) &&
+                                                !$booking->nextService['is_paid'] &&
+                                                $booking->nextService['payment_method'] == 'payment_after_service')
+                                            <option value="canceled"
+                                                {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
+                                                {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
+                                            </option>
                                         @elseif($booking->booking_status == 'completed')
                                             <option value="completed"
                                                 {{ $booking->booking_status == 'completed' ? 'selected' : '' }}>

@@ -107,54 +107,7 @@ class ConfigurationController extends Controller
     public function messageSettingsSet(Request $request): RedirectResponse
     {
         $this->authorize('configuration_update');
-
         collect(['status'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
-
-        if ($request->type === 'customers') {
-            $notificationArray = NOTIFICATION_FOR_USER;
-            $settingsType = 'customer_notification';
-        } elseif ($request->type === 'providers') {
-            $notificationArray = NOTIFICATION_FOR_PROVIDER;
-            $settingsType = 'provider_notification';
-        } elseif ($request->type === 'serviceman') {
-            $notificationArray = NOTIFICATION_FOR_SERVICEMAN;
-            $settingsType = 'serviceman_notification';
-        } else {
-            $notificationArray = [];
-            $settingsType = '';
-        }
-
-        if ($request->has('change_type') && $request->change_type == 'status'){
-            $existingData = $this->businessSetting->where('key_name', $request->id)->first();
-
-            // Check if `live_values` exists and is an array or JSON string
-            if ($existingData && is_string($existingData->live_values)) {
-                $existingLiveValues = json_decode($existingData->live_values, true);
-            } elseif ($existingData && is_array($existingData->live_values)) {
-                $existingLiveValues = $existingData->live_values;
-            } else {
-                $existingLiveValues = [];
-            }
-
-            // Update only the status field, keeping the rest of the data unchanged
-            $updatedLiveValues = array_merge($existingLiveValues, [
-                $request->id . '_status' => $request['status'],
-            ]);
-
-            $this->businessSetting->updateOrCreate(
-                ['key_name' => $request->id, 'settings_type' => $settingsType],
-                [
-                    'key_name' => $request->id,
-                    'live_values' => $updatedLiveValues,
-                    'test_values' => $updatedLiveValues,
-                    'is_active' => $request['status'],
-                ]
-            );
-
-            Toastr::success(translate(DEFAULT_UPDATE_200['message']));
-            return back();
-        }
-
 
         $columnName = $request->id . '_message';
         $requiredMessage = $columnName . '.0.' . 'required';
@@ -169,6 +122,19 @@ class ConfigurationController extends Controller
             ]
         );
 
+        if ($request->type === 'customers') {
+            $notificationArray = NOTIFICATION_FOR_USER;
+            $settingsType = 'customer_notification';
+        } elseif ($request->type === 'providers') {
+            $notificationArray = NOTIFICATION_FOR_PROVIDER;
+            $settingsType = 'provider_notification';
+        } elseif ($request->type === 'serviceman') {
+            $notificationArray = NOTIFICATION_FOR_SERVICEMAN;
+            $settingsType = 'serviceman_notification';
+        } else {
+            $notificationArray = [];
+            $settingsType = '';
+        }
 
         $request->validate([
             'id' => 'required|in:' . implode(',', array_column($notificationArray, 'key')),

@@ -63,11 +63,8 @@ class BookingController extends Controller
 
         if (isset($booking)) {
 
-            if ($booking->payment_method == 'offline_payment' && $booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
-                if ($booking->booking_offline_payments->isEmpty()) {
-                    return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
-                }
-                if ($booking->booking_offline_payments->isNotEmpty() && $booking->booking_offline_payments?->first()?->payment_status != 'approved'){
+            if ($booking->booking_offline_payments->isNotEmpty()) {
+                if ($booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
                     return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
                 }
             }
@@ -88,7 +85,7 @@ class BookingController extends Controller
                 }
             }
 
-            if($booking->payment_method != 'cash_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0){
+            if($booking->payment_method != 'payment_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0){
                 return response()->json(response_formatter(BOOKING_ALREADY_EDITED), 200);
             }
 
@@ -399,7 +396,7 @@ class BookingController extends Controller
                 $title = get_push_notification_message('otp', 'customer_notification', $bookingRepeat?->booking?->customer?->current_language_key) . ' ' . $bookingRepeat->booking_otp;
 
                 if ($fcmToken) {
-                    device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id, null, null, 'repeat');
+                    device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id);
                     return response()->json(response_formatter(NOTIFICATION_SEND_SUCCESSFULLY_200), 200);
 
                 } else {
@@ -829,4 +826,79 @@ class BookingController extends Controller
 
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
     }
+
+
+
+    public function addNewFees1(Request $request){
+        $bookingId = $request->booking_id;
+        $fees = $request->fees;
+        $booking = $this->booking->where('id', $bookingId)->first();
+        $bookingdetails = $this->bookingDetail->where('booking_id', $bookingId)->first();
+        if(!$booking){
+            return response()->json(response_formatter(DEFAULT_400), 400);
+        }
+        $bookingamount = DB::table('booking_details_amounts')->where('booking_id',$bookingId)->first();
+
+        if(!$bookingamount){
+            return response()->json(response_formatter(DEFAULT_400), 400);
+        }
+
+        $bookingdetails->additional_fees = $fees;
+        $bookingdetails->total_cost = $bookingdetails->total_cost + $fees;
+        $booking->total_booking_amount = $booking->total_booking_amount + $fees;
+       $newAmount = $bookingamount ->service_unit_cost + $fees;
+
+        $booking->save();
+
+        $bookingdetails->save();
+
+        //$bookingamount->save();
+        return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
+    }
+
+    public function addNewFees(Request $request){
+        $bookingId = $request->booking_id;
+        $fees = $request->fees;
+        $oldFees = $request->old_fees;
+        $booking = $this->booking->where('id', $bookingId)->first();
+        $bookingdetails = $this->bookingDetail->where('booking_id', $bookingId)->first();
+        if(!$booking){
+            return response()->json(response_formatter(DEFAULT_400), 400);
+        }
+        // $bokingamount = DB::table('booking_details_amounts')->where('booking_id',$bookingId)->first();
+        $bookingdetails->additional_fees = $fees;
+        $booking->additional_fees = $fees;
+        $bookingdetails->total_cost = ($bookingdetails->total_cost - $oldFees)  + $fees;
+        $booking->total_booking_amount =( $booking->total_booking_amount - $oldFees) + $fees;
+        // $bokingamount->service_unit_cost = $bokingamount->service_unit_cost + $fees;
+        $booking->save();
+        $bookingdetails->save();
+        // $bokingamount->save();
+        return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
+    }
+
+
+    public function sendInvoice(Request $request){
+        $bookingId = $request->booking_id;
+        $booking = $this->booking->where('id', $bookingId)->first();
+        if(!$booking){
+            return response()->json(response_formatter(DEFAULT_400), 400);
+        }
+        $booking->is_send = true;
+        $booking->save();
+        return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
+    }
+    public function checkInvoice($booking_id){
+        $booking = $this->booking->where('id', $booking_id)->first();
+        if(!$booking){
+            return response()->json(response_formatter(DEFAULT_400), 400);
+        }
+        $bookingdata = [
+            'is_send' => $booking->is_send,
+            'additional_fees' => (int) $booking->additional_fees
+        ];
+        return response()->json(response_formatter(DEFAULT_200,$bookingdata), 200);
+    }
+
+
 }

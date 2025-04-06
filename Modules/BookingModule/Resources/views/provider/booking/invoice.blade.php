@@ -301,10 +301,13 @@
                                 $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                             }
 
-                            if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
+                            if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                                 $dueAmount += $booking->additional_charge;
                             }
 
+                            if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
+                                $dueAmount = $booking->total_booking_amount;
+                            }
                             if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
                                 $dueAmount = $booking->total_booking_amount;
                             }
@@ -318,7 +321,7 @@
                             </tr>
                             @endif
 
-                            @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                            @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                                 <tr>
                                     <td colspan="3"></td>
                                     <td class="fw-700">{{translate('Refund')}}</td>

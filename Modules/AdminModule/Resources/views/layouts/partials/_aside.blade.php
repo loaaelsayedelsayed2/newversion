@@ -5,11 +5,14 @@ $pending_booking_count = \Modules\BookingModule\Entities\Booking::where('booking
     ->when($max_booking_amount > 0, function ($query) use ($max_booking_amount) {
         $query->where(function ($query) use ($max_booking_amount) {
             $query->where('payment_method', 'cash_after_service')
+            ->orWhere('payment_method','payment_after_service')
                 ->where(function ($query) use ($max_booking_amount) {
                     $query->where('is_verified', 1)
                         ->orWhere('total_booking_amount', '<=', $max_booking_amount);
                 })
-                ->orWhere('payment_method', '<>', 'cash_after_service');
+                ->orWhere('payment_method', '<>', 'cash_after_service')
+                ->orWhere('payment_method', '<>', 'payment_after_service')
+                ;
         });
     })
     ->count();
@@ -21,11 +24,14 @@ $accepted_booking_count = \Modules\BookingModule\Entities\Booking::where('bookin
     ->when($max_booking_amount > 0, function ($query) use ($max_booking_amount) {
         $query->where(function ($query) use ($max_booking_amount) {
             $query->where('payment_method', 'cash_after_service')
+            ->orWhere('payment_method','payment_after_service')
                 ->where(function ($query) use ($max_booking_amount) {
                     $query->where('is_verified', 1)
                         ->orWhere('total_booking_amount', '<=', $max_booking_amount);
                 })
-                ->orWhere('payment_method', '<>', 'cash_after_service');
+                ->orWhere('payment_method', '<>', 'cash_after_service')
+                ->orWhere('payment_method', '<>', 'payment_after_service')
+                ;
         });
     })
     ->count();
@@ -90,7 +96,7 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
                             <a href="{{route('admin.booking.list.verification', ['booking_status'=>'pending', 'type' => 'pending'])}}"
                                class="{{request()->is('admin/booking/list/verification') && request()->query('booking_status')=='pending' ?'active-menu':''}}"><span
                                     class="link-title">{{translate('verify_requests')}} <span
-                                        class="count">{{\Modules\BookingModule\Entities\Booking::where('is_verified', '0')->where('payment_method', 'cash_after_service')->Where('total_booking_amount', '>', $max_booking_amount)->whereIn('booking_status', ['pending', 'accepted'])->count()}}</span></span></a>
+                                        class="count">{{\Modules\BookingModule\Entities\Booking::where('is_verified', '0')->where('payment_method', 'cash_after_service')->orWhere('payment_method','payment_after_service')->Where('total_booking_amount', '>', $max_booking_amount)->whereIn('booking_status', ['pending', 'accepted'])->count()}}</span></span></a>
                         </li>
                         <li><a href="{{route('admin.booking.list', ['booking_status'=>'pending','service_type'=>'all'])}}"
                                class="{{request()->is('admin/booking/list') && request()->query('booking_status')=='pending'?'active-menu':''}}"><span

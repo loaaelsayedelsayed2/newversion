@@ -43,7 +43,7 @@
                         @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
+                            $booking['payment_method'] == 'payment_after_service' &&
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
 
@@ -102,7 +102,7 @@
                             </div>
                         @endif
                         @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
+                            $booking['payment_method'] == 'payment_after_service' &&
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -155,7 +155,7 @@
                             </div>
                         @endif
 
-                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'])
+                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                         data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -187,7 +187,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-                        $booking->payment_method == 'cash_after_service' &&
+                        $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -236,14 +236,14 @@
                                     <div class="text-start text-sm-end">
                                         @if (
                                             $booking->is_verified == '0' &&
-                                                $booking->payment_method == 'cash_after_service' &&
+                                                $booking->payment_method == 'payment_after_service' &&
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="c1 text-capitalize">{{ translate('Pending') }}</span>
                                             </p>
                                         @elseif(
                                             $booking->is_verified == '2' &&
-                                                $booking->payment_method == 'cash_after_service' &&
+                                                $booking->payment_method == 'payment_after_service' &&
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="text-danger text-capitalize"
@@ -431,7 +431,7 @@
                                                 </td>
                                             </tr>
 
-                                            @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+                                            @if ($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
                                                 <tr>
                                                     <td>{{ translate('Refund') }}</td>
                                                     <td class="text--end pe--4">

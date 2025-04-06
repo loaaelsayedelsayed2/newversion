@@ -753,18 +753,16 @@
         });
 
 
-
-
         $(document).ready(function () {
             function initAutocomplete(mapCanvasId) {
                 var myLatLng = {
-                    lat: {{ $defaultLatitude }} ?? 23.811842872190343,
-                    lng: {{ $defaultLatitude }} ?? 90.356331
+                    lat: 23.811842872190343,
+                    lng: 90.356331
                 };
                 const map = new google.maps.Map(document.getElementById(mapCanvasId), {
                     center: {
-                        lat: {{ $defaultLatitude }} ?? 23.811842872190343,
-                        lng: {{ $defaultLatitude }} ?? 90.356331
+                        lat: 23.811842872190343,
+                        lng: 90.356331
                     },
                     zoom: 13,
                     mapTypeId: "roadmap",

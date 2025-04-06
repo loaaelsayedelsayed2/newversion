@@ -1,4 +1,6 @@
-<?php return array (
+<?php
+
+return array (
   'user_authentication_failed' => 'ব্যবহারকারীর প্রমাণীকরণ ব্যর্থ হয়েছে',
   'The email or phone field is required.' => 'ইমেল বা ফোন ক্ষেত্র প্রয়োজন.',
   'The password field is required.' => 'পাসওয়ার্ড ক্ষেত্র প্রয়োজন.',
@@ -889,6 +891,7 @@
   'update_discount' => 'আপডেট ডিসকাউন্ট',
   'Discount' => 'ছাড়',
   'cash_after_service' => 'পরিষেবার পরে নগদ',
+  "payment_after_service" => "সেবার পরে পেমেন্ট",
   'stripe' => 'ডোরাকাটা',
   'ssl_commerz' => 'sslcommerz',
   'Provider_Information' => 'প্রদানকারী তথ্য',
@@ -3528,5 +3531,4 @@ _Message' => 'Customer notification for provider bid offer
   'Back to list' => 'তালিকায় ফিরে যান',
   'Robots Meta Content & OG Meta content' => 'রোবট মেটা কন্টেন্ট এবং ওজি মেটা কন্টেন্ট',
   'Cron Job' => 'ক্রোন জব',
-  'find_us_here' => 'Find us here',
 );

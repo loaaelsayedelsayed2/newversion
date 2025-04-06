@@ -838,6 +838,7 @@
   'update_discount' => 'Update discount',
   'Discount' => 'Discount',
   'cash_after_service' => 'Cash after service',
+    'payment_after_service' => 'Payment after service',
   'stripe' => 'Stripe',
   'ssl_commerz' => 'Ssl commerz',
   'Provider_Information' => 'Provider Information',

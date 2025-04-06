@@ -11,7 +11,7 @@ class PackageSubscriberLimit extends Model
     use HasFactory;
     use HasUuid;
 
-    protected $fillable = [];
+    protected $guarded = ['id'];
 
     protected static function newFactory()
     {
