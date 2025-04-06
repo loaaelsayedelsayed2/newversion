@@ -4839,4 +4839,6 @@ _Message' => 'Customer notification for provider bid offer
   'Subscription Earnings' => 'Subscription Earnings',
   'The type field is required.' => 'The type field is required.',
   'Successfully added to the cart' => 'Successfully added to the cart',
+  'The offset must be a number.' => 'The offset must be a number.',
+  'cart is empty' => 'Cart is empty',
 );

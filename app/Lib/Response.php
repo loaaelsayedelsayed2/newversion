@@ -49,6 +49,10 @@ const DEFAULT_400 = [
     'response_code' => 'default_400',
     'message' => 'invalid or missing information'
 ];
+const CART_EMPTY = [
+    'response_code' => 'default_401',
+    'message' => 'cart is empty'
+];
 
 const DEFAULT_401 = [
     'response_code' => 'default_401',

@@ -200,8 +200,13 @@ class CouponController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+        // $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
+        // $typeWiseId = [];
         $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
-        $typeWiseId = [];
+        $typeWiseId = ['service_ids' => [], 'category_ids' => []];
+        if ($cartItems->isEmpty()) {
+            return response()->json(response_formatter(CART_EMPTY), 401);
+        }
         foreach ($cartItems as $item) {
             $typeWiseId['service_ids'][] = $item['service_id'];
             $typeWiseId['category_ids'][] = $item['category_id'];
