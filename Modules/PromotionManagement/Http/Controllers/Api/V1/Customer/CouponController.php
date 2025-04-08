@@ -327,12 +327,22 @@ class CouponController extends Controller
                 //update carts table
                 $cartItem->coupon_discount = $couponDiscountAmount;
                 $cartItem->coupon_code = $coupon->coupon_code;
-                $cartItem->coupon_id = $coupon->id;
+                // $cartItem->coupon_id = $coupon->id;
                 $cartItem->tax_amount = $tax;
                 $cartItem->total_cost = round($subtotal - $applicableDiscount - $couponDiscountAmount + $tax, 2);
                 $cartItem->save();
                 $applied = 1;
             }
+        }
+        $couponCustomer = $this->couponCustomer
+            ->where('coupon_id', $coupon->id)
+            ->where('customer_user_id', $this->customer_user_id)
+            ->exists();
+        if (!$couponCustomer) {
+            $this->couponCustomer->create([
+                'coupon_id' => $coupon->id,
+                'customer_user_id' => $this->customer_user_id
+            ]);
         }
 
         if ($applied) {
