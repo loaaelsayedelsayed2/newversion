@@ -221,12 +221,11 @@ class CouponController extends Controller
                 $query->where('promotion_type', 'coupon')->where('is_active', 1)
                     ->whereDate('start_date', '<=', now())->whereDate('end_date', '>=', now());
             });
-            dd($couponQuery);
         // Zone, Category & service check
-        $zoneCheck = $couponQuery->whereHas('discount.discount_types', function ($query) {
-            $query->where(['discount_type' => DISCOUNT_TYPE['zone'], 'type_wise_id' => config('zone_id')]);
-        })->exists();
-        if (!$zoneCheck) return response()->json(response_formatter(COUPON_NOT_VALID_FOR_ZONE), 200);
+        // $zoneCheck = $couponQuery->whereHas('discount.discount_types', function ($query) {
+        //     $query->where(['discount_type' => DISCOUNT_TYPE['zone'], 'type_wise_id' => config('zone_id')]);
+        // })->exists();
+        // if (!$zoneCheck) return response()->json(response_formatter(COUPON_NOT_VALID_FOR_ZONE), 200);
 
         foreach ($couponQuery->with(['discount.discount_types'])->get() as $coupon) {
             //category wise
