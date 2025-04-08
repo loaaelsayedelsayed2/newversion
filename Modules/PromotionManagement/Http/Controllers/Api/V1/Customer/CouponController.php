@@ -202,6 +202,8 @@ class CouponController extends Controller
 
         // $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
         // $typeWiseId = [];
+        dd($this->customer_user_id);
+
         $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
         $typeWiseId = ['service_ids' => [], 'category_ids' => []];
         if ($cartItems->isEmpty()) {
