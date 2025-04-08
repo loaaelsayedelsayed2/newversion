@@ -204,7 +204,6 @@ class CouponController extends Controller
         // $typeWiseId = [];
 
         $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
-        dd(auth('api')->user());
         $typeWiseId = ['service_ids' => [], 'category_ids' => []];
         if ($cartItems->isEmpty()) {
             return response()->json(response_formatter(CART_EMPTY), 400);
