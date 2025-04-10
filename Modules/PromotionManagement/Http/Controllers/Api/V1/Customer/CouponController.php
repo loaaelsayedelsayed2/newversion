@@ -326,11 +326,7 @@ class CouponController extends Controller
                 //update carts table
                 $cartItem->coupon_discount = $couponDiscountAmount;
                 $cartItem->coupon_code = $coupon->coupon_code;
-<<<<<<< HEAD
-                // $cartItem->coupon_id = $coupon->id;
-=======
                 $cartItem->coupon_id = 1;
->>>>>>> coupon-big
                 $cartItem->tax_amount = $tax;
                 $cartItem->total_cost = round($subtotal - $applicableDiscount - $couponDiscountAmount + $tax, 2);
                 $cartItem->save();
