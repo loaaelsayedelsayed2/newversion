@@ -870,7 +870,7 @@ class BookingController extends Controller
         $booking->additional_fees = $fees;
         $newBookingAmount = ( $booking->total_booking_amount - $oldFees) + $fees;
         $newCost = ($bookingdetails->total_cost - $oldFees)  + $fees;
-        $coupon = Coupon::findOrFail($booking->coupon_id);
+        $coupon = Coupon::find($booking->coupon_id);
         if($coupon){
             $couponDiscountAmount = booking_discount_calculator($coupon->discount, $newBookingAmount);
             $booking->total_coupon_discount_amount = $couponDiscountAmount;
