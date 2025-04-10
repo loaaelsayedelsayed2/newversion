@@ -846,7 +846,7 @@ class BookingController extends Controller
         $bookingdetails->additional_fees = $fees;
         $bookingdetails->total_cost = $bookingdetails->total_cost + $fees;
         $booking->total_booking_amount = $booking->total_booking_amount + $fees;
-       $newAmount = $bookingamount ->service_unit_cost + $fees;
+        $newAmount = $bookingamount ->service_unit_cost + $fees;
 
         $booking->save();
 
