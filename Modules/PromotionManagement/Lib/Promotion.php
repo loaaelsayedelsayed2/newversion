@@ -279,6 +279,7 @@ function booking_discount_calculator(mixed $keeper, $total_purchase_amount): flo
     $amount = 0;
 
     if ($keeper != null && $total_purchase_amount >= $keeper->min_purchase) {
+
         if ($keeper->discount_amount_type == 'percent') {
             $amount = ($total_purchase_amount / 100) * $keeper->discount_amount;
 
@@ -293,3 +294,5 @@ function booking_discount_calculator(mixed $keeper, $total_purchase_amount): flo
 
     return $amount;
 }
+
+

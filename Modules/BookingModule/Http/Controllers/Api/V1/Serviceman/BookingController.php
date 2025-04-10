@@ -16,6 +16,7 @@ use Modules\BookingModule\Entities\BookingRepeatHistory;
 use Modules\BookingModule\Entities\BookingScheduleHistory;
 use Modules\BookingModule\Entities\BookingStatusHistory;
 use Modules\BookingModule\Http\Traits\BookingTrait;
+use Modules\PromotionManagement\Entities\Coupon;
 use Modules\ServiceManagement\Entities\Service;
 
 class BookingController extends Controller
@@ -865,15 +866,22 @@ class BookingController extends Controller
         if(!$booking){
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
-        // $bokingamount = DB::table('booking_details_amounts')->where('booking_id',$bookingId)->first();
         $bookingdetails->additional_fees = $fees;
         $booking->additional_fees = $fees;
-        $bookingdetails->total_cost = ($bookingdetails->total_cost - $oldFees)  + $fees;
-        $booking->total_booking_amount =( $booking->total_booking_amount - $oldFees) + $fees;
-        // $bokingamount->service_unit_cost = $bokingamount->service_unit_cost + $fees;
+        $newBookingAmount = ( $booking->total_booking_amount - $oldFees) + $fees;
+        $newCost = ($bookingdetails->total_cost - $oldFees)  + $fees;
+        $coupon = Coupon::findOrFail($booking->coupon_id);
+        if($coupon){
+            $couponDiscountAmount = booking_discount_calculator($coupon->discount, $newBookingAmount);
+            $booking->total_coupon_discount_amount = $couponDiscountAmount;
+            $booking->total_booking_amount = $newBookingAmount - $couponDiscountAmount;
+            $bookingdetails->total_cost = $newCost - $couponDiscountAmount;
+        }else{
+            $bookingdetails->total_cost = $newCost;
+            $booking->total_booking_amount = $newBookingAmount;
+        }
         $booking->save();
         $bookingdetails->save();
-        // $bokingamount->save();
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
     }
 

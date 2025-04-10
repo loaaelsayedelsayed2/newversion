@@ -104,6 +104,7 @@ trait BookingTrait
                 $booking->total_discount_amount = $cartData->sum('discount_amount');
                 $booking->total_campaign_discount_amount = $cartData->sum('campaign_discount');
                 $booking->total_coupon_discount_amount = $cartData->sum('coupon_discount');
+                $booking->coupon_id = $cartData->coupon_id;
                 $booking->coupon_code = $cartData->first()->coupon_code;
                 $booking->service_schedule = date('Y-m-d H:i:s', strtotime($request['service_schedule'])) ?? now()->addHours(5);
                 $booking->service_address_id = $request['service_address_id'] ?? '';

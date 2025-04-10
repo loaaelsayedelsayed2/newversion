@@ -83,9 +83,9 @@ Route::group(['prefix' => 'serviceman', 'as' => 'serviceman.', 'namespace' => 'A
         Route::put('service/edit/update-booking', [ServicemanBookingController::class, 'updateBooking']);
         Route::put('repeat/service/edit/update-booking', [ServicemanBookingController::class, 'updateBookingRepeat']);
         Route::put('service/edit/remove-service', [ServicemanBookingController::class, 'removeService']);
-        
-        
-                Route::post('/add-new-fees', [ServicemanBookingController::class, 'addNewFees'])->withoutMiddleware('auth:api');
+
+
+        Route::post('/add-new-fees', [ServicemanBookingController::class, 'addNewFees'])->withoutMiddleware('auth:api');
         Route::post('/send-invoice', [ServicemanBookingController::class, 'sendInvoice'])->withoutMiddleware('auth:api');
         Route::get('/check-invoice/{booking_id}', [ServicemanBookingController::class, 'checkInvoice'])->withoutMiddleware('auth:api');
     });
