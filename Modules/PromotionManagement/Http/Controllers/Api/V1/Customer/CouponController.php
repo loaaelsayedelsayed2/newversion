@@ -226,7 +226,6 @@ class CouponController extends Controller
             $query->where(['discount_type' => DISCOUNT_TYPE['zone'], 'type_wise_id' => config('zone_id')]);
         })->exists();
         if (!$zoneCheck) return response()->json(response_formatter(COUPON_NOT_VALID_FOR_ZONE), 200);
-
         foreach ($couponQuery->with(['discount.discount_types'])->get() as $coupon) {
             //category wise
             if ($coupon->discount->discount_type == 'category') {
@@ -327,7 +326,7 @@ class CouponController extends Controller
                 //update carts table
                 $cartItem->coupon_discount = $couponDiscountAmount;
                 $cartItem->coupon_code = $coupon->coupon_code;
-                $cartItem->coupon_id = $coupon->id;
+                $cartItem->coupon_id = 1;
                 $cartItem->tax_amount = $tax;
                 $cartItem->total_cost = round($subtotal - $applicableDiscount - $couponDiscountAmount + $tax, 2);
                 $cartItem->save();
