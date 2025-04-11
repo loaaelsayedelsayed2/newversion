@@ -866,11 +866,10 @@ class BookingController extends Controller
         if(!$booking){
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
-        $bookingdetails->additional_fees = $fees;
         $booking->additional_fees = $fees;
+        $bookingdetails->additional_fees = $fees;
         $newBookingAmount = ( $booking->total_booking_amount - $oldFees) + $fees;
         $newCost = ($bookingdetails->total_cost - $oldFees)  + $fees;
-        dd($newBookingAmount,$newCost);
         if($booking->coupon_id == null){
             $coupon = Coupon::where('coupon_code',$booking->coupon_code)->first();
         }else{
