@@ -840,8 +840,17 @@ class BookingController extends Controller
         }
         $booking->additional_fees = $fees;
         $bookingdetails->additional_fees = $fees;
-        $newBookingAmount = ( $booking->total_booking_amount - $oldFees) + $fees;
-        $newCost = ($bookingdetails->total_cost - $oldFees)  + $fees;
+
+        if($fees > 0){
+            $totalAmountBaforeCoupon =  $booking->total_booking_amount + $booking->total_coupon_discount_amount;
+            $totalcostBaforeCoupon =  $bookingdetails->total_cost + $booking->total_coupon_discount_amount;
+            $newBookingAmount = ( $totalAmountBaforeCoupon  - $oldFees) + $fees;
+            $newCost = ($totalcostBaforeCoupon - $oldFees)  + $fees;
+        }else{
+            $newBookingAmount = ( $booking->total_booking_amount - $oldFees) + $fees;
+            $newCost = ($bookingdetails->total_cost - $oldFees)  + $fees;
+        }
+
         if($booking->coupon_id == null){
             $coupon = Coupon::where('coupon_code',$booking->coupon_code)->first();
         }else{
@@ -854,8 +863,8 @@ class BookingController extends Controller
             $booking->total_booking_amount = $newBookingAmount - $couponDiscountAmount;
             $bookingdetails->total_cost = $newCost - $couponDiscountAmount;
         }else{
-            $bookingdetails->total_cost = $newCost;
-            $booking->total_booking_amount = $newBookingAmount;
+            $bookingdetails->total_cost = ($bookingdetails->total_cost - $oldFees)  + $fees;
+            $booking->total_booking_amount = ( $booking->total_booking_amount - $oldFees) + $fees;
         }
         $booking->save();
         $bookingdetails->save();
