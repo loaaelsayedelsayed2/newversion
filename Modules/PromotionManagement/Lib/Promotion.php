@@ -277,8 +277,6 @@ function send_curl_request(string $url, string $postdata, array $header): string
 function booking_discount_calculator(mixed $keeper, $total_purchase_amount): float
 {
     $amount = 0;
-    dd($total_purchase_amount);
-
     if ($keeper != null && $total_purchase_amount >= $keeper->min_purchase) {
 
         if ($keeper->discount_amount_type == 'percent') {
