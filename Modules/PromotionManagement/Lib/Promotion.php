@@ -291,6 +291,7 @@ function booking_discount_calculator(mixed $keeper, $total_purchase_amount): flo
             $amount = $keeper->discount_amount;
         }
     }
+    dd($amount);
 
     return $amount;
 }
