@@ -829,34 +829,6 @@ class BookingController extends Controller
     }
 
 
-
-    public function addNewFees1(Request $request){
-        $bookingId = $request->booking_id;
-        $fees = $request->fees;
-        $booking = $this->booking->where('id', $bookingId)->first();
-        $bookingdetails = $this->bookingDetail->where('booking_id', $bookingId)->first();
-        if(!$booking){
-            return response()->json(response_formatter(DEFAULT_400), 400);
-        }
-        $bookingamount = DB::table('booking_details_amounts')->where('booking_id',$bookingId)->first();
-
-        if(!$bookingamount){
-            return response()->json(response_formatter(DEFAULT_400), 400);
-        }
-
-        $bookingdetails->additional_fees = $fees;
-        $bookingdetails->total_cost = $bookingdetails->total_cost + $fees;
-        $booking->total_booking_amount = $booking->total_booking_amount + $fees;
-        $newAmount = $bookingamount ->service_unit_cost + $fees;
-
-        $booking->save();
-
-        $bookingdetails->save();
-
-        //$bookingamount->save();
-        return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
-    }
-
     public function addNewFees(Request $request){
         $bookingId = $request->booking_id;
         $fees = $request->fees;
@@ -877,6 +849,7 @@ class BookingController extends Controller
         }
         if($coupon){
             $couponDiscountAmount = booking_discount_calculator($coupon->discount, $newBookingAmount);
+            dd($newBookingAmount,$couponDiscountAmount);
             $booking->total_coupon_discount_amount = $couponDiscountAmount;
             $booking->total_booking_amount = $newBookingAmount - $couponDiscountAmount;
             $bookingdetails->total_cost = $newCost - $couponDiscountAmount;
