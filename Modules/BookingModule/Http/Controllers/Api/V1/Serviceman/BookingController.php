@@ -858,7 +858,6 @@ class BookingController extends Controller
         }
         if($coupon){
             $couponDiscountAmount = booking_discount_calculator($coupon->discount, $newBookingAmount);
-            dd($newBookingAmount,$couponDiscountAmount);
             $booking->total_coupon_discount_amount = $couponDiscountAmount;
             $booking->total_booking_amount = $newBookingAmount - $couponDiscountAmount;
             $bookingdetails->total_cost = $newCost - $couponDiscountAmount;
