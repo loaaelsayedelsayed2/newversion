@@ -56,7 +56,7 @@ trait BookingTrait
 
         $bookingIds = [];
         foreach ($cartData->pluck('sub_category_id')->unique() as $subCategory) {
-            dd($cartData->coupon_id);
+            dd($cartData->first()->coupon_id);
 
             $booking = new Booking();
 
