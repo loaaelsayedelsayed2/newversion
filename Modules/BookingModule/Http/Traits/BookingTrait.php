@@ -43,7 +43,6 @@ trait BookingTrait
     public function placeBookingRequest($userId, $request, $transactionId, int $isGuest = 0): array
     {
         $cartData = Cart::where(['customer_id' => $userId])->get();
-        dd($cartData);
 
         if ($cartData->count() == 0) {
             return ['flag' => 'failed', 'message' => 'no data found'];
@@ -57,6 +56,7 @@ trait BookingTrait
 
         $bookingIds = [];
         foreach ($cartData->pluck('sub_category_id')->unique() as $subCategory) {
+            dd($cartData->coupon_id);
 
             $booking = new Booking();
 
