@@ -10,6 +10,7 @@ use Modules\PaymentModule\Http\Controllers\PaystackController;
 use Modules\PaymentModule\Http\Controllers\RazorPayController;
 use Modules\PaymentModule\Http\Controllers\SenangPayController;
 use Modules\PaymentModule\Http\Controllers\FlutterwaveV3Controller;
+use Modules\PaymentModule\Http\Controllers\MoyasarPaymentController;
 use Modules\PaymentModule\Http\Controllers\StripePaymentController;
 use Modules\PaymentModule\Http\Controllers\SubscriptionPaymentController;
 use Modules\PaymentModule\Http\Controllers\Web\Admin\BonusController;
@@ -111,3 +112,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::any('download', [BonusController::class, 'download'])->name('download');
     });
 });
+
+Route::get('/payment/success', [MoyasarPaymentController::class, 'success'])->name('payment.success');
+Route::get('/payment/failed', [MoyasarPaymentController::class, 'failed'])->name('payment.failed');

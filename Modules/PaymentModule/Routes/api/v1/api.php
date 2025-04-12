@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\PaymentModule\Http\Controllers\Api\V1\Customer\BonusController;
 use Modules\PaymentModule\Http\Controllers\Api\V1\Customer\OfflinePaymentController;
+use Modules\PaymentModule\Http\Controllers\MoyasarPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,7 @@ Route::get('customer/offline-payment/methods', [OfflinePaymentController::class,
 Route::group(['prefix' => 'customer', 'as'=>'customer.', 'middleware'=>['auth:api']], function () {
     Route::get('bonus-list', [BonusController::class, 'getBonuses']);
 });
+
+Route::post('/payment/process', [MoyasarPaymentController::class, 'paymentProcess']);
+Route::match(['GET','POST'],'/payment/callback', [MoyasarPaymentController::class, 'callBack']);
+

@@ -4,6 +4,9 @@ namespace Modules\PaymentModule\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\PaymentModule\Http\Controllers\MoyasarPaymentController;
+use Modules\PaymentModule\Interfaces\PaymentGatewayInterface;
+use Modules\PaymentModule\Services\MoyasarPaymentService;
 
 class PaymentModuleServiceProvider extends ServiceProvider
 {
@@ -38,6 +41,7 @@ class PaymentModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(PaymentGatewayInterface::class, MoyasarPaymentService::class);
     }
 
     /**
