@@ -35,20 +35,28 @@ class MoyasarPaymentController extends Controller
     {
         $response = $this->paymentGateway->callBack($request);
 
+        $redirectUrl = $request->query('redirect_url');
         if ($response) {
             $bookingController = app()->make(\Modules\BookingModule\Http\Controllers\Api\V1\Customer\BookingController::class);
 
             $updateRequest = new \Illuminate\Http\Request();
             $updateRequest->merge([
                 'payment_status' => 1,
-                'booking_id' => $request->query('booking_id'), 
-                'user_id' => $request->query('user_id'),       
+                'booking_id' => $request->query('booking_id'),
+                'user_id' => $request->query('user_id'),
             ]);
             $bookingController->bookingUpdate($updateRequest);
-            return redirect()->route('payment.success');
+
+            return view('payment.payment-success', [
+                'redirect_url' => $redirectUrl,
+                'delay' => 2
+            ]);
 
         }
-        return redirect()->route('payment.failed');
+        return view('payment.payment-failed', [
+            'redirect_url' => $redirectUrl,
+            'delay' => 2
+        ]);
     }
 
 
