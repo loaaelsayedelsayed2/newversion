@@ -29,7 +29,18 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
 
     public function sendPayment(Request $request){
         $data = $request->all();
-        $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback';
+        $userId = auth()->id();
+        if (!$userId) {
+            return [
+                'success' => false,
+                'message' => 'User not authenticated'
+            ];
+        }
+        $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
+        http_build_query([
+            'booking_id' => $data['booking_id'],
+            'user_id' => $userId
+        ]);
 
         $response = $this->buildRequest('POST','/v1/invoices',$data);
         if($response->getData(true)['success']){

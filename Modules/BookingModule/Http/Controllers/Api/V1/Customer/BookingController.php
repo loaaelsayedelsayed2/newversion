@@ -478,15 +478,16 @@ class BookingController extends Controller
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
+        $userId = $request->user()->id ?? $request->user_id;
         $booking = $this->booking
             ->with('detail')
             ->where('id', $request['booking_id'])
-            ->where('customer_id', $request->user()->id)
+            ->where('customer_id', $userId)
             ->first();
-        $booking->paid_by = 'customer';
 
         if(!isset($booking)) return response()->json(response_formatter(DEFAULT_204), 200);
         if (!is_null($request['payment_status'])) $booking->is_paid = $request['payment_status'];
+        $booking->paid_by = 'customer';
 
         $booking->save();
         placeBookingTransactionForPaymentAfterService($booking);
