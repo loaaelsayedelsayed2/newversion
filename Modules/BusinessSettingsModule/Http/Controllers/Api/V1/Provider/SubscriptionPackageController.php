@@ -320,7 +320,7 @@ class SubscriptionPackageController extends Controller
              $packageSubscriber->is_canceled = 0;
             }
             $packageSubscriber->save();
-            return response()->json(response_formatter(DEFAULT_200, 'Subscription Successfully'), 200);
+            return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
         }else{
             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
         }
