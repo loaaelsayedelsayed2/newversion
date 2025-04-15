@@ -30,6 +30,6 @@ Route::group(['prefix' => 'customer', 'as'=>'customer.', 'middleware'=>['auth:ap
     Route::get('bonus-list', [BonusController::class, 'getBonuses']);
 });
 
-Route::post('/payment/process', [MoyasarPaymentController::class, 'paymentProcess']);
+Route::post('/payment/process', [MoyasarPaymentController::class, 'paymentProcess'])->middleware('auth:api');
 Route::match(['GET','POST'],'/payment/callback', [MoyasarPaymentController::class, 'callBack']);
 

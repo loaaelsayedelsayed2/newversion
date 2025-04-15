@@ -17,25 +17,46 @@ class MoyasarPaymentController extends Controller
 
     public function paymentProcess(Request $request)
     {
-        return $this->paymentGateway->sendPayment($request);
+        $response = $this->paymentGateway->sendPayment($request);
+        if ($response['success'] ?? false) {
+            return response()->json([
+                'success' => true,
+                'payment_url' => $response['url']
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $response['message'] ?? 'Payment initiation failed'
+        ], 400);
     }
 
     public function callback(Request $request)
     {
         $response = $this->paymentGateway->callBack($request);
+
+        $redirectUrl = $request->query('redirect_url');
         if ($response) {
             $bookingController = app()->make(\Modules\BookingModule\Http\Controllers\Api\V1\Customer\BookingController::class);
 
             $updateRequest = new \Illuminate\Http\Request();
             $updateRequest->merge([
                 'payment_status' => 1,
-                'booking_id' => $request->input('booking_id'),
+                'booking_id' => $request->query('booking_id'),
+                'user_id' => $request->query('user_id'),
+            ]);
+            $bookingController->bookingUpdate($updateRequest);
+
+            return view('payment.payment-success', [
+                'redirect_url' => $redirectUrl,
+                'delay' => 2
             ]);
 
-            $bookingController->bookingUpdate($updateRequest);
-            return redirect()->route('payment.success');
         }
-        return redirect()->route('payment.failed');
+        return view('payment.payment-failed', [
+            'redirect_url' => $redirectUrl,
+            'delay' => 2
+        ]);
     }
 
 
