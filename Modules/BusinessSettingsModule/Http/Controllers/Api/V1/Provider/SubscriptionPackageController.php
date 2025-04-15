@@ -82,7 +82,7 @@ class SubscriptionPackageController extends Controller
         $providerId = $this->provider::where('user_id', $userId)->value('id');
 
         $package = $this->subscriptionPackage->where('id',$request->package_id)->ofStatus(1)->first();
-        
+
         if (!$package){
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
@@ -230,6 +230,7 @@ class SubscriptionPackageController extends Controller
         $package = $this->packageSubscriber->where('subscription_package_id', $packageId)->where('provider_id', $providerId)->first();
         if ($package){
             $package->is_canceled = 1;
+            $package->payment_id = $request->payment_id;
             $package->save();
 
             return response()->json(response_formatter(DEFAULT_200), 200);
@@ -285,21 +286,22 @@ class SubscriptionPackageController extends Controller
 
         return response()->json(response_formatter(DEFAULT_200, $transactions), 200);
     }
-    
+
     public function newSubscription(Request $request)
     {
         $provider = auth('api')->user()->provider;
-        
+
         $validator = Validator::make($request->all(), [
             'package_subscription_id' =>'required',
             'status' =>'required|in:success,failed',
+            'payment_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
         }
-        
-        
+
+
         $packageSubscriber = PackageSubscriber::where('subscription_package_id',$request->package_subscription_id)
         ->where('provider_id',$provider->id)->first();
         if (!$packageSubscriber) {
@@ -309,10 +311,11 @@ class SubscriptionPackageController extends Controller
 
         if($request->status == 'success'){
             $duration = $package->duration;
-            
+
             $packageSubscriber->package_start_date = Carbon::now();
             $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
             $packageSubscriber->trial_duration = $duration;
+            $packageSubscriber->payment_id = $request->payment_id;
             if($packageSubscriber->is_canceled == 1){
              $packageSubscriber->is_canceled = 0;
             }
@@ -323,17 +326,17 @@ class SubscriptionPackageController extends Controller
         }
     }
 
-    
-    
+
+
 
 
 
 public function convertSubscriptio1n(Request $request)
 {
     $provider = auth('api')->user()->provider;
-    
 
-    
+
+
     $validator = Validator::make($request->all(), [
         'new_package_subscription_id' => 'required',
         'status' => 'required|in:success,failed',
@@ -343,19 +346,19 @@ public function convertSubscriptio1n(Request $request)
     }
 
     if ($request->status == 'success') {
-        
+
         $package = SubscriptionPackage::find($request->new_package_subscription_id);
         if (!$package) {
             return response()->json(response_formatter(DEFAULT_400, 'Invalid new package subscription'), 400);
         }
-        
+
         $duration = $package->duration;
 
         $packageSubscriber = PackageSubscriber::where('provider_id', $provider->id)->first();
-        
+
 
         if ($packageSubscriber != null) {
-            
+
             $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
             $packageSubscriber->package_name = $package->name;
             $packageSubscriber->package_price = $package->price;
@@ -368,7 +371,7 @@ public function convertSubscriptio1n(Request $request)
 
             return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
         } else {
-            
+
             $packageSubscriber = new PackageSubscriber();
             $packageSubscriber->provider_id = $provider->id;
                 $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
@@ -390,7 +393,7 @@ public function convertSubscriptio1n(Request $request)
 public function convertSubscription(Request $request)
 {
     $provider = auth('api')->user()->provider;
-    
+
 
     $validator = Validator::make($request->all(), [
         'new_package_subscription_id' => 'required',
@@ -411,10 +414,10 @@ public function convertSubscription(Request $request)
 
         $packageSubscriber = PackageSubscriber::with('feature')->
             where('provider_id', $provider->id)->first();
-        
 
-        if ($packageSubscriber != null) { 
-            
+
+        if ($packageSubscriber != null) {
+
             $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
             $packageSubscriber->package_name = $package->name;
             $packageSubscriber->package_price = $package->price;
@@ -425,10 +428,10 @@ public function convertSubscription(Request $request)
                         if($packageSubscriber->is_canceled == 1){
              $packageSubscriber->is_canceled = 0;
             }
-          
+
             $packageSubscriber->save();
             $logs = PackageSubscriberLog::where('provider_id',$provider->id)->get();
-            
+
                     $addLog = PackageSubscriberLog::create([
                         'provider_id ' => $provider->id,
                         'subscription_package_id' => $package->id,
@@ -438,7 +441,7 @@ public function convertSubscription(Request $request)
                         =>   $packageSubscriber->package_start_date,
                         'package_end_date'=>    $packageSubscriber->package_end_date
                         ]);
-                    
+
 $packageSubscriber->package_subscriber_log_id = $addLog->id;
 $packageSubscriber->save();
 $limits = SubscriptionPackageLimit::where('subscription_package_id',$package->id)->get();
@@ -449,24 +452,24 @@ foreach ($limits as $limit){
   $limitPpackage->key = $limit->key;
   $limitPpackage->is_limited = $limit->is_limited;
   $limitPpackage->limit_count = $limit->limit_count;
-  
+
   $limitPpackage->save();
 }
-  
+
             foreach ($package->subscriptionPackageFeature as  $feature){
-                
+
                $featurepac =  new PackageSubscriberFeature();
                     $featurepac->provider_id  = $provider->id;
                     $featurepac->package_subscriber_log_id = $addLog->id;
-                    
+
                     $featurepac->feature = $feature->feature
                     ;
                     $featurepac->save();
            };
-           
+
             return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
         } else {
-        
+
             $packageSubscriber = new PackageSubscriber();
             $packageSubscriber->provider_id = $provider->id;
             $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
@@ -486,7 +489,7 @@ $addLog = PackageSubscriberLog::create([
                         =>   $packageSubscriber->package_start_date,
                         'package_end_date'=>    $packageSubscriber->package_end_date
                         ]);
-                    
+
 $packageSubscriber->package_subscriber_log_id = $addLog->id;
 $packageSubscriber->save();
 $limits = SubscriptionPackageLimit::where('subscription_package_id',$package->id)->get();
@@ -497,15 +500,15 @@ foreach ($limits as $limit){
   $limitPpackage->key = $limit->key;
   $limitPpackage->is_limited = $limit->is_limited;
   $limitPpackage->limit_count = $limit->limit_count;
-  
+
   $limitPpackage->save();
 }
             foreach ($package->subscriptionPackageFeature as  $feature){
-                
+
                $featurepac =  new PackageSubscriberFeature();
                     $featurepac->provider_id  = $provider->id;
                     $featurepac->package_subscriber_log_id = $addLog->id;
-                    
+
                     $featurepac->feature = $feature->feature
                     ;
                     $featurepac->save();
