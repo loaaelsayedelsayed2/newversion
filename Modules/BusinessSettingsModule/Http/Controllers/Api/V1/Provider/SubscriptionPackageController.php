@@ -328,6 +328,7 @@ class SubscriptionPackageController extends Controller
                 'payment_id' => $packageSubscriber->payment_id,
                 'created_at' => now(),
             ]);
+            dd($transaction);
             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
         } else {
             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
