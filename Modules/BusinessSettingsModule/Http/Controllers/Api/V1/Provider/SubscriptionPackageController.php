@@ -306,8 +306,8 @@ class SubscriptionPackageController extends Controller
             return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
         }
         $package = SubscriptionPackage::find($request->package_subscription_id);
+        dd($package);
         $packageLogs = PackageSubscriberLog::where('provider_id', $provider->id)->where('subscription_package_id',$package->id)->first();
-        dd($packageLogs);
 
         if ($request->status == 'success') {
             $duration = $package->duration;
