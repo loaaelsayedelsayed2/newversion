@@ -155,7 +155,7 @@
                                 <tr>
                                     <td>{{$key+$transactions?->firstItem()}}</td>
                                     <td>{{ $transaction->id }}</td>
-                                    <td>{{ $transaction->packageLog }}</td>
+                                    <td>{{ $transaction->payment_id }}</td>
                                     <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y, g:i A') }}</td>
                                     @if($transaction->trx_type == 'subscription_refund')
                                         <td>{{ with_currency_symbol($transaction->credit) }}</td>
