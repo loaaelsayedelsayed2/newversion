@@ -82,7 +82,7 @@ class RegisterController extends Controller
         $user->password = bcrypt($request->password);
         $user->user_type = 'customer';
         $user->is_active = 1;
-        
+
 
 
         if ($request->has('referral_code')) {
@@ -230,9 +230,11 @@ class RegisterController extends Controller
     //         return response()->json(response_formatter(PROBLEM_400 .' '.$e), 400);
     //     }
     // }
-    
+
         public function providerRegister(Request $request): JsonResponse
     {
+        dd(2);
+
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
             'contact_person_phone' => 'required',
@@ -396,9 +398,9 @@ class RegisterController extends Controller
 
         return response()->json(response_formatter(DEFAULT_404), 200);
     }
-    
 
-    
+
+
 
 
 
