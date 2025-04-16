@@ -306,9 +306,6 @@ class SubscriptionPackageController extends Controller
             return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
         }
         $package = SubscriptionPackage::find($request->package_subscription_id);
-        dd($package->subscriberPackageLogs);
-        $packageLogs = PackageSubscriberLog::where('provider_id', $provider->id)->where('subscription_package_id',$package->id)->first();
-
         if ($request->status == 'success') {
             $duration = $package->duration;
 
@@ -320,6 +317,7 @@ class SubscriptionPackageController extends Controller
             if ($packageSubscriber->is_canceled == 1) {
                 $packageSubscriber->is_canceled = 0;
             }
+            $package->subscriberPackageLogs->payment_id = $request->payment_id;
             $packageSubscriber->save();
             $transaction = $this->transactions->create([
                 'trx_type' => 'subscription_purchase',
