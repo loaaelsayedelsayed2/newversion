@@ -306,6 +306,8 @@ class SubscriptionPackageController extends Controller
             return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
         }
         $package = SubscriptionPackage::find($request->package_subscription_id);
+        $packageLogs = PackageSubscriberLog::where('provider_id', $provider->id)->where('subscription_package_id',$package->id)->first();
+        dd($packageLogs);
 
         if ($request->status == 'success') {
             $duration = $package->duration;
@@ -451,7 +453,7 @@ class SubscriptionPackageController extends Controller
                         'from_user_id' => auth('api')->user()->id,
                         'to_user_id' => null,
                         'payment_method' => 'Moyasar',
-                        'payment_id' => $packageSubscriber->payment_id ?? 'manual_shift', 
+                        'payment_id' => $packageSubscriber->payment_id ?? 'manual_shift',
                         'created_at' => now(),
                     ]);
                 }
