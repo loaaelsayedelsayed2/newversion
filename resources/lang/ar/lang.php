@@ -811,6 +811,7 @@
   'Transaction_From' => 'المعاملة من',
   'Transaction_Date' => 'تاريخ المعاملة',
   'Transaction_Id' => 'معرف المعاملة',
+  'Payment_ID' => ' معرف المعاملة في بوابه الدفع',
   'total_transactions' => 'إجمالي المعاملات',
   'To_user' => 'للمستخدم',
   'From_user' => 'من المستخدم',

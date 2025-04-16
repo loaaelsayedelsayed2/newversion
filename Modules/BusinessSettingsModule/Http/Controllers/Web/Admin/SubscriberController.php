@@ -247,6 +247,8 @@ class SubscriberController extends Controller
 
     }
 
+    
+
 
     /**
      * @param Request $request

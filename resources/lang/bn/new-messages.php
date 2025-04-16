@@ -762,6 +762,7 @@
   'Transaction_From' => 'Transaction From',
   'Transaction_Date' => 'Transaction Date',
   'Transaction_Id' => 'Transaction Id',
+  'Payment_ID' => ' Payment ID',
   'total_transactions' => 'Total transactions',
   'To_user' => 'To user',
   'From_user' => 'From user',
