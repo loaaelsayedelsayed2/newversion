@@ -319,15 +319,16 @@ class SubscriptionPackageController extends Controller
             }
             $packageSubscriber->logs->payment_id= $request->payment_id;
             $packageSubscriber->save();
-            // $transaction = $this->transactions->create([
-            //     'trx_type' => 'subscription_purchase',
-            //     'amount' => $package->price,
-            //     'from_user_id' => auth('api')->user()->id,
-            //     'to_user_id' => null,
-            //     'payment_method' => 'Moyasar',
-            //     'payment_id' => $request->payment_id,
-            //     'created_at' => now(),
-            // ]);
+            $packageSubscriber->logs->save();
+            $transaction = $this->transactions->create([
+                'trx_type' => 'subscription_purchase',
+                'amount' => $package->price,
+                'from_user_id' => auth('api')->user()->id,
+                'to_user_id' => null,
+                'payment_method' => 'Moyasar',
+                'payment_id' => $packageSubscriber->payment_id,
+                'created_at' => now(),
+            ]);
             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
         } else {
             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
