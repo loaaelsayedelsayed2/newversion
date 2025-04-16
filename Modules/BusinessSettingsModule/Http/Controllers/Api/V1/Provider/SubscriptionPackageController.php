@@ -322,6 +322,7 @@ class SubscriptionPackageController extends Controller
                 'trx_type' => 'subscription_purchase',
                 'amount' => $package->price,
                 'from_user_id' => auth('api')->user()->id,
+                'primary_transaction_id' => $packageSubscriber->id,
                 'to_user_id' => null,
                 'payment_method' => 'Moyasar',
                 'payment_id' => $packageSubscriber->payment_id,
