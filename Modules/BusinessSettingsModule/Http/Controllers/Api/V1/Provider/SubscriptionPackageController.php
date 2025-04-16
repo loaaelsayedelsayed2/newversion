@@ -317,7 +317,6 @@ class SubscriptionPackageController extends Controller
             if ($packageSubscriber->is_canceled == 1) {
                 $packageSubscriber->is_canceled = 0;
             }
-            $packageSubscriber->logs->payment_id= $request->payment_id;
             $packageSubscriber->save();
             $transaction = $this->transactions->create([
                 'trx_type' => 'subscription_purchase',
