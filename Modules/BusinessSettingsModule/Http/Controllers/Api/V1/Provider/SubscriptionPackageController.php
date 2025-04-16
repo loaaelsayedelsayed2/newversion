@@ -319,72 +319,18 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->is_canceled = 0;
             }
             $packageSubscriber->save();
+            $transaction = $this->transactions->create([
+                'trx_type' => 'subscription_purchase',
+                'amount' => $package->price,
+                'from_user_id' => auth('api')->user()->id,
+                'to_user_id' => null,
+                'payment_method' => 'Moyasar',
+                'payment_id' => $request->payment_id,
+                'created_at' => now(),
+            ]);
             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
         } else {
             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
-        }
-    }
-
-
-
-
-
-
-    public function convertSubscriptio1n(Request $request)
-    {
-        $provider = auth('api')->user()->provider;
-
-
-
-        $validator = Validator::make($request->all(), [
-            'new_package_subscription_id' => 'required',
-            'status' => 'required|in:success,failed',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
-        }
-
-        if ($request->status == 'success') {
-
-            $package = SubscriptionPackage::find($request->new_package_subscription_id);
-            if (!$package) {
-                return response()->json(response_formatter(DEFAULT_400, 'Invalid new package subscription'), 400);
-            }
-
-            $duration = $package->duration;
-
-            $packageSubscriber = PackageSubscriber::where('provider_id', $provider->id)->first();
-
-
-            if ($packageSubscriber != null) {
-
-                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
-                $packageSubscriber->package_name = $package->name;
-                $packageSubscriber->package_price = $package->price;
-                $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
-                $packageSubscriber->trial_duration = $duration;
-                $packageSubscriber->save();
-
-
-
-                return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
-            } else {
-
-                $packageSubscriber = new PackageSubscriber();
-                $packageSubscriber->provider_id = $provider->id;
-                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
-                $packageSubscriber->package_name = $package->name;
-                $packageSubscriber->package_price = $package->price;
-                $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
-                $packageSubscriber->trial_duration = $duration;
-
-                $packageSubscriber->save();
-                return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
-            }
-        } else {
-            return response()->json(response_formatter(DEFAULT_400, 'Subscription creation failed'), 400);
         }
     }
 
@@ -499,6 +445,15 @@ class SubscriptionPackageController extends Controller
                     $limitPpackage->limit_count = $limit->limit_count;
 
                     $limitPpackage->save();
+                    $transaction = $this->transactions->create([
+                        'trx_type' => 'subscription_shift',
+                        'amount' => $package->price,
+                        'from_user_id' => auth('api')->user()->id,
+                        'to_user_id' => null,
+                        'payment_method' => 'Moyasar',
+                        'payment_id' => $packageSubscriber->payment_id ?? 'manual_shift', 
+                        'created_at' => now(),
+                    ]);
                 }
                 foreach ($package->subscriptionPackageFeature as  $feature) {
 
