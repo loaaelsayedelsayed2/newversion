@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\NoReturn;
 use Illuminate\Support\Facades\Validator;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriber;
@@ -285,53 +286,149 @@ class SubscriptionPackageController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $transactions), 200);
     }
 
+    // public function newSubscription(Request $request)
+    // {
+    //     DB::beginTransaction();
+    //     try{
+    //         $provider = auth('api')->user()->provider;
+
+    //         $validator = Validator::make($request->all(), [
+    //             'package_subscription_id' => 'required',
+    //             'status' => 'required|in:success,failed',
+    //             'payment_id' => 'required',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
+    //         }
+
+
+    //         $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
+    //             ->where('provider_id', $provider->id)->first();
+    //         if (!$packageSubscriber) {
+    //             return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
+    //         }
+    //         $package = SubscriptionPackage::find($request->package_subscription_id);
+    //         if ($request->status == 'success') {
+    //             $duration = $package->duration;
+    //             $startDate  = Carbon::now()->startOfDay();
+    //             $endDate    = Carbon::now()->addDays($duration)->subDay();
+
+    //             $packageSubscriber->package_start_date = $startDate;
+    //             $packageSubscriber->package_end_date = $endDate;
+    //             $packageSubscriber->trial_duration = $duration;
+    //             $packageSubscriber->payment_id = $request->payment_id;
+    //             $packageSubscriber->payment_method = 'Moyasar';
+    //             if ($packageSubscriber->is_canceled == 1) {
+    //                 $packageSubscriber->is_canceled = 0;
+    //             }
+    //             $packageSubscriber->save();
+    //             $vatPercentage      = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
+    //             $calculationVat = $package->price * ($vatPercentage / 100);
+    //             $transactionId = renewSubscriptionTransaction(
+    //                 amount: $$package->price,
+    //                 provider_id: $provider,
+    //                 vat: $calculationVat
+    //             );
+    //             $packageSubscriberLog                           = new PackageSubscriberLog();
+    //             $packageSubscriberLog->end_date                 = $endDate;
+    //             $packageSubscriberLog->start_date               = $startDate;
+    //             $packageSubscriberLog->vat_amount               = $calculationVat;
+    //             $packageSubscriberLog->payment_id               = $request['payment_id'];
+    //             $packageSubscriberLog->provider_id              = $provider;
+    //             $packageSubscriberLog->package_name             = $packageSubscriber->name;
+    //             $packageSubscriberLog->package_price            = $packageSubscriber->price;
+    //             $packageSubscriberLog->vat_percentage           = $vatPercentage;
+    //             $packageSubscriberLog->subscription_package_id  = $packageSubscriber->id;
+    //             $packageSubscriberLog->primary_transaction_id  = $transactionId;
+    //             $packageSubscriberLog->save();
+    //             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
+    //         } else {
+    //             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
+    //         }
+    //     }catch(\Exeption $e){
+    //     }
+    // }
+
     public function newSubscription(Request $request)
     {
-        $provider = auth('api')->user()->provider;
+        DB::beginTransaction();
+        try {
+            $provider = auth('api')->user()->provider;
 
-        $validator = Validator::make($request->all(), [
-            'package_subscription_id' => 'required',
-            'status' => 'required|in:success,failed',
-            'payment_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
-        }
-
-
-        $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
-            ->where('provider_id', $provider->id)->first();
-        if (!$packageSubscriber) {
-            return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
-        }
-        $package = SubscriptionPackage::find($request->package_subscription_id);
-        if ($request->status == 'success') {
-            $duration = $package->duration;
-
-            $packageSubscriber->package_start_date = Carbon::now();
-            $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
-            $packageSubscriber->trial_duration = $duration;
-            $packageSubscriber->payment_id = $request->payment_id;
-            $packageSubscriber->payment_method = 'Moyasar';
-            if ($packageSubscriber->is_canceled == 1) {
-                $packageSubscriber->is_canceled = 0;
-            }
-            $packageSubscriber->save();
-            $transaction = $this->transactions->create([
-                'trx_type' => 'subscription_purchase',
-                'amount' => $package->price,
-                'from_user_id' => auth('api')->user()->id,
-                'to_user_id' => null,
-                'payment_method' => 'Moyasar',
-                'payment_id' => $packageSubscriber->payment_id,
-                'created_at' => now(),
+            $validator = Validator::make($request->all(), [
+                'package_subscription_id' => 'required',
+                'status' => 'required|in:success,failed',
+                'payment_id' => 'required',
             ]);
-            $packageSubscriber->logs->primary_transaction_id  = $transaction->id;
-            $packageSubscriber->save();
-            return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
-        } else {
-            return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
+
+            if ($validator->fails()) {
+                DB::rollBack();
+                return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
+            }
+
+            $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
+                ->where('provider_id', $provider->id)->first();
+
+            if (!$packageSubscriber) {
+                DB::rollBack();
+                return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
+            }
+
+            $package = SubscriptionPackage::find($request->package_subscription_id);
+            if (!$package) {
+                DB::rollBack();
+                return response()->json(response_formatter(DEFAULT_404, 'Package not found'), 404);
+            }
+
+            if ($request->status == 'success') {
+                $duration = $package->duration;
+                $startDate = Carbon::now()->startOfDay();
+                $endDate = Carbon::now()->addDays($duration)->endOfDay();
+
+                $packageSubscriber->package_start_date = $startDate;
+                $packageSubscriber->package_end_date = $endDate;
+                $packageSubscriber->trial_duration = $duration;
+                $packageSubscriber->payment_id = $request->payment_id;
+                $packageSubscriber->payment_method = 'Moyasar';
+
+                if ($packageSubscriber->is_canceled == 1) {
+                    $packageSubscriber->is_canceled = 0;
+                }
+
+                $packageSubscriber->save();
+
+                $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
+                $calculationVat = $package->price * ($vatPercentage / 100);
+
+                $transactionId = renewSubscriptionTransaction(
+                    amount: $package->price,
+                    provider_id: $provider->id,
+                    vat: $calculationVat
+                );
+
+                $packageSubscriberLog = new PackageSubscriberLog();
+                $packageSubscriberLog->end_date = $endDate;
+                $packageSubscriberLog->start_date = $startDate;
+                $packageSubscriberLog->vat_amount = $calculationVat;
+                $packageSubscriberLog->payment_id = $request->payment_id;
+                $packageSubscriberLog->provider_id = $provider->id;
+                $packageSubscriberLog->package_name = $package->name;  // Changed from $packageSubscriber->name to $package->name
+                $packageSubscriberLog->package_price = $package->price;  // Changed from $packageSubscriber->price to $package->price
+                $packageSubscriberLog->vat_percentage = $vatPercentage;
+                $packageSubscriberLog->subscription_package_id = $package->id;
+                $packageSubscriberLog->primary_transaction_id = $transactionId;
+                $packageSubscriberLog->save();
+
+                DB::commit();
+                return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
+            } else {
+                DB::rollBack();
+                return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
+            }
+        } catch (\Exception $e) {  // Fixed typo in Exception
+            DB::rollBack();
+            return response()->json(response_formatter(DEFAULT_400, $e->getMessage()), 500);
         }
     }
 
