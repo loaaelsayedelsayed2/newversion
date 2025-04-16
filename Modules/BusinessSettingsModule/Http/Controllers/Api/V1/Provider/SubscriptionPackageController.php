@@ -318,7 +318,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->is_canceled = 0;
             }
             $package->subscriberPackageLogs->payment_id = $request->payment_id;
-            dd($package->subscriberPackageLogs);
+            dd($package->subscriberPackageLogs->transactions);
             $packageSubscriber->save();
             $transaction = $this->transactions->create([
                 'trx_type' => 'subscription_purchase',
@@ -329,7 +329,6 @@ class SubscriptionPackageController extends Controller
                 'payment_id' => $request->payment_id,
                 'created_at' => now(),
             ]);
-            dd($transaction);
             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
         } else {
             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
