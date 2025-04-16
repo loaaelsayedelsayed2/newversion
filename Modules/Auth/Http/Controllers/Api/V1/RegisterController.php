@@ -346,14 +346,16 @@ class RegisterController extends Controller
                     return response()->json(response_formatter(DEFAULT_FAIL_200), 400);
                 }
             }elseif ($request->free_trial_or_payment == 'payment') {
-                $paymentUrl = url('payment/subscription') . '?' .
-                    'provider_id=' . $provider_id . '&' .
-                    'access_token=' . base64_encode($owner->id) . '&' .
-                    'package_id=' . $id . '&' .
-                    'amount=' . $vatWithPrice . '&' .
-                    'name=' . $name . '&' .
-                    'package_status=' . 'subscription_purchase' . '&' .
-                    http_build_query($request->all());
+                if($request->payment_method != 'Moyasar'){
+                    $paymentUrl = url('payment/subscription') . '?' .
+                        'provider_id=' . $provider_id . '&' .
+                        'access_token=' . base64_encode($owner->id) . '&' .
+                        'package_id=' . $id . '&' .
+                        'amount=' . $vatWithPrice . '&' .
+                        'name=' . $name . '&' .
+                        'package_status=' . 'subscription_purchase' . '&' .
+                        http_build_query($request->all());
+                }
                 return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
             }
         }

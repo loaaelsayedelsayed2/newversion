@@ -280,7 +280,6 @@ class RegisterController extends Controller
      */
     public function providerRegister(Request $request): JsonResponse
     {
-        dd(1);
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
             'contact_person_phone' => 'required',
