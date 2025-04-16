@@ -319,7 +319,6 @@ class SubscriptionPackageController extends Controller
             }
             $packageSubscriber->logs->payment_id= $request->payment_id;
             $packageSubscriber->save();
-            $packageSubscriber->logs->save();
             $transaction = $this->transactions->create([
                 'trx_type' => 'subscription_purchase',
                 'amount' => $package->price,
