@@ -286,69 +286,6 @@ class SubscriptionPackageController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $transactions), 200);
     }
 
-    // public function newSubscription(Request $request)
-    // {
-    //     DB::beginTransaction();
-    //     try{
-    //         $provider = auth('api')->user()->provider;
-
-    //         $validator = Validator::make($request->all(), [
-    //             'package_subscription_id' => 'required',
-    //             'status' => 'required|in:success,failed',
-    //             'payment_id' => 'required',
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
-    //         }
-
-
-    //         $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
-    //             ->where('provider_id', $provider->id)->first();
-    //         if (!$packageSubscriber) {
-    //             return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
-    //         }
-    //         $package = SubscriptionPackage::find($request->package_subscription_id);
-    //         if ($request->status == 'success') {
-    //             $duration = $package->duration;
-    //             $startDate  = Carbon::now()->startOfDay();
-    //             $endDate    = Carbon::now()->addDays($duration)->subDay();
-
-    //             $packageSubscriber->package_start_date = $startDate;
-    //             $packageSubscriber->package_end_date = $endDate;
-    //             $packageSubscriber->trial_duration = $duration;
-    //             $packageSubscriber->payment_id = $request->payment_id;
-    //             $packageSubscriber->payment_method = 'Moyasar';
-    //             if ($packageSubscriber->is_canceled == 1) {
-    //                 $packageSubscriber->is_canceled = 0;
-    //             }
-    //             $packageSubscriber->save();
-    //             $vatPercentage      = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
-    //             $calculationVat = $package->price * ($vatPercentage / 100);
-    //             $transactionId = renewSubscriptionTransaction(
-    //                 amount: $$package->price,
-    //                 provider_id: $provider,
-    //                 vat: $calculationVat
-    //             );
-    //             $packageSubscriberLog                           = new PackageSubscriberLog();
-    //             $packageSubscriberLog->end_date                 = $endDate;
-    //             $packageSubscriberLog->start_date               = $startDate;
-    //             $packageSubscriberLog->vat_amount               = $calculationVat;
-    //             $packageSubscriberLog->payment_id               = $request['payment_id'];
-    //             $packageSubscriberLog->provider_id              = $provider;
-    //             $packageSubscriberLog->package_name             = $packageSubscriber->name;
-    //             $packageSubscriberLog->package_price            = $packageSubscriber->price;
-    //             $packageSubscriberLog->vat_percentage           = $vatPercentage;
-    //             $packageSubscriberLog->subscription_package_id  = $packageSubscriber->id;
-    //             $packageSubscriberLog->primary_transaction_id  = $transactionId;
-    //             $packageSubscriberLog->save();
-    //             return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
-    //         } else {
-    //             return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
-    //         }
-    //     }catch(\Exeption $e){
-    //     }
-    // }
 
     public function newSubscription(Request $request)
     {
@@ -382,7 +319,7 @@ class SubscriptionPackageController extends Controller
             }
 
             if ($request->status == 'success') {
-                $duration = $package->duration;
+                $duration = $packageSubscriber->duration;
                 $startDate = Carbon::now()->startOfDay();
                 $endDate = Carbon::now()->addDays($duration)->endOfDay();
 
@@ -413,8 +350,8 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriberLog->vat_amount = $calculationVat;
                 $packageSubscriberLog->payment_id = $request->payment_id;
                 $packageSubscriberLog->provider_id = $provider->id;
-                $packageSubscriberLog->package_name = $package->name;  // Changed from $packageSubscriber->name to $package->name
-                $packageSubscriberLog->package_price = $package->price;  // Changed from $packageSubscriber->price to $package->price
+                $packageSubscriberLog->package_name = $package->name;
+                $packageSubscriberLog->package_price = $package->price;
                 $packageSubscriberLog->vat_percentage = $vatPercentage;
                 $packageSubscriberLog->subscription_package_id = $package->id;
                 $packageSubscriberLog->primary_transaction_id = $transactionId;

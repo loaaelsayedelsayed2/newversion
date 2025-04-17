@@ -175,7 +175,7 @@
                                                 <div class="fs-12">{{translate('refunded')}}</div>
                                             @endif
                                             @if($transaction->trx_type != 'subscription_refund')
-                                                <div class="fs-10 c1">{{translate('Paid By')}} {{ $transaction->packageLog?->payment?->payment_method }}</div>
+                                                <div class="fs-10 c1">{{translate('Paid By')}} {{ $transaction->packageLog?->payment?->payment_method ?? $transaction->packageLog?->subscriptionPackage?->payment_method }}</div>
                                             @endif
                                         </div>
                                     </td>
