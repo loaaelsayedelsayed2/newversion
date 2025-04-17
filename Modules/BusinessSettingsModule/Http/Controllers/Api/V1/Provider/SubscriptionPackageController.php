@@ -355,6 +355,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriberLog->vat_percentage = $vatPercentage;
                 $packageSubscriberLog->subscription_package_id = $package->id;
                 $packageSubscriberLog->primary_transaction_id = $transactionId;
+                $packageSubscriberLog->payment_method = 'Moyasar';
                 $packageSubscriberLog->save();
 
                 DB::commit();
