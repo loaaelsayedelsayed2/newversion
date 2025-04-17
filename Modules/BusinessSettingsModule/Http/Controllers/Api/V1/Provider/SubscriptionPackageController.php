@@ -431,6 +431,8 @@ class SubscriptionPackageController extends Controller
                     vat: $calculationVat
                 );
                 $addLog->primary_transaction_id = $transactionId;
+                $addLog->payment_id = $request->payment_id;
+                $addLog->payment_method = 'Moyasar';
                 $addLog->save();
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
@@ -487,6 +489,8 @@ class SubscriptionPackageController extends Controller
                     vat: $calculationVat
                 );
                 $addLog->primary_transaction_id = $transactionId;
+                $addLog->payment_id = $request->payment_id;
+                $addLog->payment_method = 'Moyasar';
                 $addLog->save();
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
