@@ -323,8 +323,8 @@ class SubscriptionPackageController extends Controller
                 $startDate = Carbon::now()->startOfDay();
                 $endDate = Carbon::now()->addDays($duration)->endOfDay();
 
-                $packageSubscriber->package_start_date = $startDate;
-                $packageSubscriber->package_end_date = $endDate;
+                $packageSubscriber->package_start_date = Carbon::now();
+                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
                 $packageSubscriber->trial_duration = $duration;
                 $packageSubscriber->payment_id = $request->payment_id;
                 $packageSubscriber->payment_method = 'Moyasar';
@@ -391,12 +391,9 @@ class SubscriptionPackageController extends Controller
             if (!$package) {
                 return response()->json(response_formatter(DEFAULT_400, 'Invalid new package subscription'), 400);
             }
-
             $duration = $package->duration;
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
-
-
             if ($packageSubscriber != null) {
 
                 $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
@@ -426,6 +423,15 @@ class SubscriptionPackageController extends Controller
 
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
                 $packageSubscriber->save();
+                $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
+                $calculationVat = $package->price * ($vatPercentage / 100);
+                $transactionId = shiftSubscriptionTransaction(
+                    amount: $package->price,
+                    provider_id: $provider,
+                    vat: $calculationVat
+                );
+                $addLog->primary_transaction_id = $transactionId;
+                $addLog->save();
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
                     $limitPpackage = new   PackageSubscriberLimit();
@@ -473,6 +479,15 @@ class SubscriptionPackageController extends Controller
 
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
                 $packageSubscriber->save();
+                $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
+                $calculationVat = $package->price * ($vatPercentage / 100);
+                $transactionId = shiftSubscriptionTransaction(
+                    amount: $package->price,
+                    provider_id: $provider,
+                    vat: $calculationVat
+                );
+                $addLog->primary_transaction_id = $transactionId;
+                $addLog->save();
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
                     $limitPpackage = new   PackageSubscriberLimit();
@@ -483,24 +498,6 @@ class SubscriptionPackageController extends Controller
                     $limitPpackage->limit_count = $limit->limit_count;
 
                     $limitPpackage->save();
-                    // $transaction = $this->transactions->create([
-                    //     'trx_type' => 'subscription_shift',
-                    //     'amount' => $package->price,
-                    //     'from_user_id' => auth('api')->user()->id,
-                    //     'to_user_id' => null,
-                    //     'payment_method' => 'Moyasar',
-                    //     'payment_id' => $packageSubscriber->payment_id ?? 'manual_shift',
-                    //     'created_at' => now(),
-                    // ]);
-                    $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
-                    $calculationVat = $package->price * ($vatPercentage / 100);
-                    $transactionId = shiftSubscriptionTransaction(
-                        amount: $package->price,
-                        provider_id: $provider,
-                        vat: $calculationVat
-                    );
-                    $addLog->primary_transaction_id = $transactionId;
-                    $addLog->save();
                 }
                 foreach ($package->subscriptionPackageFeature as  $feature) {
 
