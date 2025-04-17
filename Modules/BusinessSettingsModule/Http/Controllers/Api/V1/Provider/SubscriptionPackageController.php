@@ -427,7 +427,7 @@ class SubscriptionPackageController extends Controller
                 $calculationVat = $package->price * ($vatPercentage / 100);
                 $transactionId = shiftSubscriptionTransaction(
                     amount: $package->price,
-                    provider_id: $provider,
+                    provider_id: $provider->id,
                     vat: $calculationVat
                 );
                 $addLog->primary_transaction_id = $transactionId;
@@ -483,7 +483,7 @@ class SubscriptionPackageController extends Controller
                 $calculationVat = $package->price * ($vatPercentage / 100);
                 $transactionId = shiftSubscriptionTransaction(
                     amount: $package->price,
-                    provider_id: $provider,
+                    provider_id: $provider->id,
                     vat: $calculationVat
                 );
                 $addLog->primary_transaction_id = $transactionId;
