@@ -26,6 +26,10 @@ class PackageSubscriberLog extends Model
     {
         return $this->belongsTo(Provider::class,'provider_id', );
     }
+    public function packageSubscriber(): BelongsTo
+    {
+        return $this->belongsTo(packageSubscriber::class,'provider_id', );
+    }
 
     protected static function newFactory()
     {
