@@ -319,7 +319,7 @@ class SubscriptionPackageController extends Controller
             }
 
             if ($request->status == 'success') {
-                $duration = $packageSubscriber->duration;
+                $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
                 $endDate = Carbon::now()->addDays($duration)->endOfDay();
 
