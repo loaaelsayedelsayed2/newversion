@@ -156,7 +156,7 @@
                                         <div class="row">
                                             <div class="col-lg-6 mb-30">
                                                 <div class="input-wrap">
-                                                    @php($id_types=['passport','driving_license','nid','trade_license'])
+                                                    @php($id_types=['passport','driving_license','residency_permit','nid','trade_license'])
                                                     <select class="select-identity theme-input-style"
                                                             name="identity_type" required>
                                                         <option value="0" selected

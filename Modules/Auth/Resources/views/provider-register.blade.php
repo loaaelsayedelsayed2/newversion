@@ -244,6 +244,8 @@
                                                 <option
                                                     value="driving_license" {{old('identity_type')=='driving_license'?'selected':''}}>{{translate('driving_license')}}</option>
                                                 <option
+                                                    value="residency_permit" {{old('identity_type')=='residency_permit'?'selected':''}}>{{translate('residency_permit')}}</option>
+                                                <option
                                                     value="trade_license" {{old('identity_type')=='trade_license'?'selected':''}}>{{translate('trade_license')}}</option>
                                             </select>
                                         </div>

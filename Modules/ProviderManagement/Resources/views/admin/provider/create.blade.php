@@ -124,6 +124,9 @@
                                                 <option value="driving_license"
                                                     {{old('identity_type') == 'driving_license' ? 'selected': ''}}>
                                                     {{translate('Driving_License')}}</option>
+                                                <option value="residency_permit"
+                                                    {{old('identity_type') == 'residency_permit' ? 'selected': ''}}>
+                                                    {{translate('residency_permit')}}</option>
                                                 <option value="nid"
                                                     {{old('identity_type') == 'passport' ? 'selected': ''}}>
                                                     {{translate('nid')}}</option>

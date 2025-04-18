@@ -409,6 +409,7 @@
   'nid' => 'Nid',
   'Company_Id' => 'Company Id',
   'Driving_License' => 'Driving License',
+  'residency_permit' => 'Residency Permit',
   'Passport' => 'Passport',
   'Identity_Number' => 'Identity Number',
   'Select_Identity_Type' => 'Select Identity Type',

@@ -82,7 +82,7 @@
                             <div class="col-md-6">
                                 <h4 class="mb-20">{{translate('Business_Information')}}</h4>
 
-                                @php($id_types=['passport','driving_license','nid','trade_license'])
+                                @php($id_types=['passport','residency_permit','driving_license','nid','trade_license'])
                                 <select class="select-identity theme-input-style w-100 mb-30"
                                         name="identity_type" required>
                                     <option selected disabled>{{translate('Select_Identity_Type')}}</option>

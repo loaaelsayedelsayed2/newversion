@@ -143,6 +143,7 @@
                                                             <option value="0" disabled>{{translate('Select_Identity_Type')}}</option>
                                                             <option value="passport" {{ old('identity_type') == 'passport' ? 'selected' : '' }}>{{translate('Passport')}}</option>
                                                             <option value="driving_license" {{ old('identity_type') == 'driving_license' ? 'selected' : '' }}>{{translate('Driving_License')}}</option>
+                                                            <option value="residency_permit" {{ old('identity_type') == 'residency_permit' ? 'selected' : '' }}>{{translate('residency_permit')}}</option>
                                                             <option value="nid" {{ old('identity_type') == 'nid' ? 'selected' : '' }}>{{translate('nid')}}</option>
                                                             <option value="trade_license" {{ old('identity_type') == 'trade_license' ? 'selected' : '' }}>{{translate('Trade_License')}}</option>
                                                         </select>

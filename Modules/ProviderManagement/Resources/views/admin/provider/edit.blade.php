@@ -118,6 +118,9 @@
                                             <option value="driving_license"
                                                 {{$provider->owner->identification_type == 'driving_license' ? 'selected': ''}}>
                                                 {{translate('Driving_License')}}</option>
+                                            <option value="residency_permit"
+                                                {{$provider->owner->identification_type == 'residency_permit' ? 'selected': ''}}>
+                                                {{translate('residency_permit')}}</option>
                                             <option value="nid"
                                                 {{$provider->owner->identification_type == 'nid' ? 'selected': ''}}>
                                                 {{translate('nid')}}</option>
