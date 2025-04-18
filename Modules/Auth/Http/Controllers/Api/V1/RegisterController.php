@@ -356,15 +356,15 @@ class RegisterController extends Controller
                             'name=' . $name . '&' .
                             'package_status=' . 'subscription_purchase' . '&' .
                             http_build_query($request->all());
+                        return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
                     }
-                    return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
                 }
             }
             DB::commit();
             return response()->json(response_formatter(PROVIDER_STORE_200), 200);
         }catch(Exception $e){
             DB::rollBack();
-            dd($e);
+            return response()->json($e, 400);
         }
     }
 
