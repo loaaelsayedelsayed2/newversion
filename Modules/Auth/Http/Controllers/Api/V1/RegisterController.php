@@ -255,7 +255,7 @@ class RegisterController extends Controller
                 'company_email' => 'required|email',
                 'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
 
-                'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+                'identity_type' => 'required|in:passport,driving_license,residency_permit,nid,trade_license,company_id',
                 'identity_number' => 'required',
                 'identity_images' => 'required|array',
                 'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
