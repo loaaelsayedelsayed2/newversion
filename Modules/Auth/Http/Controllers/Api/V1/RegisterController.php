@@ -22,6 +22,7 @@ use Modules\UserManagement\Entities\UserVerification;
     use Illuminate\Support\Facades\Http;
     use GuzzleHttp\Client;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriber;
+use Modules\BusinessSettingsModule\Entities\PackageSubscriberLog;
 use Modules\BusinessSettingsModule\Http\Controllers\Api\V1\Provider\SubscriptionPackageController;
 
 class RegisterController extends Controller
