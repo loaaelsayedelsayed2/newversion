@@ -814,7 +814,6 @@
   'Transaction_Id' => 'Transaction Id',
   'total_transactions' => 'Total transactions',
   'Payment_ID' => ' Payment ID',
-
   'To_user' => 'To user',
   'From_user' => 'From user',
   't/date' => 'T/date',
@@ -979,8 +978,6 @@
   'SMS_Gateway_Setup' => 'SMS Gateway Setup',
   'success_rate' => 'Success rate',
   'Transaction_ID' => 'Transaction ID',
-  'Payment_ID' => ' Payment ID',
-
   'Schedule_Time' => 'Schedule Time',
   'flutterwave' => 'Flutterwave',
   'published_key' => 'Published key',
@@ -4845,4 +4842,8 @@ _Message' => 'Customer notification for provider bid offer
   'Successfully added to the cart' => 'Successfully added to the cart',
   'The offset must be a number.' => 'The offset must be a number.',
   'cart is empty' => 'Cart is empty',
+  'New Joining Request' => 'New Joining Request',
+  'New joining' => 'New joining',
+  'A new joining request has been submitted by' => 'A new joining request has been submitted by',
+  'to' => 'To',
 );
