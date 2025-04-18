@@ -351,7 +351,7 @@ class RegisterController extends Controller
                             http_build_query($request->all());
                         return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
                     }else{
-                        $result = self::handlenewPackageSubscription(
+                        $result = self::handlePurchasePackageSubscription(
                             $id,
                             $provider->id,
                             $request->all(),
