@@ -21,8 +21,8 @@ use Modules\UserManagement\Entities\User;
 use Modules\UserManagement\Entities\UserVerification;
     use Illuminate\Support\Facades\Http;
     use GuzzleHttp\Client;
-
-
+use Modules\BusinessSettingsModule\Entities\PackageSubscriber;
+use Modules\BusinessSettingsModule\Http\Controllers\Api\V1\Provider\SubscriptionPackageController;
 
 class RegisterController extends Controller
 {
@@ -286,7 +286,6 @@ class RegisterController extends Controller
                 if (!$package){
                     return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "package", "message" => translate('Please Select valid plan')]]), 400);
                 }
-
                 $id                 = $package->id;
                 $price              = $package->price;
                 $name               = $package->name;
@@ -333,12 +332,6 @@ class RegisterController extends Controller
                 $provider->save();
             });
 
-            try {
-                Mail::to(User::where('user_type', 'super-admin')->value('email'))->send(new NewJoiningRequestMail($provider));
-            } catch (\Exception $exception) {
-                info($exception);
-            }
-
             if ($request->choose_business_plan == 'subscription_base') {
                 $provider_id = $provider->id;
                 if ($request->free_trial_or_payment == 'free_trial') {
@@ -357,9 +350,32 @@ class RegisterController extends Controller
                             'package_status=' . 'subscription_purchase' . '&' .
                             http_build_query($request->all());
                         return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
+                    }else{
+                        $packageSubscriber = new PackageSubscriber();
+                        $packageSubscriber->provider_id = $provider_id;
+                        $packageSubscriber->subscription_package_id = $id;
+                        $packageSubscriber->payment_method = 'Moyasar';
+                        $packageSubscriber->save();
+
+                        $subscriptionRequest = new Request([
+                            'package_subscription_id' => $id,
+                            'status' => 'success',
+                            'payment_id' => $request->payment_id
+                        ]);
+
+                        $subscriptionController = new SubscriptionPackageController();
+                        $response = $subscriptionController->newSubscription($subscriptionRequest);
                     }
+
                 }
             }
+
+            try {
+                Mail::to(User::where('user_type', 'super-admin')->value('email'))->send(new NewJoiningRequestMail($provider));
+            } catch (\Exception $exception) {
+                info($exception);
+            }
+
             DB::commit();
             return response()->json(response_formatter(PROVIDER_STORE_200), 200);
         }catch(Exception $e){

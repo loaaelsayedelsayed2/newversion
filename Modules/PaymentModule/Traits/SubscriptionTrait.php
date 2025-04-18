@@ -684,6 +684,7 @@ trait SubscriptionTrait
             $packageSubscriberLog->save();
 
             $packageSubscriber                              = PackageSubscriber::where('subscription_package_id', $id)->where('provider_id', $provider)->first();
+            dd($packageSubscriber->subscription_package_id);
             $packageSubscriber->subscription_package_id     = $id;
             $packageSubscriber->package_price               = $price;
             $packageSubscriber->package_name                = $name;
