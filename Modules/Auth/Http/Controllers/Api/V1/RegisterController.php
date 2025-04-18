@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Http\Controllers\Api\V1;
 
+use Exception;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -231,134 +232,140 @@ class RegisterController extends Controller
     //     }
     // }
 
-        public function providerRegister(Request $request): JsonResponse
+    public function providerRegister(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'contact_person_name' => 'required',
-            'contact_person_phone' => 'required',
-            'contact_person_email' => 'required',
+        DB::beginTransaction();
+        try{
+            $validator = Validator::make($request->all(), [
+                'contact_person_name' => 'required',
+                'contact_person_phone' => 'required',
+                'contact_person_email' => 'required',
 
-            'account_first_name' => 'nullable|max:191',
-            'account_last_name' => 'nullable|max:191',
-            'zone_id' => 'required|uuid',
-            'account_email' => 'required|email',
-            'account_phone' => 'required',
-            'password' => 'required|min:8',
-            'confirm_password' => 'required|same:password',
+                'account_first_name' => 'nullable|max:191',
+                'account_last_name' => 'nullable|max:191',
+                'zone_id' => 'required|uuid',
+                'account_email' => 'required|email',
+                'account_phone' => 'required',
+                'password' => 'required|min:8',
+                'confirm_password' => 'required|same:password',
 
-            'company_name' => 'required',
-            'company_phone' => 'required',
-            'company_address' => 'required',
-            'company_email' => 'required|email',
-            'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+                'company_name' => 'required',
+                'company_phone' => 'required',
+                'company_address' => 'required',
+                'company_email' => 'required|email',
+                'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
 
-            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
-            'identity_number' => 'required',
-            'identity_images' => 'required|array',
-            'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
+                'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+                'identity_number' => 'required',
+                'identity_images' => 'required|array',
+                'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
 
-            'latitude' => 'required',
-            'longitude' => 'required',
-        ]);
+                'latitude' => 'required',
+                'longitude' => 'required',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
-        }
-
-        if (User::where('email', $request['account_email'])->exists()) {
-            return response()->json(response_formatter(DEFAULT_400, null, [
-                [
-                    "error_code" => "account_email",
-                    "message" => translate('Email already taken')
-                ]
-            ]), 400);
-        }
-        if (User::where('phone', $request['account_phone'])->exists()) {
-            return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_phone", "message" => translate('Phone already taken')]]), 400);
-        }
-
-        if ($request->choose_business_plan == 'subscription_base'){
-            $package = $this->subscriptionPackage->where('id',$request->selected_package_id)->ofStatus(1)->first();
-            $vatPercentage      = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
-            if (!$package){
-                return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "package", "message" => translate('Please Select valid plan')]]), 400);
+            if ($validator->fails()) {
+                return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
             }
 
-            $id                 = $package->id;
-            $price              = $package->price;
-            $name               = $package->name;
-            $vatAmount          = $package->price * ($vatPercentage / 100);
-            $vatWithPrice       = $price + $vatAmount;
-        }
-
-        $identityImages = [];
-        foreach ($request->identity_images as $image) {
-            $imageName = file_uploader('provider/identity/', 'png', $image);
-            $identityImages[] = ['image'=>$imageName, 'storage'=> getDisk()];
-        }
-
-        $provider = $this->provider;
-        $provider->company_name = $request->company_name;
-        $provider->company_phone = $request->company_phone;
-        $provider->company_email = $request->company_email;
-        $provider->logo = file_uploader('provider/logo/', 'png', $request->file('logo'));
-        $provider->company_address = $request->company_address;
-
-        $provider->contact_person_name = $request->contact_person_name;
-        $provider->contact_person_phone = $request->contact_person_phone;
-        $provider->contact_person_email = $request->contact_person_email;
-        $provider->is_approved = 2;
-        $provider->is_active = 0;
-        $provider->zone_id = $request['zone_id'];
-        $provider->coordinates = ['latitude' => $request['latitude'], 'longitude' => $request['longitude']];
-
-        $owner = $this->owner;
-        $owner->first_name = $request->account_first_name;
-        $owner->last_name = $request->account_last_name;
-        $owner->email = $request->account_email;
-        $owner->phone = $request->account_phone;
-        $owner->identification_number = $request->identity_number;
-        $owner->identification_type = $request->identity_type;
-        $owner->identification_image = $identityImages;
-        $owner->password = bcrypt($request->password);
-        $owner->user_type = 'provider-admin';
-        $owner->is_active = 0;
-
-        DB::transaction(function () use ($provider, $owner, $request) {
-            $owner->save();
-            $provider->user_id = $owner->id;
-            $provider->save();
-        });
-
-        try {
-            Mail::to(User::where('user_type', 'super-admin')->value('email'))->send(new NewJoiningRequestMail($provider));
-        } catch (\Exception $exception) {
-            info($exception);
-        }
-
-        if ($request->choose_business_plan == 'subscription_base') {
-            $provider_id = $provider->id;
-            if ($request->free_trial_or_payment == 'free_trial') {
-                $result = $this->handleFreeTrialPackageSubscription($id, $provider_id, $price, $name);
-                if (!$result){
-                    return response()->json(response_formatter(DEFAULT_FAIL_200), 400);
-                }
-            }elseif ($request->free_trial_or_payment == 'payment') {
-                if($request->payment_method != 'Moyasar'){
-                    $paymentUrl = url('payment/subscription') . '?' .
-                        'provider_id=' . $provider_id . '&' .
-                        'access_token=' . base64_encode($owner->id) . '&' .
-                        'package_id=' . $id . '&' .
-                        'amount=' . $vatWithPrice . '&' .
-                        'name=' . $name . '&' .
-                        'package_status=' . 'subscription_purchase' . '&' .
-                        http_build_query($request->all());
-                }
-                return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
+            if (User::where('email', $request['account_email'])->exists()) {
+                return response()->json(response_formatter(DEFAULT_400, null, [
+                    [
+                        "error_code" => "account_email",
+                        "message" => translate('Email already taken')
+                    ]
+                ]), 400);
             }
-        }
+            if (User::where('phone', $request['account_phone'])->exists()) {
+                return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_phone", "message" => translate('Phone already taken')]]), 400);
+            }
 
-        return response()->json(response_formatter(PROVIDER_STORE_200), 200);
+            if ($request->choose_business_plan == 'subscription_base'){
+                $package = $this->subscriptionPackage->where('id',$request->selected_package_id)->ofStatus(1)->first();
+                $vatPercentage      = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
+                if (!$package){
+                    return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "package", "message" => translate('Please Select valid plan')]]), 400);
+                }
+
+                $id                 = $package->id;
+                $price              = $package->price;
+                $name               = $package->name;
+                $vatAmount          = $package->price * ($vatPercentage / 100);
+                $vatWithPrice       = $price + $vatAmount;
+            }
+
+            $identityImages = [];
+            foreach ($request->identity_images as $image) {
+                $imageName = file_uploader('provider/identity/', 'png', $image);
+                $identityImages[] = ['image'=>$imageName, 'storage'=> getDisk()];
+            }
+
+            $provider = $this->provider;
+            $provider->company_name = $request->company_name;
+            $provider->company_phone = $request->company_phone;
+            $provider->company_email = $request->company_email;
+            $provider->logo = file_uploader('provider/logo/', 'png', $request->file('logo'));
+            $provider->company_address = $request->company_address;
+
+            $provider->contact_person_name = $request->contact_person_name;
+            $provider->contact_person_phone = $request->contact_person_phone;
+            $provider->contact_person_email = $request->contact_person_email;
+            $provider->is_approved = 2;
+            $provider->is_active = 0;
+            $provider->zone_id = $request['zone_id'];
+            $provider->coordinates = ['latitude' => $request['latitude'], 'longitude' => $request['longitude']];
+
+            $owner = $this->owner;
+            $owner->first_name = $request->account_first_name;
+            $owner->last_name = $request->account_last_name;
+            $owner->email = $request->account_email;
+            $owner->phone = $request->account_phone;
+            $owner->identification_number = $request->identity_number;
+            $owner->identification_type = $request->identity_type;
+            $owner->identification_image = $identityImages;
+            $owner->password = bcrypt($request->password);
+            $owner->user_type = 'provider-admin';
+            $owner->is_active = 0;
+
+            DB::transaction(function () use ($provider, $owner, $request) {
+                $owner->save();
+                $provider->user_id = $owner->id;
+                $provider->save();
+            });
+
+            try {
+                Mail::to(User::where('user_type', 'super-admin')->value('email'))->send(new NewJoiningRequestMail($provider));
+            } catch (\Exception $exception) {
+                info($exception);
+            }
+
+            if ($request->choose_business_plan == 'subscription_base') {
+                $provider_id = $provider->id;
+                if ($request->free_trial_or_payment == 'free_trial') {
+                    $result = $this->handleFreeTrialPackageSubscription($id, $provider_id, $price, $name);
+                    if (!$result){
+                        return response()->json(response_formatter(DEFAULT_FAIL_200), 400);
+                    }
+                }elseif ($request->free_trial_or_payment == 'payment') {
+                    if($request->payment_method != 'Moyasar'){
+                        $paymentUrl = url('payment/subscription') . '?' .
+                            'provider_id=' . $provider_id . '&' .
+                            'access_token=' . base64_encode($owner->id) . '&' .
+                            'package_id=' . $id . '&' .
+                            'amount=' . $vatWithPrice . '&' .
+                            'name=' . $name . '&' .
+                            'package_status=' . 'subscription_purchase' . '&' .
+                            http_build_query($request->all());
+                    }
+                    return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
+                }
+            }
+            DB::commit();
+            return response()->json(response_formatter(PROVIDER_STORE_200), 200);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json(response_formatter(PROBLEM_400 .' '.$e), 400);
+        }
     }
 
 
