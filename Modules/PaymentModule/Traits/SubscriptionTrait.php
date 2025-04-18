@@ -178,7 +178,6 @@ trait SubscriptionTrait
             $packageSubscriberLog->vat_percentage           = $vatPercentage;
             $packageSubscriberLog->subscription_package_id  = $id;
             $packageSubscriberLog->primary_transaction_id  = $transactionId;
-            $packageSubscriberLog->payment_method  = $request->payment_method;
             $packageSubscriberLog->save();
 
 
