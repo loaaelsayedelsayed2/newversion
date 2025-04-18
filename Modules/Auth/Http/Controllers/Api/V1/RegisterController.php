@@ -351,20 +351,13 @@ class RegisterController extends Controller
                             http_build_query($request->all());
                         return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
                     }else{
-                        $packageSubscriber = new PackageSubscriber();
-                        $packageSubscriber->provider_id = $provider_id;
-                        $packageSubscriber->subscription_package_id = $id;
-                        $packageSubscriber->payment_method = 'Moyasar';
-                        $packageSubscriber->save();
-
-                        $subscriptionRequest = new Request([
-                            'package_subscription_id' => $id,
-                            'status' => 'success',
-                            'payment_id' => $request->payment_id
-                        ]);
-
-                        $subscriptionController = app(SubscriptionPackageController::class);
-                        $response = $subscriptionController->newSubscription($subscriptionRequest);
+                        $result = self::handlenewPackageSubscription(
+                            $id,
+                            $provider->id,
+                            $request->all(),
+                            $price,
+                            $name
+                        );
                     }
 
                 }
