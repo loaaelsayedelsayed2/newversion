@@ -364,7 +364,7 @@ class RegisterController extends Controller
             return response()->json(response_formatter(PROVIDER_STORE_200), 200);
         }catch(Exception $e){
             DB::rollBack();
-            return response()->json(response_formatter($e), 400);
+            dd($e);
         }
     }
 
