@@ -363,7 +363,7 @@ class RegisterController extends Controller
                             'payment_id' => $request->payment_id
                         ]);
 
-                        $subscriptionController = new SubscriptionPackageController();
+                        $subscriptionController = app(SubscriptionPackageController::class);
                         $response = $subscriptionController->newSubscription($subscriptionRequest);
                     }
 
