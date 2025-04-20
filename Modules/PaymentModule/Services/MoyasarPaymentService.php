@@ -40,7 +40,8 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
         http_build_query([
             'booking_id' => $data['booking_id'],
             'user_id' => $userId,
-            "redirect_url" => $data['redirect_url']
+            "redirect_url" => $data['redirect_url'],
+            'status' => 'success'
         ]);
 
         $response = $this->buildRequest('POST','/v1/invoices',$data);
