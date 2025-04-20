@@ -166,7 +166,7 @@ class OTPVerificationController extends Controller
             }
 
             $this->userVerification->where(['identity' => $request['identity']])->delete();
-            return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200),5,[], 200);
+            return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200),200);
         }
         else{
             $verificationData = $this->userVerification->where('identity', $request['identity'])->first();
