@@ -166,7 +166,20 @@ class OTPVerificationController extends Controller
             }
 
             $this->userVerification->where(['identity' => $request['identity']])->delete();
-            return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200), 200);
+        //     return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200),'content' => [
+        //     'identity' => $user->email,
+        //     'verification_status' => 'verified'
+        // ], 200);
+            return response()->json(response_formatter([
+                'response_code' => 'OTP_VERIFICATION_SUCCESS_200',
+                'message' => 'OTP verification successful',
+                'content' => [
+                    'identity' => $user->email ?? $user->phone,
+                    'identity_type' => $request['identity_type'],
+                    'verification_status' => 'verified'
+                ],
+                'errors' => []
+            ]), 200);
         }
         else{
             $verificationData = $this->userVerification->where('identity', $request['identity'])->first();
@@ -412,11 +425,11 @@ class OTPVerificationController extends Controller
     {
         return ['token' => $user->createToken($access_type)->accessToken, 'is_active' => $user['is_active']];
     }
-    
-    
+
+
      public function sendWhatsappMessage($number, $message){
         $number = ltrim($number, '+');
-         
+
         $encodedMessage = urlencode($message);
         $url = "https://app.arrivewhats.com/api/send?number=$number&type=text&message=$encodedMessage&instance_id=679543498E1CE&access_token=675489055c30b";
         $response = file_get_contents($url);
