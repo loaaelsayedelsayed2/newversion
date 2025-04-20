@@ -43,6 +43,13 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
             "redirect_url" => $data['redirect_url'],
             'status' => 'success'
         ]);
+        $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
+        http_build_query([
+            'booking_id' => $data['booking_id'],
+            'user_id' => $userId,
+            "redirect_url" => $data['redirect_url'],
+            'status' => 'failure'
+        ]);
 
         $response = $this->buildRequest('POST','/v1/invoices',$data);
         if($response->getData(true)['success']){
