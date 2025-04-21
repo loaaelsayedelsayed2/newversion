@@ -36,7 +36,7 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
                 'message' => 'User not authenticated'
             ];
         }
-        if(!empty($data['success_url'])){
+        // if(!empty($data['success_url'])){
             $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
             http_build_query([
                 'booking_id' => $data['booking_id'],
@@ -44,7 +44,7 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
                 "redirect_url" => $data['redirect_url'],
                 'status' => 'success'
             ]);
-        }
+        // }
         // if(!empty($data['failure_url'])){
         //     $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
         //     http_build_query([
