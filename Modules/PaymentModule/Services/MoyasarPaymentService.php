@@ -42,7 +42,7 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
                 'booking_id' => $data['booking_id'],
                 'user_id' => $userId,
                 "redirect_url" => $data['redirect_url'],
-                'status' => 'success'
+                // 'status' => 'success'
             ]);
         // }
         // if(!empty($data['failure_url'])){
