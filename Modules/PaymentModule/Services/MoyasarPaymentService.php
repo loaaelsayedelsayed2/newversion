@@ -36,20 +36,13 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
                 'message' => 'User not authenticated'
             ];
         }
-        $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
-        http_build_query([
-            'booking_id' => $data['booking_id'],
-            'user_id' => $userId,
-            "redirect_url" => $data['redirect_url'],
-            'status' => 'success'
-        ]);
-        $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
-        http_build_query([
-            'booking_id' => $data['booking_id'],
-            'user_id' => $userId,
-            "redirect_url" => $data['redirect_url'],
-            'status' => 'failure'
-        ]);
+        if (!empty($data['success_url'])) {
+            $data['success_url'] = $this->buildPaymentCallbackUrl($request, $data, $userId, 'success');
+        }
+
+        if (!empty($data['failure_url'])) {
+            $data['failure_url'] = $this->buildPaymentCallbackUrl($request, $data, $userId, 'failure');
+        }
 
         $response = $this->buildRequest('POST','/v1/invoices',$data);
         if($response->getData(true)['success']){
@@ -62,6 +55,18 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
             'success' => false,
             'url' =>$response
         ];
+    }
+
+    private function buildPaymentCallbackUrl($request, $data, $userId, $status)
+    {
+        $queryParams = [
+            'booking_id' => $data['booking_id'] ?? null,
+            'user_id' => $userId,
+            'redirect_url' => $data['redirect_url'] ?? null,
+            'status' => $status,
+        ];
+
+        return $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' . http_build_query($queryParams);
     }
 
     public function callBack(Request $request)
