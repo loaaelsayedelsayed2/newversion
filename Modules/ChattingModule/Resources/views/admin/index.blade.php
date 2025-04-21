@@ -73,7 +73,7 @@
                                                     @if(isset($fromUser->user) && $fromUser->user->user_type == 'customer')
                                                         src="{{$fromUser->user->profile_image_full_path}}"
                                                     @elseif(isset($fromUser->user) && $fromUser->user->user_type == 'provider-admin')
-                                                        src="{{$fromUser?->user?->provider?->logo_full_path}}"
+                                                        src="{{$fromUser?->user?->provider?->logo_full_path ?? asset('assets/placeholder.png')}}"
                                                     @elseif(isset($fromUser->user) && $fromUser->user->user_type == 'provider-serviceman')
                                                         src="{{$fromUser->user->profile_image_full_path}}"
                                                     @else
