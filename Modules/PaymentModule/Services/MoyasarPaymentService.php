@@ -8,73 +8,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Modules\PaymentModule\Interfaces\PaymentGatewayInterface;
 
-// class MoyasarPaymentService extends BasePaymentService implements PaymentGatewayInterface
-// {
-//     /**
-//      * Create a new class instance.
-//      */
-//     protected  $api_secrat;
-
-//     public function __construct()
-//     {
-//         $this->base_url = env('MOYASAR_BASE_URL');
-//         $this->api_secrat = env('MOYASAR_SECRET_KEY');
-//         $this->header = [
-//             "accept" => "application/json",
-//             "Content-Type" => "application/json",
-//             "Authorization" => "Basic ". base64_encode($this->api_secrat . ':')
-
-//         ];
-//     }
-
-//     public function sendPayment(Request $request){
-//         $data = $request->all();
-//         $userId = auth()->id();
-//         if (!$userId) {
-//             return [
-//                 'success' => false,
-//                 'message' => 'User not authenticated'
-//             ];
-//         }
-//             $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
-//             http_build_query([
-//                 'booking_id' => $data['booking_id'],
-//                 'user_id' => $userId,
-//                 "redirect_url" => $data['redirect_url'],
-//                 'status' => 'success'
-//             ]);
-//             $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
-//             http_build_query([
-//                 'booking_id' => $data['booking_id'],
-//                 'user_id' => $userId,
-//                 "redirect_url" => $data['redirect_url'],
-//                 'status' => 'failure'
-//             ]);
-
-//         $response = $this->buildRequest('POST','/v1/invoices',$data);
-//         if($response->getData(true)['success']){
-//             return[
-//                 'success' => true,
-//                 'url' =>$response->getData(true)['data']['url']
-//             ];
-//         }
-//         return[
-//             'success' => false,
-//             'url' =>$response
-//         ];
-//     }
-
-//     public function callBack(Request $request)
-//     {
-//         $response_status = $request->get('status');
-//         Storage::put('Moyasar/response_'.time().'.json', json_encode($request->all()));
-//         if(isset($response_status) && strtolower($response_status) == "paid") {
-//             return true;
-//         }
-//         return false;
-//     }
-// }
-
 class MoyasarPaymentService extends BasePaymentService implements PaymentGatewayInterface
 {
     protected $api_secret;
@@ -86,68 +19,62 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
         $this->header = [
             "accept" => "application/json",
             "Content-Type" => "application/json",
-            "Authorization" => "Basic ". base64_encode($this->api_secret . ':')
+            "Authorization" => "Basic " . base64_encode($this->api_secret . ':')
         ];
     }
 
     public function sendPayment(Request $request)
     {
-        $data = $request->all();
-        $userId = auth()->id();
+        try {
+            $data = $request->all();
+            $userId = auth()->id();
 
-        if (!$userId) {
+            if (!$userId) {
+                throw new Exception('User not authenticated');
+            }
+
+            $callbackParams = [
+                'booking_id' => $data['booking_id'],
+                'user_id' => $userId,
+                'redirect_url' => $data['redirect_url'] ?? null,
+            ];
+            http: //127.0.0.1:8000/api/v1/payment/callback?id=5231c64f-83e0-434a-99d2-f8020a74647b&status=paid&message=APPROVED&invoice_id=8668bbd2-66a6-477d-8f12-ded0feb4bce7&booking_id=30d11086-2643-4a71-af9e-9c8a6372947e&user_id=031f002d-837a-49eb-97a8-93f8cb0e7083&redirect_url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dtpcq6jQSJYU
+            $data['success_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?'
+                . http_build_query(array_merge($callbackParams));
+
+            $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?'
+                . http_build_query(array_merge($callbackParams));
+
+            $response = $this->buildRequest('POST', '/v1/invoices', $data);
+            $responseData = $response->getData(true);
+
+            if ($responseData['success'] && isset($responseData['data']['url'])) {
+                return [
+                    'success' => true,
+                    'url' => $responseData['data']['url'],
+                    'message' => 'Payment initiated successfully'
+                ];
+            }
+
+            throw new Exception($responseData['message'] ?? 'Payment initiation failed');
+        } catch (Exception $e) {
             return [
                 'success' => false,
-                'message' => 'User not authenticated'
+                'message' => $e->getMessage()
             ];
         }
-
-        // بناء روابط الاستدعاء العكسي بشكل صحيح
-        $callbackParams = [
-            'booking_id' => $data['booking_id'],
-            'user_id' => $userId,
-            'redirect_url' => $data['redirect_url'] ?? null
-        ];
-
-        $paymentData = [
-            'amount' => $data['amount'] * 100, // تحويل المبلغ إلى هللات
-            'currency' => $data['currency'] ?? 'SAR',
-            'description' => $data['description'] ?? 'Booking Payment',
-            'callback_url' => $request->getSchemeAndHttpHost() . '/api/v1/payment/callback',
-            'metadata' => $callbackParams
-        ];
-
-        $response = $this->buildRequest('POST', '/v1/payments', $paymentData);
-
-        if ($response->successful()) {
-            $responseData = $response->json();
-            return [
-                'success' => true,
-                'url' => $responseData['source']['transaction_url'] ?? $responseData['source']['redirect_url']
-            ];
-        }
-
-        return [
-            'success' => false,
-            'message' => $response->json()['message'] ?? 'Payment initiation failed'
-        ];
     }
 
     public function callBack(Request $request)
     {
-        Storage::put('Moyasar/response_'.time().'.json', json_encode($request->all()));
+        try {
+            $paymentStatus = $request->get('status');
+            Storage::put('Moyasar/response_' . time() . '.json', json_encode($request->all()));
 
-        // التحقق من حالة الدفع حسب وثائق Moyasar الرسمية
-        if ($request->has('id')) {
-            $paymentId = $request->input('id');
-            $paymentResponse = $this->buildRequest('GET', "/v1/payments/{$paymentId}");
-
-            if ($paymentResponse->successful()) {
-                $paymentData = $paymentResponse->json();
-                return $paymentData['status'] === 'paid';
-            }
+            return strtolower($paymentStatus) === "paid";
+        } catch (Exception $e) {
+            logger()->error('Moyasar callback error: ' . $e->getMessage());
+            return false;
         }
-
-        return false;
     }
 }
