@@ -45,15 +45,15 @@ class MoyasarPaymentService extends BasePaymentService implements PaymentGateway
                 'status' => 'success'
             ]);
         }
-        if(!empty($data['failure_url'])){
-            $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
-            http_build_query([
-                'booking_id' => $data['booking_id'],
-                'user_id' => $userId,
-                "redirect_url" => $data['redirect_url'],
-                'status' => 'failure'
-            ]);
-        }
+        // if(!empty($data['failure_url'])){
+        //     $data['failure_url'] = $request->getSchemeAndHttpHost() . '/api/v1/payment/callback?' .
+        //     http_build_query([
+        //         'booking_id' => $data['booking_id'],
+        //         'user_id' => $userId,
+        //         "redirect_url" => $data['redirect_url'],
+        //         'status' => 'failure'
+        //     ]);
+        // }
 
         $response = $this->buildRequest('POST','/v1/invoices',$data);
         if($response->getData(true)['success']){
