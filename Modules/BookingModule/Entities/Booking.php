@@ -229,6 +229,7 @@ class Booking extends Model
         });
 
 
+
         self::updating(function ($model) {
             $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
             $permission = isNotificationActive(null, 'booking', 'notification', 'user');
@@ -599,6 +600,13 @@ class Booking extends Model
                         }
                     }
                 }
+            }
+
+            if ($model->isDirty('is_send') && $model->is_send) {
+                $notifications[] = [
+                    'key' => 'invoice_sent',
+                    'settings_type' => 'customer_notification'
+                ];
             }
         });
 
