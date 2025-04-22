@@ -905,80 +905,90 @@ class BookingController extends Controller
     }
 
 
-    protected function sendInvoiceNotificationToCustomer($booking)
+    protected function sendInvoiceNotificationToCustomer($booking): bool
     {
         try {
+            // 1. التحقق من وجود العميل
+            if (!$booking->customer) {
+                throw new \Exception("Customer not found for booking ID: {$booking->id}");
+            }
+
             $user = $booking->customer;
 
-            if (!$user) {
-                Log::error('Customer not found for booking: ' . $booking->id);
-                return;
+            // 2. التحقق من توفر بيانات الإشعار الأساسية
+            if (empty($user->fcm_token)) {
+                throw new \Exception("FCM token missing for user ID: {$user->id}");
             }
 
-            $key = 'invoice_sent';
-            $settingsType = 'customer_notification';
-
-            // 1. الحصول على الرسالة الأساسية
-            $title = get_push_notification_message($key, $settingsType, $user->current_language_key ?? 'en');
-
-            if (!$title) {
-                Log::error('Notification message not found for key: ' . $key);
-                return;
+            if (!$user->is_active) {
+                throw new \Exception("User is inactive (ID: {$user->id})");
             }
 
-            // 2. استبدال القيم النائبة
-            $replacements = [
-                ':booking_id' => $booking->readable_id,
-                ':amount' => $booking->total_booking_amount,
-                ':currency' => currency_symbol() // تأكد من وجود هذه الدالة
+            // 3. إنشاء محتوى الإشعار متعدد اللغات
+            $notificationContent = [
+                'ar' => [
+                    'title' => 'إشعار فاتورة جديدة',
+                    'body' => 'تم إرسال فاتورة الحجز رقم #' . $booking->readable_id,
+                    'details' => 'المبلغ الإجمالي: ' . $booking->total_booking_amount . ' ' . currency_symbol()
+                ],
+                'en' => [
+                    'title' => 'New Invoice Notification',
+                    'body' => 'Invoice for booking #' . $booking->readable_id . ' has been sent',
+                    'details' => 'Total amount: ' . $booking->total_booking_amount . ' ' . currency_symbol()
+                ]
             ];
 
-            $title = str_replace(
-                array_keys($replacements),
-                array_values($replacements),
-                $title
-            );
+            $lang = $user->current_language_key ?? 'en';
+            $content = $notificationContent[$lang] ?? $notificationContent['en'];
 
-            // 3. التحقق من الصلاحيات والإعدادات
-            $permission = isNotificationActive($user->id, 'booking', 'notification', 'user');
-
-            if (!$permission) {
-                Log::info('Notifications disabled for user: ' . $user->id);
-                return;
-            }
-
-            // 4. التحقق من وجود FCM Token
-            if (empty($user->fcm_token)) {
-                Log::error('FCM token missing for user: ' . $user->id);
-                return;
-            }
+            // 4. إعداد بيانات الإشعار
+            $notificationData = [
+                'fcm_token' => $user->fcm_token,
+                'title' => $content['title'],
+                'body' => $content['body'],
+                'image' => null, // يمكن إضافة رابط صورة إذا لزم الأمر
+                'booking_id' => $booking->id,
+                'type' => 'invoice',
+                'action' => 'view_invoice',
+                'additional_data' => [
+                    'amount' => $booking->total_booking_amount,
+                    'currency' => currency_symbol(),
+                    'booking_readable_id' => $booking->readable_id
+                ]
+            ];
 
             // 5. إرسال الإشعار الفعلي
             $response = device_notification(
-                $user->fcm_token,
-                $title,
-                'تم إرسال الفاتورة بنجاح', // Body - يمكن تخصيصه
-                null, // image
-                $booking->id, // booking_id
-                'invoice', // نوع مختلف عن booking
-                'view_invoice', // action
+                $notificationData['fcm_token'],
+                $notificationData['title'],
+                $notificationData['body'],
+                $notificationData['image'],
+                $notificationData['booking_id'],
+                $notificationData['type'],
+                $notificationData['action'],
                 null, // provider_id
                 null, // category_id
                 null, // sub_category_id
-                $booking->is_repeated ? 'repeat' : 'regular'
+                $booking->is_repeated ? 'repeat' : 'regular',
+                $notificationData['additional_data']
             );
 
-            Log::info('Invoice notification sent', [
-                'user_id' => $user->id,
+            // 6. تسجيل النتيجة
+            Log::info('Invoice notification sent successfully', [
                 'booking_id' => $booking->id,
-                'notification_response' => $response
+                'user_id' => $user->id,
+                'notification_data' => $notificationData,
+                'response' => $response
             ]);
+
+            return true;
 
         } catch (\Exception $e) {
             Log::error('Failed to send invoice notification: ' . $e->getMessage(), [
                 'booking_id' => $booking->id ?? null,
-                'user_id' => $user->id ?? null
+                'error' => $e->getTraceAsString()
             ]);
+            return false;
         }
     }
 }
