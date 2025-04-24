@@ -603,6 +603,8 @@ class Booking extends Model
             }
 
             if ($model->isDirty('is_send') && $model->is_send) {
+                \Log::info('Attempting to send invoice notification', ['booking_id' => $model->id]);
+
                 $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
                 $permission = isNotificationActive(null, 'booking', 'notification', 'user');
 
@@ -619,6 +621,8 @@ class Booking extends Model
                             $model->id,
                             'booking'
                         );
+                        \Log::info('Notification sent', ['response' => $response]);
+
                     }
                 }
             }
