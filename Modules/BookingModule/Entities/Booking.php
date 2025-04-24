@@ -603,10 +603,24 @@ class Booking extends Model
             }
 
             if ($model->isDirty('is_send') && $model->is_send) {
-                $notifications[] = [
-                    'key' => 'invoice_sent',
-                    'settings_type' => 'customer_notification'
-                ];
+                $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
+                $permission = isNotificationActive(null, 'booking', 'notification', 'user');
+
+                if (isset($booking_notification_status) && $booking_notification_status['push_notification_booking'] && $permission) {
+                    $user = $model?->customer;
+                    $title = get_push_notification_message('invoice_sent', 'customer_notification', $user?->current_language_key);
+
+                    if ($user?->fcm_token && $title) {
+                        device_notification(
+                            $user?->fcm_token,
+                            $title,
+                            null,
+                            null,
+                            $model->id,
+                            'booking'
+                        );
+                    }
+                }
             }
         });
 
