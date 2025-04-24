@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\BookingModule\Http\Traits\BookingScopes;
@@ -603,7 +604,7 @@ class Booking extends Model
             }
 
             if ($model->isDirty('is_send') && $model->is_send) {
-                \Log::info('Attempting to send invoice notification', ['booking_id' => $model->id]);
+                Log::info('Attempting to send invoice notification', ['booking_id' => $model->id]);
 
                 $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
                 $permission = isNotificationActive(null, 'booking', 'notification', 'user');
@@ -613,7 +614,7 @@ class Booking extends Model
                     $title = get_push_notification_message('invoice_sent', 'customer_notification', $user?->current_language_key);
 
                     if ($user?->fcm_token && $title) {
-                        device_notification(
+                        $response = device_notification(
                             $user?->fcm_token,
                             $title,
                             null,
@@ -621,7 +622,7 @@ class Booking extends Model
                             $model->id,
                             'booking'
                         );
-                        \Log::info('Notification sent', ['response' => $response]);
+                        Log::info('Notification sent', ['response' => $response]);
 
                     }
                 }
