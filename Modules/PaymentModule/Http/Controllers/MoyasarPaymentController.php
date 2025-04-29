@@ -21,7 +21,7 @@ class MoyasarPaymentController extends Controller
             'booking_id' => 'required|string',
             'amount' => 'required|numeric',
             'description' => 'required|string',
-            'redirect_url' => 'required|url'
+            'redirect_url' => 'nullable|url'
         ]);
 
         $response = $this->paymentGateway->sendPayment($request);
