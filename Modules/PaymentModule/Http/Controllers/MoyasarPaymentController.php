@@ -49,13 +49,17 @@ class MoyasarPaymentController extends Controller
 
         if ($isPaymentSuccessful) {
             $this->updateBookingPaymentStatus($bookingId, $userId);
-
+            if ($request->query('redirect_url') == null) {
+                return view('payment.payment-success');
+            }
             return view('payment.payment-success', [
                 'redirect_url' => $redirectUrl,
                 'delay' => 5
             ]);
         }
-
+        if ($request->query('redirect_url') == null) {
+            return view('payment.payment-failed');
+        }
         return view('payment.payment-failed', [
             'redirect_url' => $redirectUrl,
             'delay' => 5
