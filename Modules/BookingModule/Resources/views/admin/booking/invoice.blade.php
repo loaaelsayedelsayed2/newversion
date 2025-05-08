@@ -193,7 +193,7 @@ h1, h2,h3,h4, h5, h6 {
             @php($customer_name = $booking->customer ? $booking?->customer?->first_name.' '.$booking?->customer?->last_name : $booking?->service_address?->contact_person_name)
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
 
-            @php($provider_name = $booking->provider ? $booking?->provider?->user?->first_name.' '.$booking?->provider?->user?->last_name : $booking?->service_address?->contact_person_name)
+            @php($provider_name = $booking->provider)
             @php($provider_phone = $booking->provider ? $booking?->provider?->phone : $booking?->service_address?->contact_person_number)
 
             <div class="white-box-content border rounded-12 border">
@@ -202,36 +202,32 @@ h1, h2,h3,h4, h5, h6 {
                         <td class="border-bottom p-0">
                             <table>
                                 <tr>
-                                <td>
-                                    <div class="fs-9">{{translate('Customer')}}</div>
-                                    <div>{{$customer_name}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('phone')}}</div>
-                                    <div>{{$customer_phone}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('email')}}</div>
-                                    <div>{{$booking?->customer?->email}}</div>
-                                </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('Customer')}}</div>
+                                        <div>{{$customer_name}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('phone')}}</div>
+                                        <div>{{$customer_phone}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('email')}}</div>
+                                        <div>{{$booking?->customer?->email}}</div>
+                                    </td>
                                 </tr>
-                            </table>
-                        </td>
-                        <td class="border-bottom p-0">
-                            <table>
                                 <tr>
-                                <td>
-                                    <div class="fs-9">{{translate('Provider')}}</div>
-                                    <div>{{$provider_name}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('phone')}}</div>
-                                    <div>{{$provider_phone}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('email')}}</div>
-                                    <div>{{$booking?->provider?->user?->email}}</div>
-                                </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('Provider')}}</div>
+                                        <div>{{$provider_name}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('phone')}}</div>
+                                        <div>{{$provider_phone}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="fs-9">{{translate('email')}}</div>
+                                        <div>{{$booking?->provider?->user?->email}}</div>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
