@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -8,11 +8,13 @@
     <script src="{{asset('public/assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('public/assets/js/jquery.min.js')}}"></script>
     <style>
+
         body {
             background-color: #F9FCFF;
             font-size: 10px !important;
             font-family: 'Arial', 'Tahoma', sans-serif;
             text-align: right;
+            direction: rtl !important;
         }
 
         a {
@@ -181,6 +183,8 @@
             @php($customer_name = $booking->customer ? $booking?->customer?->first_name.' '.$booking?->customer?->last_name : $booking?->service_address?->contact_person_name)
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
 
+            @php($provider_name = $booking->provider ? $booking?->provider?->user?->first_name.' '.$booking?->provider?->user?->last_name : $booking?->service_address?->contact_person_name)
+
             <div class="white-box-content border rounded-12 border">
                 <div class="border-bottom p-3">
                     <div class="row align-items-center justify-content-between">
@@ -189,6 +193,20 @@
                                 <div class="col">
                                     <div class="fs-9">{{translate('Customer')}}</div>
                                     <div>{{$customer_name}}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="fs-9">{{translate('phone')}}</div>
+                                    <div>{{$customer_phone}}</div>
+                                </div>
+                                <div class="col">
+                                    <div class="fs-9">{{translate('email')}}</div>
+                                    <div>{{$booking?->customer?->email}}</div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="fs-9">{{translate('Provider')}}</div>
+                                    <div>{{$provider_name}}</div>
                                 </div>
                                 <div class="col">
                                     <div class="fs-9">{{translate('phone')}}</div>
