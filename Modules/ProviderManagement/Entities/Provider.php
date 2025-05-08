@@ -93,6 +93,11 @@ class Provider extends Model
         return $this->hasMany(Serviceman::class, 'provider_id');
     }
 
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'provider_id', 'id');
