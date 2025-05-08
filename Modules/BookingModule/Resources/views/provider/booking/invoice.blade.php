@@ -11,6 +11,8 @@
         body {
             background-color: #F9FCFF;
             font-size: 10px !important;
+            font-family: 'Arial', 'Tahoma', sans-serif;
+            text-align: right;
         }
 
         a {
@@ -35,7 +37,6 @@
             max-width: 972px;
             margin-left: auto;
             margin-right: auto;
-
         }
 
         .white-box-content {
@@ -76,10 +77,12 @@
             border-collapse: collapse;
             border-spacing: 0;
             margin-bottom: 20px;
+            direction: rtl;
         }
 
         .invoice table td, .invoice table th {
             padding: 15px;
+            text-align: right;
         }
 
         .invoice table th {
@@ -125,6 +128,27 @@
         .fz-12 {
             font-size: 12px;
         }
+
+        /* RTL specific adjustments */
+        .text-left {
+            text-align: right !important; /* Override for RTL */
+        }
+        .text-right {
+            text-align: left !important; /* Override for RTL */
+        }
+        .border-left {
+            border-right: 1px solid #dee2e6 !important;
+            border-left: none !important;
+        }
+        .text-uppercase {
+            text-transform: capitalize; /* Arabic/Hebrew typically don't use uppercase */
+        }
+
+        /* Numbers should remain LTR */
+        .number, .currency {
+            direction: ltr;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -134,7 +158,7 @@
             <header>
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
+                        <h3 class="fw-700">{{translate("invoice")}}</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
                         <div>{{translate('date')}}: {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
                     </div>
@@ -177,7 +201,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="text-right">
+                            <div class="text-left">
                                 <div>Invoice of ({{currency_code()}})</div>
                                 <h5 class="text-primary fw-700 mb-0 lh-1 mt-1">{{with_currency_symbol($booking->total_booking_amount)}}</h5>
                             </div>
@@ -187,7 +211,6 @@
 
                 <div class="p-3">
                     <div class="row contacts">
-
                         <div class="col">
                             <div>
                                 <div class="fs-9">{{translate('Payment')}}</div>
@@ -213,29 +236,28 @@
                         </div>
                     </div>
 
-
                     <table cellspacing="0" cellpadding="0">
                         <thead>
                             <tr>
-                                <th class="text-left">{{translate('SL')}}</th>
-                                <th class="text-left text-uppercase">{{translate('description')}}</th>
-                                <th class="text-center text-uppercase">{{translate('qty')}}</th>
-                                <th class="text-right text-uppercase">{{translate('cost')}}</th>
-                                <th class="text-right text-uppercase">{{translate('total')}}</th>
+                                <th>{{translate('SL')}}</th>
+                                <th>{{translate('description')}}</th>
+                                <th>{{translate('qty')}}</th>
+                                <th>{{translate('cost')}}</th>
+                                <th>{{translate('total')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php($sub_total=0)
                             @foreach($booking->detail as $index=>$item)
                                 <tr>
-                                    <td class="border-bottom text-left">{{(strlen($index+1)<2?'0':'').$index+1}}</td>
-                                    <td class="border-bottom text-left">
+                                    <td class="border-bottom">{{(strlen($index+1)<2?'0':'').$index+1}}</td>
+                                    <td class="border-bottom">
                                         <div>{{$item->service->name??''}}</div>
                                         <div>{{$item->variant_key}}</div>
                                     </td>
-                                    <td class="border-bottom text-center">{{$item->quantity}}</td>
-                                    <td class="border-bottom text-right">{{with_currency_symbol($item->service_cost)}}</td>
-                                    <td class="border-bottom text-right">{{with_currency_symbol($item->total_cost)}}</td>
+                                    <td class="border-bottom">{{$item->quantity}}</td>
+                                    <td class="border-bottom">{{with_currency_symbol($item->service_cost)}}</td>
+                                    <td class="border-bottom">{{with_currency_symbol($item->total_cost)}}</td>
                                 </tr>
                                 @php($sub_total+=$item->service_cost*$item->quantity)
                             @endforeach
@@ -344,7 +366,7 @@
         <div class="footer p-3">
             <div class="row">
                 <div class="col">
-                    <div class="text-left">
+                    <div class="text-right">
                         {{Request()->getHttpHost()}}
                     </div>
                 </div>
@@ -354,7 +376,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="text-right">
+                    <div class="text-left">
                         {{$business_email->live_values}}
                     </div>
                 </div>
