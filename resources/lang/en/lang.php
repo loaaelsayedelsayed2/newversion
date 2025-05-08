@@ -524,6 +524,7 @@
   'notification' => 'Notification',
   'notification_setup' => 'Notification setup',
   'booking_place_message' => 'Booking place message',
+  'invoice_sent' => 'Invoice sent',
   'booking_service_complete' => 'Booking service complete',
   'want_to_update' => 'Want to update',
   'booking_cancel_message' => 'Booking cancel message',
