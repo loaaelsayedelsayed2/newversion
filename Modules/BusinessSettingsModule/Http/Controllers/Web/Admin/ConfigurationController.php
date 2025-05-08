@@ -48,7 +48,6 @@ class ConfigurationController extends Controller
         $this->authorize('configuration_view');
         $queryParams = $request->type;
         $dataSettingsValue = $this->businessSetting->whereIn('settings_type', ['notification_settings'])->get();
-        dd($dataSettingsValue);
         $dataValues = $this->businessSetting->whereIn('settings_type', ['customer_notification', 'provider_notification', 'serviceman_notification'])->with('translations')->get();
         return view('businesssettingsmodule::admin.notification', compact('dataValues', 'queryParams', 'dataSettingsValue'));
     }
