@@ -194,8 +194,9 @@ h1, h2,h3,h4, h5, h6 {
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
             @php($customer_email = $booking->customer ? $booking?->customer?->email : $booking?->service_address?->contact_person_number)
 
-            @php($provider_name = $booking->provider->users)
-            @php($provider_phone = $booking->provider ? $booking?->provider?->phone : $booking?->service_address?->contact_person_number)
+            @php($provider_name = $booking->provider->users ? $booking?->provider?->users?->first_name.' '.$booking?->provider?->users?->last_name : $booking?->service_address?->contact_person_name)
+            @php($provider_phone = $booking->provider->users ? $booking?->provider?->users?->phone : $booking?->service_address?->contact_person_number)
+            @php($provider_email = $booking->provider ? $booking?->provider?->email : $booking?->service_address?->contact_person_number)
 
             <div class="white-box-content border rounded-12 border">
                 <table>
@@ -227,7 +228,7 @@ h1, h2,h3,h4, h5, h6 {
                                     </td>
                                     <td>
                                         <div class="fs-9">{{translate('email')}}</div>
-                                        <div>{{$booking?->provider?->user?->email}}</div>
+                                        <div>{{$provider_email}}</div>
                                     </td>
                                 </tr>
                             </table>
