@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,6 +12,8 @@
             font-size: 10px !important;
             line-height: 1.6;
             font-family: "Inter", sans-serif;
+            direction: rtl !important;
+
         }
 
         a {
