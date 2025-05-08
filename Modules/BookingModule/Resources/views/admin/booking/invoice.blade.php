@@ -194,7 +194,7 @@ h1, h2,h3,h4, h5, h6 {
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
             @php($customer_email = $booking->customer ? $booking?->customer?->email : $booking?->service_address?->contact_person_number)
 
-            @php($provider_name = $booking->provider->user)
+            @php($provider_name = $booking->provider->users)
             @php($provider_phone = $booking->provider ? $booking?->provider?->phone : $booking?->service_address?->contact_person_number)
 
             <div class="white-box-content border rounded-12 border">
