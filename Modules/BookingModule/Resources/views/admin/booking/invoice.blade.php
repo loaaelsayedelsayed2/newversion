@@ -170,11 +170,13 @@ h1, h2,h3,h4, h5, h6 {
                     <td>
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
-                        <div>
-                            <strong>{{ translate('Request Date') }}:</strong>
-                            <span style="color: #555;">{{ date('d', strtotime($booking->created_at)) }} {{ translate(date('F', strtotime($booking->created_at))) }} {{ date('Y', strtotime($booking->created_at)) }}</span>
-                            <span style="margin: 0 5px; color: #999;">|</span>
-                            <span style="color: #555;">{{ date('h:i', strtotime($booking->created_at)) }} {{ translate(date('a', strtotime($booking->created_at))) }}</span>
+                        <div class="fs-9">
+                            <?php
+                                $dateTime = strtotime($booking->created_at);
+                                $datePart = date('d-M-Y', $dateTime);
+                                $timePart = date('h:ia', $dateTime);
+                            ?>
+                                {{ translate('Request Date') }} : {{ $datePart }} <br> {{ $timePart }}
                         </div>
                     </td>
                     <td class="company-details">
@@ -278,8 +280,9 @@ h1, h2,h3,h4, h5, h6 {
                                         $datePart = date('d-M-Y', $dateTime);
                                         $timePart = date('h:ia', $dateTime);
                                     ?>
-                                        {{ translate('Request Date') }}: {{ $datePart }} | {{ $timePart }}
-                                    </div>
+                                        {{ translate('Request Date') }} : {{ $datePart }}
+                                        {{ translate('Request Time') }} : {{ $timePart }}
+                                </div>
                                 <div class="fs-9">
                                     <?php
                                         $dateTimeRequest = strtotime($booking->created_at);
