@@ -38,7 +38,7 @@ class ProviderFilterService
             }
 
             if ($request->has('rating')) {
-                $query->orderBy('avg_rating', $request->input('rating') == 'asc' ? 'asc' : 'desc');
+                $query->orderBy('avg_rating', strtolower($request->input('rating')) === 'asc' ? 'asc' : 'desc');
             }
         };
     }
