@@ -258,7 +258,6 @@
             </div>
         </div>
     </div>
-    <div class="invoice-footer">{{translate('All rights reserved By ')}}@ {{$business_name->live_values}} {{date("Y")}}</div>
 </div>
 
 
