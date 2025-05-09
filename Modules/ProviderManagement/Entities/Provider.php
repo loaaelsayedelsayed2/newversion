@@ -78,15 +78,17 @@ class Provider extends Model
         return $this->hasMany(Booking::class, 'provider_id')->where('booking_status', $booking_status);
     }
 
+    public function favoriteCustomers()
+    {
+        return $this->belongsToMany(User::class, 'favorite_providers', 'provider_id', 'customer_user_id')
+            ->withTimestamps();
+    }
+
     public function favorites(): HasMany
     {
         return $this->hasMany(FavoriteProvider::class, 'provider_id', 'id');
     }
 
-    public function favoriteCustomers()
-    {
-        return $this->belongsToMany(User::class, 'favorite_providers', 'provider_id', 'customer_user_id');
-    }
 
     public function subscribed_services(): HasMany
     {
