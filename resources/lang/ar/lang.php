@@ -296,7 +296,7 @@
   'Account' => 'حساب',
   'Canceled' => 'تم الإلغاء',
   'Completed' => 'مكتمل',
-  'Ongoing' => 'مستمر',
+  'Ongoing' => 'جاري التنفيذ',
   'Accepted' => 'مقبول',
   'Booking_Requests' => 'طلبات الحجز',
   'Bookings' => 'الحجوزات',
@@ -342,7 +342,7 @@
   'total_services' => 'إجمالي الخدمات',
   'total_bookings' => 'إجمالي الحجوزات',
   'canceled' => 'تم الإلغاء',
-  'ongoing' => 'مستمر',
+  'ongoing' => 'جاري التنفيذ',
   'subscribed_providers' => 'مقدمي الخدمات المشتركين',
   'reviews' => 'المراجعات',
   'faq' => 'التعليمات',
@@ -3601,7 +3601,7 @@ _Message' => 'إشعار العميل برسالة أن مقدم الخدمة أ
   'No Uploaded Images' => 'لا توجد صور تم تحميلها',
   'Change of mind is not applicable as a reason for refund' => 'لا ينطبق تغيير الرأي كسبب لاسترداد الأموال',
   'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'يرجى الملاحظه ان الغاء الخدمة بسبب تغير الراي أو عدم الرغبة فى اتمامها، لا يعتبر سببا مقبولا لاسترجاع المبلغ بعد تاكيد الطلب',
-  
+
   'user_image' => 'صورة المستخدم',
   'Edited' => 'تم تحريره',
   4799 => '4799',
