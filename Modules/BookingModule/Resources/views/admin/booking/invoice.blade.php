@@ -170,7 +170,14 @@ h1, h2,h3,h4, h5, h6 {
                     <td>
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
-                        <div>{{translate('date')}}: {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
+                        <div>
+                            <?php
+                                $dateTime = strtotime($booking->created_at);
+                                $datePart = date('d-M-Y', $dateTime);
+                                $timePart = date('h:ia', $dateTime);
+                            ?>
+                            {{ translate('Request Date') }}: {{ $datePart }} | {{ $timePart }}
+                        </div>
                     </td>
                     <td class="company-details">
                         <a target="_blank" href="#">
@@ -273,15 +280,15 @@ h1, h2,h3,h4, h5, h6 {
                                         $datePart = date('d-M-Y', $dateTime);
                                         $timePart = date('h:ia', $dateTime);
                                     ?>
-                                    {{translate('Request Date')}} : {{$datePart}} {{$timePart}}
-                                </div>
+                                        {{ translate('Request Date') }}: {{ $datePart }} | {{ $timePart }}
+                                    </div>
                                 <div class="fs-9">
                                     <?php
                                         $dateTimeRequest = strtotime($booking->created_at);
                                         $datePartRequest = date('d-M-Y', $dateTimeRequest);
                                         $timePartRequest = date('h:ia', $dateTimeRequest);
                                     ?>
-                                    {{translate('Service Date')}} : {{$datePartRequest}} {{$timePartRequest}}
+                                    {{translate('Service Date')}} : {{$datePartRequest}} | {{$timePartRequest}}
                                 </div>
                             </td>
                         </tr>
