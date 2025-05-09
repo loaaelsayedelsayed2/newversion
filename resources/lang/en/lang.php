@@ -3604,6 +3604,8 @@ _Message' => 'Customer notification for provider bid offer
   'No Lead Service Information' => 'No Lead Service Information',
   'No Uploaded Images' => 'No Uploaded Images',
   'Change of mind is not applicable as a reason for refund' => 'Change of mind is not applicable as a reason for refund',
+  'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.',
+  
   'user_image' => 'User image',
   'Edited' => 'Edited',
   4799 => '4799',

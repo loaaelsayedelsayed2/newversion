@@ -3600,6 +3600,8 @@ _Message' => 'إشعار العميل برسالة أن مقدم الخدمة أ
   'No Lead Service Information' => 'لا توجد معلومات خدمة الرصاص',
   'No Uploaded Images' => 'لا توجد صور تم تحميلها',
   'Change of mind is not applicable as a reason for refund' => 'لا ينطبق تغيير الرأي كسبب لاسترداد الأموال',
+  'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'يرجى الملاحظه ان الغاء الخدمة بسبب تغير الراي أو عدم الرغبة فى اتمامها، لا يعتبر سببا مقبولا لاسترجاع المبلغ بعد تاكيد الطلب',
+  
   'user_image' => 'صورة المستخدم',
   'Edited' => 'تم تحريره',
   4799 => '4799',

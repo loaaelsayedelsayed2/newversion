@@ -430,7 +430,7 @@ h1, h2,h3,h4, h5, h6 {
             <tr>
                 <td>
                     <div class="text-left">
-                        www.{{ Request()->getHttpHost() }}
+                        <link rel="stylesheet" href="{{ Request()->getHttpHost() }}">
                     </div>
                 </td>
                 <td>
