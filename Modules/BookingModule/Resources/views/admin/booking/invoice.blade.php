@@ -287,10 +287,10 @@ h1, h2,h3,h4, h5, h6 {
                                 <div class="fs-9">
                                     <?php
                                         $dateTimeRequest = strtotime($booking->created_at);
-                                        $datePartRequest = date('d-M-Y', $dateTimeRequest);
+                                        $datePartRequest = date('d-Y-M', $dateTimeRequest);
                                         $timePartRequest = date('h:ia', $dateTimeRequest);
                                     ?>
-                                    {{translate('Service Date')}} : {{$datePartRequest}}
+                                    {{translate('Service Date')}} : {{$datePartRequest}} <br>
                                     {{translate('Service Time')}} : {{$timePartRequest}}
                                 </div>
                             </td>
@@ -300,10 +300,10 @@ h1, h2,h3,h4, h5, h6 {
                     <table cellspacing="0" cellpadding="0">
                         <thead>
                         <tr>
-                            <th class="text-left">{{translate('SL')}}</th>
+                            <th class="text-left">{{translate('number')}}</th>
                             <th class="text-left text-uppercase">{{translate('description')}}</th>
                             <th class="text-center text-uppercase">{{translate('qty')}}</th>
-                            <th class="text-right text-uppercase">{{translate('cost')}}</th>
+                            <th class="text-right text-uppercase">{{translate('price')}}</th>
                             <th class="text-right text-uppercase">{{translate('total')}}</th>
 
                         </tr>
@@ -430,7 +430,7 @@ h1, h2,h3,h4, h5, h6 {
             <tr>
                 <td>
                     <div class="text-left">
-                        {{Request()->getHttpHost()}}
+                        www.{{ Request()->getHttpHost() }}
                     </div>
                 </td>
                 <td>
