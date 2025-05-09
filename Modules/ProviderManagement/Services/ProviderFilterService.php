@@ -41,7 +41,8 @@ class ProviderFilterService
                 $query->orderBy('avg_rating', 'desc');
             }
 
-            if ($request->has('favorites_only') && $request->user()) {
+            if ($request->has('favorites_only')) {
+                dd('favorites_only');
                 $customerUserId = $request->user()->id;
                 $query->whereHas('favorites', function ($q) use ($customerUserId) {
                     $q->where('customer_id', $customerUserId);
