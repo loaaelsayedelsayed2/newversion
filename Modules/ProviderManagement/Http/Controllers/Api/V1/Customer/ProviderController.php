@@ -13,6 +13,7 @@ use Modules\CategoryManagement\Entities\Category;
 use Modules\ProviderManagement\Entities\FavoriteProvider;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\ProviderManagement\Entities\SubscribedService;
+use Modules\ProviderManagement\Services\ProviderFilterService;
 use Modules\ReviewModule\Entities\Review;
 use Modules\ServiceManagement\Entities\FavoriteService;
 use Modules\ServiceManagement\Entities\Service;
@@ -242,6 +243,7 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
+        $filterService = app(ProviderFilterService::class);
         $providers = $this->provider->with(['owner'])
             ->where('zone_id', Config::get('zone_id'))
             ->whereHas('subscribed_services', function ($query) use ($request) {
@@ -250,7 +252,11 @@ class ProviderController extends Controller
             ->where('service_availability', 1)
             ->where('is_suspended', 0)
             ->where('is_active', 1)
+            // ->when(true, function($query) use ($filterService, $request) {
+            //     return $filterService->applyAdditionalFilters($query, $request->all());
+            // })
             ->get();
+            dd($providers);
 
         $eligibleProviders = [];
 
