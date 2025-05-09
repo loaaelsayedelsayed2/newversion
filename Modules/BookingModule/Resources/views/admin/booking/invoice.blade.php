@@ -170,13 +170,11 @@ h1, h2,h3,h4, h5, h6 {
                     <td>
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
-                        <div>
-                            <?php
-                                $dateTime = strtotime($booking->created_at);
-                                $datePart = date('d-M-Y', $dateTime);
-                                $timePart = date('h:ia', $dateTime);
-                            ?>
-                            {{ translate('Request Date') }}: {{ $datePart }} | {{ $timePart }}
+                        <div style="direction: rtl; font-family: 'Traditional Arabic', Arial, sans-serif;">
+                            <strong>{{ translate('Request Date') }}:</strong>
+                            <span>{{ date('d', strtotime($booking->created_at)) }} {{ translate(date('F', strtotime($booking->created_at)))) }} {{ date('Y', strtotime($booking->created_at)) }}</span>
+                            <span style="margin: 0 5px;">|</span>
+                            <span>{{ date('h:i', strtotime($booking->created_at)) }} {{ translate(date('a', strtotime($booking->created_at)))) }}</span>
                         </div>
                     </td>
                     <td class="company-details">
@@ -256,7 +254,7 @@ h1, h2,h3,h4, h5, h6 {
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
                                     <div class="mt-1">
-                                        Moyasar
+                                        "دفع الكتروني"
          </div>
                                 </div>
                                 <div class="mt-3">
