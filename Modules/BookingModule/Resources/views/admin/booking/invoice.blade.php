@@ -176,7 +176,8 @@ h1, h2,h3,h4, h5, h6 {
                                 $datePart = date('d-M-Y', $dateTime);
                                 $timePart = date('h:ia', $dateTime);
                             ?>
-                                {{ translate('Request Date') }} : {{ $datePart }} <br> {{ $timePart }}
+                                {{ translate('Request Date') }} : {{ $datePart }} <br>
+                                {{ translate('Request Time') }} : {{ $timePart }}
                         </div>
                     </td>
                     <td class="company-details">
@@ -280,7 +281,7 @@ h1, h2,h3,h4, h5, h6 {
                                         $datePart = date('d-M-Y', $dateTime);
                                         $timePart = date('h:ia', $dateTime);
                                     ?>
-                                        {{ translate('Request Date') }} : {{ $datePart }}
+                                        {{ translate('Request Date') }} : {{ $datePart }} <br>
                                         {{ translate('Request Time') }} : {{ $timePart }}
                                 </div>
                                 <div class="fs-9">
@@ -289,7 +290,8 @@ h1, h2,h3,h4, h5, h6 {
                                         $datePartRequest = date('d-M-Y', $dateTimeRequest);
                                         $timePartRequest = date('h:ia', $dateTimeRequest);
                                     ?>
-                                    {{translate('Service Date')}} : {{$datePartRequest}} | {{$timePartRequest}}
+                                    {{translate('Service Date')}} : {{$datePartRequest}}
+                                    {{translate('Service Time')}} : {{$timePartRequest}}
                                 </div>
                             </td>
                         </tr>
