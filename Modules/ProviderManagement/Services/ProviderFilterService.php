@@ -14,8 +14,18 @@ class ProviderFilterService
             if ($request->has('latitude') && $request->has('longitude')) {
                 $latitude = $request->input('latitude');
                 $longitude = $request->input('longitude');
-
-                $query->orderByRaw(
+                $radius = $request->input('radius', 5);
+                $distance = $radius / 111.32;
+                $query->whereRaw(
+                    "ST_Distance_Sphere(
+                        POINT(?, ?),
+                        POINT(
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lng')),
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lat'))
+                        )
+                    ) <= ? * 1000", 
+                    [$longitude, $latitude, $radius]
+                )->orderByRaw(
                     "ST_Distance_Sphere(
                         POINT(?, ?),
                         POINT(
