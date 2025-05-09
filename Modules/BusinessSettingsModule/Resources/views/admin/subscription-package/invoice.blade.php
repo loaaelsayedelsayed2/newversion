@@ -238,8 +238,8 @@
                             <th>{{translate('Transaction ID')}}</th>
                             <th>{{translate('Package Name')}}</th>
                             <th>{{translate('Time')}}</th>
-                            <th>{{translate('Validity')}}</th>
-                            <th>{{translate('Amount')}}</th>
+                            <th>{{translate('Duration')}}</th>
+                            <th>{{translate('Price')}}</th>
                         </tr>
                         </thead>
                         <tbody>
