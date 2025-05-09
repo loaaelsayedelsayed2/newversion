@@ -14,7 +14,7 @@ class ProviderFilterService
             if ($request->has('latitude') && $request->has('longitude')) {
                 $latitude = $request->input('latitude');
                 $longitude = $request->input('longitude');
-                $radius = $request->input('radius', 5); // Default radius 5 km
+                $radius = $request->input('radius', 5);
 
                 $query->whereRaw(
                     "ST_Distance_Sphere(
@@ -35,6 +35,10 @@ class ProviderFilterService
                     )",
                     [$longitude, $latitude]
                 );
+            }
+
+            if ($request->has('rating')) {
+                $query->orderBy('avg_rating', $request->input('rating') == 'asc' ? 'asc' : 'desc');
             }
         };
     }
