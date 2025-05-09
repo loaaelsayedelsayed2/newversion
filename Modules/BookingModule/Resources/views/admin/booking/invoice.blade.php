@@ -423,14 +423,14 @@ h1, h2,h3,h4, h5, h6 {
 
         <div style="padding:24px 0">
             <div class="fw-700">{{translate('Terms & Conditions')}}</div>
-            <div>{{translate('Change of mind is not applicable as a reason for refund')}}</div>
+            <div>{{translate('Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.')}}</div>
         </div>
 
         <table class="footer">
             <tr>
                 <td>
                     <div class="text-left">
-                        <link rel="stylesheet" href="{{ Request()->getHttpHost() }}">
+                        <a href="{{ url('/') }}">{{ Request()->getHttpHost() }}</a>
                     </div>
                 </td>
                 <td>
