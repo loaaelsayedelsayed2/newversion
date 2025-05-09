@@ -256,7 +256,6 @@ class ProviderController extends Controller
             //     return $filterService->applyAdditionalFilters($query, $request->all());
             // })
             ->get();
-            dd($providers);
 
         $eligibleProviders = [];
 
