@@ -5,11 +5,12 @@ namespace Modules\ProviderManagement\Services;
 
 class ProviderFilterService
 {
-    public function applyAdditionalFilters($query, $filters = [])
+    public function applyAdditionalFilters($request)
     {
-        if (isset($filters['name'])) {
-            $query->where('company_name',$filters['name']);
-        }
-        return $query;
+        return function ($query) use ($request) {
+            if ($request->has('name')) {
+                $query->where('company_name', 'like', '%' . $request->input('name') . '%');
+            }
+        };
     }
 }

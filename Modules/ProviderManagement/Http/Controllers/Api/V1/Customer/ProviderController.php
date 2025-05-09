@@ -253,7 +253,7 @@ class ProviderController extends Controller
             ->where('service_availability', 1)
             ->where('is_suspended', 0)
             ->where('is_active', 1)
-            ->filter($filterService->applyAdditionalFilters($request))
+            ->where($filterService->applyAdditionalFilters($request))
             ->get();
 
         $eligibleProviders = [];
