@@ -83,6 +83,11 @@ class Provider extends Model
         return $this->hasMany(FavoriteProvider::class, 'provider_id', 'id');
     }
 
+    public function favoriteCustomers()
+    {
+        return $this->belongsToMany(User::class, 'favorite_providers', 'provider_id', 'customer_user_id');
+    }
+
     public function subscribed_services(): HasMany
     {
         return $this->hasMany(SubscribedService::class, 'provider_id')->where('is_subscribed', 1);
@@ -95,7 +100,7 @@ class Provider extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function reviews(): HasMany
@@ -171,8 +176,8 @@ class Provider extends Model
 
         static::saved(function ($model) {
             $storageType = getDisk();
-            if($model->isDirty('logo') && $storageType != 'public'){
-                saveSingleImageDataToStorage(model: $model, modelColumn : 'logo', storageType : $storageType);
+            if ($model->isDirty('logo') && $storageType != 'public') {
+                saveSingleImageDataToStorage(model: $model, modelColumn: 'logo', storageType: $storageType);
             }
         });
     }

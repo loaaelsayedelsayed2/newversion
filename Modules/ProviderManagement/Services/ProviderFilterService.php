@@ -38,16 +38,15 @@ class ProviderFilterService
             }
 
             if ($request->has('rating')) {
-                $query->orderBy('avg_rating','desc');
+                $query->orderBy('avg_rating', 'desc');
             }
 
             if ($request->has('favorites_only') && $request->user()) {
                 $customerUserId = $request->user()->id;
-                $query->whereHas('favorites', function($q) use ($customerUserId) {
+                $query->whereHas('favoriteCustomers', function($q) use ($customerUserId) {
                     $q->where('customer_user_id', $customerUserId);
                 });
             }
-
         };
     }
 }
