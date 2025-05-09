@@ -30,6 +30,7 @@ class ProviderController extends Controller
     private Variation $variation;
     private FavoriteProvider $favoriteProvider;
     private FavoriteService $favoriteService;
+    protected $customer_user_id;
 
     public function __construct(Provider $provider, Review $review, Category $category, SubscribedService $subscribed_service, Booking $booking, Service $service, Variation $variation, FavoriteProvider $favoriteProvider, FavoriteService $favoriteService, Request $request)
     {

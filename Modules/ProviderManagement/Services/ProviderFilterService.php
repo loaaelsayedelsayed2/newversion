@@ -7,10 +7,9 @@ class ProviderFilterService
 {
     public function applyAdditionalFilters($query, $filters = [])
     {
-        if (isset($filters['name'])) {
-            $query->where('company_name', $filters['name']);
+        if (isset($filters['name']) && !empty($filters['name'])) {
+            $query->where('company_name', 'like', '%' . $filters['name'] . '%');
         }
-
         return $query;
     }
 }
