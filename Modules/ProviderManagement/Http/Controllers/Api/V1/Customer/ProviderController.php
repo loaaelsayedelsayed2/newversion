@@ -246,7 +246,8 @@ class ProviderController extends Controller
     {
         $filterService = app(ProviderFilterService::class);
         $providers = $this->provider->with(['owner'])
-            ->where('zone_id', Config::get('zone_id'))
+            // ->where('zone_id', Config::get('zone_id'))
+            ->where('zoneId', $request->header('zoneId'))
             ->whereHas('subscribed_services', function ($query) use ($request) {
                 $query->where('sub_category_id', $request['sub_category_id']);
             })
