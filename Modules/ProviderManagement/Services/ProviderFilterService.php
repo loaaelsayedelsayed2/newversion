@@ -20,8 +20,8 @@ class ProviderFilterService
                     "ST_Distance_Sphere(
                         POINT(?, ?),
                         POINT(
-                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lng')),
-                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lat'))
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.longitude')),
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.latitude'))
                         )
                     ) <= ? * 1000",
                     [$longitude, $latitude, $radius]
@@ -29,8 +29,8 @@ class ProviderFilterService
                     "ST_Distance_Sphere(
                         POINT(?, ?),
                         POINT(
-                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lng')),
-                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.lat'))
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.longitude')),
+                            JSON_UNQUOTE(JSON_EXTRACT(coordinates, '$.latitude'))
                         )
                     )",
                     [$longitude, $latitude]
