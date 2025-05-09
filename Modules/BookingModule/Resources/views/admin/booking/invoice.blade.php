@@ -267,10 +267,22 @@ h1, h2,h3,h4, h5, h6 {
 
                             <td class="border-left">
                                 <h6 class="fz-12">{{translate('Service Time')}}</h6>
-                                <div class="fs-9">{{translate('Request Date')}}
-                                    : {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
-                                <div class="fs-9">{{translate('Service Date')}}
-                                    : {{date('d-M-Y h:ia',strtotime($booking->service_schedule))}}</div>
+                                <div class="fs-9">
+                                    <?php
+                                        $dateTime = strtotime($booking->created_at);
+                                        $datePart = date('d-M-Y', $dateTime);
+                                        $timePart = date('h:ia', $dateTime);
+                                    ?>
+                                    {{translate('Request Date')}} : {{$datePart}} {{$timePart}}
+                                </div>
+                                <div class="fs-9">
+                                    <?php
+                                        $dateTimeRequest = strtotime($booking->created_at);
+                                        $datePartRequest = date('d-M-Y', $dateTimeRequest);
+                                        $timePartRequest = date('h:ia', $dateTimeRequest);
+                                    ?>
+                                    {{translate('Service Date')}} : {{$datePartRequest}} {{$timePartRequest}}
+                                </div>
                             </td>
                         </tr>
                     </table>
