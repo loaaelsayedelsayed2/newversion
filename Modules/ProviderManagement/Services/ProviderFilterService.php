@@ -43,8 +43,8 @@ class ProviderFilterService
 
             if ($request->has('favorites_only') && $request->user()) {
                 $customerUserId = $request->user()->id;
-                $query->whereHas('favoriteCustomers', function($q) use ($customerUserId) {
-                    $q->where('customer_user_id', $customerUserId);
+                $query->whereHas('favorites', function ($q) use ($customerUserId) {
+                    $q->where('customer_id', $customerUserId);
                 });
             }
         };
