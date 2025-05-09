@@ -170,11 +170,11 @@ h1, h2,h3,h4, h5, h6 {
                     <td>
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
-                        <div style="direction: rtl; font-family: Arial, sans-serif;">
+                        <div>
                             <strong>{{ translate('Request Date') }}:</strong>
-                            <span style="color: #555;">{{ date('d-M-Y', strtotime($booking->created_at)) }}</span>
+                            <span style="color: #555;">{{ date('d', strtotime($booking->created_at)) }} {{ translate(date('F', strtotime($booking->created_at))) }} {{ date('Y', strtotime($booking->created_at)) }}</span>
                             <span style="margin: 0 5px; color: #999;">|</span>
-                            <span style="color: #555;">{{ date('h:ia', strtotime($booking->created_at)) }}</span>
+                            <span style="color: #555;">{{ date('h:i', strtotime($booking->created_at)) }} {{ translate(date('a', strtotime($booking->created_at))) }}</span>
                         </div>
                     </td>
                     <td class="company-details">
