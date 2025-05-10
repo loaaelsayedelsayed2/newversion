@@ -321,7 +321,9 @@ class SubscriptionPackageController extends Controller
 
             $packageLog = PackageSubscriberLog::where('provider_id', $provider->id)
                 ->where('subscription_package_id', $request->package_subscription_id)->first();
-            dd($packageLog);
+
+            $packageFeature = SubscriptionPackageFeature::where('subscription_package_id', $request->package_subscription_id)->get();
+            dd($packageFeature);
             if ($request->status == 'success') {
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
