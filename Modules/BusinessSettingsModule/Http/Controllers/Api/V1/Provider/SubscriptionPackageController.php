@@ -318,12 +318,6 @@ class SubscriptionPackageController extends Controller
                 DB::rollBack();
                 return response()->json(response_formatter(DEFAULT_404, 'Package not found'), 404);
             }
-
-            $packageLog = PackageSubscriberLog::where('provider_id', $provider->id)
-                ->where('subscription_package_id', $request->package_subscription_id)->first();
-
-            $packageFeature = SubscriptionPackageFeature::where('subscription_package_id', $request->package_subscription_id)->get();
-            dd($packageFeature);
             if ($request->status == 'success') {
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
@@ -364,8 +358,21 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriberLog->payment_method = 'Moyasar';
                 $packageSubscriberLog->save();
 
+                $packageSubscriber->package_subscriber_log_id = $packageSubscriberLog->id;
+                $packageSubscriber->save();
+
+                $features = SubscriptionPackageFeature::where('subscription_package_id', $package->id)->get();
+                foreach ($features as $feature) {
+                    $packageSubscriberFeature = new PackageSubscriberFeature();
+                    $packageSubscriberFeature->provider_id = $provider->id;
+                    $packageSubscriberFeature->package_subscriber_log_id = $packageSubscriberLog->id;
+                    $packageSubscriberFeature->feature = $feature->feature;
+                    $packageSubscriberFeature->save();
+                }
+
+
                 DB::commit();
-                return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
+                return response()->json(response_formatter(DEFAULT_200, $features), 200);
             } else {
                 DB::rollBack();
                 return response()->json(response_formatter(DEFAULT_400, 'Subscription Failed'), 400);
