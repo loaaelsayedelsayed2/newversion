@@ -307,6 +307,7 @@ class SubscriptionPackageController extends Controller
             $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
                 ->where('provider_id', $provider->id)->first();
 
+
             if (!$packageSubscriber) {
                 DB::rollBack();
                 return response()->json(response_formatter(DEFAULT_400, 'Invalid package subscription'), 400);
@@ -318,6 +319,9 @@ class SubscriptionPackageController extends Controller
                 return response()->json(response_formatter(DEFAULT_404, 'Package not found'), 404);
             }
 
+            $packageLog = PackageSubscriberLog::where('provider_id', $provider->id)
+                ->where('subscription_package_id', $request->package_subscription_id)->first();
+            dd($packageLog);
             if ($request->status == 'success') {
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
