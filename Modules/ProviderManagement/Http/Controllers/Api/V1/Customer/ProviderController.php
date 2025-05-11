@@ -261,8 +261,9 @@ class ProviderController extends Controller
             $userCoordinates = $this->getUserCoordinates($user);
             if ($userCoordinates) {
                 $query->orderByRaw(
-                    'ST_Distance(location, ST_GeomFromText(?, 4326))',
-                    ['POINT(' . $userCoordinates['longitude'] . ' ' . $userCoordinates['latitude'] . ')']
+                    'SQRT(POW(69.1 * (JSON_EXTRACT(coordinates, "$.latitude") - ?), 2) +
+                    POW(69.1 * (? - JSON_EXTRACT(coordinates, "$.longitude")) * COS(JSON_EXTRACT(coordinates, "$.latitude") / 57.3), 2))',
+                    [$userCoordinates['latitude'], $userCoordinates['longitude']]
                 );
             }
         }
