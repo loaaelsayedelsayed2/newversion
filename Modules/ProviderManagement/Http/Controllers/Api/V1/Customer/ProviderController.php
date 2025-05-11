@@ -31,6 +31,8 @@ class ProviderController extends Controller
     private FavoriteProvider $favoriteProvider;
     private FavoriteService $favoriteService;
     protected $customer_user_id;
+    protected $is_customer_logged_in;
+    private Review $review;
 
     public function __construct(Provider $provider, Review $review, Category $category, SubscribedService $subscribed_service, Booking $booking, Service $service, Variation $variation, FavoriteProvider $favoriteProvider, FavoriteService $favoriteService, Request $request)
     {
@@ -245,6 +247,7 @@ class ProviderController extends Controller
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
         $user = auth('api')->user();
+        dd($user->latitude);
         $userArea = $user->zones;
         $filterService = app(ProviderFilterService::class);
         $query = $this->provider->with(['owner', 'favorites'])
@@ -265,19 +268,6 @@ class ProviderController extends Controller
                 $q->where('customer_user_id', $customerUserId);
             });
         }
-        // }
-        // if ($request->has('favorites_only') || $request->has('rating')) {
-            // $query->
-        // } else {
-        //     $userCoordinates = $this->getUserCoordinates($user);
-        //     if ($userCoordinates) {
-        //         $query->orderByRaw(
-        //             'SQRT(POW(69.1 * (JSON_EXTRACT(coordinates, "$.latitude") - ?), 2) +
-        //             POW(69.1 * (? - JSON_EXTRACT(coordinates, "$.longitude")) * COS(JSON_EXTRACT(coordinates, "$.latitude") / 57.3), 2))',
-        //             [$userCoordinates['latitude'], $userCoordinates['longitude']]
-        //         );
-        //     }
-        // }
         $providers = $query->get();
 
         $eligibleProviders = [];
