@@ -245,18 +245,24 @@ class ProviderController extends Controller
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
         $user = auth('api')->user();
-        dd($user->zones);
+        $userArea = $user->zones;
         $filterService = app(ProviderFilterService::class);
-        $providers = $this->provider->with(['owner', 'favorites'])
+        $query = $this->provider->with(['owner', 'favorites'])
         ->where('zone_id', Config::get('zone_id'))
         ->whereHas('subscribed_services', function ($query) use ($request) {
             $query->where('sub_category_id', $request['sub_category_id']);
         })
         ->where('service_availability', 1)
         ->where('is_suspended', 0)
-        ->where('is_active', 1)
-        ->where($filterService->applyAdditionalFilters($request))
-        ->get();
+        ->where('is_active', 1);
+        if ($request->has('favorites_only') || $request->has('rating')) {
+            $query->where($filterService->applyAdditionalFilters($request));
+        } else {
+            if ($userArea) {
+                $query->orderByRaw('ST_Distance(location, ST_GeomFromText(?, 4326))', ['POINT(' . $userArea->longitude . ' ' . $userArea->latitude . ')']);
+            }
+        }
+        $providers = $query->get();
 
         $eligibleProviders = [];
 
