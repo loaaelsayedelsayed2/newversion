@@ -254,8 +254,7 @@ class ProviderController extends Controller
         })
         ->where('service_availability', 1)
         ->where('is_suspended', 0)
-        ->where('is_active', 1)
-        ->where($filterService->applyAdditionalFilters($request));
+        ->where('is_active', 1);
         if ($request->has('rating')) {
             $query->orderBy('avg_rating', 'desc');
         }
