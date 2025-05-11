@@ -254,10 +254,11 @@ class ProviderController extends Controller
         })
         ->where('service_availability', 1)
         ->where('is_suspended', 0)
-        ->where('is_active', 1);
-        if ($request->has('favorites_only') || $request->has('rating')) {
-            $query->where($filterService->applyAdditionalFilters($request));
-        }
+        ->where('is_active', 1)
+        ->where($filterService->applyAdditionalFilters($request));
+        // }
+        // if ($request->has('favorites_only') || $request->has('rating')) {
+            // $query->
         // } else {
         //     $userCoordinates = $this->getUserCoordinates($user);
         //     if ($userCoordinates) {
