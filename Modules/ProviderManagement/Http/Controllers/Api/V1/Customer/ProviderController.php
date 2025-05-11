@@ -258,8 +258,12 @@ class ProviderController extends Controller
         if ($request->has('favorites_only') || $request->has('rating')) {
             $query->where($filterService->applyAdditionalFilters($request));
         } else {
-            if ($userArea) {
-                $query->orderByRaw('ST_Distance(location, ST_GeomFromText(?, 4326))', ['POINT(' . $userArea->longitude . ' ' . $userArea->latitude . ')']);
+            $userCoordinates = $this->getUserCoordinates($user);
+            if ($userCoordinates) {
+                $query->orderByRaw(
+                    'ST_Distance(location, ST_GeomFromText(?, 4326))',
+                    ['POINT(' . $userCoordinates['longitude'] . ' ' . $userCoordinates['latitude'] . ')']
+                );
             }
         }
         $providers = $query->get();
@@ -443,6 +447,33 @@ class ProviderController extends Controller
         }
 
         return response()->json(response_formatter(DEFAULT_200, $data), 200);
+    }
+
+    protected function getUserCoordinates($user)
+    {
+        if ($user->zones instanceof \Illuminate\Database\Eloquent\Collection) {
+            $zone = $user->zones->first();
+            if ($zone) {
+                return [
+                    'latitude' => $zone->latitude,
+                    'longitude' => $zone->longitude
+                ];
+            }
+        }
+        elseif ($user->zones && isset($user->zones->latitude)) {
+            return [
+                'latitude' => $user->zones->latitude,
+                'longitude' => $user->zones->longitude
+            ];
+        }
+        elseif ($user->location) {
+            return [
+                'latitude' => $user->location->latitude,
+                'longitude' => $user->location->longitude
+            ];
+        }
+
+        return null;
     }
 
 }
