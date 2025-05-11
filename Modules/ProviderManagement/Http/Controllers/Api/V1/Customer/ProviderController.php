@@ -244,7 +244,8 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
-        dd(auth('api')->user());
+        $user = auth('api')->user();
+        dd($user->zones);
         $filterService = app(ProviderFilterService::class);
         $providers = $this->provider->with(['owner', 'favorites'])
         ->where('zone_id', Config::get('zone_id'))
