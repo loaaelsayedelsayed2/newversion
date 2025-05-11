@@ -257,16 +257,17 @@ class ProviderController extends Controller
         ->where('is_active', 1);
         if ($request->has('favorites_only') || $request->has('rating')) {
             $query->where($filterService->applyAdditionalFilters($request));
-        } else {
-            $userCoordinates = $this->getUserCoordinates($user);
-            if ($userCoordinates) {
-                $query->orderByRaw(
-                    'SQRT(POW(69.1 * (JSON_EXTRACT(coordinates, "$.latitude") - ?), 2) +
-                    POW(69.1 * (? - JSON_EXTRACT(coordinates, "$.longitude")) * COS(JSON_EXTRACT(coordinates, "$.latitude") / 57.3), 2))',
-                    [$userCoordinates['latitude'], $userCoordinates['longitude']]
-                );
-            }
         }
+        // } else {
+        //     $userCoordinates = $this->getUserCoordinates($user);
+        //     if ($userCoordinates) {
+        //         $query->orderByRaw(
+        //             'SQRT(POW(69.1 * (JSON_EXTRACT(coordinates, "$.latitude") - ?), 2) +
+        //             POW(69.1 * (? - JSON_EXTRACT(coordinates, "$.longitude")) * COS(JSON_EXTRACT(coordinates, "$.latitude") / 57.3), 2))',
+        //             [$userCoordinates['latitude'], $userCoordinates['longitude']]
+        //         );
+        //     }
+        // }
         $providers = $query->get();
 
         $eligibleProviders = [];
