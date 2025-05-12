@@ -54,7 +54,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'custom_url' => 'https://zabbetny.com/',
+    'custom_url' => 'https://zabbetny.com',
 
     'asset_url' => env('ASSET_URL', null),
 
