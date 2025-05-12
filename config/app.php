@@ -28,6 +28,7 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -53,6 +54,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'custom_url' => 'https://zabbetny.com/',
 
     'asset_url' => env('ASSET_URL', null),
 
