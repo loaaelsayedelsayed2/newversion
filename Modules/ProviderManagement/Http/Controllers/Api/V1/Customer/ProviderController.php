@@ -248,8 +248,16 @@ class ProviderController extends Controller
     {
         if(auth('api')->user()){
             $user = auth('api')->user();
-            dd($user, $user->addresses);
             $address = $user->addresses->where('zone_id', Config::get('zone_id'))->first();
+            if ($address) {
+                $latitude = $address->latitude;
+                $longitude = $address->longitude;
+            } else {
+                $latitude = $user->location->latitude;
+                $longitude = $user->location->longitude;
+            }
+            $zone = $user->zones->where('latitude', $latitude)->where('longitude', $longitude)->first();
+            dd($zone);
             $zone_id = $address->zone_id;
         }else{
             $zone_id = Config::get('zone_id');
