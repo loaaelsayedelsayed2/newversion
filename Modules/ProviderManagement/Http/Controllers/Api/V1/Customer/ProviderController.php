@@ -260,18 +260,16 @@ class ProviderController extends Controller
             $currentZoneId = Config::get('zone_id');
             $query->where('zone_id', $currentZoneId)
                 ->orderByRaw("zone_id = ? DESC", [$currentZoneId]);
+            if ($request->has('favorites_only')) {
+                $query->whereHas('favorites', function ($q) {
+                    $q->where('customer_user_id', auth('api')->user()->id);
+                });
+            }
         }else {
             $query->where('zone_id', Config::get('zone_id'));
         }
         if ($request->has('rating')) {
             $query->orderBy('avg_rating', 'desc');
-        }
-
-        if ($request->has('favorites_only')) {
-            $customerUserId = $request->input('customer_user_id');
-            $query->whereHas('favorites', function ($q) use ($customerUserId) {
-                $q->where('customer_user_id', $customerUserId);
-            });
         }
         $providers = $query->get();
 
