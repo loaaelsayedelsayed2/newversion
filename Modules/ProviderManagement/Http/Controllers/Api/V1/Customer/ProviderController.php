@@ -246,11 +246,16 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
-        $user = auth('api')->user();
-        $address = $user->addresses->where('zone_id', Config::get('zone_id'))->first();
+        if(auth('api')->user()){
+            $user = auth('api')->user();
+            $address = $user->addresses->where('zone_id', Config::get('zone_id'))->first();
+            $zone_id = $address->zone_id;
+        }else{
+            $zone_id = Config::get('zone_id');
+        }
         $filterService = app(ProviderFilterService::class);
         $query = $this->provider->with(['owner', 'favorites'])
-        ->where('zone_id', $address->zone_id)
+        ->where('zone_id', $zone_id)
         ->whereHas('subscribed_services', function ($query) use ($request) {
             $query->where('sub_category_id', $request['sub_category_id']);
         })
