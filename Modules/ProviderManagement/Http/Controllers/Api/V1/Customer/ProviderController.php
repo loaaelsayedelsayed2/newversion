@@ -2,22 +2,23 @@
 
 namespace Modules\ProviderManagement\Http\Controllers\Api\V1\Customer;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
+use Modules\ReviewModule\Entities\Review;
+use Modules\UserManagement\Entities\User;
 use Modules\BookingModule\Entities\Booking;
+use Modules\ServiceManagement\Entities\Service;
 use Modules\CategoryManagement\Entities\Category;
-use Modules\ProviderManagement\Entities\FavoriteProvider;
 use Modules\ProviderManagement\Entities\Provider;
+use Modules\ServiceManagement\Entities\Variation;
+use Modules\ServiceManagement\Entities\FavoriteService;
+use Modules\ProviderManagement\Entities\FavoriteProvider;
 use Modules\ProviderManagement\Entities\SubscribedService;
 use Modules\ProviderManagement\Services\ProviderFilterService;
-use Modules\ReviewModule\Entities\Review;
-use Modules\ServiceManagement\Entities\FavoriteService;
-use Modules\ServiceManagement\Entities\Service;
-use Modules\ServiceManagement\Entities\Variation;
 
 class ProviderController extends Controller
 {
@@ -246,12 +247,14 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
+        $users = User::where('user_type', 'customer')->where('zone_id',Config::get('zone_id'))->get();
+        dd($users);
         if(auth('api')->user()){
             $user = auth('api')->user();
             $address = $user->addresses->where('zone_id', Config::get('zone_id'))->first();
             if ($address) {
-                $latitude = $address->latitude;
-                $longitude = $address->longitude;
+                $latitude = $address->lat;
+                $longitude = $address->lon;
             } else {
                 $latitude = $user->location->latitude;
                 $longitude = $user->location->longitude;
