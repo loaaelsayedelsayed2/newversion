@@ -248,6 +248,7 @@ class ProviderController extends Controller
     {
         if(auth('api')->user()){
             $user = auth('api')->user();
+            dd($user, $user->addresses);
             $address = $user->addresses->where('zone_id', Config::get('zone_id'))->first();
             $zone_id = $address->zone_id;
         }else{
