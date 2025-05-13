@@ -86,7 +86,7 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Api\V
 Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V1\Customer'], function () {
     Route::group(['prefix' => 'provider', 'as' => 'provider.'], function () {
         Route::post('list', [ProviderController::class, 'getProviderList']);
-        Route::get('list-by-sub-category', [ProviderController::class, 'getProviderListBySubCategory'])->middleware('auth:api');
+        Route::get('list-by-sub-category', [ProviderController::class, 'getProviderListBySubCategory']);
     });
 
     Route::group(['prefix' => 'favorite', 'as' => 'favorite.', 'middleware' => ['auth:api']], function () {

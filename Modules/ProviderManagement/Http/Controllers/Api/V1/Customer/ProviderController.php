@@ -249,7 +249,7 @@ class ProviderController extends Controller
     {
         $filterService = app(ProviderFilterService::class);
         $query = $this->provider->with(['owner', 'favorites'])
-        ->where('zone_id', Config::get('zone_id'))
+        // ->where('zone_id', Config::get('zone_id'))
         ->whereHas('subscribed_services', function ($query) use ($request) {
             $query->where('sub_category_id', $request['sub_category_id']);
         })
@@ -258,7 +258,10 @@ class ProviderController extends Controller
         ->where('is_active', 1);
         if (auth('api')->user()) {
             $currentZoneId = Config::get('zone_id');
-            $query->orderByRaw("zone_id = ? DESC", [$currentZoneId]);
+            $query->where('zone_id', $currentZoneId)
+                ->orderByRaw("zone_id = ? DESC", [$currentZoneId]);
+        }else {
+            $query->where('zone_id', Config::get('zone_id'));
         }
         if ($request->has('rating')) {
             $query->orderBy('avg_rating', 'desc');
