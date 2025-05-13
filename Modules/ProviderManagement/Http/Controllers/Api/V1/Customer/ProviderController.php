@@ -247,7 +247,7 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
-        $users = User::where('user_type', 'customer')->where('zone_id',Config::get('zone_id'))->get();
+        $users = Provider::where('zone_id',Config::get('zone_id'))->get();
         dd($users);
         if(auth('api')->user()){
             $user = auth('api')->user();
