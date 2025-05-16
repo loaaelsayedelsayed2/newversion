@@ -407,6 +407,27 @@ class SubscriptionPackageController extends Controller
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
             if ($packageSubscriber != null) {
+                // add subscription
+                $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
+                // add new log
+                $addLog = new PackageSubscriberLog();
+                $addLog->provider_id  =  $provider->id;
+                $addLog->subscription_package_id =  $package->id;
+                $addLog->package_name =  $package->name;
+                $addLog->package_price =  $package->price;
+                $addLog->package_start_date = Carbon::now();
+                $addLog->package_end_date =  Carbon::now()->addDays($duration);
+                $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
+                $calculationVat = $package->price * ($vatPercentage / 100);
+                $transactionId = shiftSubscriptionTransaction(
+                    amount: $package->price,
+                    provider_id: $provider->id,
+                    vat: $calculationVat
+                );
+                $addLog->primary_transaction_id = $transactionId;
+                $addLog->payment_id = $request->payment_id;
+                $addLog->payment_method = 'Moyasar';
+                $addLog->save();
 
                 $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
                 $packageSubscriber->package_name = $package->name;
@@ -419,30 +440,10 @@ class SubscriptionPackageController extends Controller
                 if ($packageSubscriber->is_canceled == 1) {
                     $packageSubscriber->is_canceled = 0;
                 }
-                $packageSubscriber->save();
-                $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
-                $addLog = PackageSubscriberLog::create([
-                    'provider_id ' => $provider->id,
-                    'subscription_package_id' => $package->id,
-                    'package_name' => $package->name,
-                    'package_price' => $package->price,
-                    'package_start_date'=> $packageSubscriber->package_start_date,
-                    'package_end_date' => $packageSubscriber->package_end_date
-                ]);
-
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
                 $packageSubscriber->save();
-                $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
-                $calculationVat = $package->price * ($vatPercentage / 100);
-                $transactionId = shiftSubscriptionTransaction(
-                    amount: $package->price,
-                    provider_id: $provider->id,
-                    vat: $calculationVat
-                );
-                $addLog->primary_transaction_id = $transactionId;
-                $addLog->payment_id = $request->payment_id;
-                $addLog->payment_method = 'Moyasar';
-                $addLog->save();
+
+
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
                     $limitPpackage = new   PackageSubscriberLimit();
