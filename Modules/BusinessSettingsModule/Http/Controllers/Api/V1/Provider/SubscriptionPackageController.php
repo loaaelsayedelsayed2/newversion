@@ -415,8 +415,8 @@ class SubscriptionPackageController extends Controller
                 $addLog->subscription_package_id =  $package->id;
                 $addLog->package_name =  $package->name;
                 $addLog->package_price =  $package->price;
-                $addLog->package_start_date = Carbon::now();
-                $addLog->package_end_date =  Carbon::now()->addDays($duration);
+                $addLog->start_date = Carbon::now();
+                $addLog->end_date =  Carbon::now()->addDays($duration);
                 $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
                 $calculationVat = $package->price * ($vatPercentage / 100);
                 $transactionId = shiftSubscriptionTransaction(
