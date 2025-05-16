@@ -198,7 +198,7 @@
             <div class="invoice-card__body">
                 <div class="meta-info d-flex mb-30">
                     <div>
-                        <div>{{translate('Payment')}}</div>
+                        <div>{{translate('Payment')}}1</div>
                         <div class="fs-10">
                             @if ($transaction?->packageLog?->payment?->payment_method == 'Moyasar')
                                 دفع الكتروني
