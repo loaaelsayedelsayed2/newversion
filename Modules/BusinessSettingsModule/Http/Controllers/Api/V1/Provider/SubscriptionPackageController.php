@@ -409,8 +409,6 @@ class SubscriptionPackageController extends Controller
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
             if ($packageSubscriber != null) {
-                $services = ServiceRequest::where('provider_id',$provider->id)->get();
-                dd($services);
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
                 // add new log
                 $addLog = new PackageSubscriberLog();
