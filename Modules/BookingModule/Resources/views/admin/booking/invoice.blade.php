@@ -140,24 +140,24 @@
         .flex-column {
             flex-direction: column;
         }
-.border-bottom {
-    border-bottom: 1px solid #e5e5e5
-}
-.text-right {
-    text-align: right;
-}
-.text-left {
-    text-align: left;
-}
-.text-center {
-    text-align:center
-}
-h1, h2,h3,h4, h5, h6 {
-    margin: 0
-}
-.p-0 {
-    padding: 0 !important
-}
+        .border-bottom {
+            border-bottom: 1px solid #e5e5e5
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .text-center {
+            text-align:center
+        }
+        h1, h2,h3,h4, h5, h6 {
+            margin: 0
+        }
+        .p-0 {
+            padding: 0 !important
+        }
     </style>
 </head>
 <body>
@@ -168,7 +168,7 @@ h1, h2,h3,h4, h5, h6 {
                 <tbody>
                 <tr>
                     <td>
-                        <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
+                        <h3 class="text-uppercase fw-700">{{translate("invoice")}}222</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
                         <div class="fs-9">
                             <?php
