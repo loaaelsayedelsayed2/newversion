@@ -388,9 +388,6 @@ class SubscriptionPackageController extends Controller
     {
         $provider = auth('api')->user()->provider;
 
-        dd($provider);
-
-
         $validator = Validator::make($request->all(), [
             'new_package_subscription_id' => 'required',
             'status' => 'required|in:success,failed',
@@ -425,7 +422,7 @@ class SubscriptionPackageController extends Controller
 
                 $packageSubscriber->save();
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
-
+                dd($provider->id,1);
                 $addLog = PackageSubscriberLog::create([
                     'provider_id ' => $provider->id,
                     'subscription_package_id' => $package->id,
@@ -483,7 +480,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->save();
-
+                dd($provider->id,2);
                 $addLog = PackageSubscriberLog::create([
                     'provider_id ' => $provider->id,
                     'subscription_package_id' => $package->id,
