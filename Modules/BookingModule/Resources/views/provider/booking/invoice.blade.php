@@ -233,11 +233,7 @@
                             <div>
                                 <div class="fs-9">{{translate('Payment')}}</div>
                                 <div class="mt-1">
-                                    @if($booking->payment_method == 'Moyasar')
-                                        دفع الكتروني
-                                    @else
-                                        {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}
-                                    @endif
+                                    {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}2
                                 </div>
                             </div>
                             <div class="mt-3">
