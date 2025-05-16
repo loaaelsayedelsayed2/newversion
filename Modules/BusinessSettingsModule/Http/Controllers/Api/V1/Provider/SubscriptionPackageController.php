@@ -468,14 +468,13 @@ class SubscriptionPackageController extends Controller
                 }
                 return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
             } else {
-                $addLog = PackageSubscriberLog::create([
-                    'provider_id ' => $provider->id,
-                    'subscription_package_id' => $package->id,
-                    'package_name' => $package->name,
-                    'package_price' => $package->price,
-                    'start_date' =>   Carbon::now(),
-                    'end_date' =>    Carbon::now()->addDays($duration)
-                ]);
+                $addLog = new PackageSubscriberLog();
+                $addLog->provider_id  =  $provider->id;
+                $addLog->subscription_package_id =  $package->id;
+                $addLog->package_name =  $package->name;
+                $addLog->package_price =  $package->price;
+                $addLog->start_date = Carbon::now();
+                $addLog->end_date =  Carbon::now()->addDays($duration);
                 $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
                 $calculationVat = $package->price * ($vatPercentage / 100);
                 $transactionId = shiftSubscriptionTransaction(
