@@ -22,6 +22,8 @@ use Modules\TransactionModule\Entities\Transaction;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberLog;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberFeature;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberLimit;
+use Modules\ServiceManagement\Entities\ServiceRequest;
+use Stripe\Service\SubscriptionService;
 
 class SubscriptionPackageController extends Controller
 {
@@ -407,6 +409,8 @@ class SubscriptionPackageController extends Controller
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
             if ($packageSubscriber != null) {
+                $services = ServiceRequest::where('provider_id',$provider->id)->get();
+                dd($services);
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
                 // add new log
                 $addLog = new PackageSubscriberLog();
@@ -465,6 +469,8 @@ class SubscriptionPackageController extends Controller
                     $featurepac->feature = $feature->feature;
                     $featurepac->save();
                 };
+
+
 
                 return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
             } else {
