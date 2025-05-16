@@ -407,7 +407,6 @@ class SubscriptionPackageController extends Controller
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
             if ($packageSubscriber != null) {
-                // add subscription
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
                 // add new log
                 $addLog = new PackageSubscriberLog();
@@ -429,6 +428,7 @@ class SubscriptionPackageController extends Controller
                 $addLog->payment_method = 'Moyasar';
                 $addLog->save();
 
+                // add subscription
                 $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
@@ -468,28 +468,14 @@ class SubscriptionPackageController extends Controller
 
                 return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
             } else {
-                $packageSubscriber = new PackageSubscriber();
-                $packageSubscriber->provider_id = $provider->id;
-                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
-                $packageSubscriber->package_name = $package->name;
-                $packageSubscriber->package_price = $package->price;
-                $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
-                $packageSubscriber->trial_duration = 0;
-                $packageSubscriber->save();
-                dd($provider->id,2);
                 $addLog = PackageSubscriberLog::create([
                     'provider_id ' => $provider->id,
                     'subscription_package_id' => $package->id,
                     'package_name' => $package->name,
                     'package_price' => $package->price,
-                    'package_start_date'
-                    =>   $packageSubscriber->package_start_date,
-                    'package_end_date' =>    $packageSubscriber->package_end_date
+                    'start_date' =>   Carbon::now(),
+                    'end_date' =>    Carbon::now()->addDays($duration)
                 ]);
-
-                $packageSubscriber->package_subscriber_log_id = $addLog->id;
-                $packageSubscriber->save();
                 $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
                 $calculationVat = $package->price * ($vatPercentage / 100);
                 $transactionId = shiftSubscriptionTransaction(
@@ -501,6 +487,19 @@ class SubscriptionPackageController extends Controller
                 $addLog->payment_id = $request->payment_id;
                 $addLog->payment_method = 'Moyasar';
                 $addLog->save();
+
+                // add subscriber
+                $packageSubscriber = new PackageSubscriber();
+                $packageSubscriber->provider_id = $provider->id;
+                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
+                $packageSubscriber->package_name = $package->name;
+                $packageSubscriber->package_price = $package->price;
+                $packageSubscriber->package_start_date = Carbon::now();
+                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
+                $packageSubscriber->trial_duration = 0;
+                $packageSubscriber->package_subscriber_log_id = $addLog->id;
+                $packageSubscriber->save();
+
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
                 foreach ($limits as $limit) {
                     $limitPpackage = new   PackageSubscriberLimit();

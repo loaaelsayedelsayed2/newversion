@@ -232,7 +232,13 @@
                         <div class="col">
                             <div>
                                 <div class="fs-9">{{translate('Payment')}}</div>
-                                <div class="mt-1">{{ str_replace(['_', '-'], ' ', $booking->payment_method) }}</div>
+                                <div class="mt-1">
+                                    @if($booking->payment_method == 'Moyasar')
+                                        دفع الكتروني
+                                    @else
+                                        {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}
+                                    @endif
+                                </div>
                             </div>
                             <div class="mt-3">
                                 <div class="fs-9">{{translate('Reference ID')}}</div>
