@@ -228,7 +228,7 @@
                                 <tr>
                                     <td>
                                         <div class="fs-9">{{translate('Provider')}}</div>
-                                        <div>{{$provider_name}}</div>
+                                        <div>{{$booking?->provider}}</div>
                                     </td>
                                     <td>
                                         <div class="fs-9">{{translate('phone')}}</div>
@@ -268,8 +268,8 @@
 
                             <td class="border-left">
                                 <h6 class="fz-12">{{translate('Service Address')}}</h6>
-                                <div class="fs-9">{{$customer_name}}</div>
-                                <div class="fs-9">{{$customer_phone}}</div>
+                                {{-- <div class="fs-9">{{$customer_name}}</div>
+                                <div class="fs-9">{{$customer_phone}}</div> --}}
                                 <div class="fs-9">{{$booking?->service_address?->address??translate('not_available')}}</div>
                             </td class="border-left">
 
