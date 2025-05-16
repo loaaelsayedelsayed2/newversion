@@ -457,19 +457,15 @@ class SubscriptionPackageController extends Controller
 
                     $limitPpackage->save();
                 }
-
-                foreach ($package->subscriptionPackageFeature as  $feature) {
-
-                    $featurepac =  new PackageSubscriberFeature();
-                    $featurepac->provider_id  = $provider->id;
-                    $featurepac->package_subscriber_log_id = $addLog->id;
-
-                    $featurepac->feature = $feature->feature;
-                    $featurepac->save();
-                };
-
-
-
+                // add features
+                $features = SubscriptionPackageFeature::where('subscription_package_id', $package->id)->get();
+                foreach ($features as $feature) {
+                    $packageSubscriberFeature = new PackageSubscriberFeature();
+                    $packageSubscriberFeature->provider_id = $provider->id;
+                    $packageSubscriberFeature->package_subscriber_log_id = $addLog->id;
+                    $packageSubscriberFeature->feature = $feature->feature;
+                    $packageSubscriberFeature->save();
+                }
                 return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
             } else {
                 $addLog = PackageSubscriberLog::create([
@@ -515,15 +511,15 @@ class SubscriptionPackageController extends Controller
 
                     $limitPpackage->save();
                 }
-                foreach ($package->subscriptionPackageFeature as  $feature) {
-
-                    $featurepac =  new PackageSubscriberFeature();
-                    $featurepac->provider_id  = $provider->id;
-                    $featurepac->package_subscriber_log_id = $addLog->id;
-
-                    $featurepac->feature = $feature->feature;
-                    $featurepac->save();
-                };
+                // add features
+                $features = SubscriptionPackageFeature::where('subscription_package_id', $package->id)->get();
+                foreach ($features as $feature) {
+                    $packageSubscriberFeature = new PackageSubscriberFeature();
+                    $packageSubscriberFeature->provider_id = $provider->id;
+                    $packageSubscriberFeature->package_subscriber_log_id = $addLog->id;
+                    $packageSubscriberFeature->feature = $feature->feature;
+                    $packageSubscriberFeature->save();
+                }
 
                 return response()->json(response_formatter(DEFAULT_200, $packageSubscriber), 200);
             }
