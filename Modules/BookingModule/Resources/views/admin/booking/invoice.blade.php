@@ -228,11 +228,11 @@
                                 <tr>
                                     <td>
                                         <div class="fs-9">{{translate('Provider')}}</div>
-                                        <div>{{$provider_name ?? $booking?->provider?->company_name}}</div>
+                                        <div>{{$booking?->provider?->company_name}}</div>
                                     </td>
                                     <td>
                                         <div class="fs-9">{{translate('phone')}}</div>
-                                        <div>{{$provider_phone ?? $booking?->provider?->company_phone}}</div>
+                                        <div>{{$booking?->provider?->company_phone}}</div>
                                     </td>
                                     <td>
                                         <div class="fs-9">{{translate('email')}}</div>
