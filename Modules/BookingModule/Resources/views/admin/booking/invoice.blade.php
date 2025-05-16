@@ -228,7 +228,7 @@
                                 <tr>
                                     <td>
                                         <div class="fs-9">{{translate('Provider')}}</div>
-                                        <div>{{$booking?->provider}}</div>
+                                        <div>{{$booking->provider}}</div>
                                     </td>
                                     <td>
                                         <div class="fs-9">{{translate('phone')}}</div>
