@@ -388,6 +388,8 @@ class SubscriptionPackageController extends Controller
     {
         $provider = auth('api')->user()->provider;
 
+        dd($provider);
+
 
         $validator = Validator::make($request->all(), [
             'new_package_subscription_id' => 'required',
