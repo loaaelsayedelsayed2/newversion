@@ -233,7 +233,7 @@
                             <div>
                                 <div class="fs-9">{{translate('Payment')}}</div>
                                 <div class="mt-1">
-                                    {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}2
+                                    {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}
                                 </div>
                             </div>
                             <div class="mt-3">

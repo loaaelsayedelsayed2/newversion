@@ -257,7 +257,7 @@ h1, h2,h3,h4, h5, h6 {
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
                                     <div class="mt-1">
-                                        1دفع الكتروني
+                                        دفع الكتروني
                                     </div>
                                 </div>
                                 <div class="mt-3">

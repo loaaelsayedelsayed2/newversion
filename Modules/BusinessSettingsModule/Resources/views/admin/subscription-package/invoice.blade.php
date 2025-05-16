@@ -199,7 +199,13 @@
                 <div class="meta-info d-flex mb-30">
                     <div>
                         <div>{{translate('Payment')}}</div>
-                        <div class="fs-10">{{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}</div>
+                        <div class="fs-10">
+                            @if ($transaction?->packageLog?->payment?->payment_method == 'Moyasar')
+                                دفع الكتروني
+                            @else
+                                {{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}
+                            @endif
+                        </div>
                     </div>
                     <div class="border-left"></div>
                     <div>
