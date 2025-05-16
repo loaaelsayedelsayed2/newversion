@@ -198,10 +198,11 @@
             <div class="invoice-card__body">
                 <div class="meta-info d-flex mb-30">
                     <div>
-                        <div>{{translate('Payment')}}1</div>
+                        <div>{{translate('Payment')}}</div>
                         <div class="fs-10">
                             @if ($transaction?->packageLog?->payment?->payment_method == 'Moyasar')
                                 دفع الكتروني
+                                {{ $transaction?->packageLog?->payment?->payment_method }}
                             @else
                                 {{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}
                             @endif
