@@ -419,18 +419,15 @@ class SubscriptionPackageController extends Controller
                 if ($packageSubscriber->is_canceled == 1) {
                     $packageSubscriber->is_canceled = 0;
                 }
-
                 $packageSubscriber->save();
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
-                dd($provider->id,1);
                 $addLog = PackageSubscriberLog::create([
                     'provider_id ' => $provider->id,
                     'subscription_package_id' => $package->id,
                     'package_name' => $package->name,
                     'package_price' => $package->price,
-                    'package_start_date'
-                    =>   $packageSubscriber->package_start_date,
-                    'package_end_date' =>    $packageSubscriber->package_end_date
+                    'package_start_date'=> $packageSubscriber->package_start_date,
+                    'package_end_date' => $packageSubscriber->package_end_date
                 ]);
 
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
@@ -470,7 +467,6 @@ class SubscriptionPackageController extends Controller
 
                 return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
             } else {
-
                 $packageSubscriber = new PackageSubscriber();
                 $packageSubscriber->provider_id = $provider->id;
                 $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
