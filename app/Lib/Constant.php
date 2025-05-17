@@ -3630,10 +3630,10 @@ const NOTIFICATION_FOR_USER = [
 
 const NOTIFICATION_FOR_PROVIDER = [
     ['key' => 'new_service_request_arrived', 'value' => 'New Service Request Arrived'],
-    // ['key' => 'booking_accepted', 'value' => 'Booking Accepted'],
+    ['key' => 'booking_accepted', 'value' => 'Booking Accepted'],
     ['key' => 'serviceman_assign', 'value' => 'Serviceman Assign'],
     ['key' => 'ongoing_booking', 'value' => 'Ongoing Booking'],
-    // ['key' => 'booking_complete', 'value' => 'Booking Complete'],
+    ['key' => 'booking_complete', 'value' => 'Booking Complete'],
     ['key' => 'invoice_sent', 'value' => 'Invoice Sent'],
     ['key' => 'booking_cancel', 'value' => 'Booking Cancel'],
     ['key' => 'booking_schedule_time_change', 'value' => 'Booking schedule time change'],
@@ -3659,7 +3659,7 @@ const NOTIFICATION_FOR_PROVIDER = [
 const NOTIFICATION_FOR_SERVICEMAN = [
     ['key' => 'serviceman_assign', 'value' => 'Serviceman Assign'],
     ['key' => 'ongoing_booking', 'value' => 'Ongoing Booking'],
-    // ['key' => 'booking_complete', 'value' => 'Booking Complete'],
+    ['key' => 'booking_complete', 'value' => 'Booking Complete'],
     ['key' => 'invoice_sent', 'value' => 'Invoice Sent'],
     ['key' => 'booking_cancel', 'value' => 'Booking Cancel'],
     ['key' => 'booking_schedule_time_change', 'value' => 'Booking Schedule Time Change'],
