@@ -272,12 +272,12 @@ class Booking extends Model
                         'settings_type' => 'customer_notification'
                     ];
                 }
-                // if ($providerPermission && $model->is_repeated == 0) {
-                //     $notifications[] = [
-                //         'key' => 'booking_accepted',
-                //         'settings_type' => 'provider_notification'
-                //     ];
-                // }
+                if ($providerPermission && $model->is_repeated == 0) {
+                    $notifications[] = [
+                        'key' => 'booking_accepted',
+                        'settings_type' => 'provider_notification'
+                    ];
+                }
             } elseif ($model->booking_status == 'completed' && $model->is_repeated == 0) {
                 if ($permission) {
                     $notifications[] = [
@@ -285,18 +285,18 @@ class Booking extends Model
                         'settings_type' => 'customer_notification'
                     ];
                 }
-                // if ($providerPermission) {
-                //     $notifications[] = [
-                //         'key' => 'booking_complete',
-                //         'settings_type' => 'provider_notification'
-                //     ];
-                // }
-                // if ($servicemanPermission) {
-                //     $notifications[] = [
-                //         'key' => 'booking_complete',
-                //         'settings_type' => 'serviceman_notification'
-                //     ];
-                // }
+                if ($providerPermission) {
+                    $notifications[] = [
+                        'key' => 'booking_complete',
+                        'settings_type' => 'provider_notification'
+                    ];
+                }
+                if ($servicemanPermission) {
+                    $notifications[] = [
+                        'key' => 'booking_complete',
+                        'settings_type' => 'serviceman_notification'
+                    ];
+                }
 
                 $model->is_paid = 1;
 
