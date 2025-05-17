@@ -409,8 +409,11 @@ class SubscriptionPackageController extends Controller
             $duration = $package->duration;
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
-            $services1 = SubscribedService::where('provider_id', $provider->id)->get();
-            dd($services1);
+            $subscribedServices = SubscribedService::where('provider_id', $provider->id)->where('is_subscribed',1)->get();
+            foreach ($subscribedServices as $subscribedService) {
+                $subscribedService->is_subscribed = 0;
+                $subscribedService->save();
+            }
             if ($packageSubscriber != null) {
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
                 // add new log
