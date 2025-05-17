@@ -306,11 +306,6 @@ class SubscriptionPackageController extends Controller
                 DB::rollBack();
                 return response()->json(response_formatter(DEFAULT_400, $validator->errors()), 400);
             }
-            $subscribedServices = SubscribedService::where('provider_id', $provider->id)->where('is_subscribed',1)->get();
-            foreach ($subscribedServices as $subscribedService) {
-                $subscribedService->is_subscribed = 0;
-                $subscribedService->save();
-            }
 
             $packageSubscriber = PackageSubscriber::where('subscription_package_id', $request->package_subscription_id)
                 ->where('provider_id', $provider->id)->first();
@@ -415,11 +410,6 @@ class SubscriptionPackageController extends Controller
             $duration = $package->duration;
 
             $packageSubscriber = PackageSubscriber::with('feature')->where('provider_id', $provider->id)->first();
-            $subscribedServices = SubscribedService::where('provider_id', $provider->id)->where('is_subscribed',1)->get();
-            foreach ($subscribedServices as $subscribedService) {
-                $subscribedService->is_subscribed = 0;
-                $subscribedService->save();
-            }
             if ($packageSubscriber != null) {
                 $logs = PackageSubscriberLog::where('provider_id', $provider->id)->get();
                 // add new log
