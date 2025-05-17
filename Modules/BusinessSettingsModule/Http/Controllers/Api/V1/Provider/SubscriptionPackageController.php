@@ -336,6 +336,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->payment_id = $request->payment_id;
                 $packageSubscriber->payment_method = 'Moyasar';
+                $packageSubscriber->is_notified = 1;
 
                 if ($packageSubscriber->is_canceled == 1) {
                     $packageSubscriber->is_canceled = 0;
@@ -449,6 +450,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->payment_method = 'Moyasar';
+                $packageSubscriber->is_notified = 1;
                 $packageSubscriber->payment_id = $request->payment_id;
                 if ($packageSubscriber->is_canceled == 1) {
                     $packageSubscriber->is_canceled = 0;
@@ -508,6 +510,8 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
+                $packageSubscriber->is_notified = 1;
+                $packageSubscriber->payment_method = 'Moyasar';
                 $packageSubscriber->save();
 
                 $limits = SubscriptionPackageLimit::where('subscription_package_id', $package->id)->get();
