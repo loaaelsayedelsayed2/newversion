@@ -391,7 +391,7 @@ class SubscriptionPackageController extends Controller
         $provider = auth('api')->user()->provider;
 
         $validator = Validator::make($request->all(), [
-            'new_package_subscription_id' => 'required',
+            'package_subscription_id' => 'required',
             'status' => 'required|in:success,failed',
             'payment_id' => 'nullable',
         ]);
@@ -401,7 +401,7 @@ class SubscriptionPackageController extends Controller
         }
 
         if ($request->status == 'success') {
-            $package = SubscriptionPackage::with('subscriptionPackageFeature')->find($request->new_package_subscription_id);
+            $package = SubscriptionPackage::with('subscriptionPackageFeature')->find($request->package_subscription_id);
             if (!$package) {
                 return response()->json(response_formatter(DEFAULT_400, 'Invalid new package subscription'), 400);
             }
@@ -431,7 +431,7 @@ class SubscriptionPackageController extends Controller
                 $addLog->save();
 
                 // add subscription
-                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
+                $packageSubscriber->subscription_package_id = $request->package_subscription_id;
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
                 $packageSubscriber->package_start_date = Carbon::now();
@@ -490,7 +490,7 @@ class SubscriptionPackageController extends Controller
                 // add subscriber
                 $packageSubscriber = new PackageSubscriber();
                 $packageSubscriber->provider_id = $provider->id;
-                $packageSubscriber->subscription_package_id = $request->new_package_subscription_id;
+                $packageSubscriber->subscription_package_id = $request->package_subscription_id;
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
                 $packageSubscriber->package_start_date = Carbon::now();
