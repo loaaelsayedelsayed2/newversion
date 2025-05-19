@@ -606,10 +606,10 @@ class Booking extends Model
             if ($model->isDirty('is_send') && $model->is_send) {
                 Log::info('Attempting to send invoice notification', ['booking_id' => $model->id]);
 
-                $booking_notification_status = business_config('invoice_sent', 'customer_notification')->live_values;
+                $invoice_notification_status = business_config('invoice_sent', 'customer_notification')->live_values;
                 $permission = isNotificationActive(null, 'invoice_sent', 'notification', 'user');
 
-                if (isset($booking_notification_status) && $booking_notification_status['push_notification_booking'] && $permission) {
+                if (isset($invoice_notification_status) && $invoice_notification_status['invoice_sent_status'] && $permission) {
                     $user = $model?->customer;
                     $title = get_push_notification_message('invoice_sent', 'customer_notification', $user?->current_language_key);
 
