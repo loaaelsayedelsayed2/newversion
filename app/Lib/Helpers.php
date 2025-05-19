@@ -794,8 +794,9 @@ if (!function_exists('nextBookingEligibility')) {
         $packageSubscriber = PackageSubscriber::where('provider_id', $providerId)->first();
         $packageSubscriberLogId = $packageSubscriber?->package_subscriber_log_id;
         $providerUserId = $packageSubscriber?->provider?->user_id;
-        $isPaid = $packageSubscriber?->payment?->where('id', $packageSubscriber?->payment_id)->value('is_paid') ?? $packageSubscriber?->where('payment_method','Moyasar')->where('payment_id','!=',null);
-dd($isPaid);
+        $isPaid = $packageSubscriber?->payment?->where('id', $packageSubscriber?->payment_id)->value('is_paid');
+        $isPaidMoyasar = $packageSubscriber?->where('payment_method','Moyasar')->where('payment_id','!=',null)->exists();
+dd($isPaidMoyasar);
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid){
                 if ($packageSubscriber->is_canceled){
