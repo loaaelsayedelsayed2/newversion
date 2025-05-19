@@ -790,14 +790,13 @@ if (!function_exists('getPaymentGatewayImageFullPath')) {
 if (!function_exists('nextBookingEligibility')) {
     function nextBookingEligibility($providerId): bool
     {
+        dd($providerId);
         $now = \Carbon\Carbon::now()->subDay();
         $packageSubscriber = PackageSubscriber::where('provider_id', $providerId)->first();
         $packageSubscriberLogId = $packageSubscriber?->package_subscriber_log_id;
         $providerUserId = $packageSubscriber?->provider?->user_id;
         $isPaid = $packageSubscriber?->payment?->where('id', $packageSubscriber?->payment_id)->value('is_paid');
-        dd($packageSubscriber);
         $isPaidMoyasar = $packageSubscriber->where('payment_method','Moyasar')->get();
-        dd($isPaidMoyasar);
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid){
                 if ($packageSubscriber->is_canceled){
