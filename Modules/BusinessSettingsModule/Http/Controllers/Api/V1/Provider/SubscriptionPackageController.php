@@ -628,9 +628,27 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriberFeature->save();
             }
 
+            $this->closeSubscriptionService();
+
             return response()->json(response_formatter(DEFAULT_200, 'Subscription successfully updated to new package'), 200);
         } else {
             return response()->json(response_formatter(DEFAULT_400, 'Subscription creation failed'), 400);
+        }
+    }
+
+
+    public function closeSubscriptionService(){
+        $userId = auth('api')->user()->id;
+        $providerId = $this->provider::where('user_id', $userId)->value('id');
+        $subscribedService = SubscribedService::where('provider_id', $providerId)->where('is_subscribed', 1)->get();
+        if ($subscribedService) {
+            foreach ($subscribedService as $service) {
+                $service->is_subscribed = 0;
+                $service->save();
+            }
+            return response()->json(response_formatter(DEFAULT_200, 'Subscription service removed successfully'), 200);
+        } else {
+            return response()->json(response_formatter(DEFAULT_400, 'No subscription service found'), 400);
         }
     }
 }
