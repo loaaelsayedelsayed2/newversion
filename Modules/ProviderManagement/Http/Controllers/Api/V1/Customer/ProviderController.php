@@ -292,7 +292,6 @@ class ProviderController extends Controller
 
             $eligibleProviders[] = $provider;
         }
-        dd($eligibleProviders);
 
         return response()->json(response_formatter(DEFAULT_200, $eligibleProviders), 200);
     }
