@@ -91,12 +91,8 @@ class PushNotificationController extends Controller
                 return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
             })
             ->when($request->has('to_user_type') && $request['to_user_type'] != 'all', function ($query) use ($request) {
-                // التعديل هنا لضمان تصفية الإشعارات بشكل صحيح
-                return $query->where(function($q) use ($request) {
-                    $q->whereJsonContains('to_users', $request['to_user_type'])
-                    ->orWhereJsonLength('to_users', 0); // إذا أردت تضمين الإشعارات بدون to_users
-                });
-            })
+                return $query->whereRaw('JSON_CONTAINS(to_users, ?)', [json_encode($request['to_user_type'])]);
+            }
             ->orderBy('created_at', 'desc')
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])
             ->withPath('');
