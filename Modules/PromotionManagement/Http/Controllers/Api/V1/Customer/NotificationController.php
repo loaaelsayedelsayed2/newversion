@@ -34,7 +34,6 @@ class NotificationController extends Controller
             'limit' => 'required|numeric|min:1|max:200',
             'offset' => 'required|numeric|min:1|max:100000'
         ]);
-        dd(1);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
@@ -51,7 +50,7 @@ class NotificationController extends Controller
             ->latest()
             ->where('to_users', 'like', '%"customer"%')
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
-
+            
         return response()->json(response_formatter(DEFAULT_200, $pushNotification), 200);
     }
 }
