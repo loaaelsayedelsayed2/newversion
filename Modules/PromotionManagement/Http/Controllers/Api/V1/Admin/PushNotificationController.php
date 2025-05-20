@@ -28,42 +28,6 @@ class PushNotificationController extends Controller
      * @return JsonResponse
      */
 
-    // public function index(Request $request): JsonResponse
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'string' => 'string',
-    //         'limit' => 'required|numeric|min:1|max:200',
-    //         'offset' => 'required|numeric|min:1|max:100000',
-    //         'status' => 'required|in:active,inactive,all',
-    //         'to_user_type' => 'required|in:customer,provider,serviceman,all',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
-    //     }
-
-    //     $pushNotification = $this->pushNotification
-    //         ->when($request->has('string'), function ($query) use ($request) {
-    //             $keys = explode(' ', base64_decode($request['string']));
-    //             return $query->where(function ($query) use ($keys) {
-    //                 foreach ($keys as $key) {
-    //                     $query->orWhere('title', 'LIKE', '%' . $key . '%');
-    //                 }
-    //             });
-    //         })
-    //         ->when($request->has('status') && $request['status'] != 'all', function ($query) use ($request) {
-    //             return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
-    //         })->when($request->has('to_user_type') && $request['to_user_type'] != 'all', function ($query) use ($request) {
-    //             $query->whereJsonContains('to_users', $request['to_user_type']);
-    //         })->orderBy('created_at', 'desc')->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
-
-    //     $pushNotification->map(function ($query) {
-    //         $query->zone_ids = $this->zone->select('id', 'name')->whereIn('id', $query->zone_ids)->get();
-    //     });
-
-    //     return response()->json(response_formatter(DEFAULT_200, $pushNotification), 200);
-    // }
-
     public function index(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -89,14 +53,9 @@ class PushNotificationController extends Controller
             })
             ->when($request->has('status') && $request['status'] != 'all', function ($query) use ($request) {
                 return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
-            })
-            ->when($request->has('to_user_type') && $request['to_user_type'] != 'all', function ($query) use ($request) {
-                dd('he');
-                return $query->where('to_users', 'like', '%"' . $request['to_user_type'] . '"%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate($request['limit'], ['*'], 'offset', $request['offset'])
-            ->withPath('');
+            })->when($request->has('to_user_type') && $request['to_user_type'] != 'all', function ($query) use ($request) {
+                $query->whereJsonContains('to_users', $request['to_user_type']);
+            })->orderBy('created_at', 'desc')->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
 
         $pushNotification->map(function ($query) {
             $query->zone_ids = $this->zone->select('id', 'name')->whereIn('id', $query->zone_ids)->get();
@@ -104,6 +63,7 @@ class PushNotificationController extends Controller
 
         return response()->json(response_formatter(DEFAULT_200, $pushNotification), 200);
     }
+
 
 
     /**
