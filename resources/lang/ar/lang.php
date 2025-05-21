@@ -4793,9 +4793,9 @@ _Message' => 'إشعار العميل برسالة أن مقدم الخدمة أ
   'moyasar' => 'Moyasar',
   'New Joining Request' => 'New Joining Request',
   'Image format - jpg, png,
-                                                                    jpeg, gif Image Size - maximum size 2 MB Image Ratio -
-                                                                    1:1' => 'Image format - jpg, png,
-                                                                    jpeg, gif Image Size - maximum size 2 MB Image Ratio -
-                                                                    1:1',
+    jpeg, gif Image Size - maximum size 2 MB Image Ratio -
+    1:1' => 'Image format - jpg, png,
+    jpeg, gif Image Size - maximum size 2 MB Image Ratio -
+    1:1',
   'Failed to sent OTP' => 'Failed to sent OTP',
 );
