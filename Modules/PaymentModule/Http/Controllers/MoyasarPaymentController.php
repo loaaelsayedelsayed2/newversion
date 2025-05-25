@@ -4,6 +4,7 @@ namespace Modules\PaymentModule\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\BookingModule\Entities\Booking;
 use Modules\PaymentModule\Interfaces\PaymentGatewayInterface;
 
 class MoyasarPaymentController extends Controller
@@ -27,6 +28,10 @@ class MoyasarPaymentController extends Controller
         $response = $this->paymentGateway->sendPayment($request);
 
         if ($response['success']) {
+            $booking = Booking::find($validated['booking_id']);
+            $booking->is_paid = true;
+            $booking->paid_by = 'customer';
+            $booking->save();
             return response()->json([
                 'success' => true,
                 'payment_url' => $response['url'],
