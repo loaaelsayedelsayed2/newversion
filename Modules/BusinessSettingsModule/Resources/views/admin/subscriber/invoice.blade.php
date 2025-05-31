@@ -223,9 +223,9 @@
                     <div class="border-left"></div>
                     <div>
                         @php
-                            $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date)->subDay();
+                            $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date);
                             $end = \Carbon\Carbon::parse($transaction?->packageLog?->end_date);
-                            $duration = $start->diffInDays($end) - 1;
+                            $duration = $start->diffInDays($end);
                         @endphp
                         <div>{{translate('Duration')}}</div>
                         <div class="fs-10">{{$duration}} {{translate('Days')}}</div>
