@@ -324,7 +324,8 @@ class SubscriptionPackageController extends Controller
             if ($request->status == 'success') {
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
-                $endDate = Carbon::now()->addDays($duration)->endOfDay();
+                $endDate = Carbon::now()->addDays($duration)->subDay();
+                // $endDate = Carbon::now()->addDays($duration)->endOfDay();
 
                 $packageSubscriber->package_start_date = Carbon::now();
                 $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
@@ -388,7 +389,7 @@ class SubscriptionPackageController extends Controller
     }
 
 
-    
+
 
 
     public function convertSubscription(Request $request)
@@ -419,7 +420,8 @@ class SubscriptionPackageController extends Controller
             $addLog->package_name =  $package->name;
             $addLog->package_price =  $package->price;
             $addLog->start_date = Carbon::now();
-            $addLog->end_date =  Carbon::now()->addDays($duration);
+            // $addLog->end_date =  Carbon::now()->addDays($duration);
+            $addLog->end_date =  Carbon::now()->addDays($duration)->subDay();
             $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
             $calculationVat = $package->price * ($vatPercentage / 100);
             $transactionId = shiftSubscriptionTransaction(
