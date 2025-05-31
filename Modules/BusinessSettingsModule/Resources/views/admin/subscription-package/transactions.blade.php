@@ -142,6 +142,7 @@
                                         </div>
                                     </td>
                                     <td>{{ with_currency_symbol($transaction?->packageLog?->package_price) }}</td>
+                                    @dd($transaction?->packageLog?->package)
                                     <td>{{ $duration }} {{translate('days')}}</td>
                                     <td>
                                         <div class="d-flex flex-column">
