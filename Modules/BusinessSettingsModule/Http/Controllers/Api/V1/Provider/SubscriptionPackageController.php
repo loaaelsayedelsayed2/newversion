@@ -326,9 +326,8 @@ class SubscriptionPackageController extends Controller
                 $startDate = Carbon::now()->startOfDay();
                 $endDate = Carbon::now()->addDays($duration)->subDay();
                 // $endDate = Carbon::now()->addDays($duration);
-                $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
-                // $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
+                $packageSubscriber->package_start_date = $startDate;
+                $packageSubscriber->package_end_date = $endDate ;
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->payment_id = $request->payment_id;
                 $packageSubscriber->payment_method = 'Moyasar';
