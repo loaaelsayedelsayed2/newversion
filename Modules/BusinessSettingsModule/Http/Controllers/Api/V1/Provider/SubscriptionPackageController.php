@@ -325,8 +325,6 @@ class SubscriptionPackageController extends Controller
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
                 $endDate = Carbon::now()->addDays($duration)->subDay();
-                // $endDate = Carbon::now()->addDays($duration)->endOfDay();
-
                 $packageSubscriber->package_start_date = Carbon::now();
                 $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
                 $packageSubscriber->trial_duration = 0;
