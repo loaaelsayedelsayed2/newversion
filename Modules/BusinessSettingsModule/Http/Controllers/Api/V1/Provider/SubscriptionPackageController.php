@@ -324,8 +324,8 @@ class SubscriptionPackageController extends Controller
             if ($request->status == 'success') {
                 $duration = $package->duration;
                 $startDate = Carbon::now()->startOfDay();
-                $endDate = Carbon::now()->addDays($duration)->subDay();
-                // $endDate = Carbon::now()->addDays($duration);
+                // $endDate = Carbon::now()->addDays($duration)->subDay();
+                $endDate = Carbon::now()->addDays($duration);
                 $packageSubscriber->package_start_date = $startDate;
                 $packageSubscriber->package_end_date = $endDate ;
                 $packageSubscriber->trial_duration = 0;
@@ -419,8 +419,8 @@ class SubscriptionPackageController extends Controller
             $addLog->package_name =  $package->name;
             $addLog->package_price =  $package->price;
             $addLog->start_date = Carbon::now();
-            $addLog->end_date =  Carbon::now()->addDays($duration)->subDay();
-            // $addLog->end_date =  Carbon::now()->addDays($duration);
+            // $addLog->end_date =  Carbon::now()->addDays($duration)->subDay();
+            $addLog->end_date =  Carbon::now()->addDays($duration);
             $vatPercentage = (int)(business_config('subscription_vat', 'subscription_Setting')->live_values ?? 0);
             $calculationVat = $package->price * ($vatPercentage / 100);
             $transactionId = shiftSubscriptionTransaction(
@@ -438,7 +438,8 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
                 $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
+                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
+                // $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->payment_method = 'Moyasar';
                 $packageSubscriber->is_notified = 1;
@@ -455,7 +456,8 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
                 $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
+                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
+                // $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
                 $packageSubscriber->is_notified = 1;
