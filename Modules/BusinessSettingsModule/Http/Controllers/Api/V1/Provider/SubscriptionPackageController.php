@@ -455,7 +455,7 @@ class SubscriptionPackageController extends Controller
                 $packageSubscriber->package_name = $package->name;
                 $packageSubscriber->package_price = $package->price;
                 $packageSubscriber->package_start_date = Carbon::now();
-                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration);
+                $packageSubscriber->package_end_date = Carbon::now()->addDays($duration)->subDay();
                 $packageSubscriber->trial_duration = 0;
                 $packageSubscriber->package_subscriber_log_id = $addLog->id;
                 $packageSubscriber->is_notified = 1;
