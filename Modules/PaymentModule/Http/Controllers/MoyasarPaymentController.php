@@ -29,6 +29,12 @@ class MoyasarPaymentController extends Controller
 
         if ($response['success']) {
             $booking = Booking::find($validated['booking_id']);
+            if(!$booking) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking not found'
+                ], 401);
+            }
             $booking->is_paid = true;
             $booking->paid_by = 'customer';
             $booking->save();
