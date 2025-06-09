@@ -257,8 +257,11 @@
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
                                     <div class="mt-1">
-                                        دفع الكتروني
+                                        {{ translate('Payment Method') }} : {{translate($booking->payment_method)}}
                                     </div>
+                                    {{-- <div class="mt-1">
+                                        دفع الكتروني
+                                    </div> --}}
                                 </div>
                                 <div class="mt-3">
                                     <div class="fs-9">{{translate('Reference ID')}}</div>
