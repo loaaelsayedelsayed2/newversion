@@ -256,12 +256,16 @@
                             <td>
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
-                                    <div class="mt-1">
-                                        {{ translate('Payment Method') }} : {{translate($booking->payment_method)}}
-                                    </div>
-                                    {{-- <div class="mt-1">
-                                        دفع الكتروني
-                                    </div> --}}
+                                    @if ($booking->payment_method == 'Moyasar')
+                                        <div class="mt-1">
+                                            دفع الكتروني
+                                        </div>
+
+                                    @else
+                                        <div class="mt-1">
+                                            {{translate($booking->payment_method)}}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mt-3">
                                     <div class="fs-9">{{translate('Reference ID')}}</div>
