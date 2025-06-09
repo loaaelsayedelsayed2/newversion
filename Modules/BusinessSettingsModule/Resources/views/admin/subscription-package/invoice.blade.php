@@ -200,10 +200,11 @@
                     <div>
                         <div>{{translate('Payment')}}</div>
                         <div class="fs-10">
+                            @dd($transaction?->packageLog?->payment?->payment_method)
                             {{-- @if ($transaction?->packageLog->payment_method == 'Moyasar')
                                 دفع الكتروني
                             @else --}}
-                                {{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}
+                                {{-- {{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }} --}}
                             {{-- @endif --}}
                         </div>
                     </div>
