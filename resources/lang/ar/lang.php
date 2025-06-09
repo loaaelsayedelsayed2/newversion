@@ -1888,7 +1888,7 @@
   'No_data_available' => 'لا توجد بيانات متاحة',
   'search_by_Customer' => 'البحث حسب العميل',
   'The category ids must be an array.' => 'يجب أن تكون معرفات الفئة عبارة عن مصفوفة.',
-  'wallet_payment' => 'محفظة الكترونية',
+  'wallet_payment' => 'محفظة  الكترونية',
   'House Cleaning' => 'تنظيف المنزل',
   'Painting & Renovation' => 'الطلاء والتجديد',
   'ABC Category' => 'فئة ABC',
