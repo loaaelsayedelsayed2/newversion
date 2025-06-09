@@ -200,7 +200,7 @@
                     <div>
                         <div>{{translate('Payment')}}</div>
                         <div class="fs-10">
-                            @dd($transaction?->packageLog?->payment?->payment_method)
+                            @dd($transaction?->packageLog->payment_method)
                             {{-- @if ($transaction?->packageLog->payment_method == 'Moyasar')
                                 دفع الكتروني
                             @else --}}
