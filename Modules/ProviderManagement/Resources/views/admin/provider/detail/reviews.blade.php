@@ -43,6 +43,10 @@
                         <a class="nav-link {{$webPage=='subscription'?'active':''}}"
                            href="{{url()->current()}}?web_page=subscription&provider_id={{ request()->id }}">{{translate('Business Plan')}}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$webPage=='provider_dashboard'?'active':''}}"
+                           href="{{url()->current()}}?web_page=provider_dashboard&provider_id={{ request()->id }}">{{ translate('Provider_DashBoard') }}</a>
+                    </li>
                 </ul>
             </div>
 

@@ -293,6 +293,7 @@ return array (
   'Provider_login' => 'প্রদানকারী লগইন',
   'Bank_Information' => 'ব্যাংক তথ্য',
   'Account_Information' => 'অ্যাকাউন্ট তথ্য',
+'Provider_DashBoard' => 'প্রদানকারী ড্যাশবোর্ড',
   'Account' => 'হিসাব',
   'Canceled' => 'বাতিল',
   'Completed' => 'সম্পন্ন',

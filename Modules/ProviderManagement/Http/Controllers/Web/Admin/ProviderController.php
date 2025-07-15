@@ -497,6 +497,11 @@ class ProviderController extends Controller
             return view('providermanagement::admin.provider.detail.subscription', compact('webPage','subscriptionDetails','commission', 'subscriptionStatus'));
 
         }
+        elseif ($request->web_page == 'provider_dashboard') {
+            return view('providermanagement::admin.provider.detail.test');
+        }
+        //dashbord
+
         return back();
     }
 

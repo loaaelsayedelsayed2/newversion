@@ -293,6 +293,7 @@
   'Provider_login' => 'تسجيل الدخول للمزود',
   'Bank_Information' => 'معلومات البنك',
   'Account_Information' => 'معلومات الحساب',
+  'Provider_DashBoard' =>'لوحة تحكم مزود الخدمة',
   'Account' => 'حساب',
   'Canceled' => 'تم الإلغاء',
   'Completed' => 'مكتمل',

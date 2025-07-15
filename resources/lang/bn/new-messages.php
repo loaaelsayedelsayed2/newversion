@@ -264,6 +264,7 @@
   'Provider_login' => 'Provider login',
   'Bank_Information' => 'Bank Information',
   'Account_Information' => 'Account Information',
+  'provider_dashboard' => 'Provider DashBoard',
   'Account' => 'Account',
   'Canceled' => 'Canceled',
   'Completed' => 'Completed',

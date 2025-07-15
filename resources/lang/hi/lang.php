@@ -256,6 +256,7 @@ return array (
   'add_new_service' => 'नई सेवा जोड़ें',
   'service_details' => 'सेवा विवरण',
   'service_list' => 'सेवा सूची',
+  'Provider_DashBoard' => 'प्रदाता डैशबोर्ड',
   'service_setup' => 'सेवा सेटअप',
   'choose_category' => 'श्रेणी का चयन करें',
   'service_name' => 'सेवा का नाम',
