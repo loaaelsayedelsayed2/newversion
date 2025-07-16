@@ -324,7 +324,7 @@ class ProviderController extends Controller
     {
         $this->authorize('provider_view');
         $request->validate([
-            'web_page' => 'in:overview,subscribed_services,bookings,serviceman_list,settings,bank_information,reviews,subscription',
+            'web_page' => 'in:overview,subscribed_services,bookings,serviceman_list,settings,bank_information,reviews,subscription,provider_dashboard',
         ]);
 
         $webPage = $request->has('web_page') ? $request['web_page'] : 'overview';
