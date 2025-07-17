@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+<<<<<<< HEAD
+=======
+use Modules\AdminModule\Entities\RouteSearchHistory;
+>>>>>>> newversion/main
 use Modules\BidModule\Entities\IgnoredPost;
 use Modules\BidModule\Entities\Post;
 use Modules\BookingModule\Entities\Booking;
@@ -227,14 +231,21 @@ class ProviderController extends Controller
                 if (!$request->user()?->provider?->is_suspended || !business_config('suspend_on_exceed_cash_limit_provider', 'provider_config')->live_values) {
                     $query->where(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'cash_after_service')
+<<<<<<< HEAD
                         ->where('payment_method', 'payment_after_service')
+=======
+>>>>>>> newversion/main
                             ->where(function ($query) use ($maxBookingAmount) {
                                 $query->where('is_verified', 1)
                                     ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                             })
+<<<<<<< HEAD
                             ->orWhere('payment_method', '<>', 'cash_after_service')
                             ->orWhere('payment_method', '<>', 'payment_after_service')
                             ;
+=======
+                            ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                     });
                 } else {
                     $query->whereNull('id');
@@ -366,14 +377,21 @@ class ProviderController extends Controller
             ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                 $query->where(function ($query) use ($maxBookingAmount) {
                     $query->where('payment_method', 'cash_after_service')
+<<<<<<< HEAD
                     ->where('payment_method', 'payment_after_service')
+=======
+>>>>>>> newversion/main
                         ->where(function ($query) use ($maxBookingAmount) {
                             $query->where('is_verified', 1)
                                 ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                         })
+<<<<<<< HEAD
                         ->orWhere('payment_method', '<>', 'cash_after_service')
                         ->orWhere('payment_method', '<>', 'payment_after_service')
                         ;
+=======
+                        ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                 });
             })
             ->where('zone_id', $request->user()->provider->zone_id)
@@ -547,9 +565,15 @@ class ProviderController extends Controller
             if ($min == 0 && $max == 0) {
                 $num5 = 0;
             } else {
+<<<<<<< HEAD
                 if ($min >= $max) {
                     $min = 1;
                     $max = 10;
+=======
+                if ($min >= $max || $max - $min > 10000) {
+                    $min = 1;
+                    $max = 100; // Set reasonable range
+>>>>>>> newversion/main
                 }
 
                 $mid = round(($min + $max) / 2);
@@ -559,6 +583,7 @@ class ProviderController extends Controller
 
                 $excluded = array_unique([$mid, $mid1, $mid2, $num4]);
 
+<<<<<<< HEAD
                 $validValues = range($min, $max);
                 $validValues = array_diff($validValues, $excluded);
 
@@ -567,6 +592,13 @@ class ProviderController extends Controller
                 } else {
                     $num5 = $validValues[array_rand($validValues)];
                 }
+=======
+                $step = 10; // Prevent excessive range
+                $validValues = range($min, $max, $step);
+                $validValues = array_filter($validValues, fn($value) => !in_array($value, $excluded));
+
+                $num5 = empty($validValues) ? $min : $validValues[array_rand($validValues)];
+>>>>>>> newversion/main
             }
 
             $withdrawRequestAmount['random'] = array($mid, $mid1, $num5, $mid2, $num4);
@@ -932,9 +964,22 @@ class ProviderController extends Controller
             //booking
             $booking = Booking::where(['id' => $searchKeyword, 'provider_id' => $providerId])->first();
             if ($booking){
+<<<<<<< HEAD
                 $bookingRoutes = $providerRoutes->filter(function ($route) {
                     return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
                 });
+=======
+                if ($booking->is_repeated == 0){
+                    $bookingRoutes = $providerRoutes->filter(function ($route) {
+                        return str_contains($route->uri(), 'booking/details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                    });
+                }else{
+                    $bookingRoutes = $providerRoutes->filter(function ($route) {
+                        return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                    });
+                }
+
+>>>>>>> newversion/main
                 if (isset($bookingRoutes)) {
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
@@ -951,6 +996,7 @@ class ProviderController extends Controller
                 ->get();
 
             if ($bookings){
+<<<<<<< HEAD
                 $bookingsRoutes = $providerRoutes->filter(function ($route) {
                     return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
                 });
@@ -960,6 +1006,22 @@ class ProviderController extends Controller
                         foreach ($bookingsRoutes as $route) {
                             $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
                         }
+=======
+                foreach ($bookings as $booking)
+                {
+                    if ($booking->is_repeated == 0){
+                        $bookingRoutes = $providerRoutes->filter(function ($route) {
+                            return str_contains($route->uri(), 'booking/details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                        });
+                    }else{
+                        $bookingRoutes = $providerRoutes->filter(function ($route) {
+                            return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                        });
+                    }
+
+                    foreach ($bookingRoutes as $route) {
+                        $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
+>>>>>>> newversion/main
                     }
                 }
             }
@@ -996,9 +1058,21 @@ class ProviderController extends Controller
             //booking
             $booking = Booking::where(['readable_id' => $searchKeyword, 'provider_id' => $providerId])->first();
             if ($booking){
+<<<<<<< HEAD
                 $bookingRoutes = $providerRoutes->filter(function ($route) {
                     return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
                 });
+=======
+                if ($booking->is_repeated == 0){
+                    $bookingRoutes = $providerRoutes->filter(function ($route) {
+                        return str_contains($route->uri(), 'booking/details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                    });
+                }else{
+                    $bookingRoutes = $providerRoutes->filter(function ($route) {
+                        return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                    });
+                }
+>>>>>>> newversion/main
                 if (isset($bookingRoutes)) {
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
@@ -1020,6 +1094,7 @@ class ProviderController extends Controller
                 ->get();
 
             if ($bookings){
+<<<<<<< HEAD
                 $bookingsRoutes = $providerRoutes->filter(function ($route) {
                     return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
                 });
@@ -1029,6 +1104,22 @@ class ProviderController extends Controller
                         foreach ($bookingsRoutes as $route) {
                             $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
                         }
+=======
+                foreach ($bookings as $booking)
+                {
+                    if ($booking->is_repeated == 0){
+                        $bookingRoutes = $providerRoutes->filter(function ($route) {
+                            return str_contains($route->uri(), 'booking/details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                        });
+                    }else{
+                        $bookingRoutes = $providerRoutes->filter(function ($route) {
+                            return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
+                        });
+                    }
+
+                    foreach ($bookingRoutes as $route) {
+                        $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
+>>>>>>> newversion/main
                     }
                 }
             }
@@ -1112,6 +1203,64 @@ class ProviderController extends Controller
         return $routeInfo;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function storeClickedRoute(Request $request): JsonResponse
+    {
+        $userId = auth()->id();
+        $userType = auth()->user()->user_type;
+
+        $clickedRoute = RouteSearchHistory::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'user_type' => $userType,
+                'route_uri' => $request->input('routeUri'),
+            ],
+            [
+                'route_name' => $request->input('routeName'),
+                'route_full_url' => $request->input('routeFullUrl'),
+                'keyword' => $request->input('searchKeyword'),
+            ]
+        );
+
+        // Ensure `updated_at` is refreshed
+        $clickedRoute->touch();
+
+        // Keep only the last 15 records, delete older ones
+        $excessCount = RouteSearchHistory::where('user_id', $userId)
+                ->where('user_type', $userType)
+                ->count() - 15;
+
+        if ($excessCount > 0) {
+            RouteSearchHistory::where('user_id', $userId)
+                ->where('user_type', $userType)
+                ->orderBy('updated_at', 'asc')
+                ->limit($excessCount)
+                ->delete();
+        }
+
+        return response()->json(['message' => 'Clicked route stored successfully']);
+    }
+
+    public function recentSearch(): JsonResponse
+    {
+        $userId = auth()->id();
+        $userType = auth()->user()->user_type;
+
+        $recentSearches = RouteSearchHistory::where('user_id', $userId)
+            ->where('user_type', $userType)
+            ->orderBy('updated_at', 'desc')
+            ->limit(15) // Ensure max 15 records
+            ->get();
+
+        return response()->json($recentSearches);
+    }
+
+>>>>>>> newversion/main
     public function setModalClosed(Request $request): JsonResponse
     {
         Session::put('modalClosed', true);

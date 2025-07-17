@@ -118,7 +118,11 @@ class PushNotificationController extends Controller
         $this->authorize('push_notification_add');
 
         $validatedData = $request->validate([
+<<<<<<< HEAD
             'title' => 'required|string|max:255',
+=======
+            'title' => 'required|string|max:191',
+>>>>>>> newversion/main
             'description' => 'required|string',
             'to_users' => 'required|array',
             'to_users.*' => 'in:customer,provider-admin,provider-serviceman,all',
@@ -198,7 +202,11 @@ class PushNotificationController extends Controller
     {
         $this->authorize('push_notification_update');
         $request->validate([
+<<<<<<< HEAD
             'title' => 'required',
+=======
+            'title' => 'required|string|max:191',
+>>>>>>> newversion/main
             'description' => 'required',
             'to_users' => 'required|array',
             'to_users.*' => 'in:customer,provider-admin,provider-serviceman,all',

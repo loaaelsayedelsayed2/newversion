@@ -264,7 +264,10 @@
   'Provider_login' => 'Provider login',
   'Bank_Information' => 'Bank Information',
   'Account_Information' => 'Account Information',
+<<<<<<< HEAD
   'provider_dashboard' => 'Provider DashBoard',
+=======
+>>>>>>> newversion/main
   'Account' => 'Account',
   'Canceled' => 'Canceled',
   'Completed' => 'Completed',
@@ -381,7 +384,10 @@
   'nid' => 'Nid',
   'Company_Id' => 'Company Id',
   'Driving_License' => 'Driving License',
+<<<<<<< HEAD
   'residency_permit' => 'Residency Permit',
+=======
+>>>>>>> newversion/main
   'Passport' => 'Passport',
   'Identity_Number' => 'Identity Number',
   'Select_Identity_Type' => 'Select Identity Type',
@@ -482,7 +488,10 @@
   'notification' => 'Notification',
   'notification_setup' => 'Notification setup',
   'booking_place_message' => 'Booking place message',
+<<<<<<< HEAD
   'invoice_sent' => 'Invoice sent',
+=======
+>>>>>>> newversion/main
   'booking_service_complete' => 'Booking service complete',
   'want_to_update' => 'Want to update',
   'booking_cancel_message' => 'Booking cancel message',
@@ -697,7 +706,10 @@
   'Booking_Summary' => 'Booking Summary',
   'Provider Information' => 'Provider Information',
   'driving_license' => 'Driving license',
+<<<<<<< HEAD
   'residency_permit' => 'Residency Permit',
+=======
+>>>>>>> newversion/main
   'passport' => 'Passport',
   'The password must be at least 8 characters.' => 'The password must be at least 8 characters.',
   'update_serviceman' => 'Update serviceman',
@@ -766,7 +778,10 @@
   'Transaction_From' => 'Transaction From',
   'Transaction_Date' => 'Transaction Date',
   'Transaction_Id' => 'Transaction Id',
+<<<<<<< HEAD
   'Payment_ID' => ' Payment ID',
+=======
+>>>>>>> newversion/main
   'total_transactions' => 'Total transactions',
   'To_user' => 'To user',
   'From_user' => 'From user',
@@ -843,7 +858,10 @@
   'update_discount' => 'Update discount',
   'Discount' => 'Discount',
   'cash_after_service' => 'Cash after service',
+<<<<<<< HEAD
     'payment_after_service' => 'Payment after service',
+=======
+>>>>>>> newversion/main
   'stripe' => 'Stripe',
   'ssl_commerz' => 'Ssl commerz',
   'Provider_Information' => 'Provider Information',
@@ -3294,4 +3312,8 @@
   'Meta Title' => 'Meta Title',
   'Back to list' => 'Back to list',
   'Robots Meta Content & OG Meta content' => 'Robots Meta Content & OG Meta content',
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> newversion/main

@@ -8,6 +8,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Modules\BidModule\Entities\PostBid;
 use Modules\BidModule\Http\Controllers\APi\V1\Customer\PostBidController;
+<<<<<<< HEAD
+=======
+use Modules\BookingModule\Entities\Booking;
+use Modules\BookingModule\Entities\BookingPartialPayment;
+>>>>>>> newversion/main
 use Modules\BookingModule\Entities\BookingRepeat;
 use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\PaymentModule\Entities\PaymentRequest;
@@ -42,11 +47,23 @@ class PaymentResponse
             'is_partial' => $additional_data['is_partial'] ?? null,
             'post_id' => $additional_data['post_id'] ?? null,
             'provider_id' => $additional_data['provider_id'] ?? null,
+<<<<<<< HEAD
+=======
+            'register_new_customer' => $additional_data['register_new_customer'] ?? 0,
+            'first_name' => $additional_data['first_name'] ?? null,
+            'phone' => $additional_data['phone'] ?? null,
+            'password' => $additional_data['password'] ?? null,
+            'service_location' => $additional_data['service_location'] ?? 'customer',
+>>>>>>> newversion/main
         ]);
 
         if (!$request->has('post_id') || is_null($request['post_id'])) {
             $is_guest = !User::where('id', $customer_user_id)->exists();
+<<<<<<< HEAD
             $response = (new PaymentResponse)->placeBookingRequest($customer_user_id, $request, $tran_id, $is_guest);
+=======
+            $response = (new PaymentResponse)->placeBookingRequest(userId: $customer_user_id, request:  $request, transactionId:  $tran_id, isGuest: $is_guest);
+>>>>>>> newversion/main
 
         } else {
             //for bidding
@@ -75,6 +92,24 @@ class PaymentResponse
             }
         }
 
+<<<<<<< HEAD
+=======
+//        if ($request['register_new_customer'] == 1){
+//            $user = new User();
+//            $user->first_name = $request['first_name'];
+//            $user->last_name = '';
+//            $user->phone = $request['phone'];
+//            $user->password = bcrypt($request['password']);
+//            $user->user_type = 'customer';
+//            $user->is_active = 1;
+//            $user->save();
+//
+//            $loginToken = $user->createToken('CUSTOMER_PANEL_ACCESS')->accessToken;
+//
+//            $response['loginToken'] = $loginToken;
+//        }
+
+>>>>>>> newversion/main
         //update payment request
         if ($response['flag'] == 'success' && $response['readable_id']) {
             $payment_request = PaymentRequest::find($payment_request_id);
@@ -136,6 +171,87 @@ class PaymentResponse
 
     /**
      * @param $data
+<<<<<<< HEAD
+=======
+     * @return array
+     */
+    public static function switchOfflineToDigitalPaymentSuccess($data): array
+    {
+        $customer_user_id = $data['payer_id'];
+        $tran_id = $data['transaction_id'];
+        $payment_request_id = $data->id;
+
+        $additional_data = json_decode($data['additional_data'], true);
+        $request = collect([
+            'access_token' => $additional_data['access_token'] ?? null,
+            'booking_id' => $additional_data['booking_id'] ?? null,
+            'payment_method' => $additional_data['payment_method'] ?? null,
+            'callback' => $additional_data['callback'] ?? null,
+            'is_partial' => $additional_data['is_partial'] ?? 0,
+            'wallet_paid_amount' => $additional_data['wallet_paid_amount'] ?? 0,
+            'digitally_paid_amount' => $additional_data['digitally_paid_amount'] ?? 0,
+        ]);
+
+        if (!is_null($request['booking_id'])) {
+            $booking = Booking::find($request['booking_id']);
+            $booking->is_paid = 1;
+            $booking->payment_method = $request['payment_method'];
+            $booking->transaction_id = $tran_id;
+            $booking->save();
+
+            placeBookingTransactionForDigitalPayment($booking);  //digital payment
+
+            if ($booking->booking_partial_payments->isNotEmpty()) {
+                // Update rows where `paid_with to digital` is not 'wallet'
+                $booking->booking_partial_payments()
+                    ->where('paid_with', '!=', 'wallet')
+                    ->update(['paid_with' => 'digital']);
+            }
+
+            if ($request['is_partial']){
+                // Save wallet payment
+                BookingPartialPayment::create([
+                    'booking_id' => $booking->id,
+                    'paid_with' => 'wallet',
+                    'paid_amount' => $request['wallet_paid_amount'],
+                    'due_amount' => $request['digitally_paid_amount'],
+                ]);
+
+                // Save remaining payment
+                BookingPartialPayment::create([
+                    'booking_id' => $booking->id,
+                    'paid_with' => 'digital',
+                    'paid_amount' => $request['digitally_paid_amount'],
+                    'due_amount' => 0,
+                ]);
+
+                placeBookingTransactionForPartialDigital($booking);  //wallet + digital payment
+            }
+
+            $response = [
+                'flag' => 'success',
+                'booking_id' => $booking->id,
+                'readable_id' => $booking->readable_id
+            ];
+
+        }
+
+        //update payment request
+        if ($response['flag'] == 'success' && $response['readable_id']) {
+            $payment_request = PaymentRequest::find($payment_request_id);
+            $payment_request->attribute = 'booking';
+            $payment_request->attribute_id = $response['readable_id'];
+            $payment_request->save();
+        }
+
+        $response['callback'] = $request['callback'];
+        return $response;
+    }
+
+
+    /**
+     * @param $data
+>>>>>>> newversion/main
      * @return array|RedirectResponse
      */
     public static function purchaseSubscriptionSuccess($data): array|RedirectResponse|string

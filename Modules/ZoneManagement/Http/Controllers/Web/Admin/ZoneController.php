@@ -66,6 +66,54 @@ class ZoneController extends Controller
         return view('zonemanagement::admin.create', compact('zones', 'search'));
     }
 
+<<<<<<< HEAD
+=======
+    public function getTable(Request $request)
+    {
+        $search = $request->input('search', '');
+        $page = $request->input('page', 1);
+        $queryParam = ['search' => $search];
+
+        $zones = $this->zone
+            ->withCount(['providers', 'categories'])
+            ->when($request->has('search'), function ($query) use ($request) {
+                $keys = explode(' ', $request['search']);
+                foreach ($keys as $key) {
+                    $query->orWhere('name', 'LIKE', '%' . $key . '%');
+                }
+            })
+            ->withoutGlobalScope('translate')
+            ->latest()->paginate(pagination_limit())->appends($queryParam);
+
+        $totalCount = $zones->total();
+        $zones->withPath(route('admin.zone.create'));
+
+        // Fallback logic: If current page has no data, go back one page
+        if ($zones->isEmpty() && $page > 1) {
+            $page = $page - 1;
+            $request->merge(['page' => $page]);
+
+            $zones = $this->zone
+                ->withCount(['providers', 'categories'])
+                ->when($request->has('search'), function ($query) use ($request) {
+                    $keys = explode(' ', $request['search']);
+                    foreach ($keys as $key) {
+                        $query->orWhere('name', 'LIKE', '%' . $key . '%');
+                    }
+                })
+                ->withoutGlobalScope('translate')
+                ->latest()->paginate(pagination_limit())->appends($queryParam);
+        }
+
+        return response()->json([
+            'view' =>  view('zonemanagement::admin.partials._table', compact('zones', 'search', 'totalCount'))->render(),
+            'totalCount' => $totalCount,
+            'offset' => ($zones->currentPage() - 1) * $zones->perPage(),
+            'page' => $zones->currentPage(),
+        ]);
+    }
+
+>>>>>>> newversion/main
     /**
      * Store a newly created resource in storage.
      * @param Request $request

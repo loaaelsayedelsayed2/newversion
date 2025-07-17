@@ -211,7 +211,11 @@ class ProviderController extends Controller
             'company_email' => 'required|email|unique:providers',
             'logo' => 'required|image|mimes:jpeg,jpg,png,gif',
 
+<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license,company_id',
+=======
+            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+>>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_images' => 'required|array',
             'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',

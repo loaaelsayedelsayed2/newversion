@@ -42,11 +42,27 @@ class SubscribedService extends Model
         return $this->hasMany(Service::class, 'sub_category_id', 'sub_category_id');
     }
 
+<<<<<<< HEAD
+=======
+    public function ongoing_booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class, 'sub_category_id', 'sub_category_id')->where('booking_status', BOOKING_STATUSES[2]['key']);
+    }
+
+>>>>>>> newversion/main
     public function completed_booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class, 'sub_category_id', 'sub_category_id')->where('booking_status', BOOKING_STATUSES[3]['key']);
     }
 
+<<<<<<< HEAD
+=======
+    public function canceled_booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class, 'sub_category_id', 'sub_category_id')->where('booking_status', BOOKING_STATUSES[4]['key']);
+    }
+
+>>>>>>> newversion/main
     protected function scopeOfSubscription($query, $status)
     {
         $query->where('is_subscribed', $status);

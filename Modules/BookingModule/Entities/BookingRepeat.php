@@ -66,7 +66,13 @@ class BookingRepeat extends Model
         'additional_campaign_discount_amount',
         'evidence_photos',
         'booking_otp',
+<<<<<<< HEAD
         'is_verified'
+=======
+        'is_verified',
+        'service_address_location',
+        'service_location',
+>>>>>>> newversion/main
     ];
 
     protected $appends = ['evidence_photos_full_path', 'skipNotification'];

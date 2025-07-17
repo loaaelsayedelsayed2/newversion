@@ -23,10 +23,18 @@ use Modules\BusinessSettingsModule\Entities\SubscriptionPackageLimit;
 use Modules\PaymentModule\Traits\SubscriptionTrait;
 use Modules\ProviderManagement\Emails\NewJoiningRequestMail;
 use Modules\ProviderManagement\Entities\Provider;
+<<<<<<< HEAD
+=======
+use Modules\ProviderManagement\Entities\ProviderSetting;
+>>>>>>> newversion/main
 use Modules\UserManagement\Entities\Serviceman;
 use Modules\UserManagement\Entities\User;
 use Modules\ZoneManagement\Entities\Zone;
 use Carbon\Carbon;
+<<<<<<< HEAD
+=======
+use Stevebauman\Location\Facades\Location;
+>>>>>>> newversion/main
 
 class RegisterController extends Controller
 {
@@ -104,7 +112,11 @@ class RegisterController extends Controller
      */
     public function providerSelfRegisterForm(Request $request): Application|Factory|View
     {
+<<<<<<< HEAD
         $zones = $this->zone->get();
+=======
+        $zones = $this->zone->ofStatus(1)->get();
+>>>>>>> newversion/main
         $digitalPayment = (int)((business_config('digital_payment', 'service_setup'))->live_values ?? null);
         $commission = (int)((business_config('provider_commision', 'provider_config'))->live_values ?? null);
         $subscription = (int)((business_config('provider_subscription', 'provider_config'))->live_values ?? null);
@@ -157,10 +169,17 @@ class RegisterController extends Controller
             'company_email' => 'required|email',
             'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
 
+<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license',
             'identity_number' => 'required',
             'identity_images' => 'required|array',
             'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif|max:2048',
+=======
+            'identity_type' => 'required|in:passport,driving_license,nid,trade_license',
+            'identity_number' => 'required',
+            'identity_images' => 'required|array',
+            'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+>>>>>>> newversion/main
 
             'latitude' => 'required',
             'longitude' => 'required',
@@ -226,6 +245,20 @@ class RegisterController extends Controller
             $owner->save();
             $provider->user_id = $owner->id;
             $provider->save();
+<<<<<<< HEAD
+=======
+
+            $serviceLocation = ['customer'];
+            ProviderSetting::create([
+                'provider_id'   => $provider->id,
+                'key_name'      => 'service_location',
+                'live_values'   => json_encode($serviceLocation),
+                'test_values'   => json_encode($serviceLocation),
+                'settings_type' => 'provider_config',
+                'mode'          => 'live',
+                'is_active'     => 1,
+            ]);
+>>>>>>> newversion/main
         });
 
         try {
@@ -299,7 +332,11 @@ class RegisterController extends Controller
             'company_email' => 'required|email',
             'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
 
+<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license,company_id',
+=======
+            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+>>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_images' => 'required|array',
             'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
@@ -352,6 +389,20 @@ class RegisterController extends Controller
             $owner->save();
             $provider->user_id = $owner->id;
             $provider->save();
+<<<<<<< HEAD
+=======
+
+            $serviceLocation = ['customer'];
+            ProviderSetting::create([
+                'provider_id'   => $provider->id,
+                'key_name'      => 'service_location',
+                'live_values'   => json_encode($serviceLocation),
+                'test_values'   => json_encode($serviceLocation),
+                'settings_type' => 'provider_config',
+                'mode'          => 'live',
+                'is_active'     => 1,
+            ]);
+>>>>>>> newversion/main
         });
 
         return response()->json(response_formatter(PROVIDER_STORE_200), 200);
@@ -420,4 +471,19 @@ class RegisterController extends Controller
         return $data;
     }
 
+<<<<<<< HEAD
+=======
+    public function checkUniqueUser(Request $request)
+    {
+        $emailExists = $this->user->where('email', $request->email)->exists();
+        $phoneExists = $this->user->where('phone', $request->phone)->exists();
+
+        return response()->json([
+            'success' => !$emailExists && !$phoneExists,
+            'email_exists' => $emailExists,
+            'phone_exists' => $phoneExists
+        ]);
+    }
+
+>>>>>>> newversion/main
 }

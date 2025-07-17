@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Modules\CustomerModule\Http\Controllers\Api\V1\Customer\AddressController;
 use Modules\CustomerModule\Http\Controllers\Api\V1\Customer\CustomerController;
+<<<<<<< HEAD
 use Modules\CustomerModule\Http\Controllers\Api\V1\Customer\CustomerBandCardsController;
 
+=======
+use Modules\CustomerModule\Http\Controllers\Api\V1\Customer\SubscribeNewsletterController;
+>>>>>>> newversion/main
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +63,7 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V
         Route::post('loyalty-point/wallet-transfer', [CustomerController::class, 'transferLoyaltyPointToWallet']);
         Route::get('wallet-transaction', [CustomerController::class, 'walletTransaction']);
         Route::get('loyalty-point-transaction', [CustomerController::class, 'loyaltyPointTransaction']);
+<<<<<<< HEAD
         // add to wallet 
         Route::post('add-wallet', [CustomerController::class, 'addWallet']);
         // remove from wallet
@@ -68,9 +73,17 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V
         Route::post('add-bank-card', [CustomerBandCardsController::class, 'store']);
         Route::delete('remove-bank-card/{bank_card_id}', [CustomerBandCardsController::class, 'delete']);
         Route::get('bank-cards', [CustomerBandCardsController::class, 'index']);
+=======
+>>>>>>> newversion/main
     });
 
     Route::post('change-language', [CustomerController::class, 'changeLanguage']);
     Route::post('error-link', [CustomerController::class, 'errorLink']);
+<<<<<<< HEAD
+=======
+
+    Route::post('subscribe-newsletter', [SubscribeNewsletterController::class, 'subscribeNewsletter'])->name('subscribe-newsletter');
+
+>>>>>>> newversion/main
 });
 

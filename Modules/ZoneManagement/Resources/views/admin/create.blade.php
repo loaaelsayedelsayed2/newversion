@@ -153,14 +153,22 @@
                     <div class="card mb-30">
                         <div class="card-body">
                             <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
+<<<<<<< HEAD
                                 <form action="{{url()->current()}}" class="search-form search-form_style-two"
                                       method="POST">
                                     @csrf
+=======
+                                <form action="{{url()->current()}}" class="search-form search-form_style-two"  method="GET">
+>>>>>>> newversion/main
                                     <div class="input-group search-form__input_group">
                                             <span class="search-form__icon">
                                                 <span class="material-icons">search</span>
                                             </span>
+<<<<<<< HEAD
                                         <input type="search" class="theme-input-style search-form__input"
+=======
+                                        <input type="search" class="theme-input-style search-form__input zone-search-input"
+>>>>>>> newversion/main
                                                value="{{$search}}" name="search"
                                                placeholder="{{translate('search_here')}}">
                                     </div>
@@ -186,6 +194,7 @@
                                 </div>
                             </div>
 
+<<<<<<< HEAD
                             <div class="table-responsive">
                                 <table id="example" class="table align-middle">
                                     <thead>
@@ -256,6 +265,10 @@
                             </div>
                             <div class="d-flex justify-content-end">
                                 {!! $zones->links() !!}
+=======
+                            <div id="ListTableContainer">
+                                @include('zonemanagement::admin.partials._table')
+>>>>>>> newversion/main
                             </div>
                         </div>
                     </div>
@@ -263,6 +276,12 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    <input type="hidden" id="offset" value="{{ request()->page }}">
+
+>>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -431,6 +450,13 @@
         function performValidation(event) {
             if (!lastpolygon) {
                 event.preventDefault();
+<<<<<<< HEAD
+=======
+                toastr.warning('{{ translate('Please draw your zone on the map') }}', {
+                    CloseButton: true,
+                    ProgressBar: true,
+                });
+>>>>>>> newversion/main
             }
         }
 
@@ -454,5 +480,143 @@
             let lang = form_id.substring(0, form_id.length - 5);
             $("#" + lang + "-form").removeClass('d-none');
         });
+<<<<<<< HEAD
+=======
+
+        let selectedItem;
+        let selectedRoute;
+        let initialState;
+
+        $('.nav-link').on('click', function () {
+            const urlParams = new URLSearchParams($(this).attr('href').split('?')[1]);
+        });
+
+        $(document).on('change', '.status-update', function (e) {
+            // Prevent default toggle behavior to avoid checkbox jumping
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            selectedItem = $(this);
+            initialState = selectedItem.prop('checked'); // Get current state (true if ON)
+
+            // Immediately revert the checkbox visually until confirmation
+            selectedItem.prop('checked', !initialState);
+
+            let itemId = selectedItem.data('id');
+            selectedRoute = '{{ route('admin.zone.status-update', ['id' => ':itemId']) }}'.replace(':itemId', itemId);
+
+            let confirmationTitleText = initialState
+                ? '{{ translate('Are you sure to Turn On the Zone Status') }}?'
+                : '{{ translate('Are you sure to Turn Off the Zone Status') }}?';
+
+            $('.confirmation-title-text').text(confirmationTitleText);
+
+            let confirmationDescriptionText = initialState
+                ? '{{ translate('Once you turn on the Zone Status, the user can find the category, services, and location in that zone') }}.'
+                : '{{ translate('Once you turn off the Zone Status it will impact the category, services, and location finding for customers') }}.';
+
+            $('.confirmation-description-text').text(confirmationDescriptionText);
+
+            let imgSrc = initialState
+                ? "{{ asset('public/assets/admin-module/img/icons/status-on.png') }}"
+                : "{{ asset('public/assets/admin-module/img/icons/status-off.png') }}";
+
+            $('#confirmChangeModal img').attr('src', imgSrc);
+
+            showModal();
+        });
+
+        $('#confirmChange').on('click', function () {
+            updateStatus(selectedRoute);
+        });
+
+        $('.cancel-change').on('click', function () {
+            resetCheckboxState();
+            hideModal();
+        });
+
+        $('#confirmChangeModal').on('hidden.bs.modal', function () {
+            resetCheckboxState();
+        });
+
+        function showModal() {
+            $('#confirmChangeModal').modal('show');
+        }
+
+        function hideModal() {
+            $('#confirmChangeModal').modal('hide');
+        }
+
+        //  Reverts checkbox if user cancels
+        function resetCheckboxState() {
+            if (selectedItem) {
+                selectedItem.prop('checked', !initialState);
+            }
+        }
+
+        //  AJAX update - triggers only if user confirms
+        function updateStatus(route) {
+            let page = $('#offset').val();
+            $.ajax({
+                url: route,
+                type: 'POST',
+                data: {_token: '{{ csrf_token() }}'},
+                dataType: 'json',
+                success: function (data) {
+                    toastr.success(data.message, {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
+
+                    // Update UI manually or reload table as needed
+                    reloadTable(page); // Optional - if backend changes are needed
+                    hideModal();
+                },
+                error: function () {
+                    resetCheckboxState();
+                    toastr.error('Something went wrong! Please try again.');
+                }
+            });
+        }
+
+        function reloadTable(page) {
+            let search = $('.zone-search-input').val();
+            $.ajax({
+                url: "{{ route('admin.zone.table') }}",
+                type: "GET",
+                data: {
+                    search: search,
+                    page: page
+                },
+                success: function (response) {
+                    if (response.page != page) {
+                        updateBrowserUrl(search, response.page);
+                        $('#offset').val((response.page - 1) * {{ pagination_limit() }});
+                    } else {
+                        $('#offset').val(response.offset);
+                        updateBrowserUrl(search, page);
+                    }
+
+                    $('#totalListCount').html(response.totalCount)
+                    $('#ListTableContainer').empty().html(response.view);
+                },
+                error: function () {
+                    toastr.error('Failed to update table. Please reload the page.', {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
+                }
+            });
+        }
+
+        function updateBrowserUrl(search, page) {
+            const params = new URLSearchParams();
+            if (search) params.set('search', search);
+            if (page > 1) params.set('page', page);
+
+            const newUrl = `${window.location.pathname}?${params.toString()}`;
+            window.history.replaceState({}, '', newUrl);
+        }
+>>>>>>> newversion/main
     </script>
 @endpush

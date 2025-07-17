@@ -38,6 +38,7 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                         @endif
+<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'payment_after_service')
                         <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -45,6 +46,8 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                         @endif
+=======
+>>>>>>> newversion/main
                         <a href="{{ route('provider.booking.full_repeat_invoice', [$booking->id]) }}" class="btn btn-primary"
                             target="_blank">
                             <span class="material-icons">description</span>{{ translate('Invoice') }}
@@ -72,7 +75,11 @@
                         <div class="card-body">
                             @if (!empty($booking['nextService'])  && $booking['booking_status'] != 'pending')
                                 <h5 class="mb-3">{{ translate('Ongoing') }}</h5>
+<<<<<<< HEAD
                                 <div class="__bg-FAFAFA p-4 mb-3 d-flex flex-column gap-3">
+=======
+                                <div class="p-4 mb-3 d-flex flex-column gap-3">
+>>>>>>> newversion/main
                                 <div class="card card-border">
                                     <div class="card-body">
                                         <div class="d-flex flex-wrap justify-content-between align-content-center gap-3">
@@ -141,7 +148,11 @@
                                         <div>
                                             <span class="fz-14 color-93A2AE">#{{ $loop->iteration }}</span>
                                         </div>
+<<<<<<< HEAD
                                         <div class="__bg-FAFAFA card card-border w-100 shadow-none">
+=======
+                                        <div class="card card-border w-100 shadow-none">
+>>>>>>> newversion/main
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center gap-3">
                                                     <div>
@@ -266,6 +277,7 @@
                                                     {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
                                                     {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
                                                 </option>
+<<<<<<< HEAD
                                             @elseif ($booking->booking_status != 'completed'
                                                 && isset($booking->nextService)
                                                 && !$booking->nextService['is_paid']
@@ -274,6 +286,8 @@
                                                     {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
                                                     {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
                                                 </option>
+=======
+>>>>>>> newversion/main
                                             @elseif($booking->booking_status == 'completed')
                                                 <option value="completed"
                                                     {{ $booking->booking_status == 'completed' ? 'selected' : '' }}>
@@ -338,12 +352,20 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->customer)
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->customer?->profile_image_full_path }}"
                                                      alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                      alt="{{ translate('user_image') }}">
                                             @endif

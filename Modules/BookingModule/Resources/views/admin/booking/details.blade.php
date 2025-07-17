@@ -30,6 +30,7 @@
                 </div>
                 <div class="d-flex flex-wrap flex-xxl-nowrap gap-3">
                     <div class="d-flex flex-wrap gap-3">
+<<<<<<< HEAD
                         @if ($booking['payment_method'] == 'offline_payment' && !$booking['is_paid'])
                             @can('booking_can_approve_or_deny')
                                 <span class="btn btn--primary offline-payment" data-id="{{ $booking->id }}">
@@ -40,6 +41,11 @@
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
                             $booking['payment_method'] == 'payment_after_service' &&
+=======
+                        @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
+                        @if (
+                            $booking['payment_method'] == 'cash_after_service' &&
+>>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -105,7 +111,11 @@
                             </div>
                         @endif
                         @if (
+<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
+=======
+                            $booking['payment_method'] == 'cash_after_service' &&
+>>>>>>> newversion/main
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -158,8 +168,12 @@
                             </div>
                         @endif
 
+<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) &&
                                 $booking->booking_partial_payments->isEmpty())
+=======
+                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking->booking_partial_payments->isEmpty() && empty($booking->customizeBooking))
+>>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -189,20 +203,28 @@
                 </ul>
                 @php($max_booking_amount = business_config('max_booking_amount', 'booking_setup')->live_values ?? 0)
 
+<<<<<<< HEAD
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
+=======
+                @if ($booking->is_verified == 2 && $booking->payment_method == 'cash_after_service' && $max_booking_amount <= $booking->total_booking_amount)
+>>>>>>> newversion/main
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
                         <span>{{ $booking?->bookingDeniedNote?->value }}</span>
                     </div>
                 @endif
 
+<<<<<<< HEAD
                 @if (
                     $booking->is_verified == 0 &&
                         $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
+=======
+                @if ($booking->is_verified == 0 && $booking->payment_method == 'cash_after_service' && $max_booking_amount <= $booking->total_booking_amount)
+>>>>>>> newversion/main
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
                         <span>
@@ -212,12 +234,30 @@
                     </div>
                 @endif
 
+<<<<<<< HEAD
                 @if ($booking->is_paid == 0 && $booking->payment_method == 'offline_payment')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span>
                             <span class="text-danger fw-semibold"> # {{ translate('Note: ') }} </span>
                             {{ translate('Please Check & Verify the payment information weather it is correct or not before confirm the booking. ') }}
                         </span>
+=======
+                @if ($booking->booking_offline_payments->isNotEmpty() && $booking->payment_method == 'offline_payment' && $booking?->booking_offline_payments?->first()?->payment_status != 'approved')
+                    <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
+                        @if($booking?->booking_offline_payments?->first()?->payment_status == 'pending')
+                            <span>
+                                <span class="text-danger fw-semibold"> # {{ translate('Note: ') }} </span>
+                                {{ translate('Please Check & Verify the payment information weather it is correct or not before confirm the booking. ') }}
+                            </span>
+                        @endif
+                            @if($booking?->booking_offline_payments?->first()?->payment_status == 'denied')
+                                <span>
+                                <span class="text-danger fw-semibold"> # {{ translate('Denied Note: ') }} </span>
+                                {{ $booking?->booking_offline_payments?->first()?->denied_note }}
+                            </span>
+                            @endif
+
+>>>>>>> newversion/main
                     </div>
                 @endif
 
@@ -244,6 +284,7 @@
                                             <span
                                                 class="c1">{{ with_currency_symbol($booking->total_booking_amount) }}</span>
                                         </p>
+<<<<<<< HEAD
                                         @if ($booking->payment_method == 'offline_payment')
                                             <h4 class="mb-2">{{ translate('Payment_Info') }}</h4>
                                             <div class="d-flex gap-1 flex-column">
@@ -259,13 +300,38 @@
                                         @if (
                                             $booking->is_verified == '0' &&
                                                 $booking->payment_method == 'payment_after_service' &&
+=======
+                                    </div>
+                                    <div class="text-start text-sm-end">
+                                        @if($booking->payment_method == 'offline_payment' && $booking->booking_offline_payments->isNotEmpty())
+                                            <p class="mb-2"><span>{{ translate('Request Verify Status') }} :</span>
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
+                                                    <span class="text-info text-capitalize fw-bold">{{ translate('Pending') }}</span>
+                                                @endif
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'denied')
+                                                    <span class="text-danger text-capitalize fw-bold">{{ translate('Denied') }}</span>
+                                                @endif
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'approved')
+                                                    <span class="text-primary text-capitalize fw-bold">{{ translate('Approved') }}</span>
+                                                @endif
+                                            </p>
+                                        @endif
+
+                                        @if (
+                                            $booking->is_verified == '0' &&
+                                                $booking->payment_method == 'cash_after_service' &&
+>>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="c1 text-capitalize">{{ translate('Pending') }}</span>
                                             </p>
                                         @elseif(
                                             $booking->is_verified == '2' &&
+<<<<<<< HEAD
                                                 $booking->payment_method == 'payment_after_service' &&
+=======
+                                                $booking->payment_method == 'cash_after_service' &&
+>>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="text-danger text-capitalize"
@@ -311,6 +377,7 @@
                                         </h5>
                                     </div>
                                 </div>
+<<<<<<< HEAD
                                 <div class="bg-soft-light rounded py-3 px-3 title-color mb-20">
                                     <span>
                                         <span class="c1 fw-semibold"> # {{ translate('Note') }}: </span>
@@ -318,6 +385,8 @@
 
                                     </span>
                                 </div>
+=======
+>>>>>>> newversion/main
                             </div>
 
                             <div class="d-flex justify-content-start gap-2">
@@ -431,6 +500,7 @@
                                                 @endif
 
                                                 <tr>
+<<<<<<< HEAD
                                                 <td><strong>{{translate('Addation_Cost')}}</strong></td>
                                                 <td class="text--end pe--4">
                                                     <strong>{{with_currency_symbol($booking->additional_fees)}}</strong>
@@ -438,6 +508,8 @@
                                             </tr>
 
                                                 <tr>
+=======
+>>>>>>> newversion/main
                                                     <td><strong>{{ translate('Grand_Total') }}</strong></td>
                                                     <td class="text--end pe--4">
                                                         <strong>{{ with_currency_symbol($booking->total_booking_amount) }}</strong>
@@ -462,11 +534,19 @@
                                                     $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                                                 }
 
+<<<<<<< HEAD
                                                 if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                                                     $dueAmount += $booking->additional_charge;
                                                 }
 
                                                 if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
+=======
+                                                if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
+                                                    $dueAmount += $booking->additional_charge;
+                                                }
+
+                                                if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
+>>>>>>> newversion/main
                                                     $dueAmount = $booking->total_booking_amount;
                                                 }
                                                 ?>
@@ -479,7 +559,11 @@
                                                     </tr>
                                                 @endif
 
+<<<<<<< HEAD
                                                 @if ($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
+=======
+                                                @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+>>>>>>> newversion/main
                                                     <tr>
                                                         <td>{{ translate('Refund') }}</td>
                                                         <td class="text--end pe--4">
@@ -556,6 +640,73 @@
                                 @endif
                             </div>
 
+<<<<<<< HEAD
+=======
+
+                            @if($booking->payment_method == 'offline_payment')
+                                <div class="mt-3 border border-color-primary">
+                                    <div class="card text-center">
+                                        <div class="card-header">
+                                            <h5 class="font-weight-bold">{{ translate('Verification of Offline Payment') }}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            @if($booking->booking_offline_payments->isNotEmpty())
+                                                <div class="d-flex gap-1 flex-column">
+                                                    @php($offlinePaymentNote = '')
+                                                    @foreach ($booking?->booking_offline_payments?->first()?->customer_information ?? [] as $key => $item)
+                                                        <div class="d-flex gap-2">
+                                                            @if ($key != 'payment_note' )
+                                                                <span class="w-100px d-flex justify-content-start">{{ translate($key) }}</span>
+                                                                <span>: {{ translate($item) }}</span>
+                                                            @endif
+                                                        </div>
+                                                        <?php
+                                                            if ($key == 'payment_note' ){
+                                                                $offlinePaymentNote = $item;
+                                                            }
+                                                        ?>
+                                                    @endforeach
+                                                </div>
+                                                @if($offlinePaymentNote != '')
+                                                    <div class="badge-warning px-3 py-3 rounded title-color mt-3">
+                                                        <span>
+                                                            <span class="fw-semibold"> # {{ translate('Payment Note') }}:  </span>
+                                                            {{ $offlinePaymentNote }}
+                                                        </span>
+                                                    </div>
+                                               @endif
+
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
+                                                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                                                        <button class="btn badge-danger flex-grow-1 py-3" data-bs-toggle="modal"
+                                                                data-bs-target="#deniedModal-{{$booking->id}}">{{ translate('deny') }}</button>
+                                                        <button class="btn badge-info flex-grow-1 py-3 offline-payment">{{ translate('approve') }}</button>
+                                                    </div>
+                                                @elseif($booking->booking_offline_payments?->first()?->payment_status == 'denied')
+                                                    @if($booking['booking_status'] != 'canceled')
+                                                        <div class="d-flex flex-column gap-2 mt-4">
+                                                            <button class="btn badge-info w-100 py-3 switch-to-cash-after-service">{{ translate('Switch to Cash after Service') }}</button>
+                                                            <button class="btn badge-danger w-100 py-3 change-booking-status">{{ translate('Cancel Booking') }}</button>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+                                            @else
+                                                <img src="{{ asset('public/assets/admin-module/img/offline-payment.png') }}" alt="Payment Icon" class="mb-3">
+                                                <p class="text-muted">{{ translate('Customer did not submit any payment information yet') }}</p>
+                                                @if($booking['booking_status'] != 'canceled')
+                                                    <div class="d-flex flex-column gap-2 mt-4">
+                                                        <button class="btn badge-info w-100 py-3 switch-to-cash-after-service">{{ translate('Switch to Cash after Service') }}</button>
+                                                        <button class="btn badge-danger w-100 py-3 change-booking-status">{{ translate('Cancel Booking') }}</button>
+                                                    </div>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+>>>>>>> newversion/main
                             <div class="py-3 d-flex flex-column gap-3 mb-2">
                                 @if ($booking->evidence_photos)
                                     <div class="c1-light-bg radius-10 py-3 px-4">
@@ -574,9 +725,89 @@
                                     </div>
                                 @endif
 
+<<<<<<< HEAD
                                 <div class="c1-light-bg radius-10">
                                     <div
                                         class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
+=======
+                                @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
+                                <div class="c1-light-bg radius-10">
+                                    <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
+                                        <h4 class="d-flex align-items-center gap-2">
+                                            <span class="material-icons title-color">map</span>
+                                            {{ translate('Service_location') }}
+                                        </h4>
+                                        @if($serviceAtProviderPlace == 1)
+                                            @if($booking->provider_id)
+                                                @php($serviceLocation = getProviderSettings(providerId: $booking->provider_id, key: 'service_location', type: 'provider_config'))
+                                                @if(in_array('customer', $serviceLocation) && in_array('provider', $serviceLocation))
+                                                    <div class="btn-group">
+                                                        @can('booking_edit')
+                                                            <div data-bs-toggle="modal"
+                                                                 data-bs-target="#serviceLocationModal--{{ $booking['id'] }}"
+                                                                 data-toggle="tooltip" data-placement="top">
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <span class="material-symbols-outlined">edit_square</span>
+                                                                </div>
+                                                            </div>
+                                                        @endcan
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <div class="btn-group">
+                                                    @can('booking_edit')
+                                                        <div data-bs-toggle="modal"
+                                                             data-bs-target="#serviceLocationModal--{{ $booking['id'] }}"
+                                                             data-toggle="tooltip" data-placement="top">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <span class="material-symbols-outlined">edit_square</span>
+                                                            </div>
+                                                        </div>
+                                                    @endcan
+                                                </div>
+                                            @endif
+                                        @endif
+                                    </div>
+
+                                    <div class="py-3 px-4">
+                                        @if($booking->service_location == 'provider')
+                                            <div class="bg-warning p-3 rounded">
+                                                <h5>{{ translate('Customer has to go to the Provider Location to receive the service') }}</h5>
+                                            </div>
+                                            <div class="mt-3">
+                                                @if($booking->provider_id != null)
+                                                    @if($booking->provider)
+                                                        <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                        <div class="d-flex justify-content-between">
+                                                            <p>{{ Str::limit($booking?->provider?->company_address ?? translate('not_available'), 100) }}</p>
+                                                            <span class="material-icons">map</span>
+                                                        </div>
+                                                    @else
+                                                        <p>{{ translate('Provider Unavailable') }}</p>
+                                                    @endif
+                                                @else
+                                                    <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                    <p>{{ translate('The Service Location will be available after this booking accepts or assign to a provider') }}</p>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div class="bg-warning p-3 rounded">
+                                                <h5>{{ translate('Provider has to go to the Customer Location to provide the service') }}</h5>
+                                            </div>
+                                            <div class="mt-3">
+                                                <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                <div class="d-flex justify-content-between">
+                                                    <p>{{ Str::limit($booking?->service_address?->address ?? translate('not_available'), 100) }}</p>
+                                                    <span class="material-icons">map</span>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="c1-light-bg radius-10">
+                                    <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
+>>>>>>> newversion/main
                                         <h4 class="d-flex align-items-center gap-2">
                                             <span class="material-icons title-color">person</span>
                                             {{ translate('Customer_Information') }}
@@ -645,12 +876,20 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->customer)
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                     class="rounded-circle border border-white"
+=======
+                                                    class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                     src="{{ $booking?->customer?->profile_image_full_path }}"
                                                     alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                     class="rounded-circle border border-white"
+=======
+                                                    class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                     src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                     alt="{{ translate('user_image') }}">
                                             @endif
@@ -672,11 +911,21 @@
                                                                 href="tel:{{ $customer_phone }}">{{ $customer_phone }}</a>
                                                         </li>
                                                     @endif
+<<<<<<< HEAD
                                                     <li>
                                                         <span class="material-icons">map</span>
                                                         <p>{{ Str::limit($booking?->service_address?->address ?? translate('not_available'), 100) }}
                                                         </p>
                                                     </li>
+=======
+                                                    @if(!empty($booking?->service_address?->address))
+                                                            <li>
+                                                                <span class="material-icons">map</span>
+                                                                <p>{{ Str::limit($booking?->service_address?->address ?? translate('not_available'), 100) }}
+                                                                </p>
+                                                            </li>
+                                                    @endif
+>>>>>>> newversion/main
                                                 </ul>
                                             </div>
                                         </div>
@@ -692,12 +941,19 @@
                                         </h4>
                                         @if (isset($booking->provider))
                                             <div class="btn-group">
+<<<<<<< HEAD
                                                 <div class="cursor-pointer" data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                     <span class="material-symbols-outlined">more_vert</span>
                                                 </div>
                                                 <ul
                                                     class="dropdown-menu dropdown-menu__custom border-none dropdown-menu-end">
+=======
+                                                <div class="cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span class="material-symbols-outlined">more_vert</span>
+                                                </div>
+                                                <ul class="dropdown-menu dropdown-menu__custom border-none dropdown-menu-end">
+>>>>>>> newversion/main
                                                     <li>
                                                         <div
                                                             class="d-flex align-items-center gap-2 cursor-pointer provider-chat">
@@ -737,11 +993,19 @@
                                             </div>
                                         @endif
                                     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
                                     @if (isset($booking->provider))
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                     class="rounded-circle border border-white"
+=======
+                                                    class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                     src="{{ $booking?->provider?->logo_full_path }}"
                                                     alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -813,7 +1077,11 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                     class="rounded-circle border border-white"
+=======
+                                                    class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                     src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                     alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">
@@ -860,8 +1128,17 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     @include('bookingmodule::admin.booking.partials.details._service-address-modal')
 
+=======
+    @include('bookingmodule::admin.booking.partials.details._update-customer-address-modal')
+    @include('bookingmodule::admin.booking.partials.details._service-address-modal')
+
+    @include('bookingmodule::admin.booking.partials.details._service-location-modal')
+
+
+>>>>>>> newversion/main
     @include('bookingmodule::admin.booking.partials.details._service-modal')
 
     <div class="modal fade" id="providerModal" tabindex="-1" aria-labelledby="providerModalLabel" aria-hidden="true">
@@ -878,6 +1155,36 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    <div class="modal fade" id="deniedModal-{{$booking->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body pt-5 p-md-5">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="d-flex justify-content-center mb-4">
+                        <img width="75" height="75" src="{{asset('public/assets/admin-module/img/icons/info-round.svg')}}" class="rounded-circle" alt="">
+                    </div>
+
+                    <h3 class="text-start mb-1 fw-medium text-center">{{translate('Are you sure you want to deny?')}}</h3>
+                    <p class="text-start fs-12 fw-medium text-muted text-center">{{translate('Please insert the deny note for this payment request')}}</p>
+                    <form method="post" action="{{route('admin.booking.offline-payment.verify',['booking_id' => $booking->id, 'payment_status' => 'denied'])}}">
+                        @csrf
+                        <div class="form-floating">
+                            <textarea class="form-control h-69px" placeholder="{{translate('Type here your note')}}" name="note" id="add-your-note" maxlength="255" required></textarea>
+                            <label for="add-your-note" class="d-flex align-items-center gap-1">{{translate('Deny Note')}}</label>
+                            <div class="d-flex justify-content-center mt-3 gap-3">
+                                <button type="button" class="btn btn--secondary min-w-92px px-2" data-bs-dismiss="modal" aria-label="Close">{{translate('Not Now')}}</button>
+                                <button type="submit" class="btn btn-primary min-w-92px">{{translate('Submit')}}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+>>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -900,7 +1207,11 @@
         })
 
         $('.offline-payment').on('click', function() {
+<<<<<<< HEAD
             let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}';
+=======
+            let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}'+ '&payment_status=' + 'approved';
+>>>>>>> newversion/main
             route_alert_reload(route, '{{ translate('Want to verify the payment') }}', true);
         })
 
@@ -914,8 +1225,12 @@
         $("#booking_status").change(function() {
             var booking_status = $("#booking_status option:selected").val();
             if (parseInt(booking_status) !== 0) {
+<<<<<<< HEAD
                 var route = '{{ route('admin.booking.status_update', [$booking->id]) }}' + '?booking_status=' +
                     booking_status;
+=======
+                var route = '{{ route('admin.booking.status_update', [$booking->id]) }}' + '?booking_status=' + booking_status;
+>>>>>>> newversion/main
                 update_booking_details(route, '{{ translate('want_to_update_status') }}', 'booking_status',
                     booking_status);
             } else {
@@ -923,6 +1238,15 @@
             }
         });
 
+<<<<<<< HEAD
+=======
+        $(".change-booking-status").on('click', function() {
+            var booking_status = 'canceled';
+            var route = '{{ route('admin.booking.status_update', [$booking->id]) }}' + '?booking_status=' + booking_status;
+            update_booking_details(route, '{{ translate('want_to_cancel_booking_status') }}', 'booking_status', booking_status);
+        });
+
+>>>>>>> newversion/main
         $("#serviceman_assign").change(function() {
             var serviceman_id = $("#serviceman_assign option:selected").val();
             if (serviceman_id !== 'no_serviceman') {
@@ -951,6 +1275,15 @@
                 service_schedule);
         }
 
+<<<<<<< HEAD
+=======
+        $(".switch-to-cash-after-service").on('click', function() {
+            var payment_method = 'cash_after_service';
+            var route = '{{ route('admin.booking.switch-payment-method', [$booking->id]) }}' + '?payment_method=' + payment_method;
+            update_booking_details(route, '{{ translate('want_to_switch_payment_method_to_cash_after_service') }}', 'payment_method', payment_method);
+        });
+
+>>>>>>> newversion/main
         function update_booking_details(route, message, componentId, updatedValue) {
             Swal.fire({
                 title: "{{ translate('are_you_sure') }}?",
@@ -977,8 +1310,12 @@
                             });
 
                             if (componentId === 'booking_status' || componentId === 'payment_status' ||
+<<<<<<< HEAD
                                 componentId === 'service_schedule' || componentId ===
                                 'serviceman_assign') {
+=======
+                                componentId === 'service_schedule' || componentId === 'serviceman_assign' || componentId === 'payment_method' ) {
+>>>>>>> newversion/main
                                 location.reload();
                             }
                         },
@@ -1207,6 +1544,10 @@
             readURL(this);
         });
 
+<<<<<<< HEAD
+=======
+        // for update customer location from service address modal
+>>>>>>> newversion/main
         $(document).ready(function() {
             function initAutocomplete() {
                 let myLatLng = {
@@ -1301,6 +1642,102 @@
             initAutocomplete();
         });
 
+<<<<<<< HEAD
+=======
+        // for update service location from update customer address modal
+        $(document).ready(function() {
+            function addressMap() {
+                let myLatLng = {
+                    lat: {{ $booking->service_address?->lat ?? 23.811842872190343 }},
+                    lng: {{ $booking->service_address?->lon ?? 90.356331 }}
+                };
+                const map = new google.maps.Map(document.getElementById("address_location_map_canvas"), {
+                    center: myLatLng,
+                    zoom: 13,
+                    mapTypeId: "roadmap",
+                });
+
+                let marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                });
+
+                marker.setMap(map);
+                var geocoder = geocoder = new google.maps.Geocoder();
+                google.maps.event.addListener(map, 'click', function(mapsMouseEvent) {
+                    var coordinates = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
+                    var coordinates = JSON.parse(coordinates);
+                    var latlng = new google.maps.LatLng(coordinates['lat'], coordinates['lng']);
+                    marker.setPosition(latlng);
+                    map.panTo(latlng);
+
+                    document.getElementById('address_latitude').value = coordinates['lat'];
+                    document.getElementById('address_longitude').value = coordinates['lng'];
+
+
+                    geocoder.geocode({
+                        'latLng': latlng
+                    }, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[1]) {
+                                document.getElementById('address_address').value = results[1].formatted_address;
+                            }
+                        }
+                    });
+                });
+
+                const input = document.getElementById("address_pac-input");
+                const searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+                map.addListener("bounds_changed", () => {
+                    searchBox.setBounds(map.getBounds());
+                });
+                let markers = [];
+
+                searchBox.addListener("places_changed", () => {
+                    const places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+
+                    markers.forEach((marker) => {
+                        marker.setMap(null);
+                    });
+                    markers = [];
+
+                    const bounds = new google.maps.LatLngBounds();
+                    places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        var mrkr = new google.maps.Marker({
+                            map,
+                            title: place.name,
+                            position: place.geometry.location,
+                        });
+                        google.maps.event.addListener(mrkr, "click", function(event) {
+                            document.getElementById('address_latitude').value = this.position.lat();
+                            document.getElementById('address_longitude').value = this.position.lng();
+                        });
+
+                        markers.push(mrkr);
+
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                    map.fitBounds(bounds);
+                });
+            };
+            addressMap();
+        });
+
+>>>>>>> newversion/main
 
         $('.__right-eye').on('click', function() {
             if ($(this).hasClass('active')) {
@@ -1532,6 +1969,204 @@
                 }
             });
         });
+<<<<<<< HEAD
+=======
+
+        // for update service location from update customer address modal
+        $(document).ready(function() {
+            function addressMap() {
+                let myLatLng = {
+                    lat: {{ $booking->service_address?->lat ?? 23.811842872190343 }},
+                    lng: {{ $booking->service_address?->lon ?? 90.356331 }}
+                };
+                const map = new google.maps.Map(document.getElementById("address_location_map_canvas"), {
+                    center: myLatLng,
+                    zoom: 13,
+                    mapTypeId: "roadmap",
+                });
+
+                let marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                });
+
+                marker.setMap(map);
+                var geocoder = geocoder = new google.maps.Geocoder();
+                google.maps.event.addListener(map, 'click', function(mapsMouseEvent) {
+                    var coordinates = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
+                    var coordinates = JSON.parse(coordinates);
+                    var latlng = new google.maps.LatLng(coordinates['lat'], coordinates['lng']);
+                    marker.setPosition(latlng);
+                    map.panTo(latlng);
+
+                    document.getElementById('address_latitude').value = coordinates['lat'];
+                    document.getElementById('address_longitude').value = coordinates['lng'];
+
+
+                    geocoder.geocode({
+                        'latLng': latlng
+                    }, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[1]) {
+                                document.getElementById('address_address').value = results[1].formatted_address;
+                            }
+                        }
+                    });
+                });
+
+                const input = document.getElementById("address_pac-input");
+                const searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+                map.addListener("bounds_changed", () => {
+                    searchBox.setBounds(map.getBounds());
+                });
+                let markers = [];
+
+                searchBox.addListener("places_changed", () => {
+                    const places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+
+                    markers.forEach((marker) => {
+                        marker.setMap(null);
+                    });
+                    markers = [];
+
+                    const bounds = new google.maps.LatLngBounds();
+                    places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        var mrkr = new google.maps.Marker({
+                            map,
+                            title: place.name,
+                            position: place.geometry.location,
+                        });
+                        google.maps.event.addListener(mrkr, "click", function(event) {
+                            document.getElementById('address_latitude').value = this.position.lat();
+                            document.getElementById('address_longitude').value = this.position.lng();
+                        });
+
+                        markers.push(mrkr);
+
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                    map.fitBounds(bounds);
+                });
+            };
+            addressMap();
+        });
+
+        $(document).ready(function() {
+            // Get booking ID dynamically
+            var bookingId = "{{ $booking['id'] }}";
+
+            function toggleServiceLocation() {
+                if ($('#customer_location').is(':checked')) {
+                    $('.customer-details').show();
+                    $('.provider-details').hide();
+                } else {
+                    $('.customer-details').hide();
+                    $('.provider-details').show();
+                }
+            }
+
+            // Run toggle function on radio button change
+            $('input[name="service_location"]').on('change', function() {
+                toggleServiceLocation();
+            });
+
+            // Run toggle function when the modal is opened
+            $('#serviceLocationModal--' + bookingId).on('shown.bs.modal', function () {
+                toggleServiceLocation();
+            });
+
+            // When the address modal opens, hide the first modal
+            $('#customerAddressModal--' + bookingId).on('show.bs.modal', function () {
+                $('#serviceLocationModal--' + bookingId).modal('hide'); // Hide the first modal
+            });
+
+            // When the address modal closes, reopen the service location modal and update the address
+            $('#customerAddressModal--' + bookingId).on('hidden.bs.modal', function () {
+                $('#serviceLocationModal--' + bookingId).modal('show'); // Show the first modal again
+            });
+        });
+
+        $(document).ready(function () {
+            $("#customerAddressModalSubmit").on("submit", function (e) {
+                e.preventDefault(); // Prevent form submission
+
+                var bookingId = "{{ $booking['id'] }}";
+
+                let customerAddressModal = $("#customerAddressModal--" + bookingId);
+                let serviceLocationModal = $("#serviceLocationModal--" + bookingId);
+
+                // Copy updated data from customerAddressModal inputs
+                let contactPersonName = customerAddressModal.find("input[name='contact_person_name']").val();
+                let contactPersonNumber = customerAddressModal.find("input[name='contact_person_number_with_code']").val();
+                let addressLabel = customerAddressModal.find("select[name='address_label']").val();
+                let address = customerAddressModal.find("input[name='address']").val();
+                let latitude = customerAddressModal.find("input[name='latitude']").val();
+                let longitude = customerAddressModal.find("input[name='longitude']").val();
+                let city = customerAddressModal.find("input[name='city']").val();
+                let street = customerAddressModal.find("input[name='street']").val();
+                let zipCode = customerAddressModal.find("input[name='zip_code']").val();
+                let country = customerAddressModal.find("input[name='country']").val();
+
+                // Update the corresponding hidden inputs in serviceLocationModal
+                serviceLocationModal.find("input[name='contact_person_name']").val(contactPersonName);
+                serviceLocationModal.find("input[name='contact_person_number']").val(contactPersonNumber);
+                serviceLocationModal.find("input[name='address_label']").val(addressLabel);
+                serviceLocationModal.find("input[name='address']").val(address);
+                serviceLocationModal.find("input[name='latitude']").val(latitude);
+                serviceLocationModal.find("input[name='longitude']").val(longitude);
+                serviceLocationModal.find("input[name='city']").val(city);
+                serviceLocationModal.find("input[name='street']").val(street);
+                serviceLocationModal.find("input[name='zip_code']").val(zipCode);
+                serviceLocationModal.find("input[name='country']").val(country);
+
+                $('.updated_customer_name').text(contactPersonName); // Update the customer name
+                $('#updated_customer_phone').text(contactPersonNumber); // Update the customer
+                $('#customer_service_location').removeClass('text-danger'); // Update the customer service location
+                $('#customer_service_location').text(address); // Update the customer service location
+                $('.customer-address-update-btn').removeAttr('disabled'); // Update the customer service location update button
+
+               // Close the customerAddressModal
+                customerAddressModal.modal("hide");
+
+                // Open the serviceLocationModal to show updated data
+                serviceLocationModal.modal("show");
+            });
+        });
+
+        $(".customer-address-reset-btn").on("click", function (e) {
+            let name = "{{ $customer_name }}";
+            let phone = "{{ $customer_phone }}";
+            let customerAddress = "{{ $booking?->service_address?->address }}";
+
+            $('.updated_customer_name').text(name); // Update the customer name
+            $('#updated_customer_phone').text(phone); // Update the customer
+
+            if (customerAddress) {
+                $('#customer_service_location').text(customerAddress); // Update the customer service location
+                $('#customer_service_location').removeClass('text-danger');
+                $('.customer-address-update-btn').removeAttr('disabled');
+            } else {
+                $('#customer_service_location').text("No address found");
+                $('#customer_service_location').addClass('text-danger');
+                $('.customer-address-update-btn').attr('disabled', true);
+            }
+        })
+
+>>>>>>> newversion/main
     </script>
     <script>
         $(document).ready(function() {
@@ -1539,5 +2174,20 @@
                 minimumResultsForSearch: Infinity
             });
         });
+<<<<<<< HEAD
+=======
+
+        $(document).ready(function () {
+            try {
+                initializePhoneInput(
+                    ".phone-input-with-country-picker7",
+                    ".country-picker-phone-number7"
+                );
+
+            } catch (error) {
+                console.log(error)
+            }
+        });
+>>>>>>> newversion/main
     </script>
 @endpush

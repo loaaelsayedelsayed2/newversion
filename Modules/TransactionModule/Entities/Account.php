@@ -50,7 +50,11 @@ class Account extends Model
             if ($model->isDirty('account_payable') || $model->isDirty('account_receivable')) {
                 $limit_status = provider_warning_amount_calculate($model->account_payable, $model->account_receivable);
                 $provider = Provider::where('user_id', $model->user_id)->first();
+<<<<<<< HEAD
 
+=======
+                $emailStatus = business_config('email_config_status', 'email_config')->live_values;
+>>>>>>> newversion/main
 
                 if ($limit_status == '100_percent') {
                     if ($provider){
@@ -68,10 +72,19 @@ class Account extends Model
                         $provider->is_suspended = 0;
                         $provider->save();
 
+<<<<<<< HEAD
                         try {
                             Mail::to($provider?->owner?->email)->send(new AccountUnsuspendMail($provider));
                         } catch (\Exception $exception) {
                             info($exception);
+=======
+                        if ($emailStatus){
+                            try {
+                                Mail::to($provider?->owner?->email)->send(new AccountUnsuspendMail($provider));
+                            } catch (\Exception $exception) {
+                                info($exception);
+                            }
+>>>>>>> newversion/main
                         }
                     }
                 }

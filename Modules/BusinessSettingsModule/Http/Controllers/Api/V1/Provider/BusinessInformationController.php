@@ -32,7 +32,19 @@ class BusinessInformationController extends Controller
             ->when(!is_null($request['key']), fn($query) => $query->whereIn('key_name', $request['key'])->where('provider_id', $request->user()->provider->id))
             ->get();
 
+<<<<<<< HEAD
         return response()->json(response_formatter(DEFAULT_200, $dataValues), 200);
+=======
+        $serviceLocation = $this->providerSetting->where(['key_name' => 'service_location', 'provider_id' => $request->user()->provider->id, 'settings_type' => 'provider_config'])->first();
+        $serviceLocations = $serviceLocation ? json_decode($serviceLocation->live_values, true) : [];
+
+        $data = [
+            'provider_serviceman_config' => $dataValues,
+            'service_location' =>$serviceLocations
+        ];
+
+        return response()->json(response_formatter(DEFAULT_200, $data), 200);
+>>>>>>> newversion/main
     }
 
     /**
@@ -53,7 +65,31 @@ class BusinessInformationController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         foreach (collect(json_decode($request['data'], true)) as $key => $item) {
+=======
+        $customerLocationData = collect(json_decode($request->data, true))->firstWhere('key', 'customer_location');
+        $providerLocationData = collect(json_decode($request->data, true))->firstWhere('key', 'provider_location');
+
+        $customerLocation = $customerLocationData['value'] ?? '0';
+        $providerLocation = $providerLocationData['value'] ?? '0';
+
+        // Prevent both customer_location and provider_location from being inactive
+        if ($customerLocation == '0' && $providerLocation == '0') {
+            $error = [[
+                    "error_code" => "data",
+                    "message" => translate('At least one service location must be active')
+                ]];
+            return response()->json(response_formatter(DEFAULT_400, null, $error), 400);
+        }
+
+        $serviceLocation = [];
+
+        foreach (collect(json_decode($request['data'], true)) as $key => $item) {
+            $key = $item['key'];
+            $value = $item['value'];
+
+>>>>>>> newversion/main
             $settingType = in_array($item['key'], ['provider_serviceman_can_edit_booking', 'provider_serviceman_can_cancel_booking']) ? 'serviceman_config' : null;
 
             if (!is_null($settingType)) {
@@ -66,6 +102,37 @@ class BusinessInformationController extends Controller
                     'is_active' => 1,
                 ]);
             }
+<<<<<<< HEAD
+=======
+
+            // Collect service location settings
+            if ($key == 'customer_location' && $value == '1') {
+                $serviceLocation[] = 'customer';
+            }
+            if ($key === 'provider_location' && $value == '1') {
+                $serviceLocation[] = 'provider';
+            }
+        }
+
+        $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
+
+        if($serviceAtProviderPlace == 0){
+            return response()->json(response_formatter(SERVICE_LOCATION_400), 200);
+        }
+
+        if (!empty($serviceLocation)) {
+            $this->providerSetting->updateOrCreate(
+                ['key_name' => 'service_location', 'provider_id' => $request->user()->provider->id, 'settings_type' => 'provider_config'],
+                [
+                    'key_name' => 'service_location',
+                    'live_values' => json_encode($serviceLocation),
+                    'test_values' => json_encode($serviceLocation),
+                    'settings_type' => 'provider_config',
+                    'mode' => 'live',
+                    'is_active' => 1,
+                ]
+            );
+>>>>>>> newversion/main
         }
 
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);

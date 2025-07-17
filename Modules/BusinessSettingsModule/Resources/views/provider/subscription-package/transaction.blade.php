@@ -115,7 +115,11 @@
                             <tbody>
                                 @forelse($transactions as $key => $transaction)
                                     @php
+<<<<<<< HEAD
                                         $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date);
+=======
+                                        $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date)->subDay();
+>>>>>>> newversion/main
                                         $end = \Carbon\Carbon::parse($transaction?->packageLog?->end_date);
                                         $duration = $start->diffInDays($end);
                                     @endphp

@@ -25,14 +25,23 @@ class SubscriptionPaymentController extends Controller
      */
     public function index(Request $request): JsonResponse|Redirector|RedirectResponse|Application
     {
+<<<<<<< HEAD
 
         $validator = Validator::make($request->all(), [
             'payment_method' => 'required',
+=======
+        $validator = Validator::make($request->all(), [
+            'payment_method' => 'required|in:' . implode(',', array_column(GATEWAYS_PAYMENT_METHODS, 'key')),
+>>>>>>> newversion/main
             'package_id' => 'required|uuid',
             'provider_id' => 'required|uuid',
             'amount' => 'required',
         ]);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> newversion/main
         if ($validator->fails()) {
             if ($request->has('callback')) return redirect($request['callback'] . '?flag=fail');
             else return response()->json(response_formatter(DEFAULT_400), 400);

@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
+<<<<<<< HEAD
+=======
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+>>>>>>> newversion/main
 
     <?php
     $favIcon = getBusinessSettingsImageFullPath(key: 'business_favicon', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/placeholder.png')
@@ -81,13 +85,21 @@
                                             <input type="email" id="company_email" class="form-control"
                                                     value="{{old('company_email')}}" name="company_email"
                                                     placeholder="{{translate('email')}}">
+<<<<<<< HEAD
                                             <label>{{translate('email')}}</label>
+=======
+                                            <label>{{translate('email')}} <span class="text-danger">*</span></label>
+>>>>>>> newversion/main
                                             <span class="material-icons">mail</span>
                                         </div>
                                     </div>
                                     <div class="mb-30">
                                         <div class="country-picker-1">
+<<<<<<< HEAD
                                             <input type="tel" class="form-control phone-input-with-country-picker"
+=======
+                                            <input type="tel" class="form-control phone-input-with-country-picker9"
+>>>>>>> newversion/main
                                                     value="{{old('company_phone')}}" name="company_phone"
                                                     id="company_phone"
                                                     placeholder="{{translate('123 456 789')}}" maxlength="255">
@@ -100,12 +112,20 @@
                                         <div class="form-floating form-floating__icon">
                                                 <input type="text" class="form-control" name="company_address"
                                                             placeholder="{{translate('Address')}}" value="{{old('company_address')}}">
+<<<<<<< HEAD
                                             <label>{{translate('Address')}}</label>
+=======
+                                            <label>{{translate('Address')}} <span class="text-danger">*</span></label>
+>>>>>>> newversion/main
                                             <span class="material-icons">location_on</span>
                                         </div>
                                     </div>
                                     <div class="mb-30">
+<<<<<<< HEAD
                                         <h5 class="mb-3">{{ translate('company_logo') }} (1:1) <span class="text-text-danger">*</span></h5>
+=======
+                                        <h5 class="mb-3">{{ translate('company_logo') }} (1:1) <span class="text-danger">*</span></h5>
+>>>>>>> newversion/main
                                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                                             <div>
                                                 <div class="form-error-wrap upload-file">
@@ -140,13 +160,21 @@
                                                         value="{{old('contact_person_name')}}"
                                                         name="contact_person_name"
                                                         placeholder="{{translate('Contact_Person_Name')}}">
+<<<<<<< HEAD
                                                 <label>{{translate('Name')}}</label>
+=======
+                                                <label>{{translate('Name')}} <span class="text-danger">*</span></label>
+>>>>>>> newversion/main
                                                 <span class="material-icons">person</span>
                                             </div>
                                         </div>
                                         <div class="mb-30">
                                             <div class="country-picker-2">
+<<<<<<< HEAD
                                                 <input type="tel" class="form-control phone-input-with-country-picker2"
+=======
+                                                <input type="tel" class="form-control phone-input-with-country-picker10"
+>>>>>>> newversion/main
                                                         value="{{old('contact_person_phone')}}"
                                                         id="contact_person_phone"
                                                         name="contact_person_phone"
@@ -162,7 +190,11 @@
                                                         value="{{old('contact_person_email')}}"
                                                         name="contact_person_email"
                                                         placeholder="{{translate('Email')}}">
+<<<<<<< HEAD
                                                 <label>{{translate('Email')}}</label>
+=======
+                                                <label>{{translate('Email')}} <span class="text-danger">*</span></label>
+>>>>>>> newversion/main
                                                 <span class="material-icons">mail</span>
                                             </div>
                                         </div>
@@ -235,6 +267,7 @@
                                         <div class="form-error-wrap">
                                             <select name="identity_type" id="identity_type"
                                                     class="form-select">
+<<<<<<< HEAD
                                                 <option value="0" selected
                                                         disabled>{{translate('Identity_Type')}}</option>
                                                 <option
@@ -247,6 +280,13 @@
                                                     value="residency_permit" {{old('identity_type')=='residency_permit'?'selected':''}}>{{translate('residency_permit')}}</option>
                                                 <option
                                                     value="trade_license" {{old('identity_type')=='trade_license'?'selected':''}}>{{translate('trade_license')}}</option>
+=======
+                                                <option value="0" selected disabled>{{translate('Identity_Type')}}</option>
+                                                <option value="passport" {{old('identity_type')=='passport'?'selected':''}}>{{translate('passport')}}</option>
+                                                <option value="nid" {{old('identity_type')=='nid'?'selected':''}}>{{translate('nid')}}</option>
+                                                <option value="driving_license" {{old('identity_type')=='driving_license'?'selected':''}}>{{translate('driving_license')}}</option>
+                                                <option value="trade_license" {{old('identity_type')=='trade_license'?'selected':''}}>{{translate('trade_license')}}</option>
+>>>>>>> newversion/main
                                             </select>
                                         </div>
                                     </div>
@@ -617,7 +657,55 @@
                                 contact_person_phone: "Please enter your phone",
                                 contact_person_email: "Please enter a valid email address",
                             });
+<<<<<<< HEAD
                             break;
+=======
+
+                            formWizard.validate().settings.ignore = ":disabled,:hidden";
+                            if (!formWizard.valid()) {
+                                return false;
+                            }
+
+                            let email = $("#company_email").val();
+                            let companyPhone = $('#company_phone').val();
+                            let dialCode = $('.country-picker-1 .iti__selected-dial-code').text();
+                            let phone = dialCode + companyPhone.replace(dialCode, '');
+
+                            let isValid = false;
+                            console.log(email, companyPhone, dialCode, phone);
+
+                            $.ajax({
+                                url: "{{ route('check-unique-user') }}",
+                                type: "POST",
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data: {
+                                    email: email,
+                                    phone: phone,
+                                },
+                                async: false,
+                                success: function (response) {
+                                    if (response.success) {
+                                        isValid = true;
+                                    } else {
+                                        if (response.email_exists) {
+                                            toastr.error('Email already exists')
+                                        }
+                                        if (response.phone_exists) {
+                                            toastr.error('Phone already exists')
+                                        }
+                                        isValid = false;
+                                    }
+                                },
+                                error: function () {
+                                    isValid = false;
+                                }
+                            });
+                            return isValid;
+
+                        //    break;
+>>>>>>> newversion/main
                         case 1:
                             setValidationRulesAndMessages({
                                 zone_id: "required",
@@ -755,6 +843,11 @@
         });
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> newversion/main
         $(document).ready(function () {
             function initAutocomplete(mapCanvasId) {
                 var myLatLng = {
@@ -865,6 +958,25 @@
                 $(this).find('i').removeClass('tio-hidden-outlined')
             }
         })
+<<<<<<< HEAD
+=======
+
+        $(document).ready(function () {
+            try {
+                initializePhoneInput(
+                    ".phone-input-with-country-picker9",
+                    ".country-picker-phone-number"
+                );
+                initializePhoneInput(
+                    ".phone-input-with-country-picker10",
+                    ".country-picker-phone-number2"
+                );
+
+            } catch (error) {
+                console.log(error)
+            }
+        });
+>>>>>>> newversion/main
     </script>
 </body>
 </html>

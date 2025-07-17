@@ -4,7 +4,7 @@ firebase.initializeApp({
     apiKey: "AIzaSyATwpBSYz69b5Y9ryQLELOJIHZSpJcXf7I",
     authDomain: "demancms.firebaseapp.com",
     projectId: "demancms",
-    storageBucket: "demancms.appspot.com",
+    storageBucket: "demancms.firebasestorage.app",
     messagingSenderId: "889759666168",
     appId: "1:889759666168:web:ab661cb341d3e47384d00d",
     measurementId: ""

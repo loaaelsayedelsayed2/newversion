@@ -246,8 +246,11 @@
                             <tr>
                                 <th>{{translate('Booking_ID')}}</th>
                                 <th>{{translate('Booking_Amount')}}</th>
+<<<<<<< HEAD
                                 <th>{{translate('Addattion_Cost')}}</th>
                                 <th>{{translate('Source_of_service_amount')}}</th>
+=======
+>>>>>>> newversion/main
 
                                 <th>{{translate('Total_Service_Discount')}}</th>
                                 <th style="min-width: 150px!important;">{{translate('Discount_on_service_by_admin')}}</th>
@@ -315,8 +318,11 @@
                                             {{$booking['readable_id']}}</a>
                                     </td>
                                     <td>{{with_currency_symbol($booking['total_booking_amount'])}}</td>
+<<<<<<< HEAD
                                     <td>{{with_currency_symbol($booking['additional_fees'])}}</td>
                                     <td>{{$booking['paid_by']}}</td>
+=======
+>>>>>>> newversion/main
 
                                     <td>{{with_currency_symbol($booking['total_discount_amount'])}}</td>
                                     <td>{{with_currency_symbol($discount_by_admin)}}</td>

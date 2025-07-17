@@ -43,7 +43,11 @@
                         @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
+<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
+=======
+                            $booking['payment_method'] == 'cash_after_service' &&
+>>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
 
@@ -102,7 +106,11 @@
                             </div>
                         @endif
                         @if (
+<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
+=======
+                            $booking['payment_method'] == 'cash_after_service' &&
+>>>>>>> newversion/main
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -155,7 +163,11 @@
                             </div>
                         @endif
 
+<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
+=======
+                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'])
+>>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                         data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -187,7 +199,11 @@
 
                 @if (
                     $booking->is_verified == 2 &&
+<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
+=======
+                        $booking->payment_method == 'cash_after_service' &&
+>>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -236,14 +252,22 @@
                                     <div class="text-start text-sm-end">
                                         @if (
                                             $booking->is_verified == '0' &&
+<<<<<<< HEAD
                                                 $booking->payment_method == 'payment_after_service' &&
+=======
+                                                $booking->payment_method == 'cash_after_service' &&
+>>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="c1 text-capitalize">{{ translate('Pending') }}</span>
                                             </p>
                                         @elseif(
                                             $booking->is_verified == '2' &&
+<<<<<<< HEAD
                                                 $booking->payment_method == 'payment_after_service' &&
+=======
+                                                $booking->payment_method == 'cash_after_service' &&
+>>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="text-danger text-capitalize"
@@ -431,7 +455,11 @@
                                                 </td>
                                             </tr>
 
+<<<<<<< HEAD
                                             @if ($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
+=======
+                                            @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
+>>>>>>> newversion/main
                                                 <tr>
                                                     <td>{{ translate('Refund') }}</td>
                                                     <td class="text--end pe--4">
@@ -527,6 +555,67 @@
                                     </div>
                                 @endif
 
+<<<<<<< HEAD
+=======
+                                    @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
+                                    <div class="c1-light-bg radius-10">
+                                        <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
+                                            <h4 class="d-flex align-items-center gap-2">
+                                                <span class="material-icons title-color">map</span>
+                                                {{ translate('Service_location') }}
+                                            </h4>
+                                            @if($serviceAtProviderPlace == 1)
+                                                <div class="btn-group">
+                                                    @can('booking_edit')
+                                                        <div data-bs-toggle="modal"
+                                                             data-bs-target="#repeatServiceLocationModal--{{ $booking['id'] }}"
+                                                             data-toggle="tooltip" data-placement="top">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <span class="material-symbols-outlined">edit_square</span>
+                                                            </div>
+                                                        </div>
+                                                    @endcan
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        <div class="py-3 px-4">
+                                            @if($booking->service_location == 'provider')
+                                                <div class="bg-warning p-3 rounded">
+                                                    <h5>{{ translate('Customer has to go to the Provider Location to receive the service') }}</h5>
+                                                </div>
+                                                <div class="mt-3">
+                                                    @if($booking->provider_id != null)
+                                                        @if($booking->provider)
+                                                            <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p>{{ Str::limit($booking?->provider?->company_address ?? translate('not_available'), 100) }}</p>
+                                                                <span class="material-icons">map</span>
+                                                            </div>
+                                                        @else
+                                                            <p>{{ translate('Provider Unavailable') }}</p>
+                                                        @endif
+                                                    @else
+                                                        <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                        <p>{{ translate('The Service Location will be available after this booking accepts or assign to a provider') }}</p>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div class="bg-warning p-3 rounded">
+                                                    <h5>{{ translate('Provider has to go to the Customer Location to provide the service') }}</h5>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h5 class="mb-1">{{ translate('Service Location') }}:</h5>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>{{ Str::limit($booking?->service_address?->address ?? translate('not_available'), 100) }}</p>
+                                                        <span class="material-icons">map</span>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+>>>>>>> newversion/main
                                 <div class="c1-light-bg radius-10">
                                     <div
                                         class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
@@ -595,15 +684,29 @@
                                         @php($customer_name = $booking?->booking?->service_address?->contact_person_name)
                                         @php($customer_phone = $booking?->booking?->service_address?->contact_person_number)
 
+<<<<<<< HEAD
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->booking?->is_guest && $booking?->booking?->customer)
                                                 <img width="58" height="58"
                                                      class="rounded-circle border border-white"
+=======
+                                        @php($name = $booking->service_address?->contact_person_name)
+                                        @php($phone = $booking->service_address?->contact_person_number)
+
+                                        <div class="media gap-2 flex-wrap">
+                                            @if (!$booking?->booking?->is_guest && $booking?->booking?->customer)
+                                                <img width="58" height="58"
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->booking?->customer?->profile_image_full_path }}"
                                                      alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                      alt="{{ translate('user_image') }}">
                                             @endif
@@ -625,11 +728,21 @@
                                                                 href="tel:{{ $customer_phone }}">{{ $customer_phone }}</a>
                                                         </li>
                                                     @endif
+<<<<<<< HEAD
                                                     <li>
                                                         <span class="material-icons">map</span>
                                                         <p>{{ Str::limit($booking?->booking?->service_address?->address ?? translate('not_available'), 100) }}
                                                         </p>
                                                     </li>
+=======
+                                                        @if(!empty($booking?->booking?->service_address?->address))
+                                                            <li>
+                                                                <span class="material-icons">map</span>
+                                                                <p>{{ Str::limit($booking?->booking?->service_address?->address ?? translate('not_available'), 100) }}
+                                                                </p>
+                                                            </li>
+                                                        @endif
+>>>>>>> newversion/main
                                                 </ul>
                                             </div>
                                         </div>
@@ -694,7 +807,11 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->provider?->logo_full_path }}"
                                                      alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -765,7 +882,11 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                      alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">
@@ -1101,6 +1222,13 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    @include('bookingmodule::admin.booking.partials.details._repeat-ongoing-service-location-modal')
+
+    @include('bookingmodule::admin.booking.partials.details._update-customer-address-modal')
+>>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -1605,12 +1733,225 @@
                 }
             });
         });
+<<<<<<< HEAD
     </script>
+=======
+
+        // for update service location from update customer address modal
+        $(document).ready(function() {
+            function addressMap() {
+                let myLatLng = {
+                    lat: {{ $booking->service_address?->lat ?? 23.811842872190343 }},
+                    lng: {{ $booking->service_address?->lon ?? 90.356331 }}
+                };
+                const map = new google.maps.Map(document.getElementById("address_location_map_canvas"), {
+                    center: myLatLng,
+                    zoom: 13,
+                    mapTypeId: "roadmap",
+                });
+
+                let marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                });
+
+                marker.setMap(map);
+                var geocoder = geocoder = new google.maps.Geocoder();
+                google.maps.event.addListener(map, 'click', function(mapsMouseEvent) {
+                    var coordinates = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
+                    var coordinates = JSON.parse(coordinates);
+                    var latlng = new google.maps.LatLng(coordinates['lat'], coordinates['lng']);
+                    marker.setPosition(latlng);
+                    map.panTo(latlng);
+
+                    document.getElementById('address_latitude').value = coordinates['lat'];
+                    document.getElementById('address_longitude').value = coordinates['lng'];
+
+
+                    geocoder.geocode({
+                        'latLng': latlng
+                    }, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[1]) {
+                                document.getElementById('address_address').value = results[1].formatted_address;
+                            }
+                        }
+                    });
+                });
+
+                const input = document.getElementById("address_pac-input");
+                const searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+                map.addListener("bounds_changed", () => {
+                    searchBox.setBounds(map.getBounds());
+                });
+                let markers = [];
+
+                searchBox.addListener("places_changed", () => {
+                    const places = searchBox.getPlaces();
+
+                    if (places.length == 0) {
+                        return;
+                    }
+
+                    markers.forEach((marker) => {
+                        marker.setMap(null);
+                    });
+                    markers = [];
+
+                    const bounds = new google.maps.LatLngBounds();
+                    places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        var mrkr = new google.maps.Marker({
+                            map,
+                            title: place.name,
+                            position: place.geometry.location,
+                        });
+                        google.maps.event.addListener(mrkr, "click", function(event) {
+                            document.getElementById('address_latitude').value = this.position.lat();
+                            document.getElementById('address_longitude').value = this.position.lng();
+                        });
+
+                        markers.push(mrkr);
+
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                    });
+                    map.fitBounds(bounds);
+                });
+            };
+            addressMap();
+        });
+
+        $(document).ready(function() {
+            // Get booking ID dynamically
+            var bookingId = "{{ $booking['id'] }}";
+
+            function toggleServiceLocation() {
+                if ($('#customer_location').is(':checked')) {
+                    $('.customer-details').show();
+                    $('.provider-details').hide();
+                } else {
+                    $('.customer-details').hide();
+                    $('.provider-details').show();
+                }
+            }
+
+            // Run toggle function on radio button change
+            $('input[name="service_location"]').on('change', function() {
+                toggleServiceLocation();
+            });
+
+            // Run toggle function when the modal is opened
+            $('#repeatServiceLocationModal--' + bookingId).on('shown.bs.modal', function () {
+                toggleServiceLocation();
+            });
+
+            // When the address modal opens, hide the first modal
+            $('#customerAddressModal--' + bookingId).on('show.bs.modal', function () {
+                $('#repeatServiceLocationModal--' + bookingId).modal('hide'); // Hide the first modal
+            });
+
+            // When the address modal closes, reopen the service location modal and update the address
+            $('#customerAddressModal--' + bookingId).on('hidden.bs.modal', function () {
+                $('#repeatServiceLocationModal--' + bookingId).modal('show'); // Show the first modal again
+            });
+        });
+
+        $(document).ready(function () {
+            $("#customerAddressModalSubmit").on("submit", function (e) {
+                e.preventDefault(); // Prevent form submission
+
+                var bookingId = "{{ $booking['id'] }}";
+
+                let customerAddressModal = $("#customerAddressModal--" + bookingId);
+                let repeatServiceLocationModal = $("#repeatServiceLocationModal--" + bookingId);
+
+                // Copy updated data from customerAddressModal inputs
+                let contactPersonName = customerAddressModal.find("input[name='contact_person_name']").val();
+                let contactPersonNumber = customerAddressModal.find("input[name='contact_person_number_with_code']").val();
+                let addressLabel = customerAddressModal.find("select[name='address_label']").val();
+                let address = customerAddressModal.find("input[name='address']").val();
+                let latitude = customerAddressModal.find("input[name='latitude']").val();
+                let longitude = customerAddressModal.find("input[name='longitude']").val();
+                let city = customerAddressModal.find("input[name='city']").val();
+                let street = customerAddressModal.find("input[name='street']").val();
+                let zipCode = customerAddressModal.find("input[name='zip_code']").val();
+                let country = customerAddressModal.find("input[name='country']").val();
+
+                // Update the corresponding hidden inputs in repeatServiceLocationModal
+                repeatServiceLocationModal.find("input[name='contact_person_name']").val(contactPersonName);
+                repeatServiceLocationModal.find("input[name='contact_person_number']").val(contactPersonNumber);
+                repeatServiceLocationModal.find("input[name='address_label']").val(addressLabel);
+                repeatServiceLocationModal.find("input[name='address']").val(address);
+                repeatServiceLocationModal.find("input[name='latitude']").val(latitude);
+                repeatServiceLocationModal.find("input[name='longitude']").val(longitude);
+                repeatServiceLocationModal.find("input[name='city']").val(city);
+                repeatServiceLocationModal.find("input[name='street']").val(street);
+                repeatServiceLocationModal.find("input[name='zip_code']").val(zipCode);
+                repeatServiceLocationModal.find("input[name='country']").val(country);
+
+                $('.updated_customer_name').text(contactPersonName); // Update the customer name
+                $('#updated_customer_phone').text(contactPersonNumber); // Update the customer
+                $('#customer_service_location').removeClass('text-danger'); // Update the customer service location
+                $('#customer_service_location').text(address); // Update the customer service location
+                $('.customer-address-update-btn').removeAttr('disabled'); // Update the customer service location update button
+
+                // Close the customerAddressModal
+                customerAddressModal.modal("hide");
+
+                // Open the repeatServiceLocationModal to show updated data
+                repeatServiceLocationModal.modal("show");
+            });
+        });
+
+        $(".customer-address-reset-btn").on("click", function (e) {
+            let name = "{{ $customer_name }}";
+            let phone = "{{ $customer_phone }}";
+            let customerAddress = "{{ $booking?->service_address?->address }}";
+
+            $('.updated_customer_name').text(name); // Update the customer name
+            $('#updated_customer_phone').text(phone); // Update the customer
+
+            if (customerAddress) {
+                $('#customer_service_location').text(customerAddress); // Update the customer service location
+                $('#customer_service_location').removeClass('text-danger');
+                $('.customer-address-update-btn').removeAttr('disabled');
+            } else {
+                $('#customer_service_location').text("No address found");
+                $('#customer_service_location').addClass('text-danger');
+                $('.customer-address-update-btn').attr('disabled', true);
+            }
+        })
+    </script>
+
+>>>>>>> newversion/main
     <script>
         $(document).ready(function() {
             $('.without-search').select2({
                 minimumResultsForSearch: Infinity
             });
         });
+<<<<<<< HEAD
+=======
+        $(document).ready(function () {
+            try {
+                initializePhoneInput(
+                    ".phone-input-with-country-picker7",
+                    ".country-picker-phone-number7"
+                );
+
+            } catch (error) {
+                console.log(error)
+            }
+        });
+>>>>>>> newversion/main
     </script>
 @endpush

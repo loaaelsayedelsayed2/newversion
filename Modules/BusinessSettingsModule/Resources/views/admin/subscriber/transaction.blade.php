@@ -137,7 +137,10 @@
                             <tr>
                                 <th>{{translate('SL')}}</th>
                                 <th>{{translate('Transaction_ID')}}</th>
+<<<<<<< HEAD
                                 <th>{{translate('Payment_ID')}}</th>
+=======
+>>>>>>> newversion/main
                                 <th>{{translate('Transaction_Date')}}</th>
                                 <th>{{translate('Pricing')}}</th>
                                 <th>{{translate('Duration')}}</th>
@@ -148,14 +151,21 @@
                             <tbody>
                             @forelse($transactions as $key => $transaction)
                                 @php
+<<<<<<< HEAD
                                     $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date);
+=======
+                                    $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date)->subDay();
+>>>>>>> newversion/main
                                     $end = \Carbon\Carbon::parse($transaction?->packageLog?->end_date);
                                     $duration = $start->diffInDays($end);
                                 @endphp
                                 <tr>
                                     <td>{{$key+$transactions?->firstItem()}}</td>
                                     <td>{{ $transaction->id }}</td>
+<<<<<<< HEAD
                                     <td>{{ $transaction?->packageLog?->payment_id }}</td>
+=======
+>>>>>>> newversion/main
                                     <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y, g:i A') }}</td>
                                     @if($transaction->trx_type == 'subscription_refund')
                                         <td>{{ with_currency_symbol($transaction->credit) }}</td>
@@ -175,7 +185,11 @@
                                                 <div class="fs-12">{{translate('refunded')}}</div>
                                             @endif
                                             @if($transaction->trx_type != 'subscription_refund')
+<<<<<<< HEAD
                                                 <div class="fs-10 c1">{{translate('Paid By')}} {{ $transaction->packageLog?->payment?->payment_method ?? $transaction->packageLog?->payment_method }}</div>
+=======
+                                                <div class="fs-10 c1">{{translate('Paid By')}} {{ $transaction->packageLog?->payment?->payment_method }}</div>
+>>>>>>> newversion/main
                                             @endif
                                         </div>
                                     </td>

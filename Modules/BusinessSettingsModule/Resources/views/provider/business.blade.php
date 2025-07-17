@@ -185,7 +185,47 @@
                                                         </label>
                                                     </div>
                                                 </div>
+<<<<<<< HEAD
 
+=======
+                                                @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
+                                                @if($serviceAtProviderPlace)
+                                                    <div class="col-12">
+                                                        <div class="p-3 rounded bg-light">
+                                                            <div class="mb-3">
+                                                                <h4 class="text-capitalize mb-1">{{ translate('Service Location') }}</h4>
+                                                                <p class="text-muted">
+                                                                    {{ translate('Here you setup where you want to provide services at your business location or customer location') }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="p-3">
+                                                                <div class="row border rounded p-3">
+                                                                    <div class="col-md-6">
+                                                                        <div class="custom-control custom-checkbox mr-4">
+                                                                            <input type="checkbox" class="custom-control-input service-location" name="customer_location" id="customer_location"
+                                                                                {{ in_array('customer', $serviceLocations) ? 'checked' : '' }}>
+                                                                            <label class="custom-control-label font-weight-bold mb-1" for="customer_location">
+                                                                                {{ translate('Customer Location') }}
+                                                                            </label>
+                                                                            <p class="text-muted mb-0 pl-20">{{ translate('By checking this option you will be able to provide service at customer location') }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input service-location" name="provider_location" id="provider_location"
+                                                                                {{ in_array('provider', $serviceLocations) ? 'checked' : '' }}>
+                                                                            <label class="custom-control-label font-weight-bold mb-1" for="provider_location">
+                                                                                {{ translate('My Location') }}
+                                                                            </label>
+                                                                            <p class="text-muted mb-0 pl-20">{{ translate('By checking this option you will be able to provide service at your business location') }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+>>>>>>> newversion/main
                                             </div>
 
                                             <div class="d-flex gap-2 justify-content-end mt-4">
@@ -288,5 +328,21 @@
         $(document).ready(function () {
             $('.js-select').select2();
         });
+<<<<<<< HEAD
+=======
+
+        $(document).ready(function () {
+            $('.service-location').on('change', function () {
+                let customerChecked = $('#customer_location').is(':checked');
+                let providerChecked = $('#provider_location').is(':checked');
+
+                if (!customerChecked && !providerChecked) {
+                    // Prevent unchecking both
+                    $(this).prop('checked', true);
+                    toastr.error('At least one service location must be selected.');
+                }
+            });
+        });
+>>>>>>> newversion/main
     </script>
 @endpush

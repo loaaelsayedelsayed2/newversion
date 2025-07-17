@@ -9,8 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+=======
+use Illuminate\Support\Facades\Mail;
+use Modules\BidModule\Entities\Post;
+>>>>>>> newversion/main
 use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\BookingModule\Http\Traits\BookingScopes;
 use Modules\BusinessSettingsModule\Emails\CashInHandOverflowMail;
@@ -55,7 +60,10 @@ class Booking extends Model
         'zone_id',
         'booking_status',
         'is_paid',
+<<<<<<< HEAD
         'paid_by',
+=======
+>>>>>>> newversion/main
         'payment_method',
         'transaction_id',
         'total_booking_amount',
@@ -78,7 +86,13 @@ class Booking extends Model
         'additional_campaign_discount_amount',
         'evidence_photos',
         'booking_otp',
+<<<<<<< HEAD
         'is_verified'
+=======
+        'is_verified',
+        'service_address_location',
+        'service_location'
+>>>>>>> newversion/main
     ];
 
     protected $appends = ['evidence_photos_full_path'];
@@ -177,6 +191,14 @@ class Booking extends Model
         return $this->hasMany(BookingIgnore::class, 'booking_id');
     }
 
+<<<<<<< HEAD
+=======
+    public function customizeBooking(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'id', 'booking_id');
+    }
+
+>>>>>>> newversion/main
     public function getEvidencePhotosFullPathAttribute()
     {
         $evidenceImages = $this->evidence_photos ?? [];
@@ -230,7 +252,10 @@ class Booking extends Model
         });
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> newversion/main
         self::updating(function ($model) {
             $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
             $permission = isNotificationActive(null, 'booking', 'notification', 'user');
@@ -322,6 +347,7 @@ class Booking extends Model
                 if ($model?->provider) {
                     if ($model->booking_partial_payments->isNotEmpty()) {
                         if ($model['payment_method'] == 'cash_after_service') {
+<<<<<<< HEAD
                             // $booking_partial_payment = new BookingPartialPayment;
                             // $booking_partial_payment->booking_id = $model->id;
                             // $booking_partial_payment->paid_with = 'cash_after_service';
@@ -335,6 +361,22 @@ class Booking extends Model
                             completeBookingTransactionForPartialDigital($model);
                         }
 
+=======
+                            $booking_partial_payment = new BookingPartialPayment;
+                            $booking_partial_payment->booking_id = $model->id;
+                            $booking_partial_payment->paid_with = 'cash_after_service';
+                            $booking_partial_payment->paid_amount = $model->booking_partial_payments->first()?->due_amount;
+                            $booking_partial_payment->due_amount = 0;
+                            $booking_partial_payment->save();
+
+                            completeBookingTransactionForPartialCas($model);
+                        } elseif ($model['payment_method'] != 'wallet_payment') {
+                            completeBookingTransactionForPartialDigital($model);
+                        }
+
+                    } elseif ($model->payment_method == 'cash_after_service') {
+                        completeBookingTransactionForCashAfterService($model);
+>>>>>>> newversion/main
                     } else {
                         if ($model->additional_charge == 0) {
                             completeBookingTransactionForDigitalPayment($model);
@@ -518,7 +560,11 @@ class Booking extends Model
             $notifications = [];
             $booking_notification_status = business_config('booking', 'notification_settings')->live_values;
 
+<<<<<<< HEAD
             if ($model->isDirty('serviceman_id' && !$model->is_repeted)) {
+=======
+            if ($model->isDirty('serviceman_id') && !$model->is_repeted) {
+>>>>>>> newversion/main
                 if ($bookingScheduleTimeChange) {
                     $notifications[] = [
                         'key' => 'serviceman_assign',
@@ -602,6 +648,7 @@ class Booking extends Model
                     }
                 }
             }
+<<<<<<< HEAD
 
             if ($model->isDirty('is_send') && $model->is_send) {
                 Log::info('Attempting to send invoice notification', ['booking_id' => $model->id]);
@@ -627,6 +674,8 @@ class Booking extends Model
                     }
                 }
             }
+=======
+>>>>>>> newversion/main
         });
 
 

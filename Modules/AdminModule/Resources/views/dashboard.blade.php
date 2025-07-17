@@ -19,7 +19,11 @@
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="business-summary business-summary-earning">
+<<<<<<< HEAD
                             <h2>{{data_get($data[0], 'top_cards.total_commission_earning', 0)}}</h2>
+=======
+                            <h2>{{with_currency_symbol(data_get($data[0], 'top_cards.total_commission_earning', 0))}}</h2>
+>>>>>>> newversion/main
                             <h3>{{translate('commission_earning')}}</h3>
                             <img src="{{asset('public/assets/admin-module')}}/img/icons/total-earning.png"
                                  class="absolute-img" alt="">
@@ -27,7 +31,11 @@
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="business-summary business-summary-providers">
+<<<<<<< HEAD
                             <h2>{{data_get($data[0], 'top_cards.total_fee_earning', 0)}}</h2>
+=======
+                            <h2>{{with_currency_symbol(data_get($data[0], 'top_cards.total_fee_earning', 0))}}</h2>
+>>>>>>> newversion/main
                             <h3>{{translate('Total Fee Earning')}}</h3>
                             <img src="{{asset('public/assets/admin-module')}}/img/icons/providers.png"
                                  class="absolute-img"

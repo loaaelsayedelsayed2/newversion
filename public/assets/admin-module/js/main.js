@@ -312,8 +312,14 @@ We may release future updates so it will overwrite this file. it's better and sa
     /*============================================
   13: Edit Button Trigger Upload file
   ==============================================*/
+<<<<<<< HEAD
     $(".upload-file__edit").on("click", function () {
         $(this).siblings(".upload-file__input").click();
+=======
+
+    $(document).on("click", ".upload-file__edit", function () {
+        $(this).closest(".upload-file").find(".upload-file__input").click();
+>>>>>>> newversion/main
     });
 
     /*============================================

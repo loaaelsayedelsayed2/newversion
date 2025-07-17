@@ -25,5 +25,11 @@ class AddToColCartsTable extends Migration
      */
     public function down()
     {
+<<<<<<< HEAD
+=======
+        Schema::table('carts', function (Blueprint $table) {
+            $table->dropColumn('coupon_id');
+        });
+>>>>>>> newversion/main
     }
 }

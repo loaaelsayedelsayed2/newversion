@@ -42,6 +42,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::any('provider-invoice/{id}/{lang}', [BookingController::class, 'providerInvoice'])->withoutMiddleware('admin');
         Route::any('serviceman-invoice/{id}/{lang}', [BookingController::class, 'servicemanInvoice'])->withoutMiddleware('admin');
 
+<<<<<<< HEAD
+=======
+        Route::any('switch-payment-method/{id}', [BookingController::class, 'switchPaymentMethod'])->name('switch-payment-method');
+
+>>>>>>> newversion/main
         Route::any('offline-payment/verify', [BookingController::class, 'verifyOfflinePayment'])->name('offline-payment.verify');
 
         Route::group(['prefix' => 'service', 'as' => 'service.'], function () {
@@ -53,6 +58,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
 
         Route::get('rebooking/details/{id}', [BookingController::class, 'reBookingDetails'])->name('rebooking.details');
         Route::get('rebooking/ongoing/{id}', [BookingController::class, 'reBookingOngoing'])->name('rebooking.ongoing');
+<<<<<<< HEAD
+=======
+
+        Route::post('change-service-location/{id}', [BookingController::class, 'changeServiceLocation'])->name('change-service-location');
+        Route::post('repeat-change-service-location/{id}', [BookingController::class, 'repeatChangeServiceLocation'])->name('repeat.change-service-location');
+
+>>>>>>> newversion/main
     });
 });
 
@@ -86,5 +98,12 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Web\P
             Route::get('ajax-get-service-info', [ProviderBookingController::class, 'ajaxGetServiceInfo'])->name('ajax-get-service-info');
             Route::get('ajax-get-variation', [ProviderBookingController::class, 'ajaxGetVariant'])->name('ajax-get-variant');
         });
+<<<<<<< HEAD
+=======
+
+        Route::post('change-service-location/{id}', [ProviderBookingController::class, 'changeServiceLocation'])->name('change-service-location');
+        Route::post('repeat-change-service-location/{id}', [ProviderBookingController::class, 'repeatChangeServiceLocation'])->name('repeat.change-service-location');
+
+>>>>>>> newversion/main
     });
 });

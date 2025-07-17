@@ -24,11 +24,19 @@
                             <div class="d-flex flex-wrap gap-4 create-provider-item mb-4">
                                 <div class="d-flex flex-wrap gap-2 align-items-center">
                                     <span class="material-symbols-outlined icon-1">check</span>
+<<<<<<< HEAD
                                     Basic info
                                 </div>
                                 <div class="d-flex flex-wrap gap-2 align-items-center">
                                     <span class="icon-2">2</span>
                                     Set Business Plan
+=======
+                                    {{ translate('Basic info') }}
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <span class="icon-2">2</span>
+                                    {{ translate('Set Business Plan') }}
+>>>>>>> newversion/main
                                 </div>
                             </div>
                             <div class="row">
@@ -37,7 +45,11 @@
                                     <div class="form-floating form-floating__icon mb-30">
                                         <input type="text" class="form-control"
                                                value="{{$provider->company_name}}"
+<<<<<<< HEAD
                                                name="company_name" required
+=======
+                                               name="company_name" required maxlength="191"
+>>>>>>> newversion/main
                                                placeholder="{{translate('Company_/_Individual_Name')}}">
                                         <label>{{translate('Company_/_Individual_Name')}}</label>
                                         <span class="material-icons">store</span>
@@ -118,9 +130,12 @@
                                             <option value="driving_license"
                                                 {{$provider->owner->identification_type == 'driving_license' ? 'selected': ''}}>
                                                 {{translate('Driving_License')}}</option>
+<<<<<<< HEAD
                                             <option value="residency_permit"
                                                 {{$provider->owner->identification_type == 'residency_permit' ? 'selected': ''}}>
                                                 {{translate('residency_permit')}}</option>
+=======
+>>>>>>> newversion/main
                                             <option value="nid"
                                                 {{$provider->owner->identification_type == 'nid' ? 'selected': ''}}>
                                                 {{translate('nid')}}</option>
@@ -157,7 +172,11 @@
                                             <div class="form-floating form-floating__icon mb-30">
                                                 <input type="text" class="form-control" name="contact_person_name"
                                                        value="{{$provider->contact_person_name}}" placeholder="name"
+<<<<<<< HEAD
                                                        required>
+=======
+                                                       maxlength="191" required>
+>>>>>>> newversion/main
                                                 <label>{{translate('Name')}}</label>
                                                 <span class="material-icons">account_circle</span>
                                             </div>

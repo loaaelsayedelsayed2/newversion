@@ -388,9 +388,55 @@
                 },
                 onFinished: function (event, currentIndex) {
                     event.preventDefault();
+<<<<<<< HEAD
                     let hasRows = $("#variation-table > tr").length > 0;
                     if (hasRows) {
                         formWizard.submit();
+=======
+                    let isValid = true;
+                    $(".desc-err").remove(); // Remove previous error messages
+
+                    let variationSections = $("#variation-table");
+
+                    console.log(variationSections)
+
+                    // Loop through all number inputs
+                    variationSections.find('input[type="number"]').each(function () {
+                        let value = parseFloat($(this).val());
+                        let minValue = parseFloat($(this).attr('min'));
+
+                        if (isNaN(value) || value === "") {
+                            toastr.error('Please enter a valid number');
+                            isValid = false;
+                        } else if (value <= 0) {
+                            toastr.error('Value must be greater than zero');
+                            isValid = false;
+                        } else if (!isNaN(minValue) && value < minValue) {
+                            toastr.error(`Minimum allowed value is ${minValue}`);
+                            isValid = false;
+                        }
+                    });
+
+                    console.log(isValid)
+
+                    if (!isValid) {
+                        return false; // Stop form submission if validation fails
+                    }
+
+                    let hasRows = $("#variation-table > tr").length > 0;
+                    let submitButton = formWizard.find('button[type="submit"]');
+
+                    // Prevent multiple clicks
+                    if (submitButton.prop("disabled")) {
+                        return false;
+                    }
+
+                    if (hasRows) {
+                        $(".actions a[href='#finish']").css("pointer-events", "none").text("Submitting..."); // Disable "Submit" button
+                        submitButton.prop("disabled", true); // Disable actual submit button
+
+                        formWizard.off("submit").submit(); // Ensure it submits only once
+>>>>>>> newversion/main
                     } else {
                         var errorMessageElement = formWizard.find(".table-row-err");
 
@@ -406,6 +452,7 @@
         })(jQuery);
     </script>
 
+<<<<<<< HEAD
 
     {{-- <script>
         (function ($) {
@@ -501,6 +548,8 @@
         })(jQuery);
     </script> --}}
 
+=======
+>>>>>>> newversion/main
     <script>
         "use strict";
 
@@ -513,6 +562,7 @@
 
         var variationCount = $("#variation-table > tbody > tr").length;
 
+<<<<<<< HEAD
         // $("#form-wizard").steps({
         //     headerTag: "h3",
         //     bodyTag: "section",
@@ -533,6 +583,8 @@
         //         }
         //     }
         // });
+=======
+>>>>>>> newversion/main
 
         $("#service-ajax-variation").on('click', function (){
             let route = "{{route('admin.service.ajax-add-variant')}}";
@@ -545,7 +597,11 @@
             let name = $('#variant-name').val();
             let price = $('#variant-price').val();
 
+<<<<<<< HEAD
             if (name.length > 0 && price >= 0) {
+=======
+            if (name.length > 0 && price > 0) {
+>>>>>>> newversion/main
                 $.get({
                     url: route,
                     dataType: 'json',
@@ -553,9 +609,12 @@
                         name: $('#variant-name').val(),
                         price: $('#variant-price').val(),
                     },
+<<<<<<< HEAD
                     beforeSend: function () {
                         /*$('#loading').show();*/
                     },
+=======
+>>>>>>> newversion/main
                     success: function (response) {
                         if (response.flag == 0) {
                             toastr.info('Already added');
@@ -567,12 +626,22 @@
                         }
                         variationCount++;
                     },
+<<<<<<< HEAD
                     complete: function () {
                         /*$('#loading').hide();*/
                     },
                 });
             } else {
                 toastr.warning('{{translate('fields_are_required')}}');
+=======
+                });
+            } else {
+                if(price <= 0){
+                    toastr.warning('{{translate('price can not be 0 or negative')}}');
+                }else{
+                    toastr.warning('{{translate('fields_are_required')}}');
+                }
+>>>>>>> newversion/main
             }
         }
 

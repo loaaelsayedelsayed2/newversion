@@ -104,7 +104,11 @@ class ServicemanController extends Controller
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             'profile_image' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license',
+=======
+            'identity_type' => 'required|in:passport,driving_license,nid,trade_license',
+>>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_image' => 'required|array',
             'identity_image.*' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
@@ -387,7 +391,11 @@ class ServicemanController extends Controller
             'password' => '',
             'confirm_password' => !is_null($request->password) ? 'required|min:8|same:password' : '',
             'profile_image' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+<<<<<<< HEAD
             'identity_type' => 'in:passport,residency_permit,driving_license,nid,trade_license',
+=======
+            'identity_type' => 'in:passport,driving_license,nid,trade_license',
+>>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_image' => 'array',
             'identity_image.*' => 'image|mimes:jpeg,jpg,png,gif|max:10000',

@@ -38,7 +38,11 @@
                     <div class="d-flex gap-3">
                         @php($provider_can_edit_booking = (int)(business_config('provider_can_edit_booking', 'provider_config'))?->live_values)
 
+<<<<<<< HEAD
                         @if($provider_can_edit_booking && in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking->booking_partial_payments->isEmpty())
+=======
+                        @if($provider_can_edit_booking && in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking->booking_partial_payments->isEmpty() && empty($booking->customizeBooking))
+>>>>>>> newversion/main
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{$booking['id']}}"
                                     data-toggle="tooltip"
@@ -85,6 +89,7 @@
                                         <p><span>{{translate('Amount')}} : </span> {{with_currency_symbol($booking->total_booking_amount)}}</p>
                                         @if($booking->payment_method == 'offline_payment')
                                             <h4 class="mb-2">{{translate('Payment_Info')}}</h4>
+<<<<<<< HEAD
                                             <div class="d-flex gap-1 flex-column">
                                                 @foreach($booking?->booking_offline_payments?->first()?->customer_information??[] as $key=>$item)
                                                     <div><span>{{translate($key)}}</span>:
@@ -95,6 +100,35 @@
                                         @endif
                                     </div>
                                     <div class="text-start text-sm-end">
+=======
+                                            @if($booking->booking_offline_payments->isNotEmpty())
+                                                <div class="d-flex gap-1 flex-column">
+                                                    @foreach($booking?->booking_offline_payments?->first()?->customer_information??[] as $key=>$item)
+                                                        <div><span>{{translate($key)}}</span>:
+                                                            <span>{{translate($item)}}</span>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <p class="text-muted">{{ translate('Customer did not submit any payment information yet') }}</p>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    <div class="text-start text-sm-end">
+                                        @if($booking->payment_method == 'offline_payment' && $booking->booking_offline_payments->isNotEmpty())
+                                            <p class="mb-2"><span>{{ translate('Request Verify Status') }} :</span>
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'pending')
+                                                    <span class="text-info text-capitalize fw-bold">{{ translate('Pending') }}</span>
+                                                @endif
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'denied')
+                                                    <span class="text-danger text-capitalize fw-bold">{{ translate('Denied') }}</span>
+                                                @endif
+                                                @if($booking->booking_offline_payments?->first()?->payment_status == 'approved')
+                                                    <span class="text-primary text-capitalize fw-bold">{{ translate('Approved') }}</span>
+                                                @endif
+                                            </p>
+                                        @endif
+>>>>>>> newversion/main
                                         <p class="mb-2">
                                             <span>{{translate('Payment_Status')}} : </span>
                                             <span class="text-{{$booking->is_paid ? 'success' : 'danger'}}"
@@ -223,10 +257,17 @@
 
                                         <div class="media gap-2 flex-wrap">
                                             @if(!$booking?->is_guest && $booking?->customer)
+<<<<<<< HEAD
                                                 <img width="58" height="58" class="rounded-circle border border-white"
                                                      src="{{$booking?->customer?->profile_image_full_path}}" alt="{{translate('user_image')}}">
                                             @else
                                                 <img width="58" height="58" class="rounded-circle border border-white"
+=======
+                                                <img width="58" height="58" class="rounded-circle border border-white aspect-square object-fit-cover"
+                                                     src="{{$booking?->customer?->profile_image_full_path}}" alt="{{translate('user_image')}}">
+                                            @else
+                                                <img width="58" height="58" class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}" alt="{{translate('user_image')}}">
                                             @endif
                                             <div class="media-body">
@@ -261,7 +302,11 @@
                                     @if(isset($booking->serviceman))
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
+<<<<<<< HEAD
                                                 <img width="58" height="58" class="rounded-circle border border-white"
+=======
+                                                <img width="58" height="58" class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{$booking?->serviceman?->user?->profile_image_full_path}}" alt="{{translate('serviceman')}}">
                                                 <div class="media-body">
                                                     <h5 class="c1 mb-3">{{Str::limit($booking->serviceman && $booking->serviceman->user ? $booking->serviceman->user->first_name.' '.$booking->serviceman->user->last_name:'', 30)}}</h5>

@@ -20,7 +20,13 @@ use Modules\AdminModule\Http\Controllers\Web\Admin\Report\TransactionReportContr
 |
 */
 
+<<<<<<< HEAD
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin', 'middleware' => ['admin']], function () {
+=======
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin', 'middleware' => ['admin']], function () {
+
+>>>>>>> newversion/main
     Route::post('search-routing', 'AdminController@searchRouting')->name('search.routing');
     Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
     Route::get('update-dashboard-earning-graph', 'AdminController@updateDashboardEarningGraph')->name('update-dashboard-earning-graph');
@@ -28,6 +34,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
     Route::post('profile-update', 'AdminController@updateProfile');
     Route::get('get-updated-data', 'AdminController@getUpdatedData')->name('get_updated_data');
     Route::get('subscribeToTopic', 'AdminController@subscribeToTopic')->name('subscribeToTopic');
+<<<<<<< HEAD
+=======
+    Route::post('store/search-routing', 'AdminController@storeClickedRoute')->name('search.routing.store');
+    Route::get('recent-search', 'AdminController@recentSearch')->name('recent.search');
+
+>>>>>>> newversion/main
 
     Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
         Route::any('list', 'RoleController@index')->name('index');

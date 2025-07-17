@@ -247,8 +247,11 @@ class SubscriberController extends Controller
 
     }
 
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> newversion/main
 
     /**
      * @param Request $request

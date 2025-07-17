@@ -82,6 +82,7 @@ class PasswordResetController extends Controller
                 if (isset($paymentPublishedStatus[0]['is_published'])) {
                     $publishedStatus = $paymentPublishedStatus[0]['is_published'];
                 }
+<<<<<<< HEAD
                 // if ($publishedStatus == 1) {
                 //     $response = SmsGateway::send($request['identity'], $otp);
                 // } else {
@@ -96,6 +97,12 @@ class PasswordResetController extends Controller
                     $response = 'success';
                 }else{
                     $response = 'error';
+=======
+                if ($publishedStatus == 1) {
+                    $response = SmsGateway::send($request['identity'], $otp);
+                } else {
+                    $response = SMS_gateway::send($request['identity'], $otp);
+>>>>>>> newversion/main
                 }
             }
 
@@ -223,15 +230,22 @@ class PasswordResetController extends Controller
             'identity' => 'required',
             'identity_type' => 'required|in:email,phone',
             'otp' => 'required|max:6',
+<<<<<<< HEAD
 
             'password' => 'required',
             'confirm_password' => 'required|same:confirm_password'
+=======
+            'password' => 'required',
+            'confirm_password' => 'required|same:confirm_password',
+            'is_firebase_otp' => 'required|in:0,1'
+>>>>>>> newversion/main
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         $userVerification = $this->userVerification
             ->where('identity_type', $request['identity_type'])
             ->where('identity', $request['identity'])
@@ -265,4 +279,37 @@ class PasswordResetController extends Controller
         $response = file_get_contents($url);
         return $response;
     }
+=======
+        if ($request->is_firebase_otp == 1){
+            $this->user->where($request['identity_type'], $request['identity'])
+                ->update([
+                    'password' => bcrypt(str_replace(' ', '', $request['password']))
+                ]);
+
+        }else{
+            $userVerification = $this->userVerification
+                ->where('identity_type', $request['identity_type'])
+                ->where('identity', $request['identity'])
+                ->where(['otp' => $request['otp']])
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if (isset($userVerification)) {
+                return response()->json(response_formatter(DEFAULT_404), 404);
+            }
+
+            $this->user->where($request['identity_type'], $request['identity'])
+                ->update([
+                    'password' => bcrypt(str_replace(' ', '', $request['password']))
+                ]);
+
+            $this->userVerification
+                ->where('identity_type', $request['identity_type'])
+                ->where('identity', $request['identity'])
+                ->where(['otp' => $request['otp']])->delete();
+
+        }
+        return response()->json(response_formatter(DEFAULT_PASSWORD_RESET_200), 200);
+    }
+>>>>>>> newversion/main
 }

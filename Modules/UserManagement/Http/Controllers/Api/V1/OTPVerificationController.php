@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
+=======
+use Modules\CustomerModule\Traits\CustomerTrait;
+>>>>>>> newversion/main
 use Modules\SMSModule\Lib\SMS_gateway;
 use Modules\UserManagement\Emails\OTPMail;
 use Modules\UserManagement\Entities\User;
@@ -21,6 +25,11 @@ use Modules\PaymentModule\Traits\SmsGateway;
 
 class OTPVerificationController extends Controller
 {
+<<<<<<< HEAD
+=======
+    use CustomerTrait;
+
+>>>>>>> newversion/main
     public function __construct(
         private User $user,
         private UserVerification $userVerification
@@ -83,6 +92,7 @@ class OTPVerificationController extends Controller
             if (isset($paymentPublishedStatus[0]['is_published'])) {
                 $publishedStatus = $paymentPublishedStatus[0]['is_published'];
             }
+<<<<<<< HEAD
             // if($publishedStatus == 1){
                 // $response = SmsGateway::send($request['identity'], $otp);
                 $message = "مرحبا بك " . $user->first_name . "," . ' ' .
@@ -99,6 +109,13 @@ class OTPVerificationController extends Controller
             // }else{
             //     $response = SMS_gateway::send($request['identity'], $otp);
             // }
+=======
+            if($publishedStatus == 1){
+                $response = SmsGateway::send($request['identity'], $otp);
+            }else{
+                $response = SMS_gateway::send($request['identity'], $otp);
+            }
+>>>>>>> newversion/main
 
         } else if ($request['identity_type'] == 'email') {
             try {
@@ -111,7 +128,11 @@ class OTPVerificationController extends Controller
             $response = 'error';
         }
 
+<<<<<<< HEAD
         if ($response == 'success'  )
+=======
+        if ($response == 'success')
+>>>>>>> newversion/main
             return response()->json(response_formatter(DEFAULT_SENT_OTP_200), 200);
         else
             return response()->json(response_formatter(DEFAULT_SENT_OTP_FAILED_200), 200);
@@ -144,6 +165,10 @@ class OTPVerificationController extends Controller
         $tempBlockTime = business_config('temporary_otp_block_time', 'otp_login_setup')->test_values ?? 600; // seconds
 
         $verify = $this->userVerification->where(['identity' => $request['identity'], 'otp' => $request['otp']])->first();
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
         if (isset($verify)) {
             if(isset($verify->temp_block_time ) && Carbon::parse($verify->temp_block_time)->DiffInSeconds() <= $tempBlockTime){
                 $time = $tempBlockTime - Carbon::parse($verify->temp_block_time)->DiffInSeconds();
@@ -166,7 +191,17 @@ class OTPVerificationController extends Controller
             }
 
             $this->userVerification->where(['identity' => $request['identity']])->delete();
+<<<<<<< HEAD
             return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200),200);
+=======
+
+            if ($user->user_type == 'customer'){
+                $loginData = ['token' => $user->createToken(CUSTOMER_PANEL_ACCESS)->accessToken, 'is_active' => $user['is_active']];
+                return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200, $loginData), 200);
+            }
+
+            return response()->json(response_formatter(OTP_VERIFICATION_SUCCESS_200), 200);
+>>>>>>> newversion/main
         }
         else{
             $verificationData = $this->userVerification->where('identity', $request['identity'])->first();
@@ -361,6 +396,13 @@ class OTPVerificationController extends Controller
             'is_active' => 1,
         ]);
 
+<<<<<<< HEAD
+=======
+        if ($request['guest_id']){
+            $this->updateAddressAndCartUser($user->id, $request['guest_id']);
+        }
+
+>>>>>>> newversion/main
         return response()->json(response_formatter(AUTH_LOGIN_200, self::authenticate($user, CUSTOMER_PANEL_ACCESS)), 200);
 
     }
@@ -394,6 +436,13 @@ class OTPVerificationController extends Controller
 
         $user = $this->user->where('phone', $responseData['phoneNumber'])->first();
 
+<<<<<<< HEAD
+=======
+        if ($request['guest_id'] && isset($user)){
+            $this->updateAddressAndCartUser($user->id, $request['guest_id']);
+        }
+
+>>>>>>> newversion/main
         if (isset($user)){
             if ($user?->user_type == $request->user_type){
                 $user->is_phone_verified = 1;
@@ -413,6 +462,7 @@ class OTPVerificationController extends Controller
         return ['token' => $user->createToken($access_type)->accessToken, 'is_active' => $user['is_active']];
     }
 
+<<<<<<< HEAD
 
      public function sendWhatsappMessage($number, $message){
         $number = ltrim($number, '+');
@@ -421,5 +471,25 @@ class OTPVerificationController extends Controller
         $url = "https://app.arrivewhats.com/api/send?number=$number&type=text&message=$encodedMessage&instance_id=679543498E1CE&access_token=675489055c30b";
         $response = file_get_contents($url);
         return $response;
+=======
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkExistingCustomer(Request $request): JsonResponse
+    {
+        $newUserValidator = Validator::make($request->all(), [
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+        ]);
+
+        if ($newUserValidator->fails()) {
+            return response()->json(response_formatter(DEFAULT_400, null, error_processor($newUserValidator)), 400);
+        }
+
+        if (User::where('phone', $request['phone'])->exists()) {
+            return response()->json(response_formatter(USER_EXIST_400, null, [["error_code" => "phone", "message" => translate('Phone already taken')]]), 400);
+        }
+        return response()->json(response_formatter(DEFAULT_200, null), 200);
+>>>>>>> newversion/main
     }
 }

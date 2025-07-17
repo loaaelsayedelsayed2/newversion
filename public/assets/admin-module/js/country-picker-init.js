@@ -49,8 +49,14 @@ $(document).ready(function () {
         );
         initializePhoneInput(
             ".phone-input-with-country-picker2",
+<<<<<<< HEAD
             ".country-picker-phone-number2"
         );
+=======
+            ".country-picker-phone-number"
+        );
+
+>>>>>>> newversion/main
         initializePhoneInput(
             ".phone-input-with-country-picker3",
             ".country-picker-phone-number3"
@@ -67,6 +73,10 @@ $(document).ready(function () {
             ".phone-input-with-country-picker6",
             ".country-picker-phone-number6"
         );
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
     } catch (error) {
         console.log(error)
     }

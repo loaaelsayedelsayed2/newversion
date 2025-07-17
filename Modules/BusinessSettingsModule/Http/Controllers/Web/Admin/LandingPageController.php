@@ -89,6 +89,11 @@ class LandingPageController extends Controller
             'registration_description.0' => 'string',
             'bottom_title.0' => 'string',
             'bottom_description.0' => 'string',
+<<<<<<< HEAD
+=======
+            'newsletter_title.0' => 'string',
+            'newsletter_description.0' => 'string',
+>>>>>>> newversion/main
 
             'app_url_playstore' => 'string',
             'app_url_appstore' => 'string',
@@ -130,6 +135,11 @@ class LandingPageController extends Controller
                 'registration_description.0.string' => translate('registration_description should be a string'),
                 'bottom_title.0.string' => translate('bottom_title should be a string'),
                 'bottom_description.0.string' => translate('bottom_description should be a string'),
+<<<<<<< HEAD
+=======
+                'newsletter_title.0.string' => translate('newsletter_title should be a string'),
+                'newsletter_description.0.string' => translate('newsletter_description should be a string'),
+>>>>>>> newversion/main
                 'web_top_title.0.string' => translate('web_top_title should be a string'),
                 'web_top_description.0.string' => translate('web_top_description should be a string'),
                 'web_mid_title.0.string' => translate('web_mid_title should be a string'),
@@ -242,6 +252,11 @@ class LandingPageController extends Controller
                 'registration_title',
                 'registration_description',
                 'bottom_title',
+<<<<<<< HEAD
+=======
+                'newsletter_title',
+                'newsletter_description',
+>>>>>>> newversion/main
             ];
 
             foreach ($textKeys as $key) {

@@ -211,11 +211,19 @@ class AddonController extends Controller
     function getDirectories(string $path): array
     {
         $directories = [];
+<<<<<<< HEAD
         $items = scandir($path);
         foreach ($items as $item) {
             if ($item == '..' || $item == '.')
                 continue;
             if (is_dir($path . '/' . $item))
+=======
+        $items = scandir(base_path($path));
+        foreach ($items as $item) {
+            if ($item == '..' || $item == '.')
+                continue;
+            if (is_dir(base_path($path . '/' . $item)))
+>>>>>>> newversion/main
                 $directories[] = $item;
         }
         return $directories;

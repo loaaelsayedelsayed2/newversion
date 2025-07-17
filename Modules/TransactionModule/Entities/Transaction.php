@@ -22,7 +22,11 @@ class Transaction extends Model
         'balance' => 'float',
     ];
 
+<<<<<<< HEAD
     protected $fillable = ['ref_trx_id', 'booking_id', 'booking_repeat_id', 'trx_type', 'debit', 'credit', 'balance', 'from_user_id', 'to_user_id', 'from_user_account', 'to_user_account', 'reference_note','payment_id'];
+=======
+    protected $fillable = ['ref_trx_id', 'booking_id', 'booking_repeat_id', 'trx_type', 'debit', 'credit', 'balance', 'from_user_id', 'to_user_id', 'from_user_account', 'to_user_account', 'reference_note'];
+>>>>>>> newversion/main
 
     public function scopeSearch($query, $keywords, array $searchColumns): mixed
     {

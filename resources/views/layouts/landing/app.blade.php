@@ -22,7 +22,11 @@
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/owl.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/main.css"/>
+<<<<<<< HEAD
     {{--  <link rel="stylesheet" href="{{ asset('assets/landing/css/main.css') }}"/>  --}}
+=======
+    <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/css/toastr.css">
+>>>>>>> newversion/main
 
     <link rel="shortcut icon"
           href="{{asset('storage/app/public/business')}}/{{bs_data($settings,'business_favicon', 1)}}"
@@ -145,6 +149,7 @@
                             <span>{{translate('privacy_policy')}}</span>
                         </a>
                     </li>
+<<<<<<< HEAD
                     @if($settings->where('key_name', 'terms_and_conditions')->first()->is_active == '1')
                         <li>
                             <a href="{{route('page.terms-and-conditions')}}"
@@ -210,6 +215,13 @@
                         </div>
                     </li> --}}
                     {{-- old language dropdown ends --}}
+=======
+                    <li>
+                        <a href="{{route('page.terms-and-conditions')}}" class="{{request()->is('page/terms-and-conditions')?'active':''}}">
+                            <span>{{translate('terms_&_conditions')}}</span>
+                        </a>
+                    </li>
+>>>>>>> newversion/main
                 </ul>
                 <div class="nav-toggle d-lg-none ms-auto me-2 me-sm-4">
                     <span></span>
@@ -224,6 +236,7 @@
 
 @yield('content')
 
+<<<<<<< HEAD
 <footer>
     <div class="footer-top">
         <div class="container">
@@ -305,13 +318,124 @@
                             {{translate('find_us_here')}}
                         </h6>
                         <div><span>{{bs_data($settings,'business_address', 1)}}</span></div>
+=======
+<div class="py-75 subscribe-newsletter">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-md-5">
+                <h3 class="text-uppercase text--base mb-2">{{ bs_data_text($settingss, 'newsletter_title', 1) }}</h3>
+                <p class="text--base">{{ bs_data_text($settingss, 'newsletter_description', 1) }}</p>
+            </div>
+            <div class="col-md-6">
+                <form method="post" action="{{ route('subscribe-newsletter') }}">
+                    @csrf
+                    <div class="input-group">
+                        <input class="form-control p-3 rounded-pill" type="email" name="email" placeholder="{{ translate('Type email...') }}" required>
+                        <div class="input-group-append">
+                            <button class="cmn--btn rounded-pill subscribe-btn" type="submit">{{ translate('subscribe') }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="main-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer__wrapper">
+                    <div class="footer__wrapper-widget">
+                        <div class="cont">
+                            <a href="#" class="logo mb-4">
+                                <img src="{{ $logo }}" alt="{{translate('logo')}}">
+                            </a>
+                            <p class="mb-4">{{translate('Connect with our social media and other sites to keep up to date')}}</p>
+                            <div class="app-btns">
+                                @if($settings->where('key_name','app_url_appstore')->first()->is_active??0)
+                                    <a href="{{bs_data($settings,'app_url_appstore', 1)}}" class="d-block">
+                                        <img class="w-100" src="{{asset('public/assets/landing/img/app-btn/app-store.png')}}" alt="{{translate('app store')}}">
+                                    </a>
+                                @endif
+
+                                @if($settings->where('key_name','app_url_playstore')->first()->is_active??0)
+                                    <a href="{{bs_data($settings,'app_url_playstore', 1)}}" class="d-block">
+                                        <img class="w-100" src="{{asset('public/assets/landing/img/app-btn/google-play.png')}}" alt="{{translate('play store')}}">
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer__wrapper-widget">
+                        <ul class="footer__wrapper-link">
+                            <li>
+                                <a href="{{route('home')}}">{{translate('home')}}</a>
+                            </li>
+                            <li>
+                                <a href="{{route('page.about-us')}}">{{translate('about_us')}}</a>
+                            </li>
+                            <li>
+                                <a href="{{route('page.contact-us')}}">{{translate('contact_us')}}</a>
+                            </li>
+                            <li>
+                                <a href="{{route('page.privacy-policy')}}">{{translate('privacy_policy')}}</a>
+                            </li>
+                            <li>
+                                <a href="{{route('page.terms-and-conditions')}}">{{translate('terms_&_conditions')}}</a>
+                            </li>
+                            @if(\Modules\BusinessSettingsModule\Entities\DataSetting::where('key', 'cancellation_policy')->first()->is_active == '1')
+                                <li>
+                                    <a href="{{route('page.cancellation-policy')}}">{{translate('cancellation_policy')}}</a>
+                                </li>
+                            @endif
+                            @if(\Modules\BusinessSettingsModule\Entities\DataSetting::where('key', 'refund_policy')->first()->is_active == '1')
+                                <li>
+                                    <a href="{{route('page.refund-policy')}}">{{translate('refund_policy')}}</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                    <div class="footer__wrapper-widget">
+                        <div class="footer__wrapper-contact">
+                            <img class="icon" src="{{asset('public/assets/landing/img/footer/mail.png')}}" alt="{{translate('footer')}}">
+                            <h6>
+                                {{translate('send_us_mail')}}
+                            </h6>
+                            <a href="Mailto:{{bs_data($settings,'business_email', 1)}}">{{bs_data($settings,'business_email', 1)}}</a>
+                        </div>
+                    </div>
+                    <div class="footer__wrapper-widget">
+                        <div class="footer__wrapper-contact">
+                            <img class="icon" src="{{asset('public/assets/landing/img/footer/tel.png')}}" alt="{{translate('footer')}}">
+                            <h6>
+                                {{translate('contact_us')}}
+                            </h6>
+                            <a href="Tel:{{bs_data($settings,'business_phone', 1)}}">{{bs_data($settings,'business_phone', 1)}}</a>
+                        </div>
+                    </div>
+                    <div class="footer__wrapper-widget">
+                        <div class="footer__wrapper-contact">
+                            <img class="icon" src="{{asset('public/assets/landing/img/footer/pin.png')}}" alt="{{translate('footer')}}">
+                            <h6>
+                                {{translate('find_us_here')}}
+                            </h6>
+                            <div><span>{{bs_data($settings,'business_address', 1)}}</span></div>
+                        </div>
+>>>>>>> newversion/main
                     </div>
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
     </div>
     <div class="footer-bottom text-center py-3">
         {{bs_data($settings,'footer_text', 1)}}
+=======
+        <div class="footer-bottom text-center py-3">
+            {{bs_data($settings,'footer_text', 1)}}
+        </div>
+>>>>>>> newversion/main
     </div>
 </footer>
 
@@ -321,8 +445,16 @@
 <script src="{{asset('public/assets/landing')}}/js/owl.min.js"></script>
 <script src="{{asset('public/assets/landing')}}/js/swiper-bundle.min.js"></script>
 <script src="{{asset('public/assets/landing')}}/js/bootstrap.min.js"></script>
+<<<<<<< HEAD
 <script src="{{asset('public/assets/landing')}}/js/custom.js"></script>
 
+=======
+<script src="{{asset('public/assets/admin-module')}}/js/toastr.js"></script>
+<script src="{{asset('public/assets/landing')}}/js/custom.js"></script>
+
+{!! Toastr::message() !!}
+
+>>>>>>> newversion/main
 <script>
     "use strict";
 
@@ -684,6 +816,18 @@
         }
     });
     // ---- service section active end
+<<<<<<< HEAD
+=======
+
+    @if ($errors->any())
+        @foreach($errors->all() as $error)
+        toastr.error('{{$error}}', Error, {
+            CloseButton: true,
+            ProgressBar: true
+        });
+        @endforeach
+    @endif
+>>>>>>> newversion/main
 </script>
 
 </body>

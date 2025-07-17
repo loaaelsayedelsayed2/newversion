@@ -152,11 +152,14 @@ class LoginController extends Controller
 
         if (!isset($user)) {
             Toastr::error(translate(AUTH_LOGIN_404['message']));
+<<<<<<< HEAD
             return back();
         }
 
         if (!isset($user)) {
             Toastr::error(translate(AUTH_LOGIN_404['message']));
+=======
+>>>>>>> newversion/main
             return redirect(route('provider.auth.login'));
         }
 

@@ -18,7 +18,11 @@ use Modules\TransactionModule\Entities\LoyaltyPointTransaction;
 if (!function_exists('placeBookingTransactionForDigitalPayment')) {
     function placeBookingTransactionForDigitalPayment($booking): void
     {
+<<<<<<< HEAD
         if ($booking['payment_method'] != 'cash_after_service' || $booking['payment_method'] != 'payment_after_services') {
+=======
+        if ($booking['payment_method'] != 'cash_after_service') {
+>>>>>>> newversion/main
             $admin_user_id = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
             DB::transaction(function () use ($booking, $admin_user_id) {
                 //Admin account update
@@ -48,7 +52,11 @@ if (!function_exists('placeBookingTransactionForDigitalPayment')) {
 if (!function_exists('placeBookingRepeatTransactionForDigitalPayment')) {
     function placeBookingRepeatTransactionForDigitalPayment($booking): void
     {
+<<<<<<< HEAD
         if ($booking['payment_method'] != 'cash_after_service' || $booking['payment_method'] != 'payment_after_services') {
+=======
+        if ($booking['payment_method'] != 'cash_after_service') {
+>>>>>>> newversion/main
             $admin_user_id = User::where('user_type', ADMIN_USER_TYPES[0])->first()->id;
             DB::transaction(function () use ($booking, $admin_user_id) {
                 //Admin account update
@@ -259,6 +267,7 @@ if (!function_exists('placeBookingTransactionForWalletPayment')) {
 }
 
 
+<<<<<<< HEAD
 
 if (!function_exists('placeBookingTransactionForPaymentAfterService')) {
     function placeBookingTransactionForPaymentAfterService($booking): void
@@ -304,6 +313,8 @@ if (!function_exists('placeBookingTransactionForPaymentAfterService')) {
 
 
 
+=======
+>>>>>>> newversion/main
 //============ Booking Edit ============
 if (!function_exists('removeBookingServiceTransactionForDigitalPayment')) {
     /**
@@ -526,6 +537,7 @@ if (!function_exists('completeBookingTransactionForDigitalPayment')) {
         });
     }
 }
+<<<<<<< HEAD
 if (!function_exists('completeBookingTransactionForDigitalPayment')) {
     function completeBookingTransactionForDigitalPayment($booking): void
     {
@@ -670,6 +682,8 @@ if (!function_exists('completeBookingTransactionForDigitalPayment')) {
         });
     }
 }
+=======
+>>>>>>> newversion/main
 if (!function_exists('completeBookingRepeatTransactionForDigitalPayment')) {
     function completeBookingRepeatTransactionForDigitalPayment($booking): void
     {
@@ -2511,7 +2525,11 @@ if (!function_exists('refundTransactionForCanceledBooking')) {
             //not partial
             if ($booking->payment_method == 'offline_payment' && $booking->is_paid) {
                 $refund_amount = $booking['total_booking_amount'];
+<<<<<<< HEAD
             } elseif ($booking->payment_method != 'offline_payment' && $booking->payment_method != 'cash_after_service' && $booking->payment_method != 'payment_after_service') {
+=======
+            } elseif ($booking->payment_method != 'offline_payment' && $booking->payment_method != 'cash_after_service') {
+>>>>>>> newversion/main
                 $refund_amount = $booking['total_booking_amount'];
             }
         } else {
@@ -2523,7 +2541,11 @@ if (!function_exists('refundTransactionForCanceledBooking')) {
                 $refund_amount = $booking->booking_partial_payments->where('paid_with', '!=', 'offline_payment')->sum('paid_amount');
 
             } elseif ($booking->payment_method != 'offline_payment') {
+<<<<<<< HEAD
                 $refund_amount = $booking->booking_partial_payments->where('paid_with', '!=', 'cash_after_service')->where('paid_with', '!=', 'payment_after_service')->sum('paid_amount');
+=======
+                $refund_amount = $booking->booking_partial_payments->where('paid_with', '!=', 'cash_after_service')->sum('paid_amount');
+>>>>>>> newversion/main
             }
         }
 

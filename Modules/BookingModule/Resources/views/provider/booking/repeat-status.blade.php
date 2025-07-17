@@ -40,6 +40,7 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                         @endif
+<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                 data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -47,6 +48,8 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                         @endif
+=======
+>>>>>>> newversion/main
                         <a href="{{ route('provider.booking.single_invoice', [$booking->id]) }}" class="btn btn-primary"
                             target="_blank">
                             <span class="material-icons">description</span>{{ translate('Invoice') }}
@@ -78,6 +81,7 @@
                         <span>{{ $booking?->bookingDeniedNote?->value }}</span>
                     </div>
                 @endif
+<<<<<<< HEAD
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'payment_after_service' &&
@@ -87,6 +91,8 @@
                         <span>{{ $booking?->bookingDeniedNote?->value }}</span>
                     </div>
                 @endif
+=======
+>>>>>>> newversion/main
 
                 @if ($booking->is_paid == 0 && $booking->payment_method == 'offline_payment')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
@@ -290,9 +296,12 @@
                                             @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'cash_after_service')
                                                 <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>
                                             @endif
+<<<<<<< HEAD
                                             @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'payment_after_service')
                                                 <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>
                                             @endif
+=======
+>>>>>>> newversion/main
                                         @endif
                                     </select>
                                 </div>
@@ -359,12 +368,20 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->booking?->customer)
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->booking?->customer?->profile_image_full_path }}"
                                                      alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                      alt="{{ translate('user_image') }}">
                                             @endif
@@ -421,7 +438,11 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
+<<<<<<< HEAD
                                                      class="rounded-circle border border-white"
+=======
+                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                      src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                      alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">

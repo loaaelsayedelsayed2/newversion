@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 <?php
 
 return array (
+=======
+<?php return array (
+>>>>>>> newversion/main
   'user_authentication_failed' => 'ব্যবহারকারীর প্রমাণীকরণ ব্যর্থ হয়েছে',
   'The email or phone field is required.' => 'ইমেল বা ফোন ক্ষেত্র প্রয়োজন.',
   'The password field is required.' => 'পাসওয়ার্ড ক্ষেত্র প্রয়োজন.',
@@ -293,7 +297,10 @@ return array (
   'Provider_login' => 'প্রদানকারী লগইন',
   'Bank_Information' => 'ব্যাংক তথ্য',
   'Account_Information' => 'অ্যাকাউন্ট তথ্য',
+<<<<<<< HEAD
 'Provider_DashBoard' => 'প্রদানকারী ড্যাশবোর্ড',
+=======
+>>>>>>> newversion/main
   'Account' => 'হিসাব',
   'Canceled' => 'বাতিল',
   'Completed' => 'সম্পন্ন',
@@ -892,7 +899,10 @@ return array (
   'update_discount' => 'আপডেট ডিসকাউন্ট',
   'Discount' => 'ছাড়',
   'cash_after_service' => 'পরিষেবার পরে নগদ',
+<<<<<<< HEAD
   "payment_after_service" => "সেবার পরে পেমেন্ট",
+=======
+>>>>>>> newversion/main
   'stripe' => 'ডোরাকাটা',
   'ssl_commerz' => 'sslcommerz',
   'Provider_Information' => 'প্রদানকারী তথ্য',
@@ -3532,4 +3542,11 @@ _Message' => 'Customer notification for provider bid offer
   'Back to list' => 'তালিকায় ফিরে যান',
   'Robots Meta Content & OG Meta content' => 'রোবট মেটা কন্টেন্ট এবং ওজি মেটা কন্টেন্ট',
   'Cron Job' => 'ক্রোন জব',
+<<<<<<< HEAD
 );
+=======
+  'find_us_here' => 'Find us here',
+  'Connect with our social media and other sites to keep up to date' => 'Connect with our social media and other sites to keep up to date',
+  'Thousands of companies use on demand service platform  as their go-to place for all kinds of cleaning and maintenance services. Our verified service providers are always ready for your next call whenever you have a business need. A dedicated Key Account Manager and a 24 X 7 customer support team make us your first choice for many companies.' => 'Thousands of companies use on demand service platform  as their go-to place for all kinds of cleaning and maintenance services. Our verified service providers are always ready for your next call whenever you have a business need. A dedicated Key Account Manager and a 24 X 7 customer support team make us your first choice for many companies.',
+);
+>>>>>>> newversion/main

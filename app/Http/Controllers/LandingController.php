@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
+=======
+use Brian2694\Toastr\Facades\Toastr;
+>>>>>>> newversion/main
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+<<<<<<< HEAD
+=======
+use Illuminate\Http\Request;
+>>>>>>> newversion/main
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Modules\BusinessSettingsModule\Entities\BusinessSettings;
@@ -15,6 +23,10 @@ use Modules\BusinessSettingsModule\Entities\LandingPageSpeciality;
 use Modules\BusinessSettingsModule\Entities\LandingPageTestimonial;
 use Modules\BusinessSettingsModule\Entities\NotificationSetup;
 use Modules\CategoryManagement\Entities\Category;
+<<<<<<< HEAD
+=======
+use Modules\CustomerModule\Entities\SubscribeNewsletter;
+>>>>>>> newversion/main
 use Modules\UserManagement\Entities\EmployeeRoleAccess;
 use Modules\UserManagement\Entities\EmployeeRoleSection;
 use Modules\UserManagement\Entities\Role;
@@ -26,12 +38,22 @@ class LandingController extends Controller
     private BusinessSettings $businessSettings;
     private DataSetting $dataSetting;
     private Category $category;
+<<<<<<< HEAD
 
     public function __construct(BusinessSettings $businessSettings, Category $category, DataSetting $dataSetting)
+=======
+    private SubscribeNewsletter $subscribeNewsletter;
+
+    public function __construct(BusinessSettings $businessSettings, Category $category, DataSetting $dataSetting, SubscribeNewsletter $subscribeNewsletter)
+>>>>>>> newversion/main
     {
         $this->businessSettings = $businessSettings;
         $this->dataSetting = $dataSetting;
         $this->category = $category;
+<<<<<<< HEAD
+=======
+        $this->subscribeNewsletter = $subscribeNewsletter;
+>>>>>>> newversion/main
     }
 
     public function home(): Factory|View|Application
@@ -56,42 +78,77 @@ class LandingController extends Controller
     public function aboutUs(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         $dataSettings = $this->dataSetting->whereIn('type', ['pages_setup', 'landing_text_setup'])->get();
         return view('about-us', compact('settings', 'dataSettings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        $dataSettings = $this->dataSetting->whereIn('type', ['pages_setup', 'landing_text_setup'])->get();
+        return view('about-us', compact('settings', 'dataSettings', 'settingss'));
+>>>>>>> newversion/main
     }
 
     public function privacyPolicy(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
         return view('privacy-policy', compact('settings', 'dataSettings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
+        return view('privacy-policy', compact('settings', 'dataSettings', 'settingss'));
+>>>>>>> newversion/main
     }
 
     public function termsAndConditions(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
         return view('terms-and-conditions', compact('settings', 'dataSettings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
+        return view('terms-and-conditions', compact('settings', 'dataSettings', 'settingss'));
+>>>>>>> newversion/main
     }
 
     public function contactUs(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         return view('contact-us', compact('settings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        return view('contact-us', compact('settings', 'settingss'));
+>>>>>>> newversion/main
     }
 
     public function cancellationPolicy(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
         return view('cancellation-policy', compact('settings', 'dataSettings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
+        return view('cancellation-policy', compact('settings', 'dataSettings','settingss'));
+>>>>>>> newversion/main
     }
 
     public function refundPolicy(): Factory|View|Application
     {
         $settings = $this->businessSettings->whereNotIn('settings_type', ['payment_config', 'third_party'])->get();
+<<<<<<< HEAD
         $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
         return view('refund-policy', compact('settings', 'dataSettings'));
+=======
+        $settingss = $this->dataSetting->whereIn('type', ['landing_web_app', 'landing_text_setup'])->get();
+        $dataSettings = $this->dataSetting->where('type', 'pages_setup')->get();
+        return view('refund-policy', compact('settings', 'dataSettings', 'settingss'));
+>>>>>>> newversion/main
     }
 
     public function maintenanceMode(): Factory|View|Application
@@ -115,4 +172,21 @@ class LandingController extends Controller
         session()->put('landing_local', $local);
         return redirect()->back();
     }
+<<<<<<< HEAD
+=======
+
+    public function subscribeNewsletter(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:subscribe_newsletters',
+        ]);
+
+        $newsletter = $this->subscribeNewsletter;
+        $newsletter->email = $request->email;
+        $newsletter->save();
+
+        Toastr::success(translate(SUBSCRIBE_NEWSLETTER_200['message']));
+        return back();
+    }
+>>>>>>> newversion/main
 }

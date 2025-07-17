@@ -94,6 +94,14 @@
     </div>
 </main>
 
+<<<<<<< HEAD
+=======
+<?php
+$serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
+$serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id, key: 'service_location', type: 'provider_config') ?? ['customer'];
+?>
+
+>>>>>>> newversion/main
 
 <script src="{{asset('public/assets/provider-module')}}/js/jquery-3.6.0.min.js"></script>
 <script src="{{asset('public/assets/provider-module')}}/js/bootstrap.bundle.min.js"></script>
@@ -265,7 +273,11 @@
         $('#searchForm input[name="search"]').keyup(function () {
             var searchKeyword = $(this).val().trim();
 
+<<<<<<< HEAD
             if (searchKeyword.length >= 2) {
+=======
+            if (searchKeyword.length >= 0) {
+>>>>>>> newversion/main
                 $.ajax({
                     type: 'POST',
                     url: $('#searchForm').attr('action'),
@@ -276,12 +288,43 @@
                         } else {
                             var resultHtml = '';
                             response.forEach(function (route) {
+<<<<<<< HEAD
                                 resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" aria-current="true">';
+=======
+                                resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" data-route-name="' + route.routeName + '" data-route-uri="' + route.URI + '" data-route-full-url="' + route.fullRoute + '" aria-current="true">';
+>>>>>>> newversion/main
                                 resultHtml += '<h5>' + route.routeName + '</h5>';
                                 resultHtml += '<p class="text-muted fs-12">' + route.URI + '</p>';
                                 resultHtml += '</a>';
                             });
                             $('#searchResults').html('<div class="search-list d-flex flex-column">' + resultHtml + '</div>');
+<<<<<<< HEAD
+=======
+
+                            $('.search-list-item').click(function () {
+                                var routeName = $(this).data('route-name');
+                                var routeUri = $(this).data('route-uri');
+                                var routeFullUrl = $(this).data('route-full-url');
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{{ route('provider.search.routing.store') }}',
+                                    data: {
+                                        routeName: routeName,
+                                        routeUri: routeUri,
+                                        routeFullUrl: routeFullUrl,
+                                        searchKeyword: searchKeyword,
+                                        _token: $('input[name="_token"]').val()
+                                    },
+                                    success: function (response) {
+                                        console.log(response.message);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                    }
+                                });
+                            });
+>>>>>>> newversion/main
                         }
                     },
                     error: function (xhr, status, error) {
@@ -289,11 +332,75 @@
                     }
                 });
             } else {
+<<<<<<< HEAD
                 $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a minimum of two characters.')}}.</div>');
+=======
+                $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a character.')}}.</div>');
+>>>>>>> newversion/main
             }
         });
     });
 
+<<<<<<< HEAD
+=======
+    $(document).ready(function () {
+        $("#staticBackdrop").on("shown.bs.modal", function () {
+            $(this).find("#searchForm input[type=search]").val('');
+            $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Loading recent searches')}}...</div>');
+            $(this).find("#searchForm input[type=search]").focus();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('provider.recent.search') }}',
+                success: function (response) {
+                    if (response.length === 0) {
+                        $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('It appears that you have not yet searched.')}}.</div>');
+                    } else {
+                        var resultHtml = '';
+                        response.forEach(function (route) {
+                            resultHtml += '<a href="' + route.route_full_url + '" class="search-list-item d-flex flex-column" data-route-name="' + route.route_name + '" data-route-uri="' + route.route_uri + '" data-route-full-url="' + route.route_full_url + '" aria-current="true">';
+                            resultHtml += '<h5>' + route.route_name + '</h5>';
+                            resultHtml += '<p class="text-muted fs-12  mb-0">' + route.route_uri + '</p>';
+                            resultHtml += '</a>';
+                        });
+                        $('#searchResults').html('<div class="recent-search fs-16 fw-500 animate">' +
+                            @json(translate('Recent Search')) + '<div class="search-list d-flex flex-column mt-2">' + resultHtml + '</div></div>');
+
+                        $('.search-list-item').click(function () {
+                            var routeName = $(this).data('route-name');
+                            var routeUri = $(this).data('route-uri');
+                            var routeFullUrl = $(this).data('route-full-url');
+                            var searchKeyword = $('input[type=search]').val().trim();
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{ route('provider.search.routing.store') }}',
+                                data: {
+                                    routeName: routeName,
+                                    routeUri: routeUri,
+                                    routeFullUrl: routeFullUrl,
+                                    searchKeyword: searchKeyword,
+                                    _token: $('input[name="_token"]').val()
+                                },
+                                success: function (response) {
+                                    console.log(response.message);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                }
+                            });
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Loading recent searches')}}.</div>');
+                }
+            });
+        });
+    });
+
+>>>>>>> newversion/main
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'k') {
             event.preventDefault();
@@ -305,7 +412,11 @@
     $(document).ready(function () {
         $("#staticBackdrop").on("shown.bs.modal", function () {
             $(this).find("#searchForm input[type=search]").val('');
+<<<<<<< HEAD
             $('#searchResults').html('<div class="text-center text-muted py-5">It appears that you have not yet searched.</div>');
+=======
+            $('#searchResults').html('<div class="text-center text-muted py-5">{{ translate('It appears that you have not yet searched') }}.</div>');
+>>>>>>> newversion/main
             $(this).find("#searchForm input[type=search]").focus();
         });
     });
@@ -313,7 +424,11 @@
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('search', function() {
         if (!this.value.trim()) {
+<<<<<<< HEAD
             $('#searchResults').html('<div class="text-center text-muted py-5">It appears that you have not yet searched.</div>');
+=======
+            $('#searchResults').html('<div class="text-center text-muted py-5">{{ translate('It appears that you have not yet searched') }}.</div>');
+>>>>>>> newversion/main
         }
     });
 
@@ -419,6 +534,10 @@
 <script>
     @php($admin_order_notification = (int) business_config('booking_notification', 'business_information')->live_values)
     @php($admin_order_notification_type = business_config('booking_notification_type', 'business_information')->live_values)
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
     @if($admin_order_notification)
 
         var audio = document.getElementById("audio-element");
@@ -514,7 +633,21 @@
                                 return messaging.getToken();
                             })
                             .then(function(token) {
+<<<<<<< HEAD
                                 subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_booking_message');
+=======
+                                subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_{{ auth()->user()->provider->id }}_booking_message');
+                                @if($serviceAtProviderPlace)
+                                    @if(in_array('customer', $serviceLocations))
+                                        subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_customer_booking_message');
+                                   @endif
+                                   @if(in_array('provider', $serviceLocations))
+                                        subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_provider_booking_message');
+                                   @endif
+                                @else
+                                   subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_booking_message');
+                                @endif
+>>>>>>> newversion/main
                             }).catch(function(error) {
                             console.error('Error getting permission or token:', error);
                         });

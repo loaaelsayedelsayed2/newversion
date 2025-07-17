@@ -78,18 +78,24 @@ class Provider extends Model
         return $this->hasMany(Booking::class, 'provider_id')->where('booking_status', $booking_status);
     }
 
+<<<<<<< HEAD
     public function favoriteCustomers()
     {
         return $this->belongsToMany(User::class, 'favorite_providers', 'provider_id', 'customer_user_id')
             ->withTimestamps();
     }
 
+=======
+>>>>>>> newversion/main
     public function favorites(): HasMany
     {
         return $this->hasMany(FavoriteProvider::class, 'provider_id', 'id');
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> newversion/main
     public function subscribed_services(): HasMany
     {
         return $this->hasMany(SubscribedService::class, 'provider_id')->where('is_subscribed', 1);
@@ -100,11 +106,14 @@ class Provider extends Model
         return $this->hasMany(Serviceman::class, 'provider_id');
     }
 
+<<<<<<< HEAD
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+=======
+>>>>>>> newversion/main
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'provider_id', 'id');
@@ -178,8 +187,13 @@ class Provider extends Model
 
         static::saved(function ($model) {
             $storageType = getDisk();
+<<<<<<< HEAD
             if ($model->isDirty('logo') && $storageType != 'public') {
                 saveSingleImageDataToStorage(model: $model, modelColumn: 'logo', storageType: $storageType);
+=======
+            if($model->isDirty('logo') && $storageType != 'public'){
+                saveSingleImageDataToStorage(model: $model, modelColumn : 'logo', storageType : $storageType);
+>>>>>>> newversion/main
             }
         });
     }

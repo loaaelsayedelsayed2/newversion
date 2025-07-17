@@ -25,6 +25,7 @@
                         @endcan
                     </div>
 
+<<<<<<< HEAD
                     <div
                         class="d-flex flex-wrap justify-content-between align-items-center border-bottom mx-lg-4 mb-10 gap-3">
                         <ul class="nav nav--tabs">
@@ -48,6 +49,81 @@
                             </li>
                         </ul>
 
+=======
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="mb-3 fz-16">{{translate('Search_Filter')}}</div>
+
+                            <form action="{{ url()->current() }}" method="GET">
+                                <div class="row">
+                                    <input type="hidden" name="search" value="{{array_key_exists('search', $queryParam)?$queryParam['search']:''}}">
+                                    <div class="col-lg-3 col-sm-6" id="from-filter__div">
+                                        <div class="form-floating">
+                                            <input type="date" class="form-control" id="from" name="from" value="{{array_key_exists('from', $queryParam)?$queryParam['from']:''}}">
+                                            <label for="from">{{translate('start_date')}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6" id="to-filter__div">
+                                        <div class="form-floating">
+                                            <input type="date" class="form-control" id="to" name="to" value="{{array_key_exists('to', $queryParam)?$queryParam['to']:''}}">
+                                            <label for="to">{{translate('end_date')}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="form-floating">
+                                            <select class="js-select" name="sort_by">
+                                                <option value="" selected>{{translate('Select option')}}</option>
+                                                <option value="latest" {{array_key_exists('sort_by', $queryParam) && $queryParam['sort_by'] == 'latest' ? 'selected' : ''}}>{{translate('latest')}}</option>
+                                                <option value="oldest" {{array_key_exists('sort_by', $queryParam) && $queryParam['sort_by'] == 'oldest' ? 'selected' : ''}}>{{translate('oldest')}}</option>
+                                                <option value="ascending" {{array_key_exists('sort_by', $queryParam) && $queryParam['sort_by'] == 'ascending' ? 'selected' : ''}}>{{translate('ascending')}}</option>
+                                                <option value="descending" {{array_key_exists('sort_by', $queryParam) && $queryParam['sort_by'] == 'descending' ? 'selected' : ''}}>{{translate('descending')}}</option>
+                                            </select>
+                                            <label class="mb-2">{{translate('sort_by')}}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="form-floating">
+                                            <input class="form-control" type="number" name="limit" value="{{array_key_exists('limit', $queryParam)?$queryParam['limit']:''}}">
+                                            <label class="mb-2">{{translate('choose_first')}}</label>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="status" value="{{$status}}">
+
+                                    <div class="col-12 d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn--primary btn-sm">{{translate('filter')}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom mx-lg-4 mb-10 gap-3">
+                        @php
+                            $baseQuery = $queryParam;
+                        @endphp
+
+                        <ul class="nav nav--tabs">
+                            <li class="nav-item">
+                                <a class="nav-link {{ $status == 'all' ? 'active' : '' }}"
+                                   href="{{ url()->current() . '?' . http_build_query(array_merge($baseQuery, ['status' => 'all'])) }}">
+                                    {{ translate('all') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ $status == 'active' ? 'active' : '' }}"
+                                   href="{{ url()->current() . '?' . http_build_query(array_merge($baseQuery, ['status' => 'active'])) }}">
+                                    {{ translate('active') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ $status == 'inactive' ? 'active' : '' }}"
+                                   href="{{ url()->current() . '?' . http_build_query(array_merge($baseQuery, ['status' => 'inactive'])) }}">
+                                    {{ translate('inactive') }}
+                                </a>
+                            </li>
+                        </ul>
+>>>>>>> newversion/main
                         <div class="d-flex gap-2 fw-medium">
                             <span class="opacity-75">{{translate('Total_Customers')}}:</span>
                             <span class="title-color">{{$customers->total()}}</span>
@@ -61,8 +137,12 @@
                                     <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
                                         <form action="{{url()->current()}}?status={{$status}}"
                                               class="search-form search-form_style-two"
+<<<<<<< HEAD
                                               method="POST">
                                             @csrf
+=======
+                                              method="GET">
+>>>>>>> newversion/main
                                             <div class="input-group search-form__input_group">
                                             <span class="search-form__icon">
                                                 <span class="material-icons">search</span>
@@ -71,6 +151,17 @@
                                                        value="{{$search}}" name="search"
                                                        placeholder="{{translate('search_here')}}">
                                             </div>
+<<<<<<< HEAD
+=======
+
+                                            <!-- Preserve all other filters -->
+                                            <input type="hidden" name="from" value="{{ $queryParam['from'] ?? '' }}">
+                                            <input type="hidden" name="to" value="{{ $queryParam['to'] ?? '' }}">
+                                            <input type="hidden" name="sort_by" value="{{ $queryParam['sort_by'] ?? '' }}">
+                                            <input type="hidden" name="limit" value="{{ $queryParam['limit'] ?? '' }}">
+                                            <input type="hidden" name="status" value="{{ $queryParam['status'] ?? '' }}">
+
+>>>>>>> newversion/main
                                             <button type="submit"
                                                     class="btn btn--primary">{{translate('search')}}</button>
                                         </form>
@@ -85,7 +176,16 @@
                                                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                                                         <li>
                                                             <a class="dropdown-item"
+<<<<<<< HEAD
                                                                href="{{env('APP_ENV') !='demo' ?route('admin.customer.download').'?search='.$search:'javascript:demo_mode()'}}">
+=======
+                                                               href="{{env('APP_ENV') !='demo' ?route('admin.customer.download', '?search='. ($queryParam['search'] ?? '') .
+                                                                         '&from='. ($queryParam['from'] ?? '') .
+                                                                         '&to='. ($queryParam['to'] ?? '') .
+                                                                         '&limit='. ($queryParam['limit'] ?? '') .
+                                                                         '&status='. ($queryParam['status'] ?? '') .
+                                                                         '&sort_by='. ($queryParam['sort_by'] ?? '') ).'?search='.$search:'javascript:demo_mode()'}}">
+>>>>>>> newversion/main
                                                                 {{translate('excel')}}
                                                             </a>
                                                         </li>
@@ -111,9 +211,19 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+<<<<<<< HEAD
                                             @foreach($customers as $key => $customer)
                                                 <tr>
                                                     <td>{{$key+$customers->firstItem()}}</td>
+=======
+                                            @php
+                                                $count= 0;
+                                            @endphp
+
+                                            @foreach($customers as $key => $customer)
+                                                <tr>
+                                                    <td>{{ (request()->get('limit') ?  $count++ : $key  )+ $customers->firstItem() }}</td>
+>>>>>>> newversion/main
                                                     <td>
                                                         <a href="{{route('admin.customer.detail',[$customer->id, 'web_page'=>'overview'])}}">
                                                             {{$customer->first_name}} {{$customer->last_name}}

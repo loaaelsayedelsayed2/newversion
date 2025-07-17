@@ -1,8 +1,16 @@
 <?php
 
 use App\Http\Controllers\LandingController;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
 use Modules\BusinessSettingsModule\Entities\BusinessSettings;
+=======
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
+use Modules\BusinessSettingsModule\Entities\BusinessSettings;
+use Modules\ProviderManagement\Entities\Provider;
+use Modules\ProviderManagement\Entities\ProviderSetting;
+>>>>>>> newversion/main
 
 
 /*
@@ -25,13 +33,22 @@ Route::get('page/contact-us', [LandingController::class, 'contactUs'])->name('pa
 Route::get('page/cancellation-policy', [LandingController::class, 'cancellationPolicy'])->name('page.cancellation-policy');
 Route::get('page/refund-policy', [LandingController::class, 'refundPolicy'])->name('page.refund-policy');
 Route::get('maintenance-mode', [LandingController::class, 'maintenanceMode'])->name('maintenance-mode');
+<<<<<<< HEAD
+=======
+Route::post('subscribe-newsletter',[LandingController::class, 'subscribeNewsletter'])->name('subscribe-newsletter');
+>>>>>>> newversion/main
 
 Route::fallback(function () {
     return redirect('admin/auth/login');
 });
 
+<<<<<<< HEAD
 Route::get('test', function (){
 
+=======
+Route::get('test', function () {
+    //
+>>>>>>> newversion/main
 });
 
 

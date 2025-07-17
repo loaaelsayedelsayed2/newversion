@@ -23,6 +23,10 @@ use Stevebauman\Location\Facades\Location;
 class ConfigController extends Controller
 {
     use MaintenanceModeTrait;
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
     private $googleMap;
     private $googleMapBaseApi;
 
@@ -46,6 +50,7 @@ class ConfigController extends Controller
 
         $socialMediaSettings = login_setup('social_media_for_login');
         $getValue = json_decode($socialMediaSettings['value'], true);
+<<<<<<< HEAD
         $googleSocialLogin =  $getValue['google'];
         $facebookSocialLogin = $getValue['facebook'];
         $appleSocialLogin = $getValue['apple'];
@@ -54,13 +59,28 @@ class ConfigController extends Controller
                 'advanced_booking_restriction_value' => (int) business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
                 'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
             ];
+=======
+        $googleSocialLogin = $getValue['google'];
+        $facebookSocialLogin = $getValue['facebook'];
+        $appleSocialLogin = $getValue['apple'];
+
+        $advancedBooking = [
+            'advanced_booking_restriction_value' => (int)business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
+            'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
+        ];
+>>>>>>> newversion/main
 
         //payment gateways
         $isPublished = 0;
         try {
             $full_data = include('Modules/Gateways/Addon/info.php');
             $isPublished = $full_data['is_published'] == 1 ? 1 : 0;
+<<<<<<< HEAD
         } catch (\Exception $exception) {}
+=======
+        } catch (\Exception $exception) {
+        }
+>>>>>>> newversion/main
 
         $payment_gateways = collect($this->getPaymentMethods())
             ->filter(function ($query) use ($isPublished) {
@@ -108,9 +128,15 @@ class ConfigController extends Controller
         }
         $emailConfig = business_config('email_config_status', 'email_config')?->live_values;
         $firebaseOtpConfig = business_config('firebase_otp_verification', 'third_party');
+<<<<<<< HEAD
         $firebaseOtpStatus =(int) $firebaseOtpConfig?->live_values['status'] ?? null;
 
         if ($firebaseOtpStatus == 1){
+=======
+        $firebaseOtpStatus = (int)$firebaseOtpConfig?->live_values['status'] ?? null;
+
+        if ($firebaseOtpStatus == 1) {
+>>>>>>> newversion/main
             $count = 1;
         }
 
@@ -126,8 +152,13 @@ class ConfigController extends Controller
             ],
             'maintenance' => $this->checkMaintenanceMode(),
             'business_name' => (business_config('business_name', 'business_information'))->live_values ?? null,
+<<<<<<< HEAD
             'logo_full_path' => getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/media/banner-upload-file.png'),
             'favicon_full_path' =>  getBusinessSettingsImageFullPath(key: 'business_favicon', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/media/upload-file.png'),
+=======
+            'logo_full_path' => getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'business_information', path: 'business/', defaultPath: 'public/assets/admin-module/img/media/banner-upload-file.png'),
+            'favicon_full_path' => getBusinessSettingsImageFullPath(key: 'business_favicon', settingType: 'business_information', path: 'business/', defaultPath: 'public/assets/admin-module/img/media/upload-file.png'),
+>>>>>>> newversion/main
             'country_code' => (business_config('country_code', 'business_information'))->live_values ?? null,
             'business_address' => (business_config('business_address', 'business_information'))->live_values ?? null,
             'business_phone' => (business_config('business_phone', 'business_information'))->live_values ?? null,
@@ -139,9 +170,15 @@ class ConfigController extends Controller
             'currency_symbol_position' => (business_config('currency_symbol_position', 'business_information'))->live_values ?? null,
             'about_us' => route('about-us'),
             'privacy_policy' => route('privacy-policy'),
+<<<<<<< HEAD
             'terms_and_conditions' => (business_config('terms_and_conditions', 'pages_setup'))->is_active ? route('terms-and-conditions') : "",
             'refund_policy' => (business_config('refund_policy', 'pages_setup'))->is_active ? route('refund-policy') : "",
             'cancellation_policy' => (business_config('cancellation_policy', 'pages_setup'))->is_active ? route('cancellation-policy') : "",
+=======
+            'terms_and_conditions' =>  route('terms-and-conditions'),
+            'refund_policy' => DataSetting::where('key', 'refund_policy')->first()->is_active == '1' ? route('refund-policy') : "",
+            'cancellation_policy' => DataSetting::where('key', 'cancellation_policy')->first()->is_active == '1' ? route('cancellation-policy') : "",
+>>>>>>> newversion/main
             'pagination_limit' => (int)pagination_limit(),
             'time_format' => (business_config('time_format', 'business_information'))->live_values ?? '24h',
             'payment_gateways' => $payment_gateways,
@@ -152,9 +189,15 @@ class ConfigController extends Controller
             'app_url_playstore' => $playstore->is_active ? $playstore->live_values : null,
             'app_url_appstore' => $appstore->is_active ? $appstore->live_values : null,
             'web_url' => (business_config('web_url', 'landing_button_and_links'))->is_active == '1' ? (business_config('web_url', 'landing_button_and_links'))->live_values : null,
+<<<<<<< HEAD
             'google_social_login' => (int) ($googleSocialLogin ?? 0),
             'facebook_social_login' => (int) ($facebookSocialLogin ?? 0),
             'apple_social_login' => (int) ($appleSocialLogin ?? 0),
+=======
+            'google_social_login' => (int)($googleSocialLogin ?? 0),
+            'facebook_social_login' => (int)($facebookSocialLogin ?? 0),
+            'apple_social_login' => (int)($appleSocialLogin ?? 0),
+>>>>>>> newversion/main
             'phone_number_visibility_for_chatting' => (int)((business_config('phone_number_visibility_for_chatting', 'business_information'))->live_values ?? 0),
             'wallet_status' => (int)((business_config('customer_wallet', 'customer_config'))->live_values ?? 0),
             'add_to_fund_wallet' => (int)((business_config('add_to_fund_wallet', 'customer_config'))->live_values ?? 0),
@@ -165,6 +208,7 @@ class ConfigController extends Controller
             'phone_verification' => (int)((login_setup('phone_verification'))->value ?? 0),
             'email_verification' => (int)((login_setup('email_verification'))->value ?? 0),
             'cash_after_service' => (int)((business_config('cash_after_service', 'service_setup'))->live_values ?? 0),
+<<<<<<< HEAD
                         'payment_after_service' => (int)((business_config('payment_after_service', 'service_setup'))->live_values ?? 0),
             'digital_payment' => (int)((business_config('digital_payment', 'service_setup'))->live_values ?? 0),
             'wallet_payment' => (int)((business_config('wallet_payment', 'service_setup'))->live_values ?? 0),
@@ -184,6 +228,26 @@ class ConfigController extends Controller
             'instant_booking' => (int) business_config('instant_booking', 'booking_setup')?->live_values,
             'schedule_booking' => (int) business_config('schedule_booking', 'booking_setup')?->live_values,
             'schedule_booking_time_restriction' => (int) business_config('schedule_booking_time_restriction', 'booking_setup')?->live_values,
+=======
+            'digital_payment' => (int)((business_config('digital_payment', 'service_setup'))->live_values ?? 0),
+            'wallet_payment' => (int)((business_config('wallet_payment', 'service_setup'))->live_values ?? 0),
+            'social_media' => (business_config('social_media', 'landing_social_media'))->live_values ?? null,
+            'otp_resend_time' => (int)(business_config('otp_resend_time', 'otp_login_setup'))?->live_values ?? null,
+            'max_booking_amount' => (float)(business_config('max_booking_amount', 'booking_setup'))?->live_values ?? null,
+            'min_booking_amount' => (float)(business_config('min_booking_amount', 'booking_setup'))?->live_values ?? null,
+            'guest_checkout' => (int)(business_config('guest_checkout', 'service_setup'))?->live_values ?? null,
+            'partial_payment' => (int)(business_config('partial_payment', 'service_setup'))?->live_values ?? null,
+            'booking_additional_charge' => (int)(business_config('booking_additional_charge', 'booking_setup'))?->live_values ?? null,
+            'additional_charge_label_name' => (string)(business_config('additional_charge_label_name', 'booking_setup'))?->live_values ?? null,
+            'additional_charge_fee_amount' => (float)(business_config('additional_charge_fee_amount', 'booking_setup'))?->live_values ?? null,
+            'offline_payment' => (int)(business_config('offline_payment', 'service_setup'))?->live_values ?? null,
+            'partial_payment_combinator' => (string)(business_config('partial_payment_combinator', 'service_setup'))?->live_values ?? null,
+            'provider_self_registration' => (int)business_config('provider_self_registration', 'provider_config')?->live_values,
+            'confirm_otp_for_complete_service' => (int)business_config('booking_otp', 'booking_setup')?->live_values,
+            'instant_booking' => (int)business_config('instant_booking', 'booking_setup')?->live_values,
+            'schedule_booking' => (int)business_config('schedule_booking', 'booking_setup')?->live_values,
+            'schedule_booking_time_restriction' => (int)business_config('schedule_booking_time_restriction', 'booking_setup')?->live_values,
+>>>>>>> newversion/main
             'advanced_booking' => $advancedBooking,
             'system_language' => $country,
             'login_setup' => $customerLogin,
@@ -191,7 +255,16 @@ class ConfigController extends Controller
             'forgot_password_verification_method' => $forgotPasswordVerificationMethod,
             'error_logs' => $errorLogs,
             'app_environment' => env('APP_ENV'),
+<<<<<<< HEAD
             'repeat_booking' => (int) business_config('repeat_booking', 'booking_setup')?->live_values,
+=======
+            'repeat_booking' => (int)business_config('repeat_booking', 'booking_setup')?->live_values,
+            'create_user_account_from_guest_info' => (int)(business_config('create_user_account_from_guest_info', 'business_information'))?->live_values ?? 0,
+            'service_at_provider_place' => (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0),
+            'newsletter_title' => DataSetting::where('type', 'landing_text_setup')->where('key', 'newsletter_title')->first()->value ?? '',
+            'newsletter_description' => DataSetting::where('type', 'landing_text_setup')->where('key', 'newsletter_description')->first()->value ?? '',
+
+>>>>>>> newversion/main
         ]), 200);
     }
 
@@ -204,6 +277,17 @@ class ConfigController extends Controller
             'return_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'return_policy')->first(),
             'cancellation_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'cancellation_policy')->first(),
             'privacy_policy' => DataSetting::where('type', 'pages_setup')->where('key', 'privacy_policy')->first(),
+<<<<<<< HEAD
+=======
+            'images' => collect([
+                'about_us' => getDataSettingsImageFullPath(key: 'about_us_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+                'terms_and_conditions' => getDataSettingsImageFullPath(key: 'terms_and_conditions_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+                'refund_policy' => getDataSettingsImageFullPath(key: 'refund_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+                'return_policy' => getDataSettingsImageFullPath(key: 'return_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+                'cancellation_policy' => getDataSettingsImageFullPath(key: 'cancellation_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+                'privacy_policy' => getDataSettingsImageFullPath(key: 'privacy_policy_image', settingType: 'pages_setup_image', path: 'page-setup/', defaultPath: asset('public/assets/admin-module/img/page-default.png')),
+            ])
+>>>>>>> newversion/main
         ]), 200);
     }
 
@@ -224,8 +308,13 @@ class ConfigController extends Controller
         if ($zone) {
             $zone['formatted_coordinates'] = formatCoordinates($zone->coordinates);
 
+<<<<<<< HEAD
             $services = Service::withoutGlobalScope('zone_wise_data')->where('is_active', 1)->whereHas('category', function($query) use ($zone) {
                 $query->OfStatus(1)->withoutGlobalScope('zone_wise_data')->whereHas('zones', function($query) use ($zone) {
+=======
+            $services = Service::withoutGlobalScope('zone_wise_data')->where('is_active', 1)->whereHas('category', function ($query) use ($zone) {
+                $query->OfStatus(1)->withoutGlobalScope('zone_wise_data')->whereHas('zones', function ($query) use ($zone) {
+>>>>>>> newversion/main
                     $query->where('zone_id', $zone->id);
                 });
             })->count();
@@ -248,7 +337,25 @@ class ConfigController extends Controller
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
+<<<<<<< HEAD
         $response = Http::get($this->googleMapBaseApi . '/place/autocomplete/json?input=' . $request['search_text'] . '&key=' . $this->googleMap->live_values['map_api_key_server']);
+=======
+
+        $url = 'https://places.googleapis.com/v1/places:autocomplete';
+
+        $data = [
+            'input' => $request->input('search_text'),
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->googleMap->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->post($url, $data);
+
+>>>>>>> newversion/main
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }
 
@@ -265,7 +372,48 @@ class ConfigController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $request['origin_lat'] . ',' . $request['origin_lng'] . '&destinations=' . $request['destination_lat'] . ',' . $request['destination_lng'] . '&key=' . $this->googleMap->live_values['map_api_key_server']);
+=======
+        $url = 'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix';
+
+        $origin = [
+            "waypoint" => [
+                "location" => [
+                    "latLng" => [
+                        "latitude" =>  $request['origin_lat'],
+                        "longitude" => $request['origin_lng']
+                    ]
+                ]
+            ]
+        ];
+
+        $destination = [
+            "waypoint" => [
+                "location" => [
+                    "latLng" => [
+                        "latitude" => $request['destination_lat'],
+                        "longitude" => $request['destination_lng']
+                    ]
+                ]
+            ]
+        ];
+
+        $data = [
+            "origins" => $origin,
+            "destinations" => $destination,
+            "travelMode" => "DRIVE",
+            "routingPreference" => "TRAFFIC_AWARE"
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->googleMap->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->post($url, $data);
+>>>>>>> newversion/main
 
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }
@@ -280,7 +428,19 @@ class ConfigController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         $response = Http::get('https://maps.googleapis.com/maps/api/place/details/json?placeid=' . $request['placeid'] . '&key=' . $this->googleMap->live_values['map_api_key_server']);
+=======
+        $url = 'https://places.googleapis.com/v1/places/'.  $request['placeid'];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->googleMap->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->get($url);
+>>>>>>> newversion/main
 
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }

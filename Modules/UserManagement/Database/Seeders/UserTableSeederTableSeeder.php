@@ -23,7 +23,11 @@ class UserTableSeederTableSeeder extends Seeder
             'first_name' => Str::random(10),
             'last_name' => Str::random(10),
             'id' => Str::uuid(),
+<<<<<<< HEAD
             // 'role_id' => 1,
+=======
+            'role_id' => 1,
+>>>>>>> newversion/main
             'email' => 'sup-admin@admin.com',
             'phone' => '+8801759412381',
             'password' => Hash::make('12345678'),

@@ -186,6 +186,10 @@
                                     <tr>
                                         <th>{{translate('SL')}}</th>
                                         <th>{{translate('Booking_ID')}}</th>
+<<<<<<< HEAD
+=======
+                                        <th>{{ translate('Where_Service_will_be_Provided') }}</th>
+>>>>>>> newversion/main
                                         <th>{{translate('Customer_Info')}}</th>
                                         <th>{{translate('Total_Amount')}}</th>
                                         <th>{{translate('Payment_Status')}}</th>
@@ -200,10 +204,17 @@
                                         <tr
                                             @if($booking->is_repeated)
                                                 data-bs-custom-class="review-tooltip custom"
+<<<<<<< HEAD
                                                 data-bs-toggle="tooltip"
                                                 data-bs-html="true"
                                                 data-bs-placement="bottom"
                                                 data-bs-title="{{ translate('This is a repeat booking.') }} <br> {{ translate('Customer has requested total ')}} {{count($booking->repeat)}}<br> {{ translate('bookings under this Bookings.') }} <br> {{ translate('Check the details') }}"
+=======
+                                            data-bs-toggle="tooltip"
+                                            data-bs-html="true"
+                                            data-bs-placement="bottom"
+                                            data-bs-title="{{ translate('This is a repeat booking.') }} <br> {{ translate('Customer has requested total ')}} {{count($booking->repeat)}}<br> {{ translate('bookings under this Bookings.') }} <br> {{ translate('Check the details') }}"
+>>>>>>> newversion/main
                                             @endif
                                         >
                                             <td>{{$key+$bookings?->firstItem()}}</td>
@@ -222,6 +233,16 @@
                                                 @endif
                                             </td>
                                             <td>
+<<<<<<< HEAD
+=======
+                                                @if($booking->service_location == 'provider')
+                                                    {{ translate('Your Location') }}
+                                                @else
+                                                    {{ translate('Customer Location') }}
+                                                @endif
+                                            </td>
+                                            <td>
+>>>>>>> newversion/main
                                                 @if(isset($booking->customer))
                                                     {{Str::limit($booking?->customer?->first_name, 30)}} <br/>
                                                     {{$booking?->customer?->phone}}
@@ -337,6 +358,7 @@
                                                     @endif
                                                     @if($booking->booking_status == 'pending')
                                                         <button
+<<<<<<< HEAD
                                                            type="button"
                                                            class="action-btn btn--light-success fw-medium text-capitalize fz-14 {{ env('APP_ENV') != 'demo' ? 'form-alert' : 'demo_check' }}"
                                                            style="--size: 30px"
@@ -354,6 +376,25 @@
                                                            data-id="cancel-{{$booking['id']}}"
                                                            data-message="{{translate('Once you ignore the request, it will be no longer on your booking request list.')}}?"
                                                            data-title="{{translate('Are you sure to ignore the booking request?')}}">
+=======
+                                                            type="button"
+                                                            class="action-btn btn--light-success fw-medium text-capitalize fz-14 {{ env('APP_ENV') != 'demo' ? 'form-alert' : 'demo_check' }}"
+                                                            style="--size: 30px"
+                                                            title="{{ translate('Accept') }}"
+                                                            data-id="accept-{{$booking['id']}}"
+                                                            data-message=""
+                                                            data-title="{{translate('Are you sure to accept the booking request?')}}">
+                                                            <span class="material-icons">check</span>
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            class="action-btn btn--light-danger fw-medium text-capitalize fz-14 {{ env('APP_ENV') != 'demo' ? 'form-alert' : 'demo_check' }}"
+                                                            style="--size: 30px"
+                                                            title="{{ translate('Ignore') }}"
+                                                            data-id="cancel-{{$booking['id']}}"
+                                                            data-message="{{translate('Once you ignore the request, it will be no longer on your booking request list.')}}?"
+                                                            data-title="{{translate('Are you sure to ignore the booking request?')}}">
+>>>>>>> newversion/main
                                                             <span class="material-icons">close</span>
                                                         </button>
                                                         <form

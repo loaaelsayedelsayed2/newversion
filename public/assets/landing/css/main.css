@@ -259,7 +259,11 @@ textarea {
     padding: 25px 0;
 }
 
+<<<<<<< HEAD
 footer {
+=======
+.main-footer {
+>>>>>>> newversion/main
     background: var(--footer);
 }
 
@@ -2327,3 +2331,23 @@ textarea.form--control {
 .navbar-bottom-wrapper .menu li a:focus-visible {
     border: none !important;
 }
+<<<<<<< HEAD
+=======
+
+.subscribe-newsletter {
+    background: url("../img/newsletter-bg.png") no-repeat center;
+    background-size: cover;
+}
+.py-75{
+    padding-block: 75px
+}
+
+.subscribe-btn{
+    position: absolute;
+    inset-inline-end: 3px;
+    padding-block: 8px;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    z-index: 9;
+}
+>>>>>>> newversion/main

@@ -185,6 +185,11 @@ class ConfigController extends Controller
             'forgot_password_verification_method' => $forgotPasswordVerificationMethod,
             'provider_can_reply_review' => (int) business_config('provider_can_reply_review', 'provider_config')?->live_values,
             'app_environment' => env('APP_ENV'),
+<<<<<<< HEAD
+=======
+            'service_at_provider_place' => (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0),
+
+>>>>>>> newversion/main
         ]), 200);
     }
 

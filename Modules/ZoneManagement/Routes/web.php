@@ -12,5 +12,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::any('status-update/{id}', 'ZoneController@statusUpdate')->name('status-update');
         Route::delete('delete/{id}', 'ZoneController@destroy')->name('delete');
         Route::get('download', 'ZoneController@download')->name('download');
+<<<<<<< HEAD
+=======
+        Route::get('table', 'ZoneController@getTable')->name('table');
+>>>>>>> newversion/main
     });
 });

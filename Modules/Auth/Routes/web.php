@@ -57,3 +57,8 @@ Route::group(['prefix' => 'serviceman', 'as' => 'serviceman', 'namespace' => 'Ap
 Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => ['auth:api'], 'namespace' => 'Api\V1'], function () {
     Route::post('logout', 'LoginController@logout')->name('logout');
 });
+<<<<<<< HEAD
+=======
+
+Route::post('check-unique-user', [\Modules\Auth\Http\Controllers\RegisterController::class, 'checkUniqueUser'])->name('check-unique-user');
+>>>>>>> newversion/main

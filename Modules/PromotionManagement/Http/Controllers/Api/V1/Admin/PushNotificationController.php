@@ -27,7 +27,10 @@ class PushNotificationController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+<<<<<<< HEAD
 
+=======
+>>>>>>> newversion/main
     public function index(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -54,7 +57,11 @@ class PushNotificationController extends Controller
             ->when($request->has('status') && $request['status'] != 'all', function ($query) use ($request) {
                 return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
             })->when($request->has('to_user_type') && $request['to_user_type'] != 'all', function ($query) use ($request) {
+<<<<<<< HEAD
                 $query->whereJsonContains('to_users', $request['to_user_type']);
+=======
+                return $query->whereJsonContains('to_users', $request['to_user_type']);
+>>>>>>> newversion/main
             })->orderBy('created_at', 'desc')->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
 
         $pushNotification->map(function ($query) {
@@ -64,8 +71,11 @@ class PushNotificationController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $pushNotification), 200);
     }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> newversion/main
     /**
      * Store a newly created resource in storage.
      * @param Request $request

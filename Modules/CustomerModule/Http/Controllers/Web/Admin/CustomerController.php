@@ -10,6 +10,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
+=======
+use Illuminate\Pagination\Paginator;
+>>>>>>> newversion/main
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
@@ -67,9 +71,20 @@ class CustomerController extends Controller
         $this->authorize('customer_view');
         $search = $request->has('search') ? $request['search'] : '';
         $status = $request->has('status') ? $request['status'] : 'all';
+<<<<<<< HEAD
         $queryParam = ['search' => $search, 'status' => $status];
 
         $customers = $this->user->withCount(['bookings'])->whereIn('user_type', CUSTOMER_USER_TYPES)
+=======
+        $from = $request->get('from', '');
+        $to = $request->get('to', '');
+        $sort_by = $request->get('sort_by', 'latest');
+        $limit = $request->get('limit');
+
+        $queryParam = ['search' => $search, 'status' => $status, 'from' => $from, 'to' => $to, 'sort_by' => $sort_by, 'limit' => $limit];
+
+        $query = $this->user->withCount(['bookings'])->whereIn('user_type', CUSTOMER_USER_TYPES)
+>>>>>>> newversion/main
             ->when($request->has('search'), function ($query) use ($request) {
                 $keys = explode(' ', $request['search']);
                 return $query->where(function ($query) use ($keys) {
@@ -83,9 +98,53 @@ class CustomerController extends Controller
             })
             ->when($status != 'all', function ($query) use ($request) {
                 return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
+<<<<<<< HEAD
             })->latest()->paginate(pagination_limit())->appends($queryParam);
 
         return view('customermodule::admin.list', compact('customers', 'search', 'status'));
+=======
+            })
+            ->when($from, function ($query) use ($from) {
+                return $query->whereDate('created_at', '>=', $from);
+            })
+            ->when($to, function ($query) use ($to) {
+                return $query->whereDate('created_at', '<=', $to);
+            })
+            ->when($sort_by === 'latest', function ($query) {
+                return $query->latest();
+            })
+            ->when($sort_by === 'oldest', function ($query) {
+                return $query->oldest();
+            })
+            ->when($sort_by === 'ascending', function ($query) {
+                return $query->orderBy('first_name', 'asc');
+            })
+            ->when($sort_by === 'descending', function ($query) {
+                return $query->orderBy('first_name', 'desc');
+            });
+
+        if (isset($limit) && $limit > 0) {
+            $customers = $query->take($limit)->get(); // limit results
+            $perPage = pagination_limit();
+            $page =  $request?->page ?? 1;
+            $offset = ($page - 1) * $perPage;
+            $itemsForCurrentPage = $customers->slice($offset, $perPage);
+            $customers = new \Illuminate\Pagination\LengthAwarePaginator(
+                $itemsForCurrentPage,
+                $customers->count(),
+                $perPage,
+                $page,
+                ['path' => Paginator::resolveCurrentPath(), 'query' => request()->query()]
+            );
+        } else {
+            $customers = $query
+                ->paginate(pagination_limit())
+                ->appends($queryParam);
+        }
+
+
+        return view('customermodule::admin.list', compact('customers', 'search', 'status', 'queryParam'));
+>>>>>>> newversion/main
     }
 
     /**
@@ -474,7 +533,19 @@ class CustomerController extends Controller
     public function download(Request $request): string|StreamedResponse
     {
         $this->authorize('customer_export');
+<<<<<<< HEAD
         $items = $this->user->withCount(['bookings'])->whereIn('user_type', CUSTOMER_USER_TYPES)
+=======
+
+        $search = $request->has('search') ? $request['search'] : '';
+        $status = $request->has('status') ? $request['status'] : 'all';
+        $from = $request->get('from', '');
+        $to = $request->get('to', '');
+        $sort_by = $request->get('sort_by', 'latest');
+        $limit = $request->get('limit');
+
+        $query = $this->user->withCount(['bookings'])->whereIn('user_type', CUSTOMER_USER_TYPES)
+>>>>>>> newversion/main
             ->when($request->has('search'), function ($query) use ($request) {
                 $keys = explode(' ', $request['search']);
                 return $query->where(function ($query) use ($keys) {
@@ -486,8 +557,51 @@ class CustomerController extends Controller
                     }
                 });
             })
+<<<<<<< HEAD
             ->latest()->get();
         return (new FastExcel($items))->download(time() . '-file.xlsx');
+=======
+            ->when($status != 'all', function ($query) use ($request) {
+                return $query->ofStatus(($request['status'] == 'active') ? 1 : 0);
+            })
+            ->when($from, function ($query) use ($from) {
+                return $query->whereDate('created_at', '>=', $from);
+            })
+            ->when($to, function ($query) use ($to) {
+                return $query->whereDate('created_at', '<=', $to);
+            })
+            ->when($sort_by === 'latest', function ($query) {
+                return $query->latest();
+            })
+            ->when($sort_by === 'oldest', function ($query) {
+                return $query->oldest();
+            })
+            ->when($sort_by === 'ascending', function ($query) {
+                return $query->orderBy('first_name', 'asc');
+            })
+            ->when($sort_by === 'descending', function ($query) {
+                return $query->orderBy('first_name', 'desc');
+            });
+
+        if (isset($limit) && $limit > 0) {
+            $customers = $query->take($limit)->get();
+        }else{
+            $customers = $query->get();
+        }
+
+        $formatted = $customers->map(function ($item, $key) {
+            return [
+                'Sl' => $key + 1,
+                'Name' => $item->first_name . ' ' . $item->last_name,
+                'Phone' => $item->phone,
+                'Email' => $item->email,
+                'Gender' => $item->gender,
+                'Join Date' => $item->created_at->format('d M Y h:i A'),
+            ];
+        });
+
+        return (new FastExcel($formatted))->download(time() . '-file.xlsx');
+>>>>>>> newversion/main
     }
 
     public function show($id, Request $request)

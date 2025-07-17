@@ -20,7 +20,10 @@ return [
 
     'driver' => env('SESSION_DRIVER', 'file'),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> newversion/main
     /*
     |--------------------------------------------------------------------------
     | Session Lifetime
@@ -60,7 +63,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
 'files' => storage_path('framework/sessions'),
+=======
+    'files' => storage_path('framework/sessions'),
+>>>>>>> newversion/main
 
     /*
     |--------------------------------------------------------------------------

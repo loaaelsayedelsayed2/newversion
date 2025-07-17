@@ -66,6 +66,11 @@ class ServiceController extends Controller
         $categories = $this->category->ofStatus(1)->ofType('main')->latest()->get();
         $zones = $this->zone->ofStatus(1)->latest()->get();
 
+<<<<<<< HEAD
+=======
+        session()->forget('variations');
+
+>>>>>>> newversion/main
         return view('servicemanagement::admin.create', compact('categories', 'zones'));
     }
 
@@ -370,6 +375,11 @@ class ServiceController extends Controller
                 }
             }
 
+<<<<<<< HEAD
+=======
+            session()->forget('variations');
+
+>>>>>>> newversion/main
             return view('servicemanagement::admin.edit', compact('categories', 'zones', 'service', 'tagNames'));
         }
 
@@ -386,6 +396,10 @@ class ServiceController extends Controller
      */
     public function update(Request $request, string $id): JsonResponse|RedirectResponse
     {
+<<<<<<< HEAD
+=======
+        //dd($request->all());
+>>>>>>> newversion/main
         $this->authorize('service_update');
         $request->validate([
             'name' => 'required|max:191',
@@ -448,7 +462,11 @@ class ServiceController extends Controller
         })->collapse()->all();
 
         $variationFormat = [];
+<<<<<<< HEAD
         $zones = $this->zone->ofStatus(1)->latest()->get();
+=======
+        $zones = $this->zone->latest()->get();
+>>>>>>> newversion/main
         foreach ($data['variants'] as $item) {
             foreach ($zones as $zone) {
                 $variationFormat[] = [

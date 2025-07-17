@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en" dir="rtl">
+=======
+<html lang="en">
+>>>>>>> newversion/main
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -199,6 +203,7 @@
                 <div class="meta-info d-flex mb-30">
                     <div>
                         <div>{{translate('Payment')}}</div>
+<<<<<<< HEAD
                         <div class="fs-10">
                             @if ($transaction?->packageLog->payment_method == 'Moyasar')
                                 دفع الكتروني
@@ -206,6 +211,9 @@
                                 {{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}
                             @endif
                         </div>
+=======
+                        <div class="fs-10">{{ ucwords(str_replace('_', ' ', $transaction?->packageLog?->payment?->payment_method))  }}</div>
+>>>>>>> newversion/main
                     </div>
                     <div class="border-left"></div>
                     <div>
@@ -228,7 +236,11 @@
                     <div class="border-left"></div>
                     <div>
                         @php
+<<<<<<< HEAD
                             $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date);
+=======
+                            $start = \Carbon\Carbon::parse($transaction?->packageLog?->start_date)->subDay();
+>>>>>>> newversion/main
                             $end = \Carbon\Carbon::parse($transaction?->packageLog?->end_date);
                             $duration = $start->diffInDays($end);
                         @endphp
@@ -244,8 +256,13 @@
                             <th>{{translate('Transaction ID')}}</th>
                             <th>{{translate('Package Name')}}</th>
                             <th>{{translate('Time')}}</th>
+<<<<<<< HEAD
                             <th>{{translate('Duration')}}</th>
                             <th>{{translate('Price')}}</th>
+=======
+                            <th>{{translate('Validity')}}</th>
+                            <th>{{translate('Amount')}}</th>
+>>>>>>> newversion/main
                         </tr>
                         </thead>
                         <tbody>
@@ -264,6 +281,10 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+    <div class="invoice-footer">{{translate('All rights reserved By ')}}@ {{$business_name->live_values}} {{date("Y")}}</div>
+>>>>>>> newversion/main
 </div>
 
 

@@ -29,7 +29,11 @@
                                         <div class="col-lg-6 mb-4 mb-lg-0">
                                             <div class="form-floating form-floating__icon mb-30">
                                                 <input type="text" class="form-control" name="banner_title"
+<<<<<<< HEAD
                                                        placeholder="{{translate('title')}} *"
+=======
+                                                       placeholder="{{translate('title')}} *" maxlength="190"
+>>>>>>> newversion/main
                                                        required="">
                                                 <label>{{translate('title')}} *</label>
                                                 <span class="material-icons">title</span>

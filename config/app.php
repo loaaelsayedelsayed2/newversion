@@ -28,7 +28,10 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> newversion/main
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -54,7 +57,10 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+<<<<<<< HEAD
     'custom_url' => 'https://zabbetny.com',
+=======
+>>>>>>> newversion/main
 
     'asset_url' => env('ASSET_URL', null),
 

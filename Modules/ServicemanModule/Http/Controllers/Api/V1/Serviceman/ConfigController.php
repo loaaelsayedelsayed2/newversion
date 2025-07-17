@@ -152,7 +152,24 @@ class ConfigController extends Controller
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
+<<<<<<< HEAD
         $response = Http::get($this->google_map_base_api . '/place/autocomplete/json?input=' . $request['search_text'] . '&key=' . $this->google_map->live_values['map_api_key_server']);
+=======
+        $url =
+            'https://places.googleapis.com/v1/places:autocomplete';
+
+        $data = [
+            'input' => $request->input('search_text'),
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->google_map->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->post($url, $data);
+>>>>>>> newversion/main
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }
 
@@ -169,7 +186,48 @@ class ConfigController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $request['origin_lat'] . ',' . $request['origin_lng'] . '&destinations=' . $request['destination_lat'] . ',' . $request['destination_lng'] . '&key=' . $this->google_map->live_values['map_api_key_server']);
+=======
+        $url = 'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix';
+
+        $origin = [
+            "waypoint" => [
+                "location" => [
+                    "latLng" => [
+                        "latitude" =>  $request['origin_lat'],
+                        "longitude" => $request['origin_lng']
+                    ]
+                ]
+            ]
+        ];
+
+        $destination = [
+            "waypoint" => [
+                "location" => [
+                    "latLng" => [
+                        "latitude" => $request['destination_lat'],
+                        "longitude" => $request['destination_lng']
+                    ]
+                ]
+            ]
+        ];
+
+        $data = [
+            "origins" => $origin,
+            "destinations" => $destination,
+            "travelMode" => "DRIVE",
+            "routingPreference" => "TRAFFIC_AWARE"
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->google_map->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->post($url, $data);
+>>>>>>> newversion/main
 
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }
@@ -184,7 +242,19 @@ class ConfigController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         $response = Http::get('https://maps.googleapis.com/maps/api/place/details/json?placeid=' . $request['placeid'] . '&key=' . $this->google_map->live_values['map_api_key_server']);
+=======
+        $url = 'https://places.googleapis.com/v1/places/'.  $request['placeid'];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Goog-Api-Key' => $this->google_map->live_values['map_api_key_server'],
+            'X-Goog-FieldMask' => '*'
+        ];
+
+        $response = Http::withHeaders($headers)->get($url);
+>>>>>>> newversion/main
 
         return response()->json(response_formatter(DEFAULT_200, $response->json()), 200);
     }

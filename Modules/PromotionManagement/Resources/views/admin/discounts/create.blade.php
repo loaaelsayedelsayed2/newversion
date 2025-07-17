@@ -37,7 +37,11 @@
                                         <div class="form-floating form-floating__icon">
                                             <input type="text" class="form-control" name="discount_title"
                                                    placeholder="{{translate('discount_title')}} *"
+<<<<<<< HEAD
                                                    required="">
+=======
+                                                   required="" maxlength="191">
+>>>>>>> newversion/main
                                             <label>{{translate('discount_title')}} *</label>
                                             <span class="material-icons">title</span>
                                         </div>

@@ -735,6 +735,44 @@ if (!function_exists('getBusinessSettingsImageFullPath')) {
         }
     }
 }
+<<<<<<< HEAD
+=======
+if (!function_exists('getDataSettingsImageFullPath')) {
+    function getDataSettingsImageFullPath($key, $settingType, $path, $defaultPath = null)
+    {
+        $image = \Modules\BusinessSettingsModule\Entities\DataSetting::with('storage')->where(['key' => $key, 'type' => $settingType])->first();
+        if (!$image) {
+            if (request()->is('api/*')) {
+                return null;
+            }
+            return asset($defaultPath);
+        }
+
+        $imagePath = $path . $image->value;
+        $s3Storage = $image->storage;
+
+        try {
+            if ($s3Storage && $s3Storage->storage_type == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
+                return Storage::disk('s3')->url($imagePath);
+//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+//                $awsBucket = config('filesystems.disks.s3.bucket');
+//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+            }
+        }catch(\Exception $exception){
+            //
+        }
+
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($imagePath)) {
+            return asset('storage/app/public/' . $imagePath);
+        } else {
+            if (request()->is('api/*')) {
+                return null;
+            }
+            return asset($defaultPath);
+        }
+    }
+}
+>>>>>>> newversion/main
 
 if (!function_exists('getPaymentGatewayImageFullPath')) {
     function getPaymentGatewayImageFullPath($key, $settingsType, $defaultPath = null)
@@ -795,12 +833,18 @@ if (!function_exists('nextBookingEligibility')) {
         $packageSubscriberLogId = $packageSubscriber?->package_subscriber_log_id;
         $providerUserId = $packageSubscriber?->provider?->user_id;
         $isPaid = $packageSubscriber?->payment?->where('id', $packageSubscriber?->payment_id)->value('is_paid');
+<<<<<<< HEAD
         $isPaidMoyasar = \Modules\BusinessSettingsModule\Entities\PackageSubscriber::where('provider_id', $providerId)
             ->where('payment_method', 'Moyasar')
             ->where('payment_id', '!=', null)
             ->exists();
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid || $isPaidMoyasar) {
+=======
+
+        if ($packageSubscriber && $packageSubscriber->payment_id != null) {
+            if ($isPaid){
+>>>>>>> newversion/main
                 if ($packageSubscriber->is_canceled){
                     return false;
                 }
@@ -817,7 +861,13 @@ if (!function_exists('nextBookingEligibility')) {
                                     return false;
                                 }
 
+<<<<<<< HEAD
 
+=======
+//                                $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)
+//                                    ->whereBetween('updated_at', [$startDate, $endDate])
+//                                    ->count();
+>>>>>>> newversion/main
 
                                 $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)->where('package_subscriber_log_id',$packageSubscriberLogId)
                                     ->whereBetween(DB::raw('DATE(updated_at)'), [date('Y-m-d', strtotime($startDate)), date('Y-m-d', strtotime($endDate))])
@@ -1295,6 +1345,30 @@ if (!function_exists('getPaymentGatewaySupportedCurrencies')) {
     }
 }
 
+<<<<<<< HEAD
+=======
+if (!function_exists('getProviderSettings')) {
+    function getProviderSettings($providerId, $key, $type)
+    {
+        $setting = \Modules\ProviderManagement\Entities\ProviderSetting::where([
+            'key_name'      => $key,
+            'provider_id'   => $providerId,
+            'settings_type' => $type,
+        ])->first();
+
+        if ($setting) {
+            $decoded = json_decode($setting->live_values, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $decoded;
+            }
+        }
+
+        return [];
+
+    }
+}
+
+>>>>>>> newversion/main
 
 
 

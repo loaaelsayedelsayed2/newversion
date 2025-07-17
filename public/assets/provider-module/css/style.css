@@ -7465,3 +7465,14 @@ g[filter="url(#filter6_d_4021_1338)"] {
 .scrollbar-thin {
     scrollbar-width: thin;
 }
+<<<<<<< HEAD
+=======
+
+.pl-20{
+    padding-left: 20px !important;
+}
+
+.canvas_class {
+    height: 100%;
+}
+>>>>>>> newversion/main

@@ -84,9 +84,15 @@ trait BookingScopes
         return $query
             ->where('booking_status', 'pending')
             ->where(function ($query) use ($maxBookingAmount) {
+<<<<<<< HEAD
                 $query->where('payment_method', '!=', 'payment_after_service')
                     ->orWhere(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'payment_after_service')
+=======
+                $query->where('payment_method', '!=', 'cash_after_service')
+                    ->orWhere(function ($query) use ($maxBookingAmount) {
+                        $query->where('payment_method', 'cash_after_service')
+>>>>>>> newversion/main
                             ->where('total_booking_amount', '<=', $maxBookingAmount)
                             ->orWhere('is_verified', 1);
                     });
@@ -98,9 +104,15 @@ trait BookingScopes
         return $query
             ->where('booking_status', 'accepted')
             ->where(function ($query) use ($maxBookingAmount) {
+<<<<<<< HEAD
                 $query->where('payment_method', '!=', 'payment_after_service')
                     ->orWhere(function ($query) use ($maxBookingAmount) {
                         $query->where('payment_method', 'payment_after_service')
+=======
+                $query->where('payment_method', '!=', 'cash_after_service')
+                    ->orWhere(function ($query) use ($maxBookingAmount) {
+                        $query->where('payment_method', 'cash_after_service')
+>>>>>>> newversion/main
                             ->where('total_booking_amount', '<=', $maxBookingAmount)
                             ->orWhere('is_verified', 1);
                     });
@@ -130,12 +142,20 @@ trait BookingScopes
                         ->where('zone_id', $zone_id)
                         ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                             $query->where(function ($query) use ($maxBookingAmount) {
+<<<<<<< HEAD
                                 $query->where('payment_method', 'payment_after_service')
+=======
+                                $query->where('payment_method', 'cash_after_service')
+>>>>>>> newversion/main
                                     ->where(function ($query) use ($maxBookingAmount) {
                                         $query->where('is_verified', 1)
                                             ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                                     })
+<<<<<<< HEAD
                                     ->orWhere('payment_method', '<>', 'payment_after_service');
+=======
+                                    ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                             });
                         })
                         ->where(function($query) use ($provider) {
@@ -158,12 +178,20 @@ trait BookingScopes
                     ->where('zone_id', $zone_id)
                     ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                         $query->where(function ($query) use ($maxBookingAmount) {
+<<<<<<< HEAD
                             $query->where('payment_method', 'payment_after_service')
+=======
+                            $query->where('payment_method', 'cash_after_service')
+>>>>>>> newversion/main
                                 ->where(function ($query) use ($maxBookingAmount) {
                                     $query->where('is_verified', 1)
                                         ->orWhere('total_booking_amount', '<=', $maxBookingAmount);
                                 })
+<<<<<<< HEAD
                                 ->orWhere('payment_method', '<>', 'payment_after_service');
+=======
+                                ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                         });
                     })
                     ->where(function($query) use ($provider) {
@@ -187,12 +215,20 @@ trait BookingScopes
             })
             ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                 $query->where(function ($query) use ($maxBookingAmount) {
+<<<<<<< HEAD
                     $query->where('payment_method', 'payment_after_service')
+=======
+                    $query->where('payment_method', 'cash_after_service')
+>>>>>>> newversion/main
                         ->where(function ($query) use ($maxBookingAmount) {
                             $query->where('total_booking_amount', '<=', $maxBookingAmount)
                                 ->orWhere('is_verified', 1);
                         })
+<<<<<<< HEAD
                         ->orWhere('payment_method', '<>', 'payment_after_service');
+=======
+                        ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                 });
             });
     }

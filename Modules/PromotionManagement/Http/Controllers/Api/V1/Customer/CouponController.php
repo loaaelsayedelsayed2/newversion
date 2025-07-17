@@ -200,6 +200,7 @@ class CouponController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
+<<<<<<< HEAD
         // $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
         // $typeWiseId = [];
 
@@ -208,6 +209,10 @@ class CouponController extends Controller
         if ($cartItems->isEmpty()) {
             return response()->json(response_formatter(CART_EMPTY), 400);
         }
+=======
+        $cartItems = $this->cart->where(['customer_id' => $this->customer_user_id])->get();
+        $typeWiseId = [];
+>>>>>>> newversion/main
         foreach ($cartItems as $item) {
             $typeWiseId['service_ids'][] = $item['service_id'];
             $typeWiseId['category_ids'][] = $item['category_id'];
@@ -221,11 +226,19 @@ class CouponController extends Controller
                 $query->where('promotion_type', 'coupon')->where('is_active', 1)
                     ->whereDate('start_date', '<=', now())->whereDate('end_date', '>=', now());
             });
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
         // Zone, Category & service check
         $zoneCheck = $couponQuery->whereHas('discount.discount_types', function ($query) {
             $query->where(['discount_type' => DISCOUNT_TYPE['zone'], 'type_wise_id' => config('zone_id')]);
         })->exists();
         if (!$zoneCheck) return response()->json(response_formatter(COUPON_NOT_VALID_FOR_ZONE), 200);
+<<<<<<< HEAD
+=======
+
+>>>>>>> newversion/main
         foreach ($couponQuery->with(['discount.discount_types'])->get() as $coupon) {
             //category wise
             if ($coupon->discount->discount_type == 'category') {
@@ -333,6 +346,7 @@ class CouponController extends Controller
                 $applied = 1;
             }
         }
+<<<<<<< HEAD
         $couponCustomer = $this->couponCustomer
             ->where('coupon_id', $coupon->id)
             ->where('customer_user_id', $this->customer_user_id)
@@ -343,6 +357,8 @@ class CouponController extends Controller
                 'customer_user_id' => $this->customer_user_id
             ]);
         }
+=======
+>>>>>>> newversion/main
 
         if ($applied) {
             return response()->json(response_formatter(COUPON_APPLIED_200), 200);

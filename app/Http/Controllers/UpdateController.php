@@ -18,6 +18,12 @@ use Modules\BusinessSettingsModule\Entities\LandingPageSpeciality;
 use Modules\BusinessSettingsModule\Entities\LandingPageTestimonial;
 use Modules\BusinessSettingsModule\Entities\LoginSetup;
 use Modules\BusinessSettingsModule\Entities\NotificationSetup;
+<<<<<<< HEAD
+=======
+use Modules\PaymentModule\Entities\Setting;
+use Modules\ProviderManagement\Entities\Provider;
+use Modules\ProviderManagement\Entities\ProviderSetting;
+>>>>>>> newversion/main
 use Modules\UserManagement\Entities\EmployeeRoleAccess;
 use Modules\UserManagement\Entities\EmployeeRoleSection;
 use Modules\UserManagement\Entities\Role;
@@ -42,7 +48,11 @@ class UpdateController extends Controller
         $this->setEnvironmentValue('SOFTWARE_ID', 'NDAyMjQ3NzI=');
         $this->setEnvironmentValue('BUYER_USERNAME', $request['username']);
         $this->setEnvironmentValue('PURCHASE_CODE', $request['purchase_key']);
+<<<<<<< HEAD
         $this->setEnvironmentValue('SOFTWARE_VERSION', '3.0');
+=======
+        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.2');
+>>>>>>> newversion/main
         $this->setEnvironmentValue('APP_ENV', 'live');
         $this->setEnvironmentValue('APP_URL', url('/'));
 
@@ -312,6 +322,7 @@ class UpdateController extends Controller
                 'test_values' => 0
             ]);
         }
+<<<<<<< HEAD
         
         if (BusinessSettings::where(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'])->first() == false) {
             BusinessSettings::updateOrCreate(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'], [
@@ -319,6 +330,8 @@ class UpdateController extends Controller
                 'test_values' => 1
             ]);
         }
+=======
+>>>>>>> newversion/main
 
         if (BusinessSettings::where(['key_name' => 'cash_after_service', 'settings_type' => 'service_setup'])->first() == false) {
             BusinessSettings::updateOrCreate(['key_name' => 'cash_after_service', 'settings_type' => 'service_setup'], [
@@ -1344,6 +1357,24 @@ class UpdateController extends Controller
             ]);
         }
 
+<<<<<<< HEAD
+=======
+        //version 3.1
+        $twoFactor = Setting::where(['key_name' => '2factor', 'settings_type' => 'sms_config'])->first();
+        if ($twoFactor && $twoFactor->live_values) {
+            $liveValues = is_array($twoFactor->live_values) ? $twoFactor->live_values : json_decode($twoFactor->live_values, true);
+            $liveValues['otp_template'] = $liveValues['otp_template'] ?? 'OTP1';
+            Setting::where(['key_name' => '2factor', 'settings_type' => 'sms_config'])->update([
+                'live_values' => json_encode($liveValues),
+                'test_values' => json_encode($liveValues),
+            ]);
+        }
+
+        // version 3.2
+        $this->version3_2Update();
+
+
+>>>>>>> newversion/main
         return redirect(env('APP_URL'));
     }
 
@@ -1436,4 +1467,56 @@ class UpdateController extends Controller
         }
         return true;
     }
+<<<<<<< HEAD
+=======
+
+    private function version3_2Update()
+    {
+        if (!BusinessSettings::where(['key_name' => 'service_at_provider_place', 'settings_type' => 'provider_config'])->exists()) {
+            BusinessSettings::create([
+                'key_name' => 'service_at_provider_place',
+                'live_values' => 0,
+                'test_values' => 0,
+                'settings_type' => 'provider_config',
+                'mode' => 'live',
+                'is_active' => 1,
+            ]);
+        }
+
+        if (!DataSetting::where(['key' => 'newsletter_title', 'type' => 'landing_text_setup'])->exists()) {
+            DataSetting::create([
+                'key' => 'newsletter_title',
+                'type' => 'landing_text_setup',
+                'value' => 'GET ALL UPDATES & EXCITING NEWS',
+                'is_active' => 1,
+            ]);
+        }
+
+        if (!DataSetting::where(['key' => 'newsletter_description', 'type' => 'landing_text_setup'])->exists()) {
+            DataSetting::create([
+                'key' => 'newsletter_description',
+                'type' => 'landing_text_setup',
+                'value' => 'Subscribe to out newsletters to receive all the latest activity we provide for you',
+                'is_active' => 1,
+            ]);
+        }
+
+        $providers = Provider::get();
+
+        foreach ($providers as $provider) {
+            if (!ProviderSetting::where(['key_name' => 'service_location', 'provider_id' => $provider->id, 'settings_type' => 'provider_config'])->exists()) {
+                $serviceLocation = ['customer'];
+                ProviderSetting::create([
+                    'provider_id'   => $provider->id,
+                    'key_name'      => 'service_location',
+                    'live_values'   => json_encode($serviceLocation),
+                    'test_values'   => json_encode($serviceLocation),
+                    'settings_type' => 'provider_config',
+                    'mode'          => 'live',
+                    'is_active'     => 1,
+                ]);
+            }
+        }
+    }
+>>>>>>> newversion/main
 }

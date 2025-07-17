@@ -1,5 +1,9 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use App\Http\Middleware\VerifyCsrfToken;
+>>>>>>> newversion/main
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Modules\Gateways\Http\Controllers\PaymobController;
@@ -10,7 +14,10 @@ use Modules\PaymentModule\Http\Controllers\PaystackController;
 use Modules\PaymentModule\Http\Controllers\RazorPayController;
 use Modules\PaymentModule\Http\Controllers\SenangPayController;
 use Modules\PaymentModule\Http\Controllers\FlutterwaveV3Controller;
+<<<<<<< HEAD
 use Modules\PaymentModule\Http\Controllers\MoyasarPaymentController;
+=======
+>>>>>>> newversion/main
 use Modules\PaymentModule\Http\Controllers\StripePaymentController;
 use Modules\PaymentModule\Http\Controllers\SubscriptionPaymentController;
 use Modules\PaymentModule\Http\Controllers\Web\Admin\BonusController;
@@ -52,7 +59,20 @@ if (!$isPublished) {
         //RAZOR-PAY
         Route::group(['prefix' => 'razor-pay', 'as' => 'razor-pay.'], function () {
             Route::get('pay', [RazorPayController::class, 'index']);
+<<<<<<< HEAD
             Route::post('payment', [RazorPayController::class, 'payment'])->name('payment');
+=======
+            Route::post('payment', [RazorPayController::class, 'payment'])->name('payment')
+                ->withoutMiddleware([VerifyCsrfToken::class]);
+            Route::post('callback', [RazorPayController::class, 'callback'])->name('callback')
+                ->withoutMiddleware([VerifyCsrfToken::class]);
+            Route::any('cancel', [RazorPayController::class, 'cancel'])->name('cancel')
+                ->withoutMiddleware([VerifyCsrfToken::class]);
+            Route::any('create-order', [RazorPayController::class, 'createOrder'])->name('create-order')
+                ->withoutMiddleware([VerifyCsrfToken::class]);
+            Route::any('verify-payment', [RazorPayController::class, 'verifyPayment'])->name('verify-payment')
+                ->withoutMiddleware([VerifyCsrfToken::class]);
+>>>>>>> newversion/main
         });
 
         //SENANG-PAY
@@ -112,6 +132,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::any('download', [BonusController::class, 'download'])->name('download');
     });
 });
+<<<<<<< HEAD
 
 Route::get('/payment/success', [MoyasarPaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/failed', [MoyasarPaymentController::class, 'failed'])->name('payment.failed');
+=======
+>>>>>>> newversion/main

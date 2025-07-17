@@ -20,6 +20,7 @@
                                 <li>{{translate('Use the code to verify your account on our secure website')}}</li>
                             </ul>
 
+<<<<<<< HEAD
                             <div class="row">
                                 <div class="col-10">
                                     <div class="mb-30">
@@ -27,6 +28,15 @@
                                         @php($phoneVerification = (int)login_setup('phone_verification')?->value ?? 0)
 
                                         @if($emailVerification && !$user?->is_email_verified)
+=======
+                            @php($emailVerification = (int)login_setup('email_verification')?->value ?? 0)
+                            @php($phoneVerification = (int)login_setup('phone_verification')?->value ?? 0)
+
+                            <div class="row">
+                                @if($emailVerification && !$user?->is_email_verified)
+                                    <div class="col-10">
+                                        <div class="mb-30">
+>>>>>>> newversion/main
                                             <div class="form-floating">
                                                 <input type="email" class="form-control" name="identity"
                                                        placeholder="{{translate('Enter your email address')}} *"
@@ -34,7 +44,15 @@
                                                 <input type="hidden" name="identity_type" value="email">
                                                 <label>{{translate('Enter your email address')}} *</label>
                                             </div>
+<<<<<<< HEAD
                                         @elseif($phoneVerification && !$user?->is_phone_verified)
+=======
+                                        </div>
+                                    </div>
+                                @elseif($phoneVerification && !$user?->is_phone_verified)
+                                    <div class="col-10">
+                                        <div class="mb-30">
+>>>>>>> newversion/main
                                             <div class="form-floating">
                                                 <input type="tel" class="form-control" name="identity"
                                                        placeholder="{{translate('Enter your phone number')}} *"
@@ -42,10 +60,25 @@
                                                 <input type="hidden" name="identity_type" value="phone">
                                                 <label>{{translate('Enter your phone number')}} *</label>
                                             </div>
+<<<<<<< HEAD
                                         @endif
                                     </div>
                                 </div>
 
+=======
+                                        </div>
+                                    </div>
+                                        <?php
+                                        $firebaseOtpConfig = business_config('firebase_otp_verification', 'third_party');
+                                        $firebaseOtpStatus = (int)$firebaseOtpConfig?->live_values['status'] ?? null;
+                                        ?>
+
+                                    @if($firebaseOtpConfig && $firebaseOtpStatus)
+                                        <div id="recaptcha-container-provider-registration" class="my-2"></div>
+                                    @endif
+
+                                @endif
+>>>>>>> newversion/main
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn--primary">{{translate('Send OTP')}}</button>
                                 </div>
@@ -56,4 +89,14 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 @endsection
+=======
+
+@endsection
+
+@push('script')
+    @include('auth::_firebase-script')
+@endpush
+
+>>>>>>> newversion/main

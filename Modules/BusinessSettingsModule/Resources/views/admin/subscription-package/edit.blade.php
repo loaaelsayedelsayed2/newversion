@@ -131,7 +131,11 @@
 
                                         <div class="d-flex flex-wrap align-items-center gap-3">
                                             <div class="custom-radio">
+<<<<<<< HEAD
                                                 <input type="radio" class="limit-input" value="Use_unlimit" name="request_limit[category][is_limited]" id="unlimited2" {{ $subscriptionPackage->subscriptionPackageLimit->where('key', 'category')->first()->is_limited ? '' : 'checked' }}>
+=======
+                                                <input type="radio" class="limit-input" value="" name="request_limit[category][is_limited]" id="unlimited2" {{ $subscriptionPackage->subscriptionPackageLimit->where('key', 'category')->first()->is_limited ? '' : 'checked' }}>
+>>>>>>> newversion/main
                                                 <label for="unlimited2">{{translate('Unlimited (Default)')}}</label>
                                             </div>
                                             <div class="custom-radio">

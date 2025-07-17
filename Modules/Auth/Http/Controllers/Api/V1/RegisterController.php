@@ -2,7 +2,10 @@
 
 namespace Modules\Auth\Http\Controllers\Api\V1;
 
+<<<<<<< HEAD
 use Exception;
+=======
+>>>>>>> newversion/main
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +19,7 @@ use Modules\PromotionManagement\Entities\PushNotification;
 use Modules\PromotionManagement\Entities\PushNotificationUser;
 use Modules\ProviderManagement\Emails\NewJoiningRequestMail;
 use Modules\ProviderManagement\Entities\Provider;
+<<<<<<< HEAD
 use Modules\UserManagement\Entities\Serviceman;
 use Modules\UserManagement\Entities\User;
 use Modules\UserManagement\Entities\UserVerification;
@@ -24,6 +28,11 @@ use Modules\UserManagement\Entities\UserVerification;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriber;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberLog;
 use Modules\BusinessSettingsModule\Http\Controllers\Api\V1\Provider\SubscriptionPackageController;
+=======
+use Modules\ProviderManagement\Entities\ProviderSetting;
+use Modules\UserManagement\Entities\Serviceman;
+use Modules\UserManagement\Entities\User;
+>>>>>>> newversion/main
 
 class RegisterController extends Controller
 {
@@ -85,8 +94,11 @@ class RegisterController extends Controller
         $user->user_type = 'customer';
         $user->is_active = 1;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> newversion/main
         if ($request->has('referral_code')) {
             $customerReferralEarning = business_config('customer_referral_earning', 'customer_config')->live_values ?? 0;
             $amount = business_config('referral_value_per_currency_unit', 'customer_config')->live_values ?? 0;
@@ -125,6 +137,16 @@ class RegisterController extends Controller
         $user->referred_by = $userWhoRerreded->id ?? null;
         $user->save();
 
+<<<<<<< HEAD
+=======
+        $phoneVerification = login_setup('phone_verification')?->value ?? 0;
+        $emailVerification = login_setup('email_verification')?->value ?? 0;
+
+        if (!$phoneVerification && !$emailVerification){
+            $loginData = ['token' => $user->createToken(CUSTOMER_PANEL_ACCESS)->accessToken, 'is_active' => $user['is_active']];
+            return response()->json(response_formatter(REGISTRATION_200, $loginData), 200);
+        }
+>>>>>>> newversion/main
 
         return response()->json(response_formatter(REGISTRATION_200), 200);
     }
@@ -135,6 +157,7 @@ class RegisterController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+<<<<<<< HEAD
     // public function providerRegister(Request $request): JsonResponse
     // {
     //     $validator = Validator::make($request->all(), [
@@ -376,6 +399,140 @@ class RegisterController extends Controller
             DB::rollBack();
             return response()->json($e, 400);
         }
+=======
+    public function providerRegister(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'contact_person_name' => 'required',
+            'contact_person_phone' => 'required',
+            'contact_person_email' => 'required',
+
+            'account_first_name' => 'nullable|max:191',
+            'account_last_name' => 'nullable|max:191',
+            'zone_id' => 'required|uuid',
+            'account_email' => 'required|email',
+            'account_phone' => 'required',
+            'password' => 'required|min:8',
+            'confirm_password' => 'required|same:password',
+
+            'company_name' => 'required',
+            'company_phone' => 'required',
+            'company_address' => 'required',
+            'company_email' => 'required|email',
+            'logo' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+
+            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
+            'identity_number' => 'required',
+            'identity_images' => 'required|array',
+            'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
+
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
+        }
+
+        if (User::where('email', $request['account_email'])->exists()) {
+            return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_email", "message" => translate('Email already taken')]]), 400);
+        }
+        if (User::where('phone', $request['account_phone'])->exists()) {
+            return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "account_phone", "message" => translate('Phone already taken')]]), 400);
+        }
+
+        if ($request->choose_business_plan == 'subscription_base'){
+            $package = $this->subscriptionPackage->where('id',$request->selected_package_id)->ofStatus(1)->first();
+            $vatPercentage      = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
+            if (!$package){
+                return response()->json(response_formatter(DEFAULT_400, null, [["error_code" => "package", "message" => translate('Please Select valid plan')]]), 400);
+            }
+
+            $id                 = $package->id;
+            $price              = $package->price;
+            $name               = $package->name;
+            $vatAmount          = $package->price * ($vatPercentage / 100);
+            $vatWithPrice       = $price + $vatAmount;
+        }
+
+        $identityImages = [];
+        foreach ($request->identity_images as $image) {
+            $imageName = file_uploader('provider/identity/', 'png', $image);
+            $identityImages[] = ['image'=>$imageName, 'storage'=> getDisk()];
+        }
+
+        $provider = $this->provider;
+        $provider->company_name = $request->company_name;
+        $provider->company_phone = $request->company_phone;
+        $provider->company_email = $request->company_email;
+        $provider->logo = file_uploader('provider/logo/', 'png', $request->file('logo'));
+        $provider->company_address = $request->company_address;
+
+        $provider->contact_person_name = $request->contact_person_name;
+        $provider->contact_person_phone = $request->contact_person_phone;
+        $provider->contact_person_email = $request->contact_person_email;
+        $provider->is_approved = 2;
+        $provider->is_active = 0;
+        $provider->zone_id = $request['zone_id'];
+        $provider->coordinates = ['latitude' => $request['latitude'], 'longitude' => $request['longitude']];
+
+        $owner = $this->owner;
+        $owner->first_name = $request->account_first_name;
+        $owner->last_name = $request->account_last_name;
+        $owner->email = $request->account_email;
+        $owner->phone = $request->account_phone;
+        $owner->identification_number = $request->identity_number;
+        $owner->identification_type = $request->identity_type;
+        $owner->identification_image = $identityImages;
+        $owner->password = bcrypt($request->password);
+        $owner->user_type = 'provider-admin';
+        $owner->is_active = 0;
+
+        DB::transaction(function () use ($provider, $owner, $request) {
+            $owner->save();
+            $provider->user_id = $owner->id;
+            $provider->save();
+
+            $serviceLocation = ['customer'];
+            ProviderSetting::create([
+                'provider_id'   => $provider->id,
+                'key_name'      => 'service_location',
+                'live_values'   => json_encode($serviceLocation),
+                'test_values'   => json_encode($serviceLocation),
+                'settings_type' => 'provider_config',
+                'mode'          => 'live',
+                'is_active'     => 1,
+            ]);
+        });
+
+        try {
+            Mail::to(User::where('user_type', 'super-admin')->value('email'))->send(new NewJoiningRequestMail($provider));
+        } catch (\Exception $exception) {
+            info($exception);
+        }
+
+        if ($request->choose_business_plan == 'subscription_base') {
+            $provider_id = $provider->id;
+            if ($request->free_trial_or_payment == 'free_trial') {
+                $result = $this->handleFreeTrialPackageSubscription($id, $provider_id, $price, $name);
+                if (!$result){
+                    return response()->json(response_formatter(DEFAULT_FAIL_200), 400);
+                }
+            }elseif ($request->free_trial_or_payment == 'payment') {
+                $paymentUrl = url('payment/subscription') . '?' .
+                    'provider_id=' . $provider_id . '&' .
+                    'access_token=' . base64_encode($owner->id) . '&' .
+                    'package_id=' . $id . '&' .
+                    'amount=' . $vatWithPrice . '&' .
+                    'name=' . $name . '&' .
+                    'package_status=' . 'subscription_purchase' . '&' .
+                    http_build_query($request->all());
+                return response()->json(response_formatter(PROVIDER_STORE_200, $paymentUrl), 200);
+            }
+        }
+
+        return response()->json(response_formatter(PROVIDER_STORE_200), 200);
+>>>>>>> newversion/main
     }
 
 
@@ -416,9 +573,12 @@ class RegisterController extends Controller
         return response()->json(response_formatter(DEFAULT_404), 200);
     }
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> newversion/main
 }

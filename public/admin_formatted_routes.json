@@ -660,7 +660,11 @@
         "isModified": true
     },
     {
+<<<<<<< HEAD
         "routeName": "Rules & Restrictions\n",
+=======
+        "routeName": "Rules & Restrictions",
+>>>>>>> newversion/main
         "URI": "admin/business-settings/login/setup?web_page=admin_provider_login",
         "keywords": "SYSTEM MANAGEMENT settings management login Setup Temporary Login Block Time* Maximum Login Hit* Temporary OTP Block Time* Maximum OTP Hit * OTP Resend Time* in second",
         "isModified": true
@@ -669,13 +673,21 @@
         "routeName": "Subscription Earning",
         "URI": "admin/report/business/subscription-earning",
         "keywords": "Report Business Subscription earning REPORTS & ANALYTICS REPORTS ANALYTICS REPORTS AND ANALYTICS Earning Details Total Earning Subscription Based Earning Statistics Providers Based on activity Total Subscription inactive subscribers active subscribers SL Provider Current Package Package Duration Total Subscription Used Total Subscription Earning Total VAT / Tax Net Earning ",
+<<<<<<< HEAD
         "isModified": false
+=======
+        "isModified": true
+>>>>>>> newversion/main
     },
     {
         "routeName": "Commission Earning",
         "URI": "admin/report/business/commission-earning",
         "keywords": "Reports Business Commission earning Business reports REPORTS & ANALYTICS REPORTS ANALYTICS REPORTS AND ANALYTICS Earning Statistics Total Earning Providers Based on activity Commission Based Providers inactive subscribers active subscribers SL Bookking ID Booking Date Booking Amount Commission",
+<<<<<<< HEAD
         "isModified": false
+=======
+        "isModified": true
+>>>>>>> newversion/main
     },
     {
         "routeName": "Cron Job",
@@ -688,5 +700,14 @@
         "URI": "admin/business-settings/seo-setting",
         "keywords": "SYSTEM MANAGEMENT Settings Management 404 Logs SEO Settings Business settings Seo Setting Complete the necessary setup to help users find your site 404 Logs Logs track instances where users encounter page not found errors on a website URL Hits Last Hit Date Redirection Link Action",
         "isModified": true
+<<<<<<< HEAD
+=======
+    },
+    {
+        "routeName": "Subscribe Newsletter",
+        "URI": "admin/customer/newsletter/list",
+        "keywords": "Customer management Subscribe Newsletter Subscriber list Mail list Customer Newsletter Index Customer Newsletter List Email Subscribe At Total Subscribers Newsletter",
+        "isModified": false
+>>>>>>> newversion/main
     }
 ]

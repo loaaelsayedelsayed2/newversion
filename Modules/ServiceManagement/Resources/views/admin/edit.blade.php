@@ -353,7 +353,40 @@
             transitionEffect: "slideLeft",
             autoFocus: true,
             onFinished: function (event, currentIndex) {
+<<<<<<< HEAD
                 $("#service-add-form")[0].submit();
+=======
+                event.preventDefault();
+
+                let isValid = true;
+                $(".desc-err").remove(); // Remove previous error messages
+
+                let variationSections = $("#variation-update-table, #variation-table");
+
+                // Loop through all number inputs
+                variationSections.find('input[type="number"]').each(function () {
+                    let value = parseFloat($(this).val());
+                    let minValue = parseFloat($(this).attr('min'));
+
+                    if (isNaN(value) || value === "") {
+                        toastr.error('Please enter a valid number');
+                        isValid = false;
+                    } else if (value <= 0) {
+                        toastr.error('Value must be greater than zero');
+                        isValid = false;
+                    } else if (!isNaN(minValue) && value < minValue) {
+                        toastr.error(`Minimum allowed value is ${minValue}`);
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    return false; // Stop form submission if validation fails
+                }
+
+                $("#service-add-form")[0].submit();
+
+>>>>>>> newversion/main
             }
         });
 
@@ -370,7 +403,11 @@
             let name = $('#variant-name').val();
             let price = $('#variant-price').val();
 
+<<<<<<< HEAD
             if (name.length > 0 && price >= 0) {
+=======
+            if (name.length > 0 && price > 0) {
+>>>>>>> newversion/main
                 $.get({
                     url: route,
                     dataType: 'json',
@@ -378,10 +415,14 @@
                         name: $('#variant-name').val(),
                         price: $('#variant-price').val(),
                     },
+<<<<<<< HEAD
                     beforeSend: function () {
                     },
                     success: function (response) {
                         console.log(response.template)
+=======
+                    success: function (response) {
+>>>>>>> newversion/main
                         if (response.flag == 0) {
                             toastr.info('Already added');
                         } else {
@@ -391,6 +432,7 @@
                             $('#variant-price').val(0);
                         }
                     },
+<<<<<<< HEAD
                     complete: function () {
                     },
                 });
@@ -405,6 +447,24 @@
                 var id = this.getAttribute('data-id');
                 ajax_remove_variant(route, id);
             });
+=======
+                });
+            } else {
+                if(price <= 0){
+                    toastr.warning('{{translate('price can not be 0 or negative')}}');
+                }else{
+                    toastr.warning('{{translate('fields_are_required')}}');
+                }
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.service-ajax-remove-variant')) {
+                var route = event.target.closest('.service-ajax-remove-variant').getAttribute('data-route');
+                var id = event.target.closest('.service-ajax-remove-variant').getAttribute('data-id');
+                ajax_remove_variant(route, id);
+            }
+>>>>>>> newversion/main
         });
 
 

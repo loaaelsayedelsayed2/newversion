@@ -255,7 +255,11 @@ class PostController extends Controller
         $post->delete();
 
         Toastr::success(translate(DEFAULT_DELETE_200['message']));
+<<<<<<< HEAD
         return redirect()->route('admin.booking.post.list');
+=======
+        return redirect()->route('admin.booking.post.list',  ['type'=>'all']);
+>>>>>>> newversion/main
     }
 
     /**

@@ -310,7 +310,11 @@
 
                                     <div class="py-3 px-4">
                                         <div class="media gap-2 flex-wrap">
+<<<<<<< HEAD
                                             <img width="58" height="58" class="rounded-circle border border-white"
+=======
+                                            <img width="58" height="58" class="rounded-circle border border-white aspect-square object-fit-cover"
+>>>>>>> newversion/main
                                                  src="{{$advertisement?->provider?->logo_full_path}}"
                                                  alt="{{translate('provider')}}">
                                             <div class="media-body">

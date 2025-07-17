@@ -69,6 +69,68 @@ class CategoryController extends Controller
         return view('categorymanagement::admin.create', compact('categories', 'zones', 'search', 'status'));
     }
 
+<<<<<<< HEAD
+=======
+    public function getTable(Request $request)
+    {
+        $status = $request->input('status', 'all');
+        $search = $request->input('search', '');
+        $page = $request->input('page', 1);
+        $queryParams = ['search' => $search, 'status' => $status];
+
+        $categories = Category::withCount(['children', 'zones' => function ($query) {
+            $query->withoutGlobalScope('translate');
+        }])
+            ->when($search, function ($query) use ($search) {
+                $keys = explode(' ', $search);
+                foreach ($keys as $key) {
+                    $query->orWhere('name', 'LIKE', "%$key%");
+                }
+            })
+            ->when($status != 'all', function ($query) use ($status) {
+                $query->ofStatus($status == 'active' ? 1 : 0);
+            })
+            ->ofType('main')
+            ->latest()
+            ->paginate(pagination_limit())
+            ->appends($queryParams);
+
+        $totalCategory = $categories->total();
+        $categories->withPath(route('admin.category.create'));
+
+        // Fallback logic: If current page has no data, go back one page
+        if ($categories->isEmpty() && $page > 1) {
+            $page = $page - 1;
+            $request->merge(['page' => $page]);
+
+            $categories = Category::withCount(['children', 'zones' => function ($query) {
+                $query->withoutGlobalScope('translate');
+            }])
+                ->when($search, function ($query) use ($search) {
+                    $keys = explode(' ', $search);
+                    foreach ($keys as $key) {
+                        $query->orWhere('name', 'LIKE', "%$key%");
+                    }
+                })
+                ->when($status != 'all', function ($query) use ($status) {
+                    $query->ofStatus($status == 'active' ? 1 : 0);
+                })
+                ->ofType('main')
+                ->latest()
+                ->paginate(pagination_limit())
+                ->appends($queryParams);
+        }
+
+        return response()->json([
+            'view' =>  view('categorymanagement::admin.partials._table', compact('categories', 'search', 'status', 'totalCategory'))->render(),
+            'totalCategory' => $totalCategory,
+            'offset' => ($categories->currentPage() - 1) * $categories->perPage(),
+            'page' => $categories->currentPage(),
+        ]);
+    }
+
+
+>>>>>>> newversion/main
     /**
      * Store a newly created resource in storage.
      * @param Request $request

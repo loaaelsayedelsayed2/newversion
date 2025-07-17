@@ -10,7 +10,16 @@ class BookingPartialPayment extends Model
 {
     use HasFactory, HasUuid;
 
+<<<<<<< HEAD
     protected $fillable = [];
+=======
+    protected $fillable = [
+        'booking_id',
+        'paid_with',
+        'paid_amount',
+        'due_amount',
+    ];
+>>>>>>> newversion/main
 
     protected static function newFactory()
     {

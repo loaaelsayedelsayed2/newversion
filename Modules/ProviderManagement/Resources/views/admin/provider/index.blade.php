@@ -231,14 +231,21 @@
                                                             ->when($maxBookingAmount > 0, function ($query) use ($maxBookingAmount) {
                                                                 $query->where(function ($query) use ($maxBookingAmount) {
                                                                     $query->where('payment_method', 'cash_after_service')
+<<<<<<< HEAD
                                                                         ->where('payment_method', 'payment_after_service')
+=======
+>>>>>>> newversion/main
                                                                         ->where(function ($query) use ($maxBookingAmount) {
                                                                             $query->where('total_booking_amount', '<=', $maxBookingAmount)
                                                                                 ->orWhere('is_verified', 1);
                                                                         })
+<<<<<<< HEAD
                                                                         ->orWhere('payment_method', '<>', 'cash_after_service')
                                                                         ->orWhere('payment_method', '<>', 'payment_after_service')
                                                                         ;
+=======
+                                                                        ->orWhere('payment_method', '<>', 'cash_after_service');
+>>>>>>> newversion/main
                                                                 });
                                                             })->count() ?? 0}}"
                                                                     data-url="{{route('admin.provider.details',[$provider->id, 'web_page'=>'bookings'])}}">

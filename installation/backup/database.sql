@@ -3,8 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
+<<<<<<< HEAD
 -- Generation Time: Jan 26, 2025 at 06:41 AM
 -- Server version: 8.0.40-0ubuntu0.22.04.1
+=======
+-- Generation Time: Apr 19, 2025 at 09:19 AM
+-- Server version: 8.0.41-0ubuntu0.22.04.1
+>>>>>>> newversion/main
 -- PHP Version: 8.1.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -81,7 +86,11 @@ CREATE TABLE `addon_settings` (
 
 INSERT INTO `addon_settings` (`id`, `key_name`, `live_values`, `test_values`, `settings_type`, `mode`, `is_active`, `created_at`, `updated_at`, `additional_data`) VALUES
 ('070c6bbd-d777-11ed-96f4-0c7a158e4469', 'twilio', '{\"gateway\":\"twilio\",\"mode\":\"live\",\"status\":\"0\",\"sid\":\"data\",\"messaging_service_sid\":\"data\",\"token\":\"data\",\"from\":\"data\",\"otp_template\":\"data\"}', '{\"gateway\":\"twilio\",\"mode\":\"live\",\"status\":\"0\",\"sid\":\"data\",\"messaging_service_sid\":\"data\",\"token\":\"data\",\"from\":\"data\",\"otp_template\":\"data\"}', 'sms_config', 'live', 0, NULL, '2023-08-12 07:01:29', NULL),
+<<<<<<< HEAD
 ('070c766c-d777-11ed-96f4-0c7a158e4469', '2factor', '{\"gateway\":\"2factor\",\"mode\":\"live\",\"status\":\"0\",\"api_key\":\"data\",\"otp_template\":\"OTP1\"}', '{\"gateway\":\"2factor\",\"mode\":\"live\",\"status\":\"0\",\"api_key\":\"data\",\"otp_template\":\"OTP1\"}', 'sms_config', 'live', 0, NULL, '2025-01-26 13:40:28', NULL),
+=======
+('070c766c-d777-11ed-96f4-0c7a158e4469', '2factor', '{\"gateway\":\"2factor\",\"mode\":\"live\",\"status\":\"0\",\"api_key\":\"data\",\"otp_template\":\"OTP1\"}', '{\"gateway\":\"2factor\",\"mode\":\"live\",\"status\":\"0\",\"api_key\":\"data\",\"otp_template\":\"OTP1\"}', 'sms_config', 'live', 0, NULL, '2025-04-19 16:16:25', NULL),
+>>>>>>> newversion/main
 ('0d8a9308-d6a5-11ed-962c-0c7a158e4469', 'mercadopago', '{\"gateway\":\"mercadopago\",\"mode\":\"test\",\"status\":\"0\",\"access_token\":\"data\",\"public_key\":\"data\"}', '{\"gateway\":\"mercadopago\",\"mode\":\"test\",\"status\":\"0\",\"access_token\":\"data\",\"public_key\":\"data\"}', 'payment_config', 'test', 0, NULL, '2023-08-27 11:57:11', '{\"gateway_title\":null,\"gateway_image\":\"2023-04-12-64367be3b7b6a.png\"}'),
 ('0d8a9e49-d6a5-11ed-962c-0c7a158e4469', 'liqpay', '{\"gateway\":\"liqpay\",\"mode\":\"test\",\"status\":\"0\",\"private_key\":\"data\",\"public_key\":\"data\"}', '{\"gateway\":\"liqpay\",\"mode\":\"test\",\"status\":\"0\",\"private_key\":\"data\",\"public_key\":\"data\"}', 'payment_config', 'test', 0, NULL, '2023-08-12 06:32:31', '{\"gateway_title\":null,\"gateway_image\":\"\"}'),
 ('101befdf-d44b-11ed-8564-0c7a158e4469', 'paypal', '{\"gateway\":\"paypal\",\"mode\":\"test\",\"status\":\"0\",\"client_id\":\"data\",\"client_secret\":\"data\"}', '{\"gateway\":\"paypal\",\"mode\":\"test\",\"status\":\"0\",\"client_id\":\"data\",\"client_secret\":\"data\"}', 'payment_config', 'test', 0, NULL, '2023-08-30 03:41:32', '{\"gateway_title\":null,\"gateway_image\":\"\"}'),
@@ -296,7 +305,13 @@ CREATE TABLE `bookings` (
   `extra_fee` decimal(24,3) NOT NULL DEFAULT '0.000',
   `total_referral_discount_amount` decimal(24,2) NOT NULL DEFAULT '0.00',
   `is_repeated` tinyint NOT NULL DEFAULT '0',
+<<<<<<< HEAD
   `assigned_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+=======
+  `assigned_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `service_location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'customer' COMMENT 'customer,provider',
+  `service_address_location` text COLLATE utf8mb4_unicode_ci
+>>>>>>> newversion/main
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -448,6 +463,11 @@ CREATE TABLE `booking_repeats` (
   `is_reassign` tinyint NOT NULL DEFAULT '0',
   `evidence_photos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `booking_otp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+<<<<<<< HEAD
+=======
+  `service_address_location` text COLLATE utf8mb4_unicode_ci,
+  `service_location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'customer' COMMENT 'customer,provider',
+>>>>>>> newversion/main
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -699,6 +719,10 @@ INSERT INTO `business_settings` (`id`, `key_name`, `live_values`, `test_values`,
 ('9f9f1855-6566-49d4-8ca8-f033a8a2c107', 'add_fund_wallet', '{\"add_fund_wallet_status\":\"1\",\"add_fund_wallet_message\":\"Add Fund Wallet\"}', '{\"add_fund_wallet_status\":\"1\",\"add_fund_wallet_message\":\"Add Fund Wallet\"}', 'customer_notification', 'live', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('9ff4b51f-0edd-4a33-ab15-bc79f7542ecd', 'about_us', '\"<p>hello world hero greatth weh fvaaafawefdsdsdsd<\\/p>\"', NULL, 'pages_setup', 'live', 1, '2022-08-04 13:04:19', '2022-10-04 11:57:25'),
 ('a0910af1-fee3-4527-957b-e46b40ad5ed2', 'bid_offers_visibility_for_providers', '0', '0', 'bidding_system', 'live', 1, '2023-08-30 13:09:23', '2023-08-30 13:09:23'),
+<<<<<<< HEAD
+=======
+('a2a8333f-0e93-423c-9983-89357eec728a', 'service_at_provider_place', '0', '0', 'provider_config', 'live', 1, '2025-04-19 16:16:25', '2025-04-19 16:16:25'),
+>>>>>>> newversion/main
 ('a38599a7-fb8f-4f3c-a955-b975cdd8fae5', 'customer_referral_earning', '0', '0', 'customer_config', 'live', 1, '2023-02-23 00:25:16', '2023-02-23 00:25:16'),
 ('a6cd4791-0276-4fa4-b2a1-13d3d5a8f232', 'twilio', '{\"gateway\":\"twilio\",\"mode\":\"live\",\"status\":\"0\",\"sid\":\"data\",\"messaging_service_sid\":\"data\",\"token\":\"data\",\"from\":\"data\",\"otp_template\":\"data\"}', '{\"gateway\":\"twilio\",\"mode\":\"live\",\"status\":\"0\",\"sid\":\"data\",\"messaging_service_sid\":\"data\",\"token\":\"data\",\"from\":\"data\",\"otp_template\":\"data\"}', 'sms_config', 'live', 0, '2022-06-08 07:03:02', '2022-10-04 16:26:39'),
 ('a827df9b-74a4-4944-8804-835026450c92', 'privacy_and_policy_update', NULL, NULL, 'pages_setup', 'live', 1, '2024-10-08 12:42:37', '2024-10-08 12:42:37'),
@@ -739,9 +763,15 @@ INSERT INTO `business_settings` (`id`, `key_name`, `live_values`, `test_values`,
 ('cfb57339-dc26-48f0-9815-896aebee243f', 'features', '[{\"id\":\"54fc434a-b953-4b90-97e7-c6d7fae28f41\",\"title\":\"GET YOUR SERVICE 24\\/7\",\"sub_title\":\"Visit our app and select your location to see available services near you\",\"image_1\":\"2023-08-31-64ef2e92e47c3.png\",\"image_2\":\"2023-08-31-64ef2e92e8b41.png\"}]', '[{\"id\":\"54fc434a-b953-4b90-97e7-c6d7fae28f41\",\"title\":\"GET YOUR SERVICE 24\\/7\",\"sub_title\":\"Visit our app and select your location to see available services near you\",\"image_1\":\"2023-08-31-64ef2e92e47c3.png\",\"image_2\":\"2023-08-31-64ef2e92e8b41.png\"}]', 'landing_features', 'live', 1, '2022-10-03 17:26:57', '2023-08-30 18:58:36'),
 ('d0c18642-cfa4-4178-8e25-a3a58a6cdff3', 'admin_payable', '{\"admin_payable_status\":\"1\",\"admin_payable_message\":\"Admin Payable\"}', '{\"admin_payable_status\":\"1\",\"admin_payable_message\":\"Admin Payable\"}', 'provider_notification', 'live', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('d27c7746-520f-470d-a3e0-6ac0b427ae61', 'registration_title', '\"REGISTER AS PROVIDER\"', '\"REGISTER AS PROVIDER\"', 'landing_text_setup', 'live', 0, '2022-10-03 15:36:11', '2022-10-03 15:36:11'),
+<<<<<<< HEAD
 ('d2b531d9-4cf1-4f7c-b96f-395856f5003d', 'google_map', '{\"party_name\":\"google_map\",\"map_api_key_client\":\"apikey\",\"map_api_key_server\":\"apikey\"}', '{\"party_name\":\"google_map\",\"map_api_key_client\":\"apikey\",\"map_api_key_server\":\"apikey\"}', 'third_party', 'live', 0, '2022-09-14 19:49:51', '2022-10-04 16:24:39'),
 ('d3ed9c30-4ce1-4c43-8016-e3a51cd74206', 'booking_schedule_time_change', '{\"booking_schedule_time_change_status\":\"1\",\"booking_schedule_time_change_message\":\"Booking Schedule Time Change\"}', '{\"booking_schedule_time_change_status\":\"1\",\"booking_schedule_time_change_message\":\"Booking Schedule Time Change\"}', 'serviceman_notification', 'live', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21');
 INSERT INTO `business_settings` (`id`, `key_name`, `live_values`, `test_values`, `settings_type`, `mode`, `is_active`, `created_at`, `updated_at`) VALUES
+=======
+('d2b531d9-4cf1-4f7c-b96f-395856f5003d', 'google_map', '{\"party_name\":\"google_map\",\"map_api_key_client\":\"apikey\",\"map_api_key_server\":\"apikey\"}', '{\"party_name\":\"google_map\",\"map_api_key_client\":\"apikey\",\"map_api_key_server\":\"apikey\"}', 'third_party', 'live', 0, '2022-09-14 19:49:51', '2022-10-04 16:24:39');
+INSERT INTO `business_settings` (`id`, `key_name`, `live_values`, `test_values`, `settings_type`, `mode`, `is_active`, `created_at`, `updated_at`) VALUES
+('d3ed9c30-4ce1-4c43-8016-e3a51cd74206', 'booking_schedule_time_change', '{\"booking_schedule_time_change_status\":\"1\",\"booking_schedule_time_change_message\":\"Booking Schedule Time Change\"}', '{\"booking_schedule_time_change_status\":\"1\",\"booking_schedule_time_change_message\":\"Booking Schedule Time Change\"}', 'serviceman_notification', 'live', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
+>>>>>>> newversion/main
 ('d42c3f11-c43f-48ab-849e-b950d90aea3d', 'widthdraw_request_approve', '{\"widthdraw_request_approve_status\":\"1\",\"widthdraw_request_approve_message\":\"Withdraw Request Approve\"}', '{\"widthdraw_request_approve_status\":\"1\",\"widthdraw_request_approve_message\":\"Withdraw Request Approve\"}', 'provider_notification', 'live', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('d5ff36a8-634b-42a1-ab49-08375eeb21ac', 'footer_text', '\"All rights reserved By @ company\"', '\"All rights reserved By @ company\"', 'business_information', 'live', 1, '2022-09-05 10:06:02', '2022-10-04 16:21:24'),
 ('d683b185-6f67-4cd0-94f7-14d85f8da03a', 'booking_additional_charge', '0', '0', 'booking_setup', 'live', 1, '2023-08-30 13:09:23', '2023-08-30 13:09:23'),
@@ -1015,6 +1045,10 @@ CREATE TABLE `data_settings` (
 INSERT INTO `data_settings` (`id`, `key`, `value`, `type`, `is_active`, `created_at`, `updated_at`) VALUES
 ('0689bba0-0de2-4820-902a-5b4840af7fe9', 'bottom_title', 'GET ALL UPDATES & EXCITING NEWS', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('11c9071f-70e2-412b-ba73-73da0ae9f7cb', 'refund_policy', '<p>Test Refund Policy</p>', 'pages_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
+<<<<<<< HEAD
+=======
+('201cb409-8aab-479c-a8f4-fd5b545ab03c', 'newsletter_title', 'GET ALL UPDATES & EXCITING NEWS', 'landing_text_setup', 1, '2025-04-19 16:16:25', '2025-04-19 16:16:25'),
+>>>>>>> newversion/main
 ('2787bb42-2e6a-43a4-81f1-7aee084f7083', 'bottom_description', 'Subcribe to out newsletters to receive all the latest activty we provide for you', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('42a986a9-831b-4789-9ae4-26b8284a2017', 'top_title', 'Customer Statisfaciton is our main moto', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('514e21aa-ae56-447e-9f9d-a34d4995bb9e', 'cancellation_policy', '<p>Test Cancellation Policy</p>', 'pages_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
@@ -1024,6 +1058,10 @@ INSERT INTO `data_settings` (`id`, `key`, `value`, `type`, `is_active`, `created
 ('af772e44-2cea-4396-bb82-9dbc13eb8691', 'top_sub_title', 'Get all services from one App.', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('c1f90ba8-3432-4478-8f35-7c992fa10aaf', 'privacy_policy', '<p>Test Privacy Policy</p>', 'pages_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('c60d816a-3100-4d3e-8aba-013a0ef13639', 'about_us_description', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
+<<<<<<< HEAD
+=======
+('cc560bd2-5558-430f-8f48-cfde9048b77f', 'newsletter_description', 'Subscribe to out newsletters to receive all the latest activity we provide for you', 'landing_text_setup', 1, '2025-04-19 16:16:25', '2025-04-19 16:16:25'),
+>>>>>>> newversion/main
 ('f4df4ad8-96be-4f99-a14e-6dc7c82035f8', 'top_description', 'LARGEST BOOKING SERVICE PLATEFORM', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('f4e72cf5-7e3f-40e0-a7b0-1185c62a65fa', 'about_us_title', 'WHO WE ARE', 'landing_text_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
 ('f64ffa14-fb1c-47e6-8736-0da45af39785', 'terms_and_conditions', '<p>Test Terms & Conditions</p>', 'pages_setup', 1, '2023-11-28 15:33:21', '2023-11-28 15:33:21'),
@@ -1536,7 +1574,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (207, '2024_10_24_160708_create_booking_ignores_table', 60),
 (208, '2024_11_02_114859_create_booking_repeat_histories_table', 60),
 (209, '2024_11_10_113216_add_to_col_transactions_table', 60),
+<<<<<<< HEAD
 (210, '2024_12_29_151439_add_payment_status_and_denied_note_to_booking_offline_payments_table', 61);
+=======
+(210, '2024_12_29_151439_add_payment_status_and_denied_note_to_booking_offline_payments_table', 61),
+(211, '2025_03_04_142506_create_subscribe_newsletters_table', 62),
+(212, '2025_03_08_135235_change_column_type_in_user_verifications_table', 62),
+(213, '2025_03_10_122542_add_service_location_in_booking_table', 62),
+(214, '2025_03_16_122656_create_route_search_histories_table', 62),
+(215, '2025_03_18_112120_add_col_to_booking_repeats_table', 62),
+(216, '2025_03_18_120858_add_col_to_bookings_table', 62);
+>>>>>>> newversion/main
 
 -- --------------------------------------------------------
 
@@ -2152,6 +2200,27 @@ CREATE TABLE `role_accesses` (
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
+=======
+-- Table structure for table `route_search_histories`
+--
+
+CREATE TABLE `route_search_histories` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route_uri` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route_full_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+>>>>>>> newversion/main
 -- Table structure for table `searched_data`
 --
 
@@ -2312,6 +2381,22 @@ CREATE TABLE `subscribed_services` (
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
+=======
+-- Table structure for table `subscribe_newsletters`
+--
+
+CREATE TABLE `subscribe_newsletters` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+>>>>>>> newversion/main
 -- Table structure for table `subscription_booking_types`
 --
 
@@ -2517,7 +2602,11 @@ CREATE TABLE `user_verifications` (
   `identity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `identity_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+<<<<<<< HEAD
   `otp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+=======
+  `otp` text COLLATE utf8mb4_unicode_ci NOT NULL,
+>>>>>>> newversion/main
   `expires_at` datetime NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -3136,6 +3225,15 @@ ALTER TABLE `role_accesses`
   ADD PRIMARY KEY (`id`);
 
 --
+<<<<<<< HEAD
+=======
+-- Indexes for table `route_search_histories`
+--
+ALTER TABLE `route_search_histories`
+  ADD PRIMARY KEY (`id`);
+
+--
+>>>>>>> newversion/main
 -- Indexes for table `searched_data`
 --
 ALTER TABLE `searched_data`
@@ -3186,6 +3284,16 @@ ALTER TABLE `subscribed_services`
   ADD PRIMARY KEY (`id`);
 
 --
+<<<<<<< HEAD
+=======
+-- Indexes for table `subscribe_newsletters`
+--
+ALTER TABLE `subscribe_newsletters`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `subscribe_newsletters_email_unique` (`email`);
+
+--
+>>>>>>> newversion/main
 -- Indexes for table `subscription_booking_types`
 --
 ALTER TABLE `subscription_booking_types`
@@ -3382,7 +3490,11 @@ ALTER TABLE `favorite_services`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
+<<<<<<< HEAD
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+=======
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
+>>>>>>> newversion/main
 
 --
 -- AUTO_INCREMENT for table `oauth_personal_access_clients`
