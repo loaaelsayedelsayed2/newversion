@@ -7,10 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Log;
-=======
->>>>>>> newversion/main
 use Illuminate\Support\Facades\Validator;
 use Modules\BookingModule\Entities\Booking;
 use Modules\BookingModule\Entities\BookingDetail;
@@ -20,10 +17,7 @@ use Modules\BookingModule\Entities\BookingRepeatHistory;
 use Modules\BookingModule\Entities\BookingScheduleHistory;
 use Modules\BookingModule\Entities\BookingStatusHistory;
 use Modules\BookingModule\Http\Traits\BookingTrait;
-<<<<<<< HEAD
 use Modules\PromotionManagement\Entities\Coupon;
-=======
->>>>>>> newversion/main
 use Modules\ServiceManagement\Entities\Service;
 
 class BookingController extends Controller
@@ -71,19 +65,23 @@ class BookingController extends Controller
 
         if (isset($booking)) {
 
-<<<<<<< HEAD
-            if ($booking->booking_offline_payments->isNotEmpty()) {
-                if ($booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
-=======
-            if ($booking->payment_method == 'offline_payment' && $booking->is_paid == 0 && in_array($request->booking_status, ['ongoing', 'completed'])) {
+            if (
+                $booking->payment_method === 'offline_payment' &&
+                $booking->is_paid == 0 &&
+                in_array($request->booking_status, ['ongoing', 'completed'])
+            ) {
                 if ($booking->booking_offline_payments->isEmpty()) {
                     return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
                 }
-                if ($booking->booking_offline_payments->isNotEmpty() && $booking->booking_offline_payments?->first()?->payment_status != 'approved'){
->>>>>>> newversion/main
+
+                if (
+                    $booking->booking_offline_payments->isNotEmpty() &&
+                    optional($booking->booking_offline_payments->first())->payment_status !== 'approved'
+                ) {
                     return response()->json(response_formatter(UPDATE_FAILED_FOR_OFFLINE_PAYMENT_VERIFICATION_200), 200);
                 }
             }
+
 
             $evidencePhotos = [];
             if ($bookingStatus == 'completed' && (business_config('booking_otp', 'booking_setup'))?->live_values == 1) {
@@ -96,20 +94,12 @@ class BookingController extends Controller
                 if ($request->has('evidence_photos')) {
                     foreach ($request->evidence_photos as $image) {
                         $imageName = file_uploader('booking/evidence/', 'png', $image);
-<<<<<<< HEAD
                         $evidencePhotos[] = ['image' => $imageName, 'storage' => getDisk()];
-=======
-                        $evidencePhotos[] = ['image'=>$imageName, 'storage'=> getDisk()];
->>>>>>> newversion/main
                     }
                 }
             }
 
-<<<<<<< HEAD
             if ($booking->payment_method != 'payment_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0) {
-=======
-            if($booking->payment_method != 'cash_after_service' && $request['booking_status'] == 'canceled' && $booking->additional_charge > 0){
->>>>>>> newversion/main
                 return response()->json(response_formatter(BOOKING_ALREADY_EDITED), 200);
             }
 
@@ -164,11 +154,7 @@ class BookingController extends Controller
                 if ($request->has('evidence_photos')) {
                     foreach ($request->evidence_photos as $image) {
                         $imageName = file_uploader('booking/evidence/', 'png', $image);
-<<<<<<< HEAD
                         $evidencePhotos[] = ['image' => $imageName, 'storage' => getDisk()];
-=======
-                        $evidencePhotos[] = ['image'=>$imageName, 'storage'=> getDisk()];
->>>>>>> newversion/main
                     }
                 }
             }
@@ -182,11 +168,7 @@ class BookingController extends Controller
             $bookingStatusHistory->booking_status = $request['booking_status'];
             $bookingStatusHistory->booking_repeat_id = $bookingId;
 
-<<<<<<< HEAD
             if ($request['booking_status'] == 'canceled' && $booking->extra_fee > 0) {
-=======
-            if ($request['booking_status'] == 'canceled' && $booking->extra_fee > 0){
->>>>>>> newversion/main
 
                 $repeats = $this->booking->where('id', $booking->booking_id)->first();
                 $sortedRepeats = $repeats->repeat->sortBy(function ($repeat) {
@@ -216,11 +198,7 @@ class BookingController extends Controller
                         ->first();
                 }
 
-<<<<<<< HEAD
                 if (isset($nextService)) {
-=======
-                if (isset($nextService)){
->>>>>>> newversion/main
                     $nextServiceId = $nextService['id'];
                     $nextServiceFee = $this->bookingRepeat->where('id', $nextServiceId)->first();
                     $nextServiceFee->extra_fee = $booking->extra_fee;
@@ -297,7 +275,6 @@ class BookingController extends Controller
     public function bookingDetails(Request $request, string $id): JsonResponse
     {
         $booking = $this->booking->with([
-<<<<<<< HEAD
             'detail.service',
             'schedule_histories.user',
             'status_histories.user',
@@ -307,19 +284,11 @@ class BookingController extends Controller
             'zone',
             'serviceman.user',
             'booking_partial_payments'
-=======
-            'detail.service', 'schedule_histories.user', 'status_histories.user', 'customer', 'provider', 'zone', 'serviceman.user', 'booking_partial_payments'
->>>>>>> newversion/main
         ])->where(function ($query) use ($request) {
             return $query->where('serviceman_id', $request->user()->serviceman->id)->orWhereNull('provider_id');
         })->where(['id' => $id])->first();
 
         if (isset($booking)) {
-<<<<<<< HEAD
-=======
-            $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
-
->>>>>>> newversion/main
             $offlinePayment = $booking->booking_offline_payments?->first()?->customer_information;
             unset($booking->booking_offline_payments);
 
@@ -347,7 +316,6 @@ class BookingController extends Controller
     public function singleBookingDetails(Request $request, string $id): JsonResponse
     {
         $booking = $this->bookingRepeat->with([
-<<<<<<< HEAD
             'detail.service',
             'scheduleHistories.user',
             'statusHistories.user',
@@ -355,9 +323,6 @@ class BookingController extends Controller
             'booking.customer',
             'booking.provider',
             'serviceman.user'
-=======
-            'detail.service', 'scheduleHistories.user', 'statusHistories.user', 'booking.service_address', 'booking.customer', 'booking.provider', 'serviceman.user'
->>>>>>> newversion/main
         ])->where(function ($query) use ($request) {
             return $query->where('serviceman_id', $request->user()->serviceman->id)->orWhereNull('provider_id');
         })->where(['id' => $id])->first();
@@ -411,7 +376,6 @@ class BookingController extends Controller
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])
             ->withPath('');
 
-<<<<<<< HEAD
         foreach ($bookings as $booking) {
             if ($booking->repeat->isNotEmpty()) {
                 $filteredRepeats = $booking->repeat->where('serviceman_id', $servicemanId)->sortBy('readable_id');
@@ -421,18 +385,6 @@ class BookingController extends Controller
         }
 
         return response()->json(response_formatter(DEFAULT_200, $bookings), 200);
-=======
-            foreach ($bookings as $booking) {
-                if ($booking->repeat->isNotEmpty()) {
-                    $filteredRepeats = $booking->repeat->where('serviceman_id', $servicemanId)->sortBy('readable_id');
-                    $booking->repeats = $filteredRepeats->values()->toArray();
-                }
-                unset($booking->repeat);
-            }
-
-        return response()->json(response_formatter(DEFAULT_200, $bookings), 200);
-
->>>>>>> newversion/main
     }
 
     /**
@@ -466,23 +418,13 @@ class BookingController extends Controller
             ->first();
 
         if (!isset($booking)) {
-<<<<<<< HEAD
             if ($bookingRepeat) {
-=======
-            if ($bookingRepeat){
->>>>>>> newversion/main
                 $fcmToken = $bookingRepeat?->booking?->customer?->fcm_token;
                 $title = get_push_notification_message('otp', 'customer_notification', $bookingRepeat?->booking?->customer?->current_language_key) . ' ' . $bookingRepeat->booking_otp;
 
                 if ($fcmToken) {
-<<<<<<< HEAD
                     device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id);
                     return response()->json(response_formatter(NOTIFICATION_SEND_SUCCESSFULLY_200), 200);
-=======
-                    device_notification($fcmToken, $title, null, null, $bookingRepeat->id, 'booking', null, $bookingRepeat?->booking?->customer?->id, null, null, 'repeat');
-                    return response()->json(response_formatter(NOTIFICATION_SEND_SUCCESSFULLY_200), 200);
-
->>>>>>> newversion/main
                 } else {
                     return response()->json(response_formatter(NOTIFICATION_SEND_FAILED_200), 200);
                 }
@@ -496,10 +438,6 @@ class BookingController extends Controller
         if ($fcmToken) {
             device_notification($fcmToken, $title, null, null, $booking->id, 'booking', null, $booking?->customer?->id);
             return response()->json(response_formatter(NOTIFICATION_SEND_SUCCESSFULLY_200), 200);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
         } else {
             return response()->json(response_formatter(NOTIFICATION_SEND_FAILED_200), 200);
         }
@@ -592,11 +530,7 @@ class BookingController extends Controller
         if (!is_null($request['service_schedule'])) $booking->service_schedule = $request['service_schedule'];
         $booking->save();
 
-<<<<<<< HEAD
         $editAccess = (bool)provider_config('provider_serviceman_can_edit_booking', 'serviceman_config', $booking->provider_id)?->live_values;
-=======
-        $editAccess = (boolean)provider_config('provider_serviceman_can_edit_booking', 'serviceman_config', $booking->provider_id)?->live_values;
->>>>>>> newversion/main
         $request['service_info'] = collect(json_decode($request['service_info'], true));
         $serviceInfoValidated = $request['service_info']?->first()['quantity'] ?? null;
 
@@ -625,30 +559,18 @@ class BookingController extends Controller
                     $request['variant_key'] = $item['variant_key'];
                     $request['quantity'] = $item['quantity'];
                     $this->addNewBookingService($request);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
                 } else if ($existingService && $item['quantity'] == 0) {
                     $request['service_id'] = $item['service_id'];
                     $request['variant_key'] = $item['variant_key'];
                     $request['quantity'] = $item['quantity'];
 
                     $this->remove_service_from_booking($request);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
                 } else if ($existingService && $existingService->quantity < $item['quantity']) {
                     $request['service_id'] = $item['service_id'];
                     $request['variant_key'] = $item['variant_key'];
                     $request['old_quantity'] = $existingService->quantity;
                     $request['new_quantity'] = (int)$item['quantity'];
                     $this->increase_service_quantity_from_booking($request);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
                 } else if ($existingService && $existingService->quantity > $item['quantity']) {
                     $request['service_id'] = $item['service_id'];
                     $request['variant_key'] = $item['variant_key'];
@@ -656,10 +578,6 @@ class BookingController extends Controller
                     $request['new_quantity'] = (int)$item['quantity'];
 
                     $this->decrease_service_quantity_from_booking($request);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
                 }
             }
         }
@@ -716,11 +634,7 @@ class BookingController extends Controller
         if (!is_null($request['service_schedule'])) $booking->service_schedule = $request['service_schedule'];
         $booking->save();
 
-<<<<<<< HEAD
         $editAccess = (bool)provider_config('provider_serviceman_can_edit_booking', 'serviceman_config', $booking->provider_id)?->live_values;
-=======
-        $editAccess = (boolean)provider_config('provider_serviceman_can_edit_booking', 'serviceman_config', $booking->provider_id)?->live_values;
->>>>>>> newversion/main
         $request['service_info'] = collect(json_decode($request['service_info'], true));
         $serviceInfoValidated = $request['service_info']?->first()['quantity'] ?? null;
 
@@ -766,11 +680,7 @@ class BookingController extends Controller
                 }
             }
 
-<<<<<<< HEAD
             if ($request['next_all_booking_change'] == 1) {
-=======
-            if ($request['next_all_booking_change'] == 1){
->>>>>>> newversion/main
                 $mainBooking = $this->booking->where('id', $request['booking_id'])->first();
                 $sourceRepeatBooking = $this->bookingRepeat->where('id', $request['booking_repeat_id'])->first();
 
@@ -861,12 +771,7 @@ class BookingController extends Controller
                 $mainBooking->total_discount_amount = $targetRepeatBookings->sum('total_discount_amount');
                 $mainBooking->total_campaign_discount_amount = $targetRepeatBookings->sum('total_campaign_discount_amount');
                 $mainBooking->save();
-<<<<<<< HEAD
             } else {
-=======
-
-            }else{
->>>>>>> newversion/main
                 $mainBooking = $this->booking->where('id', $request['booking_id'])->first();
                 $sourceRepeatBooking = $this->bookingRepeat->where('id', $request['booking_repeat_id'])->first();
                 $repeatBooking = $this->bookingRepeat->where('booking_id', $request['booking_id'])->get();
@@ -941,7 +846,6 @@ class BookingController extends Controller
 
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
     }
-<<<<<<< HEAD
 
 
     public function addNewFees(Request $request)
@@ -1012,6 +916,4 @@ class BookingController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $bookingdata), 200);
     }
 
-=======
->>>>>>> newversion/main
 }

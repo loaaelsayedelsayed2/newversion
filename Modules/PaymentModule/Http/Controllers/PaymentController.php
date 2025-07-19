@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Validation\ValidationException;
-<<<<<<< HEAD
-=======
 use Modules\BookingModule\Entities\Booking;
->>>>>>> newversion/main
 use Modules\BookingModule\Entities\BookingRepeat;
 use Modules\CustomerModule\Traits\CustomerAddressTrait;
 use Illuminate\Support\Facades\Validator;
@@ -58,9 +55,6 @@ class PaymentController extends Controller
                 'payment_platform' => 'nullable|in:web,app',
                 'booking_repeat_id' => 'required|uuid',
             ]);
-<<<<<<< HEAD
-        } else {
-=======
         } elseif ($request->has('switch_offline_to_digital')) {
             $validator = Validator::make($request->all(), [
                 'access_token' => '',
@@ -71,7 +65,6 @@ class PaymentController extends Controller
         }else {
             $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
 
->>>>>>> newversion/main
             $validator = Validator::make($request->all(), [
                 'access_token' => '',
                 'zone_id' => 'required|uuid',
@@ -84,9 +77,6 @@ class PaymentController extends Controller
                 'post_id' => 'nullable|uuid',
                 'provider_id' => 'nullable|uuid',
                 'is_partial' => 'nullable:in:0,1',
-<<<<<<< HEAD
-                'payment_platform' => 'nullable|in:web,app'
-=======
                 'payment_platform' => 'nullable|in:web,app',
                 'service_location' => 'required|in:customer,provider',
                 function ($attribute, $value, $fail) use ($serviceAtProviderPlace) {
@@ -94,7 +84,6 @@ class PaymentController extends Controller
                         $fail('The selected service location cannot be "provider" because the service is not available at the provider’s place.');
                     }
                 },
->>>>>>> newversion/main
             ]);
         }
 
@@ -116,11 +105,7 @@ class PaymentController extends Controller
         }else{
             if ($validator->fails()) {
                 if ($request->has('callback')) return redirect($request['callback'] . '?flag=fail');
-<<<<<<< HEAD
             else return response()->json(response_formatter(DEFAULT_400), 400);
-=======
-                else return response()->json(response_formatter(DEFAULT_400), 400);
->>>>>>> newversion/main
             }
         }
 
@@ -130,11 +115,8 @@ class PaymentController extends Controller
         $is_add_fund = $request['is_add_fund'] == 1 ? 1 : 0;
         $is_pay_to_admin = $request['is_pay_to_admin'] == true ? 1 : 0;
         $is_repeat_single_booking = $request['is_repeat_single_booking'] == true ? 1 : 0;
-<<<<<<< HEAD
-=======
         $switch_offline_to_digital = $request['switch_offline_to_digital'] ? 1 : 0;
 
->>>>>>> newversion/main
         //==========>>>>>> IF ADD FUND <<<<<<<==============
 
         //add fund
@@ -223,11 +205,7 @@ class PaymentController extends Controller
                     additional_data: $additional_data,
                     payment_amount: $amount,
                     external_redirect_link: $request['callback'] ?? null,
-<<<<<<< HEAD
                     attribute: 'booking_repeat_id',
-=======
-                    attribute: 'booking_id',
->>>>>>> newversion/main
                     attribute_id: time()
                 );
 
@@ -240,8 +218,6 @@ class PaymentController extends Controller
 
         }
 
-<<<<<<< HEAD
-=======
         //==========>>>>>> Switch Offline to Digital Payment <<<<<<<==============
 
         if ($switch_offline_to_digital) {
@@ -296,7 +272,6 @@ class PaymentController extends Controller
 
         }
 
->>>>>>> newversion/main
         //==========>>>>>> IF Booking <<<<<<<==============
 
         //service address create (if no saved address)
@@ -312,9 +287,7 @@ class PaymentController extends Controller
             if ($request->has('callback')) return redirect($request['callback'] . '?flag=fail');
             else return response()->json(response_formatter(DEFAULT_400), 400);
         }
-<<<<<<< HEAD
         $query_params = array_merge($validator->validated(), ['service_address_id' => $request['service_address_id']]);
-=======
 
         // Register new user from guest info
         $newUserInfo = json_decode(base64_decode($request['new_user_info']), true);
@@ -327,7 +300,6 @@ class PaymentController extends Controller
         }else{
             $query_params = array_merge($validator->validated(), ['service_address_id' => $request['service_address_id']]);
         }
->>>>>>> newversion/main
 
         //guest user check
         if ($is_guest) {

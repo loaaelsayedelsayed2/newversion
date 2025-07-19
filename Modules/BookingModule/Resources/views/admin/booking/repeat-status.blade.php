@@ -31,11 +31,7 @@
                                 <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}
                             </span>
                         @endif
-<<<<<<< HEAD
                         @if ($booking['payment_method'] == 'payment_after_service' && $booking->is_verified == '2')
-=======
-                        @if ($booking['payment_method'] == 'cash_after_service' && $booking->is_verified == '2')
->>>>>>> newversion/main
                             <span class="btn btn--primary change-booking-request" data-id="{{ $booking->id }}"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal--{{ $booking->id }}">
                                 <span class="material-icons">done</span>{{ translate('Change Request Status') }}
@@ -92,7 +88,6 @@
                                 </button>
                             @endcan
                         @endif
-<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
@@ -102,8 +97,6 @@
                                 </button>
                             @endcan
                         @endif
-=======
->>>>>>> newversion/main
                         <a href="{{ route('admin.booking.single_invoice', [$booking->id]) }}" class="btn btn-primary"
                             target="_blank">
                             <span class="material-icons">description</span>{{ translate('Invoice') }}
@@ -135,7 +128,6 @@
                         <span>{{ $booking?->bookingDeniedNote?->value }}</span>
                     </div>
                 @endif
-<<<<<<< HEAD
                 @if (
                     $booking->is_verified == 2 &&
                         $booking->payment_method == 'payment_after_service' &&
@@ -145,8 +137,6 @@
                         <span>{{ $booking?->bookingDeniedNote?->value }}</span>
                     </div>
                 @endif
-=======
->>>>>>> newversion/main
 
                 @if ($booking->is_paid == 0 && $booking->payment_method == 'offline_payment')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
@@ -427,20 +417,12 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->booking?->is_guest && $booking?->booking?->customer)
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->booking?->customer?->profile_image_full_path }}"
                                                      alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                      alt="{{ translate('user_image') }}">
                                             @endif
@@ -531,11 +513,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->provider?->logo_full_path }}"
                                                      alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -604,11 +582,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                      alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">

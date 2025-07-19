@@ -33,10 +33,7 @@ use Modules\ProviderManagement\Emails\RegistrationApprovedMail;
 use Modules\ProviderManagement\Emails\RegistrationDeniedMail;
 use Modules\ProviderManagement\Entities\BankDetail;
 use Modules\ProviderManagement\Entities\Provider;
-<<<<<<< HEAD
-=======
 use Modules\ProviderManagement\Entities\ProviderSetting;
->>>>>>> newversion/main
 use Modules\ProviderManagement\Entities\SubscribedService;
 use Modules\ReviewModule\Entities\Review;
 use Modules\ServiceManagement\Entities\Service;
@@ -187,11 +184,7 @@ class ProviderController extends Controller
     {
         $this->authorize('provider_add');
         $request->validate([
-<<<<<<< HEAD
-            'contact_person_name' => 'required',
-=======
             'contact_person_name' => 'required|string|max:191',
->>>>>>> newversion/main
             'contact_person_phone' => 'required',
             'contact_person_email' => 'required',
 
@@ -200,21 +193,13 @@ class ProviderController extends Controller
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
 
-<<<<<<< HEAD
-            'company_name' => 'required',
-=======
             'company_name' => 'required|string|max:191',
->>>>>>> newversion/main
             'company_phone' => 'required',
             'company_address' => 'required',
             'company_email' => 'required|email',
             'logo' => 'required|image|mimes:jpeg,jpg,png,gif',
 
-<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license,company_id',
-=======
-            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
->>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_images' => 'array',
             'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
@@ -284,8 +269,6 @@ class ProviderController extends Controller
             $owner->zones()->sync($request->zone_id);
             $provider->user_id = $owner->id;
             $provider->save();
-<<<<<<< HEAD
-=======
 
             $serviceLocation = ['customer'];
             ProviderSetting::create([
@@ -297,7 +280,6 @@ class ProviderController extends Controller
                 'mode'          => 'live',
                 'is_active'     => 1,
             ]);
->>>>>>> newversion/main
         });
 
         try {
@@ -354,11 +336,7 @@ class ProviderController extends Controller
     {
         $this->authorize('provider_view');
         $request->validate([
-<<<<<<< HEAD
             'web_page' => 'in:overview,subscribed_services,bookings,serviceman_list,settings,bank_information,reviews,subscription,provider_dashboard',
-=======
-            'web_page' => 'in:overview,subscribed_services,bookings,serviceman_list,settings,bank_information,reviews,subscription',
->>>>>>> newversion/main
         ]);
 
         $webPage = $request->has('web_page') ? $request['web_page'] : 'overview';
@@ -531,14 +509,11 @@ class ProviderController extends Controller
             return view('providermanagement::admin.provider.detail.subscription', compact('webPage','subscriptionDetails','commission', 'subscriptionStatus'));
 
         }
-<<<<<<< HEAD
         elseif ($request->web_page == 'provider_dashboard') {
             return view('providermanagement::admin.provider.detail.test');
         }
         //dashbord
 
-=======
->>>>>>> newversion/main
         return back();
     }
 
@@ -642,32 +617,20 @@ class ProviderController extends Controller
         $provider = $this->provider->with('owner')->find($id);
 
         Validator::make($request->all(), [
-<<<<<<< HEAD
-            'contact_person_name' => 'required',
-=======
             'contact_person_name' => 'required|string|max:191',
->>>>>>> newversion/main
             'contact_person_phone' => 'required',
             'contact_person_email' => 'required',
 
             'password' => !is_null($request->password) ? 'string|min:8' : '',
             'confirm_password' => !is_null($request->password) ? 'required|same:password' : '',
 
-<<<<<<< HEAD
-            'company_name' => 'required',
-=======
             'company_name' => 'required|string|max:191',
->>>>>>> newversion/main
             'company_phone' => 'required',
             'company_address' => 'required',
             'company_email' => 'required|email',
             'logo' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
 
-<<<<<<< HEAD
             'identity_type' => 'required|in:passport,residency_permit,driving_license,nid,trade_license,company_id',
-=======
-            'identity_type' => 'required|in:passport,driving_license,nid,trade_license,company_id',
->>>>>>> newversion/main
             'identity_number' => 'required',
             'identity_images' => 'array',
             'identity_images.*' => 'image|mimes:jpeg,jpg,png,gif',
@@ -1093,11 +1056,8 @@ class ProviderController extends Controller
         }
 
 
-<<<<<<< HEAD
-        $providers = $this->provider
-=======
+        $providers = $this->provider;
         $allProviders = $this->provider
->>>>>>> newversion/main
             ->when($request->has('search'), function ($query) use ($request) {
                 $keys = explode(' ', $request['search']);
                 return $query->where(function ($query) use ($keys) {
@@ -1130,8 +1090,6 @@ class ProviderController extends Controller
             ->withCount('reviews')
             ->ofApproval(1)->ofStatus(1)->get();
 
-<<<<<<< HEAD
-=======
         $providers = [];
 
         foreach ($allProviders as $provider) {
@@ -1142,7 +1100,6 @@ class ProviderController extends Controller
             }
         }
 
->>>>>>> newversion/main
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
         }, 'detail.service.category', 'detail.service.subCategory', 'detail.variation', 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($bookingId);

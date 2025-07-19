@@ -2,25 +2,9 @@
 
 namespace Modules\ProviderManagement\Http\Controllers\Api\V1\Customer;
 
-<<<<<<< HEAD
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Validator;
-use Modules\ReviewModule\Entities\Review;
 use Modules\UserManagement\Entities\User;
-use Modules\BookingModule\Entities\Booking;
-use Modules\ServiceManagement\Entities\Service;
-use Modules\CategoryManagement\Entities\Category;
-use Modules\ProviderManagement\Entities\Provider;
-use Modules\ServiceManagement\Entities\Variation;
-use Modules\ServiceManagement\Entities\FavoriteService;
-use Modules\ProviderManagement\Entities\FavoriteProvider;
-use Modules\ProviderManagement\Entities\SubscribedService;
 use Modules\ProviderManagement\Services\ProviderFilterService;
-=======
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -36,7 +20,6 @@ use Modules\ReviewModule\Entities\Review;
 use Modules\ServiceManagement\Entities\FavoriteService;
 use Modules\ServiceManagement\Entities\Service;
 use Modules\ServiceManagement\Entities\Variation;
->>>>>>> newversion/main
 
 class ProviderController extends Controller
 {
@@ -49,12 +32,9 @@ class ProviderController extends Controller
     private Variation $variation;
     private FavoriteProvider $favoriteProvider;
     private FavoriteService $favoriteService;
-<<<<<<< HEAD
     protected $customer_user_id;
     protected $is_customer_logged_in;
     private Review $review;
-=======
->>>>>>> newversion/main
 
     public function __construct(Provider $provider, Review $review, Category $category, SubscribedService $subscribed_service, Booking $booking, Service $service, Variation $variation, FavoriteProvider $favoriteProvider, FavoriteService $favoriteService, Request $request)
     {
@@ -268,7 +248,6 @@ class ProviderController extends Controller
      */
     public function getProviderListBySubCategory(Request $request): JsonResponse
     {
-<<<<<<< HEAD
         $filterService = app(ProviderFilterService::class);
         $query = $this->provider->with(['owner', 'favorites'])
         ->whereHas('subscribed_services', function ($query) use ($request) {
@@ -293,17 +272,6 @@ class ProviderController extends Controller
             $query->orderBy('avg_rating', 'desc');
         }
         $providers = $query->get();
-=======
-        $providers = $this->provider->with(['owner'])
-            ->where('zone_id', Config::get('zone_id'))
-            ->whereHas('subscribed_services', function ($query) use ($request) {
-                $query->where('sub_category_id', $request['sub_category_id']);
-            })
-            ->where('service_availability', 1)
-            ->where('is_suspended', 0)
-            ->where('is_active', 1)
-            ->get();
->>>>>>> newversion/main
 
         $eligibleProviders = [];
 
@@ -486,7 +454,6 @@ class ProviderController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $data), 200);
     }
 
-<<<<<<< HEAD
     protected function getUserCoordinates($user)
     {
         if ($user->zones instanceof \Illuminate\Database\Eloquent\Collection) {
@@ -514,6 +481,4 @@ class ProviderController extends Controller
         return null;
     }
 
-=======
->>>>>>> newversion/main
 }

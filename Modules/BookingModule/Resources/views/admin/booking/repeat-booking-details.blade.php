@@ -37,11 +37,7 @@
                     <div class="d-flex flex-wrap gap-3">
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -107,11 +103,7 @@
                             </div>
                         @endif
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -164,11 +156,7 @@
                             </div>
                         @endif
 
-<<<<<<< HEAD
                          @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'payment_after_service')
-=======
-                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'cash_after_service')
->>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -200,11 +188,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
-=======
-                        $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -514,11 +498,7 @@
                                                     </tr>
                                                 @endif
 
-<<<<<<< HEAD
                                                 @if ($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                                                @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                                                     <tr>
                                                         <td>{{ translate('Refund') }}</td>
                                                         <td class="text--end pe--4">
@@ -559,11 +539,7 @@
                                                 @if ($booking->booking_status != 'completed'
                                                     && isset($booking->nextService)
                                                     && !$booking->nextService['is_paid']
-<<<<<<< HEAD
                                                     && $booking->nextService['payment_method'] == 'payment_after_service')
-=======
-                                                    && $booking->nextService['payment_method'] == 'cash_after_service')
->>>>>>> newversion/main
                                                     <option value="canceled"
                                                         {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
                                                         {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
@@ -587,11 +563,9 @@
                              @endcan
 
                             <div class="py-3 d-flex flex-column gap-3 mb-2">
-<<<<<<< HEAD
                                 <div class="c1-light-bg radius-10">
                                     <div
                                         class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
-=======
                                 @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
                                 <div class="c1-light-bg radius-10">
                                     <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
@@ -652,7 +626,6 @@
 
                                 <div class="c1-light-bg radius-10">
                                     <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
->>>>>>> newversion/main
                                         <h4 class="d-flex align-items-center gap-2">
                                             <span class="material-icons title-color">person</span>
                                             {{ translate('Customer_Information') }}
@@ -703,20 +676,12 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->customer)
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->customer?->profile_image_full_path }}"
                                                     alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                     alt="{{ translate('user_image') }}">
                                             @endif
@@ -738,13 +703,6 @@
                                                                 href="tel:{{ $customer_phone }}">{{ $customer_phone }}</a>
                                                         </li>
                                                     @endif
-<<<<<<< HEAD
-                                                    <li>
-                                                        <span class="material-icons">map</span>
-                                                        <p>{{ Str::limit($booking?->service_address?->address ?? translate('not_available'), 100) }}
-                                                        </p>
-                                                    </li>
-=======
                                                         @if(!empty($booking?->service_address?->address))
                                                             <li>
                                                                 <span class="material-icons">map</span>
@@ -752,7 +710,6 @@
                                                                 </p>
                                                             </li>
                                                         @endif
->>>>>>> newversion/main
                                                 </ul>
                                             </div>
                                         </div>
@@ -797,11 +754,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->provider?->logo_full_path }}"
                                                     alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -849,14 +802,11 @@
 
     @include('bookingmodule::admin.booking.partials.details._service-address-modal')
 
-<<<<<<< HEAD
-=======
     @include('bookingmodule::admin.booking.partials.details._repeat-details-service-location-modal')
 
     @include('bookingmodule::admin.booking.partials.details._update-customer-address-modal')
 
 
->>>>>>> newversion/main
     <div class="modal fade" id="providerModal" tabindex="-1" aria-labelledby="providerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content modal-content-data" id="modal-data-info">
@@ -1087,7 +1037,6 @@
     <script>
         "use strict";
 
-<<<<<<< HEAD
         // $('.table-collapse-btn').on("click", function() {
         //     // $('tr.bg--secondary.collapse.show').each(function() {
         //     //     $(this).prev('tr').addClass('bg--secondary');
@@ -1095,8 +1044,6 @@
         //     $(this).closest('tr').toggleClass('bg--secondary');
         // });
 
-=======
->>>>>>> newversion/main
         $('.table-collapse-btn').on("click", function() {
             const parentRow = $(this).closest('tr');
 
@@ -1416,12 +1363,9 @@
     </script>
 
 
-<<<<<<< HEAD
-{{--    <script--}}
-{{--        src="https://maps.googleapis.com/maps/api/js?key={{ business_config('google_map', 'third_party')?->live_values['map_api_key_client'] }}&libraries=places&v=3.45.8">--}}
-{{--    </script>--}}
-=======
->>>>>>> newversion/main
+// {{--    <script--}}
+// {{--        src="https://maps.googleapis.com/maps/api/js?key={{ business_config('google_map', 'third_party')?->live_values['map_api_key_client'] }}&libraries=places&v=3.45.8">--}}
+// {{--    </script>--}}
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -1531,7 +1475,6 @@
             initAutocomplete();
         });
 
-<<<<<<< HEAD
         {{--$(document).ready(function() {--}}
         {{--    function initAutocomplete() {--}}
         {{--        let myLatLng = {--}}
@@ -1627,8 +1570,6 @@
         {{--});--}}
 
 
-=======
->>>>>>> newversion/main
         $('.__right-eye').on('click', function() {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active')
@@ -1785,8 +1726,6 @@
                 }
             });
         });
-<<<<<<< HEAD
-=======
 
         // for update service location from update customer address modal
         $(document).ready(function() {
@@ -1981,7 +1920,6 @@
                 $('.customer-address-update-btn').attr('disabled', true);
             }
         })
->>>>>>> newversion/main
     </script>
     <script>
         $(document).ready(function() {
@@ -1989,8 +1927,6 @@
                 minimumResultsForSearch: Infinity
             });
         });
-<<<<<<< HEAD
-=======
 
         $(document).ready(function () {
             try {
@@ -2003,6 +1939,5 @@
                 console.log(error)
             }
         });
->>>>>>> newversion/main
     </script>
 @endpush

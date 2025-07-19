@@ -353,9 +353,7 @@
             transitionEffect: "slideLeft",
             autoFocus: true,
             onFinished: function (event, currentIndex) {
-<<<<<<< HEAD
                 $("#service-add-form")[0].submit();
-=======
                 event.preventDefault();
 
                 let isValid = true;
@@ -386,7 +384,6 @@
 
                 $("#service-add-form")[0].submit();
 
->>>>>>> newversion/main
             }
         });
 
@@ -403,11 +400,7 @@
             let name = $('#variant-name').val();
             let price = $('#variant-price').val();
 
-<<<<<<< HEAD
             if (name.length > 0 && price >= 0) {
-=======
-            if (name.length > 0 && price > 0) {
->>>>>>> newversion/main
                 $.get({
                     url: route,
                     dataType: 'json',
@@ -415,14 +408,7 @@
                         name: $('#variant-name').val(),
                         price: $('#variant-price').val(),
                     },
-<<<<<<< HEAD
-                    beforeSend: function () {
-                    },
                     success: function (response) {
-                        console.log(response.template)
-=======
-                    success: function (response) {
->>>>>>> newversion/main
                         if (response.flag == 0) {
                             toastr.info('Already added');
                         } else {
@@ -432,22 +418,6 @@
                             $('#variant-price').val(0);
                         }
                     },
-<<<<<<< HEAD
-                    complete: function () {
-                    },
-                });
-            } else {
-                toastr.warning('{{translate('fields_are_required')}}');
-            }
-        }
-
-        document.querySelectorAll('.service-ajax-remove-variant').forEach(function(element) {
-            element.addEventListener('click', function() {
-                var route = this.getAttribute('data-route');
-                var id = this.getAttribute('data-id');
-                ajax_remove_variant(route, id);
-            });
-=======
                 });
             } else {
                 if(price <= 0){
@@ -464,7 +434,6 @@
                 var id = event.target.closest('.service-ajax-remove-variant').getAttribute('data-id');
                 ajax_remove_variant(route, id);
             }
->>>>>>> newversion/main
         });
 
 

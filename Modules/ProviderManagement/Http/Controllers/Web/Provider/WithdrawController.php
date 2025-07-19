@@ -89,11 +89,9 @@ class WithdrawController extends Controller
         if ($min == 0 && $max == 0) {
             $num5 = 0;
         } else {
-<<<<<<< HEAD
             do {
                 $num5 = floor(rand($min, $max) / 10) * 10;
             } while (in_array($num5, array($mid, $mid1, $mid2, $num4)));
-=======
             if ($min >= $max) {
                 $min = 1;
                 $max = 10;
@@ -110,7 +108,6 @@ class WithdrawController extends Controller
             } else {
                 $num5 = $validValues[array_rand($validValues)];
             }
->>>>>>> newversion/main
         }
 
         $withdraw_request_amount['random'] = array($mid, $mid1, $num5, $mid2, $num4);

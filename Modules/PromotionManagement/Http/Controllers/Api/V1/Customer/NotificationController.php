@@ -40,21 +40,6 @@ class NotificationController extends Controller
         }
 
         $pushNotification = $this->pushNotification->ofStatus(1)
-<<<<<<< HEAD
-        ->when(!is_null(Config::get('zone_id')), function ($query) {
-            $query->whereJsonContains('zone_ids', Config::get('zone_id'));
-        })
-        ->where(function ($query) {
-            $query->whereDoesntHave('pushNotificationUser')
-                  ->orWhereHas('pushNotificationUser', function ($query) {
-                      $query->where('user_id', $this->customer_user_id);
-                  });
-        })
-        ->where('to_users', 'like', '%"customer"%')
-        ->latest()
-        ->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
-
-=======
             ->when(!is_null(Config::get('zone_id')), function ($query) {
                 $query->whereJsonContains('zone_ids', Config::get('zone_id'));
             })
@@ -65,7 +50,6 @@ class NotificationController extends Controller
             ->latest()
             ->where('to_users', 'like', '%"customer"%')
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
->>>>>>> newversion/main
 
         return response()->json(response_formatter(DEFAULT_200, $pushNotification), 200);
     }

@@ -75,11 +75,7 @@ class BannerController extends Controller
     {
         $this->authorize('banner_add');
         $request->validate([
-<<<<<<< HEAD
-            'banner_title' => 'required',
-=======
             'banner_title' => 'required|string|max:190',
->>>>>>> newversion/main
             'service_id' => 'uuid',
             'category_id' => 'uuid',
             'resource_type' => 'required|in:service,category,link',
@@ -130,11 +126,7 @@ class BannerController extends Controller
     {
         $this->authorize('banner_update');
         $request->validate([
-<<<<<<< HEAD
-            'banner_title' => 'required',
-=======
             'banner_title' => 'required|string|max:190',
->>>>>>> newversion/main
             'resource_type' => 'required|in:service,category,link',
             'service_id' => 'uuid',
             'category_id' => 'uuid',

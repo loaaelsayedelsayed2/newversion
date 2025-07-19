@@ -180,19 +180,13 @@
                                             <th>{{ translate('SL') }}</th>
                                             <th>{{ translate('Booking_ID') }}</th>
                                             <th>{{ translate('Booking_Date') }}</th>
-<<<<<<< HEAD
-=======
                                             <th>{{ translate('Where_Service_will_be_Provided') }}</th>
->>>>>>> newversion/main
                                             <th>{{ translate('Schedule_Date') }}</th>
                                             <th>{{ translate('Customer_Info') }}</th>
                                             <th>{{ translate('Provider_Info') }}</th>
                                             <th>{{ translate('Total_Amount') }}</th>
                                             <th>{{ translate('Payment_Status') }}</th>
-<<<<<<< HEAD
                                             <th>{{ translate('Reason_for_canceled') }}</th>
-=======
->>>>>>> newversion/main
                                             <th>{{ translate('Action') }}</th>
                                         </tr>
                                     </thead>
@@ -242,8 +236,6 @@
                                                     <div>{{ date('d-M-Y', strtotime($booking->created_at)) }}</div>
                                                     <div>{{ date('h:ia', strtotime($booking->created_at)) }}</div>
                                                 </td>
-<<<<<<< HEAD
-=======
                                                 <td>
                                                     @if($booking->service_location == 'provider')
                                                         {{ translate('Provider Location') }}
@@ -251,7 +243,6 @@
                                                         {{ translate('Customer Location') }}
                                                     @endif
                                                 </td>
->>>>>>> newversion/main
                                                 <td
                                                     @if($booking->is_repeated)
                                                         data-bs-custom-class="review-tooltip custom"
@@ -350,11 +341,8 @@
                                                         {{ $booking->is_paid ? translate('paid') : translate('unpaid') }}
                                                     </span>
                                                 </td>
-<<<<<<< HEAD
                                                 <td>{{ $booking->reason_cancel }}</td>
 
-=======
->>>>>>> newversion/main
                                                 <td>
                                                     <div class="table-actions d-flex gap-2">
                                                         @if($booking->is_repeated)

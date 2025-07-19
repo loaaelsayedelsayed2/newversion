@@ -52,13 +52,10 @@ use Illuminate\Support\Facades\Http;
 if (!function_exists('device_notification')) {
     function device_notification($fcm_token, $title, $description, $image, $booking_id, $type='status', $channel_id = null, $user_id = null, $data=null, $advertisement_id=null, $bookingType=null, $repeat_type=null)
     {
-<<<<<<< HEAD
 //        dd($fcm_token, $title, $description, $image, $booking_id, $type='status', $channel_id = null, $user_id = null, $data=null, $advertisement_id=null, $bookingType=null, $repeat_type=null);
         $title = text_variable_data_format($title, $booking_id, $type, $data, $bookingType);
 //        dd($title);
-=======
-        $title = text_variable_data_format($title, $booking_id, $type, $data, $bookingType);
->>>>>>> newversion/main
+
         $postData = [
             'message' => [
                 "token" => $fcm_token,
@@ -281,13 +278,8 @@ function send_curl_request(string $url, string $postdata, array $header): string
 function booking_discount_calculator(mixed $keeper, $total_purchase_amount): float
 {
     $amount = 0;
-<<<<<<< HEAD
     if ($keeper != null && $total_purchase_amount >= $keeper->min_purchase) {
 
-=======
-
-    if ($keeper != null && $total_purchase_amount >= $keeper->min_purchase) {
->>>>>>> newversion/main
         if ($keeper->discount_amount_type == 'percent') {
             $amount = ($total_purchase_amount / 100) * $keeper->discount_amount;
 
@@ -302,8 +294,5 @@ function booking_discount_calculator(mixed $keeper, $total_purchase_amount): flo
 
     return $amount;
 }
-<<<<<<< HEAD
 
 
-=======
->>>>>>> newversion/main

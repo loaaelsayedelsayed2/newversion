@@ -46,8 +46,6 @@ class CustomerController extends Controller
     {
         if (in_array($request->user()->user_type, CUSTOMER_USER_TYPES)) {
             $customer = $this->customer->withCount('bookings')->where('id', auth()->user()->id)->first();
-<<<<<<< HEAD
-=======
 
             $lastIncompleteOfflineBooking = Booking::where('customer_id', auth()->user()->id)
                 ->where('payment_method', 'offline_payment')
@@ -58,7 +56,6 @@ class CustomerController extends Controller
 
             $customer->last_incomplete_offline_booking = $lastIncompleteOfflineBooking;
 
->>>>>>> newversion/main
             return response()->json(response_formatter(DEFAULT_200, $customer), 200);
         }
         return response()->json(response_formatter(DEFAULT_403), 401);
@@ -309,8 +306,7 @@ class CustomerController extends Controller
 
         return response()->json(response_formatter(DEFAULT_200), 200);
     }
-<<<<<<< HEAD
-    
+
     // add to wallet
         public function addWallet(Request $request){
         $userId = auth('api')->user()->id;
@@ -320,8 +316,8 @@ class CustomerController extends Controller
             'message' => 'Successfully added'
         ], 200);
     }
-    
-    
+
+
     // remove from wallet
     public function removeFromWallet(Request $request){
         $user = auth('api')->user();
@@ -346,8 +342,6 @@ class CustomerController extends Controller
             ], 200);
         }
     }
-=======
->>>>>>> newversion/main
 
 
 }

@@ -195,14 +195,11 @@ class CartController extends Controller
                 $weekEnds = provider_config('weekends', 'service_schedule', $providerId)->live_values ?? '';
                 $weekEnds = json_decode($weekEnds);
                 $timeSchedule = json_decode($timeSchedule);
-<<<<<<< HEAD
                 $cartItem->provider->weekends = $weekEnds ?? [];
-=======
                 $serviceLocation = provider_config('service_location', 'provider_config', $providerId)->live_values ?? '';
                 $serviceLocations = json_decode($serviceLocation);
                 $cartItem->provider->weekends = $weekEnds ?? [];
                 $cartItem->provider->service_locations = $serviceLocations ?? [];
->>>>>>> newversion/main
                 $cartItem->provider->time_schedule = $timeSchedule ?? null;
                 $cartItem->provider->nextBookingEligibility = nextBookingEligibility($providerId);
                 $cartItem->provider->scheduleBookingEligibility = scheduleBookingEligibility($providerId);

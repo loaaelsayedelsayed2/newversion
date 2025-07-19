@@ -43,11 +43,7 @@
                         @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
 
@@ -106,11 +102,7 @@
                             </div>
                         @endif
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -163,11 +155,7 @@
                             </div>
                         @endif
 
-<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
-=======
-                        @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'])
->>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                         data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -199,11 +187,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
-=======
-                        $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -252,22 +236,14 @@
                                     <div class="text-start text-sm-end">
                                         @if (
                                             $booking->is_verified == '0' &&
-<<<<<<< HEAD
                                                 $booking->payment_method == 'payment_after_service' &&
-=======
-                                                $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="c1 text-capitalize">{{ translate('Pending') }}</span>
                                             </p>
                                         @elseif(
                                             $booking->is_verified == '2' &&
-<<<<<<< HEAD
                                                 $booking->payment_method == 'payment_after_service' &&
-=======
-                                                $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                                                 $booking->total_booking_amount >= $maxBookingAmount)
                                             <p class="mb-2"><span>{{ translate('Request Verify Status:') }} :</span>
                                                 <span class="text-danger text-capitalize"
@@ -455,11 +431,7 @@
                                                 </td>
                                             </tr>
 
-<<<<<<< HEAD
                                             @if ($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                                            @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                                                 <tr>
                                                     <td>{{ translate('Refund') }}</td>
                                                     <td class="text--end pe--4">
@@ -555,8 +527,6 @@
                                     </div>
                                 @endif
 
-<<<<<<< HEAD
-=======
                                     @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
                                     <div class="c1-light-bg radius-10">
                                         <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
@@ -615,7 +585,6 @@
                                         </div>
                                     </div>
 
->>>>>>> newversion/main
                                 <div class="c1-light-bg radius-10">
                                     <div
                                         class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
@@ -684,12 +653,6 @@
                                         @php($customer_name = $booking?->booking?->service_address?->contact_person_name)
                                         @php($customer_phone = $booking?->booking?->service_address?->contact_person_number)
 
-<<<<<<< HEAD
-                                        <div class="media gap-2 flex-wrap">
-                                            @if (!$booking?->booking?->is_guest && $booking?->booking?->customer)
-                                                <img width="58" height="58"
-                                                     class="rounded-circle border border-white"
-=======
                                         @php($name = $booking->service_address?->contact_person_name)
                                         @php($phone = $booking->service_address?->contact_person_number)
 
@@ -697,16 +660,11 @@
                                             @if (!$booking?->booking?->is_guest && $booking?->booking?->customer)
                                                 <img width="58" height="58"
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->booking?->customer?->profile_image_full_path }}"
                                                      alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                      alt="{{ translate('user_image') }}">
                                             @endif
@@ -728,13 +686,6 @@
                                                                 href="tel:{{ $customer_phone }}">{{ $customer_phone }}</a>
                                                         </li>
                                                     @endif
-<<<<<<< HEAD
-                                                    <li>
-                                                        <span class="material-icons">map</span>
-                                                        <p>{{ Str::limit($booking?->booking?->service_address?->address ?? translate('not_available'), 100) }}
-                                                        </p>
-                                                    </li>
-=======
                                                         @if(!empty($booking?->booking?->service_address?->address))
                                                             <li>
                                                                 <span class="material-icons">map</span>
@@ -742,7 +693,6 @@
                                                                 </p>
                                                             </li>
                                                         @endif
->>>>>>> newversion/main
                                                 </ul>
                                             </div>
                                         </div>
@@ -807,11 +757,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->provider?->logo_full_path }}"
                                                      alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -882,11 +828,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                      alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">
@@ -1222,13 +1164,10 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
 
     @include('bookingmodule::admin.booking.partials.details._repeat-ongoing-service-location-modal')
 
     @include('bookingmodule::admin.booking.partials.details._update-customer-address-modal')
->>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -1733,9 +1672,7 @@
                 }
             });
         });
-<<<<<<< HEAD
     </script>
-=======
 
         // for update service location from update customer address modal
         $(document).ready(function() {
@@ -1932,15 +1869,12 @@
         })
     </script>
 
->>>>>>> newversion/main
     <script>
         $(document).ready(function() {
             $('.without-search').select2({
                 minimumResultsForSearch: Infinity
             });
         });
-<<<<<<< HEAD
-=======
         $(document).ready(function () {
             try {
                 initializePhoneInput(
@@ -1952,6 +1886,5 @@
                 console.log(error)
             }
         });
->>>>>>> newversion/main
     </script>
 @endpush

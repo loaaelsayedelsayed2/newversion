@@ -270,11 +270,7 @@ class BookingController extends Controller
                 })->when($type == 'denied', function ($query) {
                     $query->where('is_verified', '2');
                 })
-<<<<<<< HEAD
                     ->where('payment_method', 'payment_after_service')
-=======
-                    ->where('payment_method', 'cash_after_service')
->>>>>>> newversion/main
                     ->Where('total_booking_amount', '>', $maxBookingAmount)
                     ->whereIn('booking_status', ['pending', 'accepted']);
             })
@@ -430,14 +426,7 @@ class BookingController extends Controller
 
             $booking = $this->booking->with(['detail.service' => function ($query) {
                 $query->withTrashed();
-<<<<<<< HEAD
             }, 'detail.service.category', 'detail.service.subCategory', 'detail.variation', 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-            }, 'detail.service.category', 'detail.service.subCategory', 'detail.variation', 'customer', 'provider', 'serviceman', 'status_histories.user'])
-                ->find($id);
-
-            $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
->>>>>>> newversion/main
 
             $servicemen = $this->serviceman->with(['user'])
                 ->where('provider_id', $booking?->provider_id)
@@ -454,11 +443,7 @@ class BookingController extends Controller
             $customerAddress = $this->userAddress->find($booking['service_address_id']);
             $zones = Zone::ofStatus(1)->withoutGlobalScope('translate')->get();
 
-<<<<<<< HEAD
             $providers = $this->provider
-=======
-            $allProviders = $this->provider
->>>>>>> newversion/main
                 ->when($request->has('search'), function ($query) use ($request) {
                     $keys = explode(' ', $request['search']);
                     return $query->where(function ($query) use ($keys) {
@@ -481,34 +466,11 @@ class BookingController extends Controller
                 })
                 ->where('service_availability', 1)
                 ->withCount('reviews')
-<<<<<<< HEAD
                 ->ofApproval(1)->ofStatus(1)->get();
 
             $sort_by = 'default';
             $id = "325778a8-53bd-4de5-a6bb-826f62edf603";
             $zoneCenter = Zone::selectRaw("*,ST_AsText(ST_Centroid(`coordinates`)) as center")->withoutGlobalScope('translate')->find($id);
-=======
-                ->ofApproval(1)->ofStatus(1)
-                ->whereNot('id', $booking->provider_id)
-                ->get();
-
-            $providers = [];
-
-            foreach ($allProviders as $provider) {
-                $serviceLocation = getProviderSettings(providerId: $provider->id, key: 'service_location', type: 'provider_config');
-
-                if (in_array($booking->service_location, $serviceLocation)) {
-                    $providers[] = $provider;
-                }
-            }
-
-            $currentlyAssignProvider = $booking->provider_id
-                ? $this->provider->withCount('bookings', 'reviews')->find($booking->provider_id)
-                : null;
-
-            $sort_by = 'default';
-            $zoneCenter = Zone::selectRaw("*,ST_AsText(ST_Centroid(`coordinates`)) as center")->withoutGlobalScope('translate')->find($booking->zone_id);
->>>>>>> newversion/main
 
             $currentZone = [];
             $centerLat = [];
@@ -523,18 +485,12 @@ class BookingController extends Controller
                 $area = json_decode($zoneCenter->coordinates[0]->toJson(), true);
             }
 
-<<<<<<< HEAD
-            return view('bookingmodule::admin.booking.details', compact('zoneCenter', 'currentZone', 'centerLat', 'centerLng', 'area', 'booking', 'servicemen', 'webPage', 'customerAddress', 'services', 'zones', 'category', 'subCategory', 'providers', 'sort_by'));
-        } elseif ($request->web_page == 'status') {
-            $booking = $this->booking->with(['detail.service', 'customer', 'provider', 'service_address', 'serviceman.user', 'service_address', 'status_histories.user'])->find($id);
-=======
             return view('bookingmodule::admin.booking.details', compact('zoneCenter', 'currentZone', 'centerLat', 'centerLng', 'area', 'booking', 'servicemen', 'webPage', 'customerAddress', 'services', 'zones', 'category', 'subCategory', 'providers', 'sort_by', 'currentlyAssignProvider'));
         } elseif ($request->web_page == 'status') {
             $booking = $this->booking->with(['detail.service', 'customer', 'provider', 'service_address', 'serviceman.user', 'service_address', 'status_histories.user'])->find($id);
 
             $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
->>>>>>> newversion/main
             $servicemen = $this->serviceman->with(['user'])
                 ->where('provider_id', $booking?->provider_id)
                 ->whereHas('user', function ($query) {
@@ -548,55 +504,57 @@ class BookingController extends Controller
             $customerAddress = $this->userAddress->find($booking['service_address_id']);
             $zones = Zone::ofStatus(1)->withoutGlobalScope('translate')->get();
 
-<<<<<<< HEAD
-            $providers = $this->provider
-=======
-            $allProviders = $this->provider
->>>>>>> newversion/main
-                ->when($request->has('search'), function ($query) use ($request) {
-                    $keys = explode(' ', $request['search']);
-                    return $query->where(function ($query) use ($keys) {
-                        foreach ($keys as $key) {
-                            $query->orWhere('company_phone', 'LIKE', '%' . $key . '%')
-                                ->orWhere('company_email', 'LIKE', '%' . $key . '%')
-                                ->orWhere('company_name', 'LIKE', '%' . $key . '%');
-                        }
-                    });
-                })
-                ->when(isset($booking->sub_category_id), function ($query) use ($request, $booking) {
-                    $query->whereHas('subscribed_services', function ($query) use ($request, $booking) {
-                        $query->where('sub_category_id', $booking->sub_category_id)->where('is_subscribed', 1);
-                    });
-                })
-                ->where('zone_id', $booking->zone_id)
-                ->withCount('bookings', 'reviews')
-<<<<<<< HEAD
-                ->ofApproval(1)->ofStatus(1)->get();
-            $sort_by = 'default';
-            return view('bookingmodule::admin.booking.status', compact('booking', 'webPage', 'servicemen', 'customerAddress', 'category', 'subCategory', 'services', 'providers', 'zones', 'sort_by'));
-=======
-                ->ofApproval(1)->ofStatus(1)
-                ->whereNot('id', $booking->provider_id)
-                ->get();
+        $allProviders = $this->provider
+            ->when($request->has('search'), function ($query) use ($request) {
+                $keys = explode(' ', $request['search']);
+                return $query->where(function ($query) use ($keys) {
+                    foreach ($keys as $key) {
+                        $query->orWhere('company_phone', 'LIKE', '%' . $key . '%')
+                            ->orWhere('company_email', 'LIKE', '%' . $key . '%')
+                            ->orWhere('company_name', 'LIKE', '%' . $key . '%');
+                    }
+                });
+            })
+            ->when(isset($booking->sub_category_id), function ($query) use ($booking) {
+                $query->whereHas('subscribed_services', function ($query) use ($booking) {
+                    $query->where('sub_category_id', $booking->sub_category_id)->where('is_subscribed', 1);
+                });
+            })
+            ->where('zone_id', $booking->zone_id)
+            ->withCount('bookings', 'reviews')
+            ->ofApproval(1)->ofStatus(1)
+            ->whereNot('id', $booking->provider_id)
+            ->get();
 
-            $providers = [];
+        $providers = [];
 
-            foreach ($allProviders as $provider) {
-                $serviceLocation = getProviderSettings(providerId: $provider->id, key: 'service_location', type: 'provider_config');
-
-                if (in_array($booking->service_location, $serviceLocation)) {
-                    $providers[] = $provider;
-                }
+        foreach ($allProviders as $provider) {
+            $serviceLocation = getProviderSettings(providerId: $provider->id, key: 'service_location', type: 'provider_config');
+            if (in_array($booking->service_location, $serviceLocation)) {
+                $providers[] = $provider;
             }
-
-            $currentlyAssignProvider = $booking->provider_id
-                ? $this->provider->withCount('bookings', 'reviews')->find($booking->provider_id)
-                : null;
-
-            $sort_by = 'default';
-            return view('bookingmodule::admin.booking.status', compact('booking', 'webPage', 'servicemen', 'customerAddress', 'category', 'subCategory', 'services', 'providers', 'zones', 'sort_by', 'currentlyAssignProvider'));
->>>>>>> newversion/main
         }
+
+        $currentlyAssignProvider = $booking->provider_id
+            ? $this->provider->withCount('bookings', 'reviews')->find($booking->provider_id)
+            : null;
+
+        $sort_by = 'default';
+
+        return view('bookingmodule::admin.booking.status', compact(
+            'booking',
+            'webPage',
+            'servicemen',
+            'customerAddress',
+            'category',
+            'subCategory',
+            'services',
+            'providers',
+            'zones',
+            'sort_by',
+            'currentlyAssignProvider'
+        ));
+
 
         Toastr::success(translate(ACCESS_DENIED['message']));
         return back();
@@ -620,14 +578,8 @@ class BookingController extends Controller
         $booking = $this->booking->with(['repeat.detail.service','repeat.scheduleHistories','repeat.repeatHistories', 'detail.service' => function ($query) {
             $query->withTrashed();
         }, 'detail.service.category', 'detail.service.subCategory', 'detail.variation', 'customer', 'provider',
-<<<<<<< HEAD
             'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-            'serviceman', 'status_histories.user'])
-            ->find($id);
-
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
->>>>>>> newversion/main
 
         $servicemen = $this->serviceman->with(['user'])
             ->where('provider_id', $booking?->provider_id)
@@ -789,7 +741,6 @@ class BookingController extends Controller
         ]);
         $webPage = $request->has('web_page') ? $request['web_page'] : 'business_setup';
 
-<<<<<<< HEAD
 
             $booking = $this->bookingRepeat->with(['booking', 'detail.service' => function ($query) {
                 $query->withTrashed();
@@ -851,7 +802,6 @@ class BookingController extends Controller
 
                 $area = json_decode($zoneCenter->coordinates[0]->toJson(), true);
             }
-=======
         $booking = $this->bookingRepeat->with(['booking', 'detail.service' => function ($query) {
             $query->withTrashed();
         }, 'detail.service', 'scheduleHistories.user', 'statusHistories.user', 'booking.service_address', 'booking.customer', 'booking.provider', 'serviceman.user'])
@@ -921,7 +871,6 @@ class BookingController extends Controller
 
             $area = json_decode($zoneCenter->coordinates[0]->toJson(), true);
         }
->>>>>>> newversion/main
         if ($request->web_page == 'details') {
             return view('bookingmodule::admin.booking.rebooking-ongoing', compact('zoneCenter', 'currentZone', 'centerLat', 'centerLng', 'area', 'booking', 'servicemen', 'webPage', 'customerAddress', 'services', 'zones', 'category', 'subCategory', 'providers', 'sort_by'));
 
@@ -1102,11 +1051,7 @@ class BookingController extends Controller
             $bookingStatusHistory->booking_repeat_id = $repeatBooking->id;
 
             if ($repeatBooking->isDirty('booking_status')) {
-<<<<<<< HEAD
                 DB::transaction(function () use ($bookingStatusHistory, $repeatBooking,) {
-=======
-                DB::transaction(function () use ($bookingStatusHistory, $repeatBooking) {
->>>>>>> newversion/main
                     $repeatBooking->save();
                     $bookingStatusHistory->save();
                 });
@@ -1602,14 +1547,10 @@ class BookingController extends Controller
     {
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.invoice', compact('booking'));
     }
 
@@ -1623,13 +1564,9 @@ class BookingController extends Controller
     {
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user','repeat'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user','repeat'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
->>>>>>> newversion/main
 
         return view('bookingmodule::admin.booking.fullbooking-invoice', compact('booking'));
     }
@@ -1646,11 +1583,8 @@ class BookingController extends Controller
             $query->withTrashed();
         }, 'booking', 'provider', 'serviceman'])->find($id);
 
-<<<<<<< HEAD
-=======
         $booking->booking->service_address = $booking->booking->service_address_location != null ? json_decode($booking->booking->service_address_location) : $booking->booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.fullbooking-single-invoice', compact('booking'));
     }
 
@@ -1665,13 +1599,9 @@ class BookingController extends Controller
         App::setLocale($lang);
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user','repeat'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user','repeat'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
->>>>>>> newversion/main
 
         return view('bookingmodule::admin.booking.fullbooking-invoice', compact('booking'));
     }
@@ -1689,11 +1619,8 @@ class BookingController extends Controller
             $query->withTrashed();
         }, 'booking', 'provider', 'serviceman'])->find($id);
 
-<<<<<<< HEAD
-=======
         $booking->booking->service_address = $booking->booking->service_address_location != null ? json_decode($booking->booking->service_address_location) : $booking->booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.fullbooking-single-invoice', compact('booking'));
     }
 
@@ -1708,13 +1635,9 @@ class BookingController extends Controller
         App::setLocale($lang);
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user','repeat'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user','repeat'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
->>>>>>> newversion/main
 
         return view('bookingmodule::admin.booking.fullbooking-invoice', compact('booking'));
     }
@@ -1732,11 +1655,8 @@ class BookingController extends Controller
             $query->withTrashed();
         }, 'booking', 'provider', 'serviceman'])->find($id);
 
-<<<<<<< HEAD
-=======
         $booking->booking->service_address = $booking->booking->service_address_location != null ? json_decode($booking->booking->service_address_location) : $booking->booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.fullbooking-single-invoice', compact('booking'));
     }
 
@@ -1753,11 +1673,8 @@ class BookingController extends Controller
             $query->withTrashed();
         }, 'booking', 'provider', 'serviceman'])->find($id);
 
-<<<<<<< HEAD
-=======
         $booking->booking->service_address = $booking->booking->service_address_location != null ? json_decode($booking->booking->service_address_location) : $booking->booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.fullbooking-single-invoice', compact('booking'));
     }
 
@@ -1772,14 +1689,10 @@ class BookingController extends Controller
         App::setLocale($lang);
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.invoice', compact('booking'));
     }
 
@@ -1794,14 +1707,10 @@ class BookingController extends Controller
         App::setLocale($lang);
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.invoice', compact('booking'));
     }
 
@@ -1816,14 +1725,10 @@ class BookingController extends Controller
         App::setLocale($lang);
         $booking = $this->booking->with(['detail.service' => function ($query) {
             $query->withTrashed();
-<<<<<<< HEAD
         }, 'customer', 'provider', 'service_address', 'serviceman', 'service_address', 'status_histories.user'])->find($id);
-=======
-        }, 'customer', 'provider', 'serviceman', 'status_histories.user'])->find($id);
 
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
->>>>>>> newversion/main
         return view('bookingmodule::admin.booking.invoice', compact('booking'));
     }
 
@@ -2210,7 +2115,6 @@ class BookingController extends Controller
         return back();
     }
 
-<<<<<<< HEAD
     /**
      * @param Request $request
      * @return JsonResponse
@@ -2219,15 +2123,14 @@ class BookingController extends Controller
     public function verifyOfflinePayment(Request $request): JsonResponse
     {
 
-=======
 
     public function verifyOfflinePayment(Request $request)
     {
->>>>>>> newversion/main
         $this->authorize('booking_can_manage_status');
 
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|uuid',
+            'payment_status' => 'required|in:approved,denied', // Ensure this is passed for decision
         ]);
 
         if ($validator->fails()) {
@@ -2235,32 +2138,19 @@ class BookingController extends Controller
         }
 
         $booking = $this->booking->find($request['booking_id']);
-<<<<<<< HEAD
-        $booking->is_paid = 1;
-        $booking->save();
-
-        $user = $booking->customer;
-        $offline = isNotificationActive(null, 'booking', 'notification', 'user');
-        $title = get_push_notification_message('offline_payment_approved', 'customer_notification', $user?->current_language_key);
-        if ($user?->fcm_token && $title && $offline) {
-            device_notification($user?->fcm_token, $title, null, null, $booking->id, 'booking', null, $user->id);
-        }
-
-        placeBookingTransactionForDigitalPayment($booking);
-
-        return response()->json(response_formatter(DEFAULT_UPDATE_200, null), 200);
-=======
 
         if (!$booking) {
             return response()->json(response_formatter(DEFAULT_404, 'Booking not found'), 404);
         }
 
-        // Update booking payment status
+        // Determine if payment is approved
         $isApproved = $request->payment_status == 'approved';
+
+        // Update booking payment status
         $booking->is_paid = $isApproved ? 1 : 0;
         $booking->save();
 
-        // Update offline payment status
+        // Update offline payment record
         $offlinePayment = $booking->booking_offline_payments?->first();
         if ($offlinePayment) {
             $offlinePayment->payment_status = $request->payment_status;
@@ -2268,7 +2158,7 @@ class BookingController extends Controller
             $offlinePayment->save();
         }
 
-        // Handle notifications and transactions for approved payments
+        // Handle notification and transaction if approved
         if ($isApproved) {
             $user = $booking->customer;
             $offline = isNotificationActive(null, 'booking', 'notification', 'user');
@@ -2282,10 +2172,10 @@ class BookingController extends Controller
             return response()->json(response_formatter(DEFAULT_UPDATE_200, null), 200);
         }
 
-        Toastr::success(translate(DEFAULT_UPDATE_200['message']));
-        return back();
->>>>>>> newversion/main
+        // If denied, return success message
+        return response()->json(response_formatter(DEFAULT_UPDATE_200, 'Payment denied and updated'), 200);
     }
+
 
     public function reBookingDetails(Request $request, $id)
     {
@@ -2405,8 +2295,6 @@ class BookingController extends Controller
     {
         return view('bookingmodule::admin.booking.rebooking-ongoing');
     }
-<<<<<<< HEAD
-=======
 
     public function switchPaymentMethod($bookingId, Request $request)
     {
@@ -2583,5 +2471,4 @@ class BookingController extends Controller
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));
         return back();
     }
->>>>>>> newversion/main
 }

@@ -388,11 +388,9 @@
                 },
                 onFinished: function (event, currentIndex) {
                     event.preventDefault();
-<<<<<<< HEAD
                     let hasRows = $("#variation-table > tr").length > 0;
                     if (hasRows) {
                         formWizard.submit();
-=======
                     let isValid = true;
                     $(".desc-err").remove(); // Remove previous error messages
 
@@ -436,7 +434,6 @@
                         submitButton.prop("disabled", true); // Disable actual submit button
 
                         formWizard.off("submit").submit(); // Ensure it submits only once
->>>>>>> newversion/main
                     } else {
                         var errorMessageElement = formWizard.find(".table-row-err");
 
@@ -452,7 +449,6 @@
         })(jQuery);
     </script>
 
-<<<<<<< HEAD
 
     {{-- <script>
         (function ($) {
@@ -548,8 +544,6 @@
         })(jQuery);
     </script> --}}
 
-=======
->>>>>>> newversion/main
     <script>
         "use strict";
 
@@ -562,7 +556,6 @@
 
         var variationCount = $("#variation-table > tbody > tr").length;
 
-<<<<<<< HEAD
         // $("#form-wizard").steps({
         //     headerTag: "h3",
         //     bodyTag: "section",
@@ -583,8 +576,6 @@
         //         }
         //     }
         // });
-=======
->>>>>>> newversion/main
 
         $("#service-ajax-variation").on('click', function (){
             let route = "{{route('admin.service.ajax-add-variant')}}";
@@ -597,11 +588,7 @@
             let name = $('#variant-name').val();
             let price = $('#variant-price').val();
 
-<<<<<<< HEAD
-            if (name.length > 0 && price >= 0) {
-=======
             if (name.length > 0 && price > 0) {
->>>>>>> newversion/main
                 $.get({
                     url: route,
                     dataType: 'json',
@@ -609,12 +596,6 @@
                         name: $('#variant-name').val(),
                         price: $('#variant-price').val(),
                     },
-<<<<<<< HEAD
-                    beforeSend: function () {
-                        /*$('#loading').show();*/
-                    },
-=======
->>>>>>> newversion/main
                     success: function (response) {
                         if (response.flag == 0) {
                             toastr.info('Already added');
@@ -626,14 +607,12 @@
                         }
                         variationCount++;
                     },
-<<<<<<< HEAD
                     complete: function () {
                         /*$('#loading').hide();*/
                     },
                 });
             } else {
                 toastr.warning('{{translate('fields_are_required')}}');
-=======
                 });
             } else {
                 if(price <= 0){
@@ -641,7 +620,6 @@
                 }else{
                     toastr.warning('{{translate('fields_are_required')}}');
                 }
->>>>>>> newversion/main
             }
         }
 

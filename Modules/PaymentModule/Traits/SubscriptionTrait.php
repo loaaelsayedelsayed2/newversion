@@ -162,11 +162,8 @@ trait SubscriptionTrait
                 vat: $calculationVat
             );
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> newversion/main
             $startDate  = Carbon::now();
             $endDate    = Carbon::now()->addDays($duration)->subDay();
 
@@ -181,10 +178,7 @@ trait SubscriptionTrait
             $packageSubscriberLog->vat_percentage           = $vatPercentage;
             $packageSubscriberLog->subscription_package_id  = $id;
             $packageSubscriberLog->primary_transaction_id  = $transactionId;
-<<<<<<< HEAD
             $packageSubscriberLog->payment_method  = $request->payment_method ?? 'Moyasar';
-=======
->>>>>>> newversion/main
             $packageSubscriberLog->save();
 
             $packageSubscriber                              = new PackageSubscriber();
@@ -644,7 +638,6 @@ trait SubscriptionTrait
             }
         }
     }
-<<<<<<< HEAD
 
     public static function handlenewPackageSubscription($id, $provider, $request, $price, $name): bool
     {
@@ -767,6 +760,4 @@ trait SubscriptionTrait
             }
         }
     }
-=======
->>>>>>> newversion/main
 }

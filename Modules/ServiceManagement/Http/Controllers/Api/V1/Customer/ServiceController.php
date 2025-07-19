@@ -157,7 +157,6 @@ class ServiceController extends Controller
                     });
                 }
             })
-<<<<<<< HEAD
             ->where(function ($query) {
                 $query->whereDoesntHave('service_discount')
                     ->orWhereHas('service_discount');
@@ -166,18 +165,6 @@ class ServiceController extends Controller
                 $query->whereDoesntHave('category.category_discount')
                     ->orWhereHas('category.category_discount');
             })
-=======
-
-//            ->where(function ($query) {
-//                $query->whereDoesntHave('service_discount')
-//                    ->orWhereHas('service_discount');
-//            })
-//            ->orWhere(function ($query) {
-//                $query->whereDoesntHave('category.category_discount')
-//                    ->orWhereHas('category.category_discount');
-//            })
-
->>>>>>> newversion/main
             ->when(!is_null($request['rating']), function ($query) use ($request){
                 return $query->where('avg_rating', '>=', $request['rating']);
             })
@@ -297,14 +284,11 @@ class ServiceController extends Controller
         ]), 200);
     }
 
-<<<<<<< HEAD
     /**
      * Display a listing of the resource.
      * @param Request $request
      * @return JsonResponse
      */
-=======
->>>>>>> newversion/main
     public function searchSuggestions(Request $request)
     {
         $searchString = $request->input('string');
@@ -336,11 +320,7 @@ class ServiceController extends Controller
             $searchQuery->orWhere('name', 'LIKE', "%$word%");
         }
 
-<<<<<<< HEAD
-        $servicesResult = $searchQuery->active()->pluck('name');
-=======
         $servicesResult = $searchQuery->active()->take(100)->get();
->>>>>>> newversion/main
 
         $categoryServices = $this->service->withoutGlobalScopes()->with('category')
             ->whereHas('category', function ($query) use ($decodedString) {
@@ -349,12 +329,8 @@ class ServiceController extends Controller
             ->whereHas('category.zones', function ($query) {
                 $query->where('zone_id', Config::get('zone_id'));
             })
-<<<<<<< HEAD
-            ->pluck('name');
-=======
             ->take(100)
             ->get();
->>>>>>> newversion/main
 
         $subCategoryServices = $this->service->withoutGlobalScopes()->with('subCategory')
             ->whereHas('subCategory', function ($query) use ($decodedString) {
@@ -363,12 +339,8 @@ class ServiceController extends Controller
             ->whereHas('category.zones', function ($query) {
                 $query->where('zone_id', Config::get('zone_id'));
             })
-<<<<<<< HEAD
-            ->pluck('name');
-=======
             ->take(100)
             ->get();
->>>>>>> newversion/main
 
         $tagServices = $this->service->withoutGlobalScopes()
             ->whereHas('tags', function ($query) use ($decodedString) {
@@ -377,13 +349,6 @@ class ServiceController extends Controller
             ->whereHas('category.zones', function ($query) {
                 $query->where('zone_id', Config::get('zone_id'));
             })
-<<<<<<< HEAD
-            ->pluck('name');
-
-        $results = $servicesResult->merge($categoryServices)
-            ->merge($subCategoryServices)
-            ->merge($tagServices)
-=======
             ->take(100)
             ->get();
 
@@ -391,7 +356,6 @@ class ServiceController extends Controller
             ->merge($categoryServices->pluck('name'))
             ->merge($subCategoryServices->pluck('name'))
             ->merge($tagServices->pluck('name'))
->>>>>>> newversion/main
             ->unique();
 
         $authUser = auth('api')->user();

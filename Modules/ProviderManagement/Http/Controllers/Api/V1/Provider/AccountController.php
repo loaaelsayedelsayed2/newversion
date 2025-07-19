@@ -43,11 +43,8 @@ class AccountController extends Controller
     {
         $vat   = (int)((business_config('subscription_vat', 'subscription_Setting'))->live_values ?? 0);
         $provider = $this->provider->with('owner.account')->where('user_id', $request->user()->id)->first();
-<<<<<<< HEAD
-       
-        
-=======
->>>>>>> newversion/main
+
+
         $limitStatus = provider_warning_amount_calculate($provider->owner->account->account_payable,$provider->owner->account->account_receivable);
         $provider['cash_limit_status'] = $limitStatus == false ? 'available' : $limitStatus;
         $bookingOverview = DB::table('bookings')->where('provider_id', $request->user()->provider->id)
@@ -71,56 +68,33 @@ class AccountController extends Controller
             ->whereIn('trx_type', ['subscription_purchase', 'subscription_renew', 'subscription_shift', 'subscription_refund'])
             ->where('from_user_id', $provider->id)
             ->orWhere('to_user_id', $provider->id)->count();
-<<<<<<< HEAD
-            
-        $packageSubscriber = PackageSubscriber::where('provider_id', $provider->id)->first();
-        PackageSubscriber::where('provider_id', $provider->id)
-            ->with('feature', 'limits', 'package', 'payment')
-            ->first();
-        $formattedPackage = null;
-        $renewal = null;
-        
-=======
         $packageSubscriber = $this->packageSubscriber->where('provider_id', $provider->id)
             ->with('feature', 'limits', 'package', 'payment')
             ->first();
 
         $formattedPackage = null;
         $renewal = null;
->>>>>>> newversion/main
         if ($packageSubscriber) {
             $formattedPackage = apiPackageSubscriber($packageSubscriber, PACKAGE_FEATURES);
 
             $renewal = $this->subscriptionPackage->where('id', $packageSubscriber?->subscription_package_id)->first();
-<<<<<<< HEAD
             $status = 'subscription_base';
         }else{
             $status = 'commission_base';
         }
-            
+
             $totalSubscription = 0;
 
 
 
-        
-        if (is_array($formattedPackage) || is_object($formattedPackage)) {
-            
-            $numberOfUses = $formattedPackage['number_of_uses'] ?? ($formattedPackage->number_of_uses ?? 0);
-        
-            $totalSubscription = $numberOfUses;
-            $status = $numberOfUses < 0 ? 'commission_base' : 'subscription_base';
-        
-=======
-        }
-
-        $totalSubscription = 0;
-        $status = 'commission_base';
 
         if (is_array($formattedPackage) || is_object($formattedPackage)) {
+
             $numberOfUses = $formattedPackage['number_of_uses'] ?? ($formattedPackage->number_of_uses ?? 0);
+
             $totalSubscription = $numberOfUses;
             $status = $numberOfUses < 0 ? 'commission_base' : 'subscription_base';
->>>>>>> newversion/main
+
         }
 
         $packageInfo = [

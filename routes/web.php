@@ -4,7 +4,6 @@ use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 use Modules\BusinessSettingsModule\Entities\BusinessSettings;
 use Illuminate\Support\Facades\Http;
-use Modules\BusinessSettingsModule\Entities\BusinessSettings;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\ProviderManagement\Entities\ProviderSetting;
 

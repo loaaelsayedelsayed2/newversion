@@ -28,10 +28,7 @@ use Modules\BookingModule\Entities\BookingStatusHistory;
 use Modules\BookingModule\Entities\BookingScheduleHistory;
 use Modules\ProviderManagement\Entities\SubscribedService;
 use Modules\BusinessSettingsModule\Entities\BusinessSettings;
-<<<<<<< HEAD
-=======
 use Modules\UserManagement\Entities\UserAddress;
->>>>>>> newversion/main
 
 trait BookingTrait
 {
@@ -44,44 +41,29 @@ trait BookingTrait
      * @param int $isGuest
      * @return array|string[]
      */
-<<<<<<< HEAD
-    public function placeBookingRequest($userId, $request, $transactionId, int $isGuest = 0): array
-    {
-=======
     public function placeBookingRequest($userId, $request, $transactionId, $newUserInfo = null, int $isGuest = 0): array
     {
         $oldUserId = $userId;
->>>>>>> newversion/main
         $cartData = Cart::where(['customer_id' => $userId])->get();
 
         if ($cartData->count() == 0) {
             return ['flag' => 'failed', 'message' => 'no data found'];
         }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> newversion/main
         $isPartials = $request['is_partial'] ? 1 : 0;
         $customerWalletBalance = User::find($userId)?->wallet_balance;
         if ($isPartials && $isGuest && ($customerWalletBalance <= 0 || $customerWalletBalance >= $cartData->sum('total_cost'))) {
             return ['flag' => 'failed', 'message' => 'Invalid data'];
         }
 
-<<<<<<< HEAD
-        $bookingIds = [];
-=======
         $loginToken = null;
         $bookingIds = [];
 
->>>>>>> newversion/main
         foreach ($cartData->pluck('sub_category_id')->unique() as $subCategory) {
 
             $booking = new Booking();
 
-<<<<<<< HEAD
-            DB::transaction(function () use ($subCategory, $booking, $transactionId, $request, $cartData, $userId, $isGuest, $isPartials, $customerWalletBalance) {
-=======
             DB::transaction(function () use ($subCategory, $booking, $transactionId, $request, $cartData, $isGuest, $isPartials, $customerWalletBalance,
                 &$userId, // Pass by reference
                 &$loginToken, // Pass by reference,
@@ -96,7 +78,6 @@ trait BookingTrait
                     $isGuest = 0;
                 }
 
->>>>>>> newversion/main
                 $cartData = $cartData->where('sub_category_id', $subCategory);
 
                 if ($request->has('payment_method') && $request['payment_method'] == 'cash_after_service') {
@@ -104,23 +85,10 @@ trait BookingTrait
 
                 } else if ($request->has('payment_method') && $request['payment_method'] == 'wallet_payment') {
                     $transactionId = 'wallet-payment';
-<<<<<<< HEAD
-
-                } else if ($request->has('payment_method') && $request['payment_method'] == 'moyasar') {
-
-                    $transactionId = 'moyasar';
-                } else if($request->has('payment_method') && $request['payment_method'] == 'payment_after_service'){
-                    $transactionId = 'digit-payment';
-
-                }
-
-                $totalBookingAmount = $cartData->sum('total_cost');
-=======
                 }
 
                 $totalBookingAmount = $cartData->sum('total_cost');
 
->>>>>>> newversion/main
                 $referralDiscount = 0;
                 $zoneId = config('zone_id') == null ? $request['zone_id'] : config('zone_id');
                 $referralDiscount += $this->referralEarningCalculationForFirstBooking($userId, $totalBookingAmount - $cartData->sum('tax_amount'), $zoneId);
@@ -139,24 +107,16 @@ trait BookingTrait
                 $booking->sub_category_id = $subCategory;
                 $booking->zone_id = $zoneId;
                 $booking->booking_status = 'pending';
-<<<<<<< HEAD
                 $booking->is_paid = $request['payment_method'] == 'cash_after_service' || $request['payment_method'] == 'payment_after_service' || $request['payment_method'] == 'offline_payment' ? 0 : 1;
                 $booking->payment_method = $request['payment_method'];
                 $booking->paid_by = 'customer ';
-=======
-                $booking->is_paid = $request['payment_method'] == 'cash_after_service' || $request['payment_method'] == 'offline_payment' ? 0 : 1;
-                $booking->payment_method = $request['payment_method'];
->>>>>>> newversion/main
                 $booking->transaction_id = $transactionId;
                 $booking->total_booking_amount = $totalBookingAmount;
                 $booking->total_tax_amount = $cartData->sum('tax_amount');
                 $booking->total_discount_amount = $cartData->sum('discount_amount');
                 $booking->total_campaign_discount_amount = $cartData->sum('campaign_discount');
                 $booking->total_coupon_discount_amount = $cartData->sum('coupon_discount');
-<<<<<<< HEAD
                 $booking->coupon_id = $cartData->first()->coupon_id;
-=======
->>>>>>> newversion/main
                 $booking->coupon_code = $cartData->first()->coupon_code;
                 $booking->service_schedule = date('Y-m-d H:i:s', strtotime($request['service_schedule'])) ?? now()->addHours(5);
                 $booking->service_address_id = $request['service_address_id'] ?? '';
@@ -164,16 +124,10 @@ trait BookingTrait
                 $booking->is_guest = $isGuest;
                 $booking->extra_fee = $extraFee;
                 $booking->total_referral_discount_amount = $referralDiscount;
-<<<<<<< HEAD
-                $booking->save();
-
-
-=======
                 $booking->service_address_location = json_encode(UserAddress::find($request['service_address_id'])) ?? null;
                 $booking->service_location = $request['service_location'];
                 $booking->save();
 
->>>>>>> newversion/main
                 if ($isPartials) {
                     $paidAmount = $customerWalletBalance;
                     $due_amount = $totalBookingAmount - $paidAmount;
@@ -185,11 +139,7 @@ trait BookingTrait
                     $bookingPartialPayment->due_amount = $due_amount;
                     $bookingPartialPayment->save();
 
-<<<<<<< HEAD
                     if ($request['payment_method'] != 'cash_after_service' || $booking['payment_method'] != 'payment_after_service') {
-=======
-                    if ($request['payment_method'] != 'cash_after_service') {
->>>>>>> newversion/main
                         $bookingPartialPayment = new BookingPartialPayment;
                         $bookingPartialPayment->booking_id = $booking->id;
                         $bookingPartialPayment->paid_with = $request['payment_method'];
@@ -243,7 +193,6 @@ trait BookingTrait
                 $statusHistory->booking_status = isset($booking->provider_id) ? 'accepted' : 'pending';
                 $statusHistory->save();
 
-<<<<<<< HEAD
 
 
                 if ($booking->booking_partial_payments->isNotEmpty()) {
@@ -263,14 +212,6 @@ trait BookingTrait
                     $bookingOfflinePayment->method_name = OfflinePayment::find($request['offline_payment_id'])?->method_name;
                     $bookingOfflinePayment->customer_information = $customerInformation;
                     $bookingOfflinePayment->save();
-=======
-                if ($booking->booking_partial_payments->isNotEmpty()) {
-                    if ($booking['payment_method'] == 'cash_after_service') {
-                        placeBookingTransactionForPartialCas($booking);  // waller + CAS payment
-                    } elseif ($booking['payment_method'] != 'wallet_payment') {
-                        placeBookingTransactionForPartialDigital($booking);  //wallet + digital payment
-                    }
->>>>>>> newversion/main
                 } elseif ($booking['payment_method'] != 'cash_after_service' && $booking['payment_method'] != 'wallet_payment') {
                     placeBookingTransactionForDigitalPayment($booking);  //digital payment
                 } elseif ($booking['payment_method'] != 'cash_after_service') {
@@ -280,11 +221,9 @@ trait BookingTrait
                 //firebaseTopic
                 $bookingNotification = (int) (business_config('booking_notification', 'business_information'))?->live_values;
                 $bookingNotificationType = (business_config('booking_notification_type', 'business_information'))?->live_values;
-<<<<<<< HEAD
                 if ($bookingNotification && $bookingNotificationType == 'firebase') {
                     try {
                         $topic = 'demandium_provider_' . $booking->zone_id . '_booking_message';
-=======
 
                 if ($bookingNotification && $bookingNotificationType == 'firebase') {
                     try {
@@ -307,24 +246,15 @@ trait BookingTrait
                             }
                         }
 
->>>>>>> newversion/main
                         topic_notification($topic, 'new booking', '', 'def.png', null);
                     } catch (Exception $e) {
                     }
                 }
 
-<<<<<<< HEAD
-
-                $maximumBookingAmount = (business_config('max_booking_amount', 'booking_setup'))?->live_values;
-
-                $bookingNotificationStatus = business_config('booking', 'notification_settings')->live_values;
-                if ($booking->payment_method == 'cash_after_service' || $booking['payment_method'] == 'payment_after_service') {
-=======
                 $maximumBookingAmount = (business_config('max_booking_amount', 'booking_setup'))?->live_values;
 
                 $bookingNotificationStatus = business_config('booking', 'notification_settings')->live_values;
                 if ($booking->payment_method == 'cash_after_service') {
->>>>>>> newversion/main
                     if ($maximumBookingAmount > 0 && $booking->total_booking_amount < $maximumBookingAmount) {
                         if (isset($booking->provider_id) && $booking->booking_status != 'pending') {
                             $provider = Provider::with('owner')->whereId($booking->provider_id)->first();
@@ -351,12 +281,6 @@ trait BookingTrait
                                 $title = get_push_notification_message('new_service_request_arrived', 'provider_notification', optional($provider->owner)->current_language_key);
 
                                 if (!is_null($fcmToken) && $provider->service_availability && $title && $notification && isset($bookingNotificationStatus) && $bookingNotificationStatus['push_notification_booking'] && sendDeviceNotificationPermission($provider->id)) {
-<<<<<<< HEAD
-                                    device_notification($fcmToken, $title, null, null, $booking->id, 'booking');
-                                }
-                            }
-
-=======
                                     $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
                                     $serviceLocations = getProviderSettings(providerId: $provider->id, key: 'service_location', type: 'provider_config') ?? ['customer'];
 
@@ -370,7 +294,6 @@ trait BookingTrait
 
                                 }
                             }
->>>>>>> newversion/main
                         }
                     }
                 } else {
@@ -391,12 +314,6 @@ trait BookingTrait
                         } else {
                             $providers = Provider::with('owner')->whereIn('id', $providerIds)->where('zone_id', $booking->zone_id)->get();
                         }
-<<<<<<< HEAD
-                        foreach ($providers as $provider) {
-                            $fcmToken = $provider->owner->fcm_token ?? null;
-                            $title = get_push_notification_message('new_service_request_arrived', 'provider_notification', $provider?->owner?->current_language_key);
-                            if (!is_null($fcmToken) && $provider?->service_availability && $title && isset($bookingNotificationStatus) && $bookingNotificationStatus['push_notification_booking'] && sendDeviceNotificationPermission($booking?->provider_id)) device_notification($fcmToken, $title, null, null, $booking->id, 'booking');
-=======
 
                         foreach ($providers as $provider) {
                             $fcmToken = $provider->owner->fcm_token ?? null;
@@ -414,7 +331,6 @@ trait BookingTrait
                                     device_notification($fcmToken, $title, null, null, $booking->id, 'booking');
                                 }
                             }
->>>>>>> newversion/main
                         }
                     }
                 }
@@ -422,24 +338,12 @@ trait BookingTrait
             $bookingIds[] = $booking->id;
         }
 
-<<<<<<< HEAD
-        cart_clean($userId);
-=======
         cart_clean($oldUserId);
->>>>>>> newversion/main
         event(new BookingRequested($booking));
 
         return [
             'flag' => 'success',
             'booking_id' => $bookingIds,
-<<<<<<< HEAD
-            'readable_id' => $booking->readable_id
-        ];
-    }
-
-    public function placeRepeatBookingRequest($userId, $request, $transactionId, int $isGuest = 0): array
-    {
-=======
             'readable_id' => $booking->readable_id,
             'token' => $loginToken,
         ];
@@ -447,30 +351,19 @@ trait BookingTrait
     public function placeRepeatBookingRequest($userId, $request, $transactionId, $newUserInfo = null, int $isGuest = 0): array
     {
         $oldUserId = $userId;
->>>>>>> newversion/main
         $cartData = Cart::where(['customer_id' => $userId])->get();
 
         if ($cartData->count() == 0) {
             return ['flag' => 'failed', 'message' => 'no data found'];
         }
 
-<<<<<<< HEAD
-        $bookingIds = [];
-=======
         $loginToken = null;
         $bookingIds = [];
 
->>>>>>> newversion/main
         foreach ($cartData->pluck('sub_category_id')->unique() as $subCategory) {
 
             $booking = new Booking();
 
-<<<<<<< HEAD
-            DB::transaction(function () use ($subCategory, $booking, $transactionId, $request, $cartData, $userId, $isGuest) {
-                $cartData = $cartData->where('sub_category_id', $subCategory);
-
-                if ($request->has('payment_method') && $request['payment_method'] == 'cash_after_service' || $request['payment_method'] == 'payment_after_service') {
-=======
             DB::transaction(function () use ($subCategory, $booking, $transactionId, $request, $cartData, $isGuest,
                 &$userId, // Pass by reference
                 &$loginToken, // Pass by reference,
@@ -488,7 +381,6 @@ trait BookingTrait
                 $cartData = $cartData->where('sub_category_id', $subCategory);
 
                 if ($request->has('payment_method') && $request['payment_method'] == 'cash_after_service') {
->>>>>>> newversion/main
                     $transactionId = 'cash-payment';
 
                 }
@@ -532,11 +424,8 @@ trait BookingTrait
                     $totalDiscount = $cartData->sum('coupon_discount') * $maxCouponUsagePerUser;
                 }
 
-<<<<<<< HEAD
-=======
                 $serviceAddress = json_encode(UserAddress::find($request['service_address_id'])) ?? null;
 
->>>>>>> newversion/main
                 $booking->customer_id = $userId;
                 $booking->provider_id = $cartData->first()->provider_id;
                 $booking->category_id = $cartData->first()->category_id;
@@ -556,11 +445,8 @@ trait BookingTrait
                 $booking->is_guest = $isGuest;
                 $booking->assigned_by = $cartData->first()->provider_id ? 'customer' : null;
                 $booking->is_repeated = 1;
-<<<<<<< HEAD
-=======
                 $booking->service_location = $request->service_location;
                 $booking->service_address_location = $serviceAddress;
->>>>>>> newversion/main
                 $booking->save();
 
                 foreach ($cartData as $data) {
@@ -605,11 +491,8 @@ trait BookingTrait
                     $repeatBooking->total_referral_discount_amount = $index < 1 ? $referralDiscount : 0;
                     $repeatBooking->booking_otp = rand(100000, 999999);
                     $repeatBooking->readable_id = $booking->readable_id . '-' . $suffix;
-<<<<<<< HEAD
-=======
                     $repeatBooking->service_address_location = $serviceAddress;
                     $repeatBooking->service_location = $request->service_location;
->>>>>>> newversion/main
                     $repeatBooking->save();
 
                     $schedule = new BookingScheduleHistory();
@@ -668,9 +551,7 @@ trait BookingTrait
                 $bookingNotificationType = (business_config('booking_notification_type', 'business_information'))?->live_values;
                 if ($bookingNotification && $bookingNotificationType == 'firebase') {
                     try {
-<<<<<<< HEAD
                         $topic = 'demandium_provider_' . $booking->zone_id . '_booking_message';
-=======
                         $serviceAtProviderPlace = (int)(business_config('service_at_provider_place', 'provider_config')->live_values ?? 0);
                         $serviceLocation = $booking->service_location;
                         $zoneId = $booking->zone_id;
@@ -690,7 +571,6 @@ trait BookingTrait
                             }
                         }
 
->>>>>>> newversion/main
                         topic_notification($topic, 'new booking', '', 'def.png', null);
                     } catch (Exception $e) {
                     }
@@ -700,11 +580,7 @@ trait BookingTrait
                 $maximumBookingAmount = (business_config('max_booking_amount', 'booking_setup'))?->live_values;
 
                 $bookingNotificationStatus = business_config('booking', 'notification_settings')->live_values;
-<<<<<<< HEAD
                 if ($booking->payment_method == 'cash_after_service' || $booking->payment_method == 'payment_after_service') {
-=======
-                if ($booking->payment_method == 'cash_after_service') {
->>>>>>> newversion/main
                     if ($maximumBookingAmount > 0 && $booking->total_booking_amount < $maximumBookingAmount) {
                         if (isset($booking->provider_id) && $booking->booking_status != 'pending') {
                             $provider = Provider::with('owner')->whereId($booking->provider_id)->first();
@@ -744,22 +620,15 @@ trait BookingTrait
             $bookingIds[] = $booking->id;
         }
 
-<<<<<<< HEAD
         cart_clean($userId);
-=======
         cart_clean($oldUserId);
->>>>>>> newversion/main
         event(new BookingRequested($booking));
 
         return [
             'flag' => 'success',
             'booking_id' => $bookingIds,
-<<<<<<< HEAD
-            'readable_id' => $booking->readable_id
-=======
             'readable_id' => $booking->readable_id,
             'token' => $loginToken,
->>>>>>> newversion/main
         ];
     }
 
@@ -789,11 +658,7 @@ trait BookingTrait
 
         DB::transaction(function () use ($booking, $transactionId, $request, $customerUserId, $data) {
 
-<<<<<<< HEAD
             if ($request->has('payment_method') && $request['payment_method'] == 'cash_after_service' || $request['payment_method'] == 'payment_after_service') {
-=======
-            if ($request->has('payment_method') && $request['payment_method'] == 'cash_after_service') {
->>>>>>> newversion/main
                 $transactionId = 'cash-payment';
 
             } else if ($request->has('payment_method') && $request['payment_method'] == 'wallet_payment') {
@@ -829,13 +694,8 @@ trait BookingTrait
             $booking->category_id = $data['category_id'];
             $booking->sub_category_id = $data['sub_category_id'];
             $booking->zone_id = $data['zone_id'];
-<<<<<<< HEAD
             $booking->booking_status = 'pending';
             $booking->is_paid = $data['payment_method'] == 'cash_after_service' || $data['payment_after_service'] || $request['payment_method'] == 'offline_payment' ? 0 : 1;;
-=======
-            $booking->booking_status = 'accepted';
-            $booking->is_paid = $data['payment_method'] == 'cash_after_service' || $request['payment_method'] == 'offline_payment' ? 0 : 1;;
->>>>>>> newversion/main
             $booking->payment_method = $data['payment_method'];
             $booking->transaction_id = $transactionId;
             $booking->total_booking_amount = $totalBookingAmount;
@@ -862,11 +722,7 @@ trait BookingTrait
                 $bookingPartialPayment->due_amount = $due_amount;
                 $bookingPartialPayment->save();
 
-<<<<<<< HEAD
                 if ($request['payment_method'] != 'cash_after_service' || $request['payment_method'] != 'payment_after_service') {
-=======
-                if ($request['payment_method'] != 'cash_after_service') {
->>>>>>> newversion/main
                     $bookingPartialPayment = new BookingPartialPayment;
                     $bookingPartialPayment->booking_id = $booking->id;
                     $bookingPartialPayment->paid_with = 'digital';
@@ -918,7 +774,6 @@ trait BookingTrait
             $statusHistory->save();
 
             if ($booking->booking_partial_payments->isNotEmpty()) {
-<<<<<<< HEAD
                 if ($booking['payment_method'] == 'cash_after_service' || $booking['payment_method'] == 'payment_after_service') {
                     // placeBookingTransactionForPartialCas($booking);  // waller + CAS payment
                     placeBookingTransactionForPaymentAfterService($booking);
@@ -935,27 +790,13 @@ trait BookingTrait
             } elseif ($booking['payment_method'] != 'cash_after_service' && $booking['payment_method'] == 'payment_after_service' && $booking['payment_method'] != 'wallet_payment'  ) {
                 placeBookingTransactionForDigitalPayment($booking);  //digital payment
             } elseif ($booking['payment_method'] != 'cash_after_service' || $booking['payment_method'] != 'payment_after_service') {
-=======
-                if ($booking['payment_method'] == 'cash_after_service') {
-                    placeBookingTransactionForPartialCas($booking);  // waller + CAS payment
-                } elseif ($booking['payment_method'] != 'wallet_payment') {
-                    placeBookingTransactionForPartialDigital($booking);  //wallet + digital payment
-                }
-            } elseif ($booking['payment_method'] != 'cash_after_service' && $booking['payment_method'] != 'wallet_payment') {
-                placeBookingTransactionForDigitalPayment($booking);  //digital payment
-            } elseif ($booking['payment_method'] != 'cash_after_service') {
->>>>>>> newversion/main
                 placeBookingTransactionForWalletPayment($booking);   //wallet payment
             }
 
             $provider = Provider::with('owner')->whereId($booking->provider_id)->first();
             $languageKey = $provider->owner?->current_language_key;
             $maxBookingAmount = (business_config('max_booking_amount', 'booking_setup'))->live_values;
-<<<<<<< HEAD
            if ($booking->payment_method != 'cash_after_service'|| $booking['payment_method'] == 'payment_after_service' || ($booking->payment_method == 'payment_after_service' && $booking->total_booking_amount < $maxBookingAmount)|| ($booking->payment_method == 'cash_after_service' && $booking->total_booking_amount < $maxBookingAmount)){
-=======
-           if ($booking->payment_method != 'cash_after_service' || ($booking->payment_method == 'cash_after_service' && $booking->total_booking_amount < $maxBookingAmount)){
->>>>>>> newversion/main
                if (!is_null($provider?->owner?->fcm_token) && $provider?->is_suspended == 0) {
                    $title = get_push_notification_message('booking_accepted', 'provider_notification', $languageKey);
                    $bookingNotificationStatus = business_config('booking', 'notification_settings')->live_values;
@@ -1400,11 +1241,7 @@ trait BookingTrait
             $removedTotal = round($subtotal - $basicDiscount - $campaignDiscount + $tax, 2);
 
             $refundAmount = 0;
-<<<<<<< HEAD
             if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method != 'payment_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
-=======
-            if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
->>>>>>> newversion/main
                 $refundAmount = $removedTotal;
             }
 
@@ -1518,11 +1355,7 @@ trait BookingTrait
             $removedTotal = $booking->total_booking_amount - $subTotal;
 
             $refundAmount = 0;
-<<<<<<< HEAD
             if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method != 'payment_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
-=======
-            if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
->>>>>>> newversion/main
                 $refundAmount = $removedTotal;
             }
 
@@ -1664,11 +1497,7 @@ trait BookingTrait
             $removedTotal = $booking->total_booking_amount - $subTotal;
 
             $refundAmount = 0;
-<<<<<<< HEAD
             if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method != 'payment_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
-=======
-            if ((($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'offline_payment') || ($booking->payment_method == 'offline_payment' && $booking->is_paid)) && $booking->additional_charge == 0) {
->>>>>>> newversion/main
                 $refundAmount = $removedTotal;
             }
 
@@ -2145,8 +1974,6 @@ trait BookingTrait
         return $value;
     }
 
-<<<<<<< HEAD
-=======
     /**
      * @param $newUserInfo
      * @return array
@@ -2169,6 +1996,5 @@ trait BookingTrait
             'loginToken' => $loginToken,
         ];
     }
->>>>>>> newversion/main
 
 }

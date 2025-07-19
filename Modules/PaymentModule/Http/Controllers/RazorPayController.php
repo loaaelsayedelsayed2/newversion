@@ -85,12 +85,7 @@ class RazorPayController extends Controller
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
         if (count($input) && !empty($input['razorpay_payment_id'])) {
-<<<<<<< HEAD
-            $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
-
-=======
             $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount'] - $payment['fee']));
->>>>>>> newversion/main
             $this->payment::where(['id' => $request['payment_id']])->update([
                 'payment_method' => 'razor_pay',
                 'is_paid' => 1,
@@ -108,8 +103,6 @@ class RazorPayController extends Controller
         }
         return $this->payment_response($payment_data, 'fail');
     }
-<<<<<<< HEAD
-=======
 
     public function createOrder(Request $request): JsonResponse|Redirector|RedirectResponse|Application
     {
@@ -198,5 +191,4 @@ class RazorPayController extends Controller
         $payment_data = $this->payment::where(['id' => $request['payment_id']])->first();
         return $this->payment_response($payment_data, 'fail');
     }
->>>>>>> newversion/main
 }

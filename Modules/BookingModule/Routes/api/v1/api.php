@@ -29,9 +29,6 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V
         Route::post('single-repeat-cancel/{repeat_id}', [BookingController::class, 'singleBookingCancel']);
         Route::put('service/edit/update-booking', [BookingController::class, 'bookingUpdate']);
         Route::post('track/{readable_id}', [BookingController::class, 'track'])->withoutMiddleware('auth:api');
-    });
-});
-
         Route::post('track/{readable_id}', [BookingController::class, 'track'])->withoutMiddleware('auth:api');
         Route::post('store-offline-payment-data', [BookingController::class, 'storeOfflinePaymentData'])->withoutMiddleware('auth:api');
         Route::post('switch-payment-method', [BookingController::class, 'switchPaymentMethod'])->withoutMiddleware('auth:api');

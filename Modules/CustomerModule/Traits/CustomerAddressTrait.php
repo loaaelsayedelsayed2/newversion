@@ -8,7 +8,6 @@ use Modules\ZoneManagement\Entities\Zone;
 
 trait CustomerAddressTrait
 {
-<<<<<<< HEAD
     public function add_address($service_address, $user_id, $is_guest = 0)
     {
         $point = new Point($service_address->lat, $service_address->lon);
@@ -17,19 +16,6 @@ trait CustomerAddressTrait
             $zone_id = $zone->id;
         } else {
             $zone_id = null;
-=======
-    public function add_address($service_address, $user_id, $is_guest = 0, $service_location = 'customer')
-    {
-        $zone_id = null;
-
-        if ($service_location == 'customer'){
-            $point = new Point($service_address->lat, $service_address->lon);
-
-            $zone = Zone::whereContains('coordinates', $point)->ofStatus(1)->latest()->first();
-            if ($zone) {
-                $zone_id = $zone->id;
-            }
->>>>>>> newversion/main
         }
 
         $address = new UserAddress;

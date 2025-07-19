@@ -69,8 +69,6 @@ class CategoryController extends Controller
         return view('categorymanagement::admin.create', compact('categories', 'zones', 'search', 'status'));
     }
 
-<<<<<<< HEAD
-=======
     public function getTable(Request $request)
     {
         $status = $request->input('status', 'all');
@@ -130,7 +128,6 @@ class CategoryController extends Controller
     }
 
 
->>>>>>> newversion/main
     /**
      * Store a newly created resource in storage.
      * @param Request $request

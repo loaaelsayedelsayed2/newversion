@@ -40,11 +40,7 @@
                         @endif
                         @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -110,11 +106,7 @@
                             </div>
                         @endif
                         @if (
-<<<<<<< HEAD
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '2' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_manage_status')
@@ -167,11 +159,7 @@
                             </div>
                         @endif
 
-<<<<<<< HEAD
                             @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'payment_after_service')
-=======
-                            @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && !is_null($booking->nextService) && !$booking->nextService['is_paid'] && $booking->nextService['payment_method'] == 'cash_after_service')
->>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                         data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -204,11 +192,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
-=======
-                        $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -233,11 +217,7 @@
                         <div class="card-body">
                             @if (!empty($booking['nextService'] && $booking['booking_status'] != 'pending'))
                                 <h5 class="mb-3">{{ translate('Ongoing') }}</h5>
-<<<<<<< HEAD
-                                <div class="__bg-FAFAFA p-4 mb-3 d-flex flex-column gap-3">
-=======
                                 <div class="p-4 mb-3 d-flex flex-column gap-3">
->>>>>>> newversion/main
                                     <div class="card card-border">
                                         <div class="card-body">
                                             <div class="d-flex flex-wrap justify-content-between align-content-center gap-3">
@@ -314,11 +294,7 @@
                                         <div>
                                             <span class="fz-14 color-93A2AE">#{{ $loop->iteration }}</span>
                                         </div>
-<<<<<<< HEAD
-                                        <div class="__bg-FAFAFA card card-border w-100 shadow-none">
-=======
                                         <div class="card card-border w-100 shadow-none">
->>>>>>> newversion/main
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center gap-3">
                                                     <div>
@@ -435,11 +411,7 @@
                                                 @if ($booking->booking_status != 'completed'
                                                     && isset($booking->nextService)
                                                     && !$booking->nextService['is_paid']
-<<<<<<< HEAD
                                                     && $booking->nextService['payment_method'] == 'payment_after_service')
-=======
-                                                    && $booking->nextService['payment_method'] == 'cash_after_service')
->>>>>>> newversion/main
                                                     <option value="canceled"
                                                         {{ $booking->booking_status == 'canceled' ? 'selected' : '' }}>
                                                         {{ translate('Booking_Status') }}: {{ translate('Canceled') }}
@@ -501,20 +473,12 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->customer)
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->customer?->profile_image_full_path }}"
                                                     alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                     alt="{{ translate('user_image') }}">
                                             @endif
@@ -586,11 +550,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->provider?->logo_full_path }}"
                                                     alt="{{ translate('provider') }}">
                                                 <div class="media-body">

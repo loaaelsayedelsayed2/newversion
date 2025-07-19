@@ -10,28 +10,22 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\NoReturn;
 use Illuminate\Support\Facades\Validator;
-=======
 use JetBrains\PhpStorm\NoReturn;
->>>>>>> newversion/main
 use Modules\BusinessSettingsModule\Entities\PackageSubscriber;
 use Modules\BusinessSettingsModule\Entities\SubscriptionPackage;
 use Modules\BusinessSettingsModule\Entities\SubscriptionPackageFeature;
 use Modules\BusinessSettingsModule\Entities\SubscriptionPackageLimit;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\TransactionModule\Entities\Transaction;
-<<<<<<< HEAD
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberLog;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberFeature;
 use Modules\BusinessSettingsModule\Entities\PackageSubscriberLimit;
 use Modules\ProviderManagement\Entities\SubscribedService;
 use Modules\ServiceManagement\Entities\ServiceRequest;
 use Stripe\Service\SubscriptionService;
-=======
->>>>>>> newversion/main
 
 class SubscriptionPackageController extends Controller
 {
@@ -55,11 +49,7 @@ class SubscriptionPackageController extends Controller
     public function index(): JsonResponse
     {
         $subscriptionPackages = $this->subscriptionPackage->OfStatus(1)->with('subscriptionPackageFeature', 'subscriptionPackageLimit')->get();
-<<<<<<< HEAD
         $formattedPackages = $subscriptionPackages->map(function ($subscriptionPackage) {
-=======
-        $formattedPackages = $subscriptionPackages->map(function($subscriptionPackage) {
->>>>>>> newversion/main
             return subscriptionFeatureList($subscriptionPackage, PACKAGE_FEATURES);
         });
 
@@ -83,10 +73,7 @@ class SubscriptionPackageController extends Controller
         }
 
         return response()->json(response_formatter(DEFAULT_200), 200);
-<<<<<<< HEAD
-=======
 
->>>>>>> newversion/main
     }
 
     /**
@@ -99,14 +86,9 @@ class SubscriptionPackageController extends Controller
         $userId = auth('api')->user()->id;
         $providerId = $this->provider::where('user_id', $userId)->value('id');
 
-<<<<<<< HEAD
         $package = $this->subscriptionPackage->where('id', $request->package_id)->ofStatus(1)->first();
 
         if (!$package) {
-=======
-        $package = $this->subscriptionPackage->where('id',$request->package_id)->ofStatus(1)->first();
-        if (!$package){
->>>>>>> newversion/main
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
 
@@ -143,13 +125,8 @@ class SubscriptionPackageController extends Controller
         $userId = auth('api')->user()->id;
         $providerId = $this->provider::where('user_id', $userId)->value('id');
 
-<<<<<<< HEAD
         $package = $this->subscriptionPackage->where('id', $request->package_id)->ofStatus(1)->first();
         if (!$package) {
-=======
-        $package = $this->subscriptionPackage->where('id',$request->package_id)->ofStatus(1)->first();
-        if (!$package){
->>>>>>> newversion/main
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
 
@@ -181,13 +158,8 @@ class SubscriptionPackageController extends Controller
         $userId = auth('api')->user()->id;
         $providerId = $this->provider::where('user_id', $userId)->value('id');
 
-<<<<<<< HEAD
         $package = $this->subscriptionPackage->where('id', $request->package_id)->ofStatus(1)->first();
         if (!$package) {
-=======
-        $package = $this->subscriptionPackage->where('id',$request->package_id)->ofStatus(1)->first();
-        if (!$package){
->>>>>>> newversion/main
             return response()->json(response_formatter(DEFAULT_400), 400);
         }
 
@@ -220,17 +192,10 @@ class SubscriptionPackageController extends Controller
         $userId = auth('api')->user()->id;
         $providerId = $this->provider::where('user_id', $userId)->value('id');
 
-<<<<<<< HEAD
         $subscriber = $this->packageSubscriber->where('provider_id', $providerId)->with('logs')->first();
         $usedTime   = (int)((business_config('usage_time', 'subscription_Setting'))?->live_values ?? 0);
 
         if (!$subscriber) {
-=======
-        $subscriber = $this->packageSubscriber->where('provider_id',$providerId)->with('logs')->first();
-        $usedTime   = (int)((business_config('usage_time', 'subscription_Setting'))?->live_values ?? 0);
-
-        if (!$subscriber){
->>>>>>> newversion/main
             return response()->json(response_formatter(ALREADY_COMMISSION_BASE), 400);
         }
 
@@ -242,21 +207,13 @@ class SubscriptionPackageController extends Controller
             $totalDuration = $packageStartDate->diffInDays($packageEndDate);
             $daysPassed = $packageStartDate->diffInDays($now);
             $percentageUsed = 0;
-<<<<<<< HEAD
             if ($totalDuration != 0) {
-=======
-            if ($totalDuration != 0){
->>>>>>> newversion/main
                 $percentageUsed = ($daysPassed / $totalDuration) * 100;
             }
             $roundedPercentageUsed = ceil($percentageUsed);
         }
 
-<<<<<<< HEAD
         if ($usedTime > $roundedPercentageUsed && $totalDuration != 0) {
-=======
-        if ($usedTime > $roundedPercentageUsed && $totalDuration != 0){
->>>>>>> newversion/main
             shiftRefundSubscriptionTransaction(
                 provider_id: $providerId
             );
@@ -276,23 +233,14 @@ class SubscriptionPackageController extends Controller
         $userId = auth('api')->user()->id;
         $providerId = $this->provider::where('user_id', $userId)->value('id');
         $package = $this->packageSubscriber->where('subscription_package_id', $packageId)->where('provider_id', $providerId)->first();
-<<<<<<< HEAD
         if ($package) {
             $package->is_canceled = 1;
             $package->payment_id = $request->payment_id;
-=======
-        if ($package){
-            $package->is_canceled = 1;
->>>>>>> newversion/main
             $package->save();
 
             return response()->json(response_formatter(DEFAULT_200), 200);
         }
         return response()->json(response_formatter(DEFAULT_400), 400);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
     }
 
     /**
@@ -343,7 +291,6 @@ class SubscriptionPackageController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $transactions), 200);
     }
 
-<<<<<<< HEAD
 
     public function newSubscription(Request $request)
     {
@@ -568,6 +515,4 @@ class SubscriptionPackageController extends Controller
             return response()->json(response_formatter(DEFAULT_400, 'No subscription service found'), 400);
         }
     }
-=======
->>>>>>> newversion/main
 }

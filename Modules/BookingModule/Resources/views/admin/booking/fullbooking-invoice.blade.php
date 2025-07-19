@@ -241,11 +241,9 @@
                         <tr class="row contacts">
                             <td class="border-left">
                                 <h6 class="fz-12">{{translate('Service Address')}}</h6>
-<<<<<<< HEAD
                                 <div class="fs-9">{{$customer_name}}</div>
                                 <div class="fs-9">{{$customer_phone}}</div>
                                 <div class="fs-9">{{$booking?->service_address?->address??translate('not_available')}}</div>
-=======
                                 <div class="fs-9">
                                     @if($booking->service_location == 'provider')
                                         @if($booking->provider_id != null)
@@ -269,7 +267,6 @@
                                         #{{ translate('Note') }} : {{ translate('Provider will be arrived at Service location') }} <b>({{ translate('Customer location') }})</b> {{ translate('to provide the selected services') }}
                                     @endif
                                 </div>
->>>>>>> newversion/main
                             </td>
 
                             <td class="border-left">
@@ -396,11 +393,7 @@
                             <td class="fw-700 border-top">{{with_currency_symbol($booking->total_booking_amount)}}</td>
                         </tr>
 
-<<<<<<< HEAD
                         @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                        @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="fw-700">{{translate('Refund')}}</td>

@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en" dir="rtl">
-=======
-<html lang="en">
->>>>>>> newversion/main
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -16,11 +12,8 @@
             font-size: 10px !important;
             line-height: 1.6;
             font-family: "Inter", sans-serif;
-<<<<<<< HEAD
             direction: rtl !important;
 
-=======
->>>>>>> newversion/main
         }
 
         a {
@@ -147,7 +140,6 @@
         .flex-column {
             flex-direction: column;
         }
-<<<<<<< HEAD
         .border-bottom {
             border-bottom: 1px solid #e5e5e5
         }
@@ -166,7 +158,6 @@
         .p-0 {
             padding: 0 !important
         }
-=======
 
 .border-bottom {
     border-bottom: 1px solid #e5e5e5
@@ -186,7 +177,6 @@ h1, h2,h3,h4, h5, h6 {
 .p-0 {
     padding: 0 !important
 }
->>>>>>> newversion/main
     </style>
 </head>
 <body>
@@ -197,7 +187,6 @@ h1, h2,h3,h4, h5, h6 {
                 <tbody>
                 <tr>
                     <td>
-<<<<<<< HEAD
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}222</h3>
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
                         <div class="fs-9">
@@ -209,11 +198,6 @@ h1, h2,h3,h4, h5, h6 {
                                 {{ translate('Request Date') }} : {{ $datePart }} <br>
                                 {{ translate('Request Time') }} : {{ $timePart }}
                         </div>
-=======
-                        <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
-                        <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
-                        <div>{{translate('date')}}: {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
->>>>>>> newversion/main
                     </td>
                     <td class="company-details">
                         <a target="_blank" href="#">
@@ -235,14 +219,11 @@ h1, h2,h3,h4, h5, h6 {
 
             @php($customer_name = $booking->customer ? $booking?->customer?->first_name.' '.$booking?->customer?->last_name : $booking?->service_address?->contact_person_name)
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
-<<<<<<< HEAD
             @php($customer_email = $booking->customer ? $booking?->customer?->email : $booking?->service_address?->contact_person_number)
 
             @php($provider_name = $booking?->provider?->users ? $booking?->provider?->users->first_name.' '.$booking?->provider?->users->last_name : $booking?->service_address?->contact_person_name)
             @php($provider_phone = $booking?->provider?->users ? $booking?->provider?->users?->phone : $booking?->service_address?->contact_person_number)
             @php($provider_email = $booking?->provider ? $booking?->provider?->users?->email : $booking?->service_address?->contact_person_number)
-=======
->>>>>>> newversion/main
 
             <div class="white-box-content border rounded-12 border">
                 <table>
@@ -250,7 +231,6 @@ h1, h2,h3,h4, h5, h6 {
                         <td class="border-bottom p-0">
                             <table>
                                 <tr>
-<<<<<<< HEAD
                                     <td>
                                         <div class="fs-9">{{translate('Customer')}}</div>
                                         <div>{{$customer_name}}</div>
@@ -277,20 +257,6 @@ h1, h2,h3,h4, h5, h6 {
                                         <div class="fs-9">{{translate('email')}}</div>
                                         <div>{{$provider_email}}</div>
                                     </td>
-=======
-                                <td>
-                                    <div class="fs-9">{{translate('Customer')}}</div>
-                                    <div>{{$customer_name}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('phone')}}</div>
-                                    <div>{{$customer_phone}}</div>
-                                </td>
-                                <td>
-                                    <div class="fs-9">{{translate('email')}}</div>
-                                    <div>{{$booking?->customer?->email}}</div>
-                                </td>
->>>>>>> newversion/main
                                 </tr>
                             </table>
                         </td>
@@ -309,7 +275,6 @@ h1, h2,h3,h4, h5, h6 {
                             <td>
                                 <div>
                                     <div class="fs-9">{{translate('Payment')}}</div>
-<<<<<<< HEAD
                                     @if ($booking->payment_method == 'Moyasar')
                                         <div class="mt-1">
                                             دفع الكتروني
@@ -320,9 +285,6 @@ h1, h2,h3,h4, h5, h6 {
                                             {{translate($booking->payment_method)}}
                                         </div>
                                     @endif
-=======
-                                    <div class="mt-1">{{ str_replace(['_', '-'], ' ', $booking->payment_method) }}</div>
->>>>>>> newversion/main
                                 </div>
                                 <div class="mt-3">
                                     <div class="fs-9">{{translate('Reference ID')}}</div>
@@ -332,7 +294,6 @@ h1, h2,h3,h4, h5, h6 {
 
                             <td class="border-left">
                                 <h6 class="fz-12">{{translate('Service Address')}}</h6>
-<<<<<<< HEAD
                                 {{-- <div class="fs-9">{{$customer_name}}</div>
                                 <div class="fs-9">{{$customer_phone}}</div> --}}
                                 <div class="fs-9">{{$booking?->service_address?->address??translate('not_available')}}</div>
@@ -358,7 +319,6 @@ h1, h2,h3,h4, h5, h6 {
                                     {{translate('Service Date')}} : {{$datePartRequest}} <br>
                                     {{translate('Service Time')}} : {{$timePartRequest}}
                                 </div>
-=======
                                 <div class="fs-9">
                                     @if($booking->service_location == 'provider')
                                         @if($booking->provider_id != null)
@@ -390,7 +350,6 @@ h1, h2,h3,h4, h5, h6 {
                                     : {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
                                 <div class="fs-9">{{translate('Service Date')}}
                                     : {{date('d-M-Y h:ia',strtotime($booking->service_schedule))}}</div>
->>>>>>> newversion/main
                             </td>
                         </tr>
                     </table>
@@ -398,20 +357,17 @@ h1, h2,h3,h4, h5, h6 {
                     <table cellspacing="0" cellpadding="0">
                         <thead>
                         <tr>
-<<<<<<< HEAD
                             <th class="text-left">{{translate('number')}}</th>
                             <th class="text-left text-uppercase">{{translate('description')}}</th>
                             <th class="text-center text-uppercase">{{translate('qty')}}</th>
                             <th class="text-right text-uppercase">{{translate('price')}}</th>
                             <th class="text-right text-uppercase">{{translate('total')}}</th>
 
-=======
                             <th class="text-left">{{translate('SL')}}</th>
                             <th class="text-left text-uppercase">{{translate('description')}}</th>
                             <th class="text-center text-uppercase">{{translate('qty')}}</th>
                             <th class="text-right text-uppercase">{{translate('cost')}}</th>
                             <th class="text-right text-uppercase">{{translate('total')}}</th>
->>>>>>> newversion/main
                         </tr>
                         </thead>
                         <tbody>
@@ -461,14 +417,11 @@ h1, h2,h3,h4, h5, h6 {
                             <td class="">{{translate('Vat_/_Tax')}} (%)</td>
                             <td>+ {{with_currency_symbol($booking->total_tax_amount)}}</td>
                         </tr>
-<<<<<<< HEAD
                         <tr>
                             <td colspan="3"></td>
                             <td class="">{{translate('Addattion_Cost')}}</td>
                             <td>+ {{with_currency_symbol($booking->additional_fees)}}</td>
                         </tr>
-=======
->>>>>>> newversion/main
                         @if ($booking->extra_fee > 0)
                             @php($additional_charge_label_name = business_config('additional_charge_label_name', 'booking_setup')->live_values??'Fee')
                             <tr>
@@ -499,19 +452,11 @@ h1, h2,h3,h4, h5, h6 {
                             $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                         }
 
-<<<<<<< HEAD
                         if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                             $dueAmount += $booking->additional_charge;
                         }
 
                         if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
-=======
-                        if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
-                            $dueAmount += $booking->additional_charge;
-                        }
-
-                        if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
->>>>>>> newversion/main
                             $dueAmount = $booking->total_booking_amount;
                         }
                         ?>
@@ -523,11 +468,7 @@ h1, h2,h3,h4, h5, h6 {
                             </tr>
                         @endif
 
-<<<<<<< HEAD
                         @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                        @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="fw-700">{{translate('Refund')}}</td>
@@ -544,22 +485,14 @@ h1, h2,h3,h4, h5, h6 {
 
         <div style="padding:24px 0">
             <div class="fw-700">{{translate('Terms & Conditions')}}</div>
-<<<<<<< HEAD
             <div>{{translate('Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.')}}</div>
-=======
-            <div>{{translate('Change of mind is not applicable as a reason for refund')}}</div>
->>>>>>> newversion/main
         </div>
 
         <table class="footer">
             <tr>
                 <td>
                     <div class="text-left">
-<<<<<<< HEAD
                         <a href="{{ url(config('app.custom_url')) }}">{{ config('app.custom_url') }}</a>
-=======
-                        {{Request()->getHttpHost()}}
->>>>>>> newversion/main
                     </div>
                 </td>
                 <td>
