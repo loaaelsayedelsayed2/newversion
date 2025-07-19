@@ -170,17 +170,6 @@
                                     <td>{{$key+$packagesSubscribers?->firstItem()}}</td>
                                     <td>
                                         <a href="">
-<<<<<<< HEAD
-                                            {{ $subscriber->provider->company_name }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $subscriber->package->name }}</td>
-                                    <td>{{ $subscriber->package->duration }} days</td>
-                                    <td>{{ $subscriber->logs->count() }} time</td>
-                                    <td>{{ with_currency_symbol($subscriber->logs->sum('package_price') ) }}</td>
-                                    <td>{{ with_currency_symbol($subscriber->logs->sum('vat_amount')) }}</td>
-                                    <td>{{ with_currency_symbol($subscriber->logs->sum('package_price') - $subscriber->logs->sum('vat_amount')) }}</td>
-=======
                                             {{ $subscriber?->provider?->company_name }}
                                         </a>
                                     </td>
@@ -190,7 +179,6 @@
                                     <td>{{ with_currency_symbol($subscriber?->logs->sum('package_price') ) }}</td>
                                     <td>{{ with_currency_symbol($subscriber?->logs->sum('vat_amount')) }}</td>
                                     <td>{{ with_currency_symbol($subscriber?->logs->sum('package_price') - $subscriber?->logs->sum('vat_amount')) }}</td>
->>>>>>> newversion/main
                                 </tr>
                             @empty
                                 <tr>

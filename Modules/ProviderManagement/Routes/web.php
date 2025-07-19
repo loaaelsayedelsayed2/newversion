@@ -42,10 +42,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::get('get-provider-info/{provider_id}', 'ProviderController@getProviderInfo')->name('get-provider-info')->withoutMiddleware('admin');
 
         Route::group(['prefix' => 'subscription-package', 'as' => 'subscription-package.'], function () {
-<<<<<<< HEAD
             Route::get('details', 'SubscriptionController@details')->name('details');
-=======
->>>>>>> newversion/main
             Route::post('to-commission', 'SubscriptionController@toCommission')->name('to.commission');
             Route::post('renew-payment', 'SubscriptionController@renewPayment')->name('renew.payment');
             Route::post('renew-ajax', 'SubscriptionController@ajaxRenewPackage')->name('renew.ajax');
@@ -85,11 +82,8 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Web\P
     Route::post('/set-modal-closed', 'ProviderController@setModalClosed')->name('set.modal.closed');
     Route::get('update-dashboard-earning-graph', 'ProviderController@updateDashboardEarningGraph')->name('update-dashboard-earning-graph');
     Route::post('subscribeToTopic', 'ProviderController@subscribeToTopic')->name('subscribeToTopic');
-<<<<<<< HEAD
-=======
     Route::post('store/search-routing', 'ProviderController@storeClickedRoute')->name('search.routing.store');
     Route::get('recent-search', 'ProviderController@recentSearch')->name('recent.search');
->>>>>>> newversion/main
 
     Route::get('bank-info', 'ProviderController@bankInfo')->name('bank_info');
     Route::put('update-bank-info', 'ProviderController@updateBankInfo')->name('update_bank_info');

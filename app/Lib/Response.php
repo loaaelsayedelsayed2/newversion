@@ -49,13 +49,10 @@ const DEFAULT_400 = [
     'response_code' => 'default_400',
     'message' => 'invalid or missing information'
 ];
-<<<<<<< HEAD
 const CART_EMPTY = [
     'response_code' => 'default_401',
     'message' => 'cart is empty'
 ];
-=======
->>>>>>> newversion/main
 
 const DEFAULT_401 = [
     'response_code' => 'default_401',
@@ -588,11 +585,10 @@ const MAINTENANCE_MODE = [
     'message' => 'Sorry for the inconvenience! We are currently undergoing scheduled maintenance to improve our services. We will be back shortly. Thank you for your patience'
 ];
 
-<<<<<<< HEAD
 const PROBLEM_400 = [
     'response_code' => 'problem_400',
     'message' => 'happen error doing register'
-=======
+];
 const USER_EXIST_400 = [
     'response_code' => 'user_exist_400',
     'message' => 'invalid or missing information'
@@ -616,5 +612,4 @@ const SUBSCRIBE_NEWSLETTER_200 = [
 const SERVICE_LOCATION_400 = [
     'response_code' => 'service_location_400',
     'message' => 'Can not change the setting while service location at provider place from admin panel is off'
->>>>>>> newversion/main
 ];

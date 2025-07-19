@@ -61,11 +61,8 @@ const COUPON_TYPES_REACT_FORMAT = [
 
 const PAYMENT_METHODS = [
     ['key' => 'cash_after_service', 'value' => 'Cash After Service'],
-<<<<<<< HEAD
     ['key' => 'payment_after_service', 'value' => 'Payment After Service'],
     ['key' => 'moyasar', 'value' => 'moyasar'],
-=======
->>>>>>> newversion/main
     ['key' => 'ssl_commerz', 'value' => 'SSLCOMMERZ'],
     ['key' => 'stripe', 'value' => 'Stripe'],
     ['key' => 'paytm', 'value' => 'Paytm'],
@@ -74,10 +71,7 @@ const PAYMENT_METHODS = [
     ['key' => 'senang_pay', 'value' => 'Senang Pay'],
     ['key' => 'flutterwave', 'value' => 'Flutter Wave'],
     ['key' => 'wallet_payment', 'value' => 'wallet payment'],
-<<<<<<< HEAD
     ['key' => 'digital_payment', 'value' => 'Digital payment'],
-=======
->>>>>>> newversion/main
     ['key' => 'offline_payment', 'value' => 'offline payment'],
 ];
 
@@ -826,11 +820,8 @@ const WALLET_TRX_TYPE = [
     'loyalty_point_earning' => 'loyalty_point_earning',
     'referral_earning' => 'referral_earning',
     'wallet_payment' => 'wallet_payment',
-<<<<<<< HEAD
     'moyasar_payment' => 'moyasar_payment',
     'digital_payment' => 'digital_payment',
-=======
->>>>>>> newversion/main
     'booking_refund' => 'booking_refund',
     'add_fund' => 'add_fund',
     'add_fund_bonus' => 'add_fund_bonus'
@@ -3616,10 +3607,7 @@ const NOTIFICATION_FOR_USER = [
     ['key' => 'booking_ongoing', 'value' => 'Booking Ongoing'],
     ['key' => 'otp', 'value' => 'Confirmation OTP'],
     ['key' => 'booking_complete', 'value' => 'Booking Complete'],
-<<<<<<< HEAD
     ['key' => 'invoice_sent', 'value' => 'Invoice Sent'],
-=======
->>>>>>> newversion/main
     ['key' => 'booking_cancel', 'value' => 'Booking Cancel'],
     ['key' => 'booking_schedule_time_change', 'value' => 'Booking schedule time change'],
     ['key' => 'add_fund_wallet', 'value' => 'Add Fund Wallet'],
@@ -3646,10 +3634,7 @@ const NOTIFICATION_FOR_PROVIDER = [
     ['key' => 'serviceman_assign', 'value' => 'Serviceman Assign'],
     ['key' => 'ongoing_booking', 'value' => 'Ongoing Booking'],
     ['key' => 'booking_complete', 'value' => 'Booking Complete'],
-<<<<<<< HEAD
     ['key' => 'invoice_sent', 'value' => 'Invoice Sent'],
-=======
->>>>>>> newversion/main
     ['key' => 'booking_cancel', 'value' => 'Booking Cancel'],
     ['key' => 'booking_schedule_time_change', 'value' => 'Booking schedule time change'],
     ['key' => 'provider_bid_request_denied', 'value' => 'Provider Bid Request Denied'],
@@ -3675,10 +3660,7 @@ const NOTIFICATION_FOR_SERVICEMAN = [
     ['key' => 'serviceman_assign', 'value' => 'Serviceman Assign'],
     ['key' => 'ongoing_booking', 'value' => 'Ongoing Booking'],
     ['key' => 'booking_complete', 'value' => 'Booking Complete'],
-<<<<<<< HEAD
     ['key' => 'invoice_sent', 'value' => 'Invoice Sent'],
-=======
->>>>>>> newversion/main
     ['key' => 'booking_cancel', 'value' => 'Booking Cancel'],
     ['key' => 'booking_schedule_time_change', 'value' => 'Booking Schedule Time Change'],
     ['key' => 'booking_edit_service_add', 'value' => 'Booking Edit Service Add'],

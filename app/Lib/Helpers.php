@@ -735,8 +735,6 @@ if (!function_exists('getBusinessSettingsImageFullPath')) {
         }
     }
 }
-<<<<<<< HEAD
-=======
 if (!function_exists('getDataSettingsImageFullPath')) {
     function getDataSettingsImageFullPath($key, $settingType, $path, $defaultPath = null)
     {
@@ -772,7 +770,6 @@ if (!function_exists('getDataSettingsImageFullPath')) {
         }
     }
 }
->>>>>>> newversion/main
 
 if (!function_exists('getPaymentGatewayImageFullPath')) {
     function getPaymentGatewayImageFullPath($key, $settingsType, $defaultPath = null)
@@ -833,18 +830,15 @@ if (!function_exists('nextBookingEligibility')) {
         $packageSubscriberLogId = $packageSubscriber?->package_subscriber_log_id;
         $providerUserId = $packageSubscriber?->provider?->user_id;
         $isPaid = $packageSubscriber?->payment?->where('id', $packageSubscriber?->payment_id)->value('is_paid');
-<<<<<<< HEAD
         $isPaidMoyasar = \Modules\BusinessSettingsModule\Entities\PackageSubscriber::where('provider_id', $providerId)
             ->where('payment_method', 'Moyasar')
             ->where('payment_id', '!=', null)
             ->exists();
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid || $isPaidMoyasar) {
-=======
 
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid){
->>>>>>> newversion/main
                 if ($packageSubscriber->is_canceled){
                     return false;
                 }
@@ -861,13 +855,10 @@ if (!function_exists('nextBookingEligibility')) {
                                     return false;
                                 }
 
-<<<<<<< HEAD
 
-=======
 //                                $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)
 //                                    ->whereBetween('updated_at', [$startDate, $endDate])
 //                                    ->count();
->>>>>>> newversion/main
 
                                 $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)->where('package_subscriber_log_id',$packageSubscriberLogId)
                                     ->whereBetween(DB::raw('DATE(updated_at)'), [date('Y-m-d', strtotime($startDate)), date('Y-m-d', strtotime($endDate))])
@@ -1345,8 +1336,6 @@ if (!function_exists('getPaymentGatewaySupportedCurrencies')) {
     }
 }
 
-<<<<<<< HEAD
-=======
 if (!function_exists('getProviderSettings')) {
     function getProviderSettings($providerId, $key, $type)
     {
@@ -1368,7 +1357,6 @@ if (!function_exists('getProviderSettings')) {
     }
 }
 
->>>>>>> newversion/main
 
 
 

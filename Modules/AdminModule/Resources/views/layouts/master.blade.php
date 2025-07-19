@@ -81,12 +81,9 @@
             <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-<<<<<<< HEAD
-=======
 
     @include('adminmodule::layouts.partials._status-modal')
 
->>>>>>> newversion/main
 </main>
 
 
@@ -161,15 +158,6 @@
         })
     }
 
-<<<<<<< HEAD
-    $('.route-alert').on('click', function (){
-        let route = $(this).data('route');
-        let message = $(this).data('message');
-        route_alert(route, message)
-    });
-
-    function route_alert(route, message) {
-=======
     $('.route-alert').on('change', function (event){
         event.preventDefault();
         let $this = $(this);
@@ -182,7 +170,6 @@
     });
 
     function route_alert(route, message, $this = false, initialState = false) {
->>>>>>> newversion/main
         Swal.fire({
             title: "{{translate('are_you_sure')}}?",
             text: message,
@@ -198,29 +185,15 @@
                 $.get({
                     url: route,
                     dataType: 'json',
-<<<<<<< HEAD
-                    data: {},
-                    beforeSend: function () {
-
-                    },
-=======
->>>>>>> newversion/main
                     success: function (data) {
                         toastr.success(data.message, {
                             CloseButton: true,
                             ProgressBar: true
                         });
                     },
-<<<<<<< HEAD
-                    complete: function () {
-
-                    },
-                });
-=======
                 });
             }else{
                 $this.prop('checked', !initialState);
->>>>>>> newversion/main
             }
         })
     }
@@ -333,11 +306,7 @@
         $('#searchForm input[name="search"]').keyup(function () {
             var searchKeyword = $(this).val().trim();
 
-<<<<<<< HEAD
-            if (searchKeyword.length >= 2) {
-=======
             if (searchKeyword.length >= 0) {
->>>>>>> newversion/main
                 $.ajax({
                     type: 'POST',
                     url: $('#searchForm').attr('action'),
@@ -348,18 +317,12 @@
                         } else {
                             var resultHtml = '';
                             response.forEach(function (route) {
-<<<<<<< HEAD
-                                resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" aria-current="true">';
-=======
                                 resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" data-route-name="' + route.routeName + '" data-route-uri="' + route.URI + '" data-route-full-url="' + route.fullRoute + '" aria-current="true">';
->>>>>>> newversion/main
                                 resultHtml += '<h5>' + route.routeName + '</h5>';
                                 resultHtml += '<p class="text-muted fs-12">' + route.URI + '</p>';
                                 resultHtml += '</a>';
                             });
                             $('#searchResults').html('<div class="search-list d-flex flex-column">' + resultHtml + '</div>');
-<<<<<<< HEAD
-=======
 
                             $('.search-list-item').click(function () {
                                 var routeName = $(this).data('route-name');
@@ -384,7 +347,6 @@
                                     }
                                 });
                             });
->>>>>>> newversion/main
                         }
                     },
                     error: function (xhr, status, error) {
@@ -392,17 +354,11 @@
                     }
                 });
             } else {
-<<<<<<< HEAD
-                $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a minimum of two characters.')}}</div>');
-=======
                 $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a character.')}}</div>');
->>>>>>> newversion/main
             }
         });
     });
 
-<<<<<<< HEAD
-=======
     $(document).ready(function () {
         $("#staticBackdrop").on("shown.bs.modal", function () {
             $(this).find("#searchForm input[type=search]").val('');
@@ -460,7 +416,6 @@
         });
     });
 
->>>>>>> newversion/main
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'k') {
             event.preventDefault();

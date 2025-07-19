@@ -15,18 +15,12 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-<<<<<<< HEAD
-=======
 use Modules\AdminModule\Entities\RouteSearchHistory;
->>>>>>> newversion/main
 use Modules\BookingModule\Entities\Booking;
 use Modules\BookingModule\Entities\BookingDetailsAmount;
 use Modules\CategoryManagement\Entities\Category;
 use Modules\ChattingModule\Entities\ChannelList;
-<<<<<<< HEAD
-=======
 use Modules\CustomerModule\Entities\SubscribeNewsletter;
->>>>>>> newversion/main
 use Modules\PaymentModule\Entities\Bonus;
 use Modules\PromotionManagement\Entities\Advertisement;
 use Modules\PromotionManagement\Entities\Banner;
@@ -79,14 +73,6 @@ class AdminController extends Controller
      */
     public function dashboard(Request $request, Transaction $transaction): View|Factory|Application
     {
-<<<<<<< HEAD
-        $commission_earning = BookingDetailsAmount::whereHas('booking', function ($query) use ($request) {
-            $query->ofBookingStatus('completed');
-            })->orWhereHas('repeat', function ($subQuery) {
-            $subQuery->ofBookingStatus('completed');
-        })
-            ->sum('admin_commission');
-=======
         $baseQuery = BookingDetailsAmount::whereHas('booking', function ($query) use ($request) {
             $query->ofBookingStatus('completed');
         })->orWhereHas('repeat', function ($subQuery) {
@@ -99,7 +85,6 @@ class AdminController extends Controller
         $campaign_discount_by_admin = $baseQuery->sum('campaign_discount_by_admin');
 
         $commission_earning = $admin_commission - $discount_by_admin - $coupon_discount_by_admin - $campaign_discount_by_admin;
->>>>>>> newversion/main
 
         $fee_amounts = $this->transaction->where('trx_type', TRX_TYPE['received_extra_fee'])->sum('credit');
         $subscription_amounts = $this->transaction->whereIn('trx_type', ['subscription_purchase', 'subscription_renew', 'subscription_shift'])->sum('credit');
@@ -481,11 +466,7 @@ class AdminController extends Controller
 
                 if (isset($providerRoutes)) {
                     foreach ($providerRoutes as $route) {
-<<<<<<< HEAD
-                        $validRoutes[] = $this->filterRoute(model: $provider, route: $route, prefix: 'Provider');
-=======
                         $validRoutes[] = $this->filterRoute(model: $provider, route: $route, type: 'provider', prefix: 'Provider');
->>>>>>> newversion/main
                     }
                 }
             }
@@ -507,11 +488,6 @@ class AdminController extends Controller
             //booking
             $booking = Booking::find($searchKeyword);
             if ($booking){
-<<<<<<< HEAD
-                $bookingRoutes = $adminRoutes->filter(function ($route) {
-                    return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
-                });
-=======
                 if ($booking->is_repeated == 0){
                     $bookingRoutes = $adminRoutes->filter(function ($route) {
                         return str_contains($route->uri(), 'booking/details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
@@ -521,7 +497,6 @@ class AdminController extends Controller
                         return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
                     });
                 }
->>>>>>> newversion/main
                 if (isset($bookingRoutes)) {
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', prefix: 'Booking');
@@ -540,17 +515,6 @@ class AdminController extends Controller
                 ->get();
 
             if ($bookings){
-<<<<<<< HEAD
-                $bookingsRoutes = $adminRoutes->filter(function ($route) {
-                    return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
-                });
-                if (isset($bookingsRoutes)) {
-                    foreach ($bookings as $booking)
-                    {
-                        foreach ($bookingsRoutes as $route) {
-                            $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', prefix: 'Booking');
-                        }
-=======
                 foreach ($bookings as $booking)
                 {
                     if ($booking->is_repeated == 0){
@@ -564,7 +528,6 @@ class AdminController extends Controller
                     }
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
->>>>>>> newversion/main
                     }
                 }
             }
@@ -622,34 +585,19 @@ class AdminController extends Controller
                 foreach ($providers as $provider){
                     if ($provider->is_active == 1){
                         $providerRoutes = $adminRoutes->filter(function ($route) {
-<<<<<<< HEAD
-                            return str_contains($route->uri(), 'provider') &&
-                                (str_contains($route->uri(), 'edit') || (str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'onboarding-details')));
-=======
 
                             return str_contains($route->uri(), 'provider') &&
                                 (str_contains($route->uri(), 'edit') || (str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'onboarding-details') && !str_contains($route->uri(), 'subscription-package')));
->>>>>>> newversion/main
                         });
                     }else{
                         $providerRoutes = $adminRoutes->filter(function ($route) {
                             return str_contains($route->uri(), 'provider') &&
-<<<<<<< HEAD
-                                (str_contains($route->uri(), 'edit') || str_contains($route->uri(), 'onboarding-details'));
-                        });
-                    }
-
-                    if (isset($providerRoutes)) {
-                        foreach ($providerRoutes as $route) {
-                            $validRoutes[] = $this->filterRoute(model: $provider, route: $route, name: $provider->contact_person_name, prefix: 'Provider');
-=======
                                 (str_contains($route->uri(), 'edit') || str_contains($route->uri(), 'onboarding-details') && !str_contains($route->uri(), 'subscription-package'));
                         });
                     }
                     if (isset($providerRoutes)) {
                         foreach ($providerRoutes as $route) {
                             $validRoutes[] = $this->filterRoute(model: $provider, route: $route, type: 'provider', name: $provider->contact_person_name, prefix: 'Provider');
->>>>>>> newversion/main
                         }
                     }
                 }
@@ -673,10 +621,6 @@ class AdminController extends Controller
                 $customerRoutes = $adminRoutes->filter(function ($route) {
                     return str_contains($route->uri(), 'customer') && (str_contains($route->uri(), 'edit') || str_contains($route->uri(), 'detail'));
                 });
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
                 if (isset($customerRoutes)) {
                     foreach ($customers as $customer){
                         foreach ($customerRoutes as $route) {
@@ -689,11 +633,6 @@ class AdminController extends Controller
             //booking
             $booking = Booking::firstWhere(['readable_id' => $searchKeyword]);
             if ($booking){
-<<<<<<< HEAD
-                $bookingRoutes = $adminRoutes->filter(function ($route) {
-                    return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
-                });
-=======
 
                 if ($booking->is_repeated == 0){
                     $bookingRoutes = $adminRoutes->filter(function ($route) {
@@ -704,7 +643,6 @@ class AdminController extends Controller
                         return str_contains($route->uri(), 'booking/repeat-details')  && !str_contains($route->uri(), 'post') && !str_contains($route->uri(), 'rebooking') && !str_contains($route->uri(), 'repeat-single-details');
                     });
                 }
->>>>>>> newversion/main
                 if (isset($bookingRoutes)) {
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
@@ -733,17 +671,6 @@ class AdminController extends Controller
                 ->get();
 
             if ($bookings){
-<<<<<<< HEAD
-                $bookingsRoutes = $adminRoutes->filter(function ($route) {
-                    return str_contains($route->uri(), 'booking') && str_contains($route->uri(), 'details') && !str_contains($route->uri(), 'post');
-                });
-                if (isset($bookingsRoutes)) {
-                    foreach ($bookings as $booking)
-                    {
-                        foreach ($bookingsRoutes as $route) {
-                            $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
-                        }
-=======
                 foreach ($bookings as $booking)
                 {
                     if ($booking->is_repeated == 0){
@@ -757,7 +684,6 @@ class AdminController extends Controller
                     }
                     foreach ($bookingRoutes as $route) {
                         $validRoutes[] = $this->filterRoute(model: $booking, route: $route, type: 'booking', name: $booking->readable_id, prefix: 'Booking');
->>>>>>> newversion/main
                     }
                 }
             }
@@ -919,8 +845,6 @@ class AdminController extends Controller
                     }
                 }
             }
-<<<<<<< HEAD
-=======
             $newsletters = SubscribeNewsletter::where('email', 'LIKE', '%' . $searchKeyword . '%')->get();
             if ($newsletters){
                 $newslettersRoutes = $adminRoutes->filter(function ($route) {
@@ -935,7 +859,6 @@ class AdminController extends Controller
                     }
                 }
             }
->>>>>>> newversion/main
         }
 
         $allRoutes = array_merge($formattedRoutes, $validRoutes);
@@ -959,12 +882,9 @@ class AdminController extends Controller
         if ($type == 'customer'){
             $fullURL = $formattedRouteName == 'Detail' ? $fullURL. '?web_page=overview' : $fullURL;
         }
-<<<<<<< HEAD
-=======
         if ($type == 'provider'){
             $fullURL = $formattedRouteName == 'Details' ? $fullURL. '?web_page=overview' : $fullURL;
         }
->>>>>>> newversion/main
 
         $routeName = $prefix ? $prefix. ' '. $formattedRouteName : $formattedRouteName;
         $routeName = $name ? $routeName. ' - (' . $name. ')' : $routeName;
@@ -977,8 +897,6 @@ class AdminController extends Controller
         return $routeInfo;
     }
 
-<<<<<<< HEAD
-=======
     /**
      * @param Request $request
      * @return JsonResponse
@@ -1033,5 +951,4 @@ class AdminController extends Controller
 
         return response()->json($recentSearches);
     }
->>>>>>> newversion/main
 }

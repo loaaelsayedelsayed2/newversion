@@ -18,12 +18,9 @@ use Modules\BusinessSettingsModule\Entities\LandingPageSpeciality;
 use Modules\BusinessSettingsModule\Entities\LandingPageTestimonial;
 use Modules\BusinessSettingsModule\Entities\LoginSetup;
 use Modules\BusinessSettingsModule\Entities\NotificationSetup;
-<<<<<<< HEAD
-=======
 use Modules\PaymentModule\Entities\Setting;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\ProviderManagement\Entities\ProviderSetting;
->>>>>>> newversion/main
 use Modules\UserManagement\Entities\EmployeeRoleAccess;
 use Modules\UserManagement\Entities\EmployeeRoleSection;
 use Modules\UserManagement\Entities\Role;
@@ -48,11 +45,7 @@ class UpdateController extends Controller
         $this->setEnvironmentValue('SOFTWARE_ID', 'NDAyMjQ3NzI=');
         $this->setEnvironmentValue('BUYER_USERNAME', $request['username']);
         $this->setEnvironmentValue('PURCHASE_CODE', $request['purchase_key']);
-<<<<<<< HEAD
-        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.0');
-=======
         $this->setEnvironmentValue('SOFTWARE_VERSION', '3.2');
->>>>>>> newversion/main
         $this->setEnvironmentValue('APP_ENV', 'live');
         $this->setEnvironmentValue('APP_URL', url('/'));
 
@@ -322,16 +315,6 @@ class UpdateController extends Controller
                 'test_values' => 0
             ]);
         }
-<<<<<<< HEAD
-        
-        if (BusinessSettings::where(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'])->first() == false) {
-            BusinessSettings::updateOrCreate(['key_name' => 'payment_after_service', 'settings_type' => 'service_setup'], [
-                'live_values' => 1,
-                'test_values' => 1
-            ]);
-        }
-=======
->>>>>>> newversion/main
 
         if (BusinessSettings::where(['key_name' => 'cash_after_service', 'settings_type' => 'service_setup'])->first() == false) {
             BusinessSettings::updateOrCreate(['key_name' => 'cash_after_service', 'settings_type' => 'service_setup'], [
@@ -1357,8 +1340,6 @@ class UpdateController extends Controller
             ]);
         }
 
-<<<<<<< HEAD
-=======
         //version 3.1
         $twoFactor = Setting::where(['key_name' => '2factor', 'settings_type' => 'sms_config'])->first();
         if ($twoFactor && $twoFactor->live_values) {
@@ -1374,7 +1355,6 @@ class UpdateController extends Controller
         $this->version3_2Update();
 
 
->>>>>>> newversion/main
         return redirect(env('APP_URL'));
     }
 
@@ -1467,8 +1447,6 @@ class UpdateController extends Controller
         }
         return true;
     }
-<<<<<<< HEAD
-=======
 
     private function version3_2Update()
     {
@@ -1518,5 +1496,4 @@ class UpdateController extends Controller
             }
         }
     }
->>>>>>> newversion/main
 }

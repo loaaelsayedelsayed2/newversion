@@ -43,10 +43,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'Api\V1'], function () {
         Route::post('verify-otp', [PasswordResetController::class, 'verify']);
         Route::put('reset', [PasswordResetController::class, 'resetPassword']);
     });
-<<<<<<< HEAD
-=======
 
     Route::post('check-existing-customer', [OTPVerificationController::class, 'checkExistingCustomer']);
->>>>>>> newversion/main
 });
 

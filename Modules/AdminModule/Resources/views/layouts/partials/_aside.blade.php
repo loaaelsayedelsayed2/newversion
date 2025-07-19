@@ -5,21 +5,11 @@ $pending_booking_count = \Modules\BookingModule\Entities\Booking::where('booking
     ->when($max_booking_amount > 0, function ($query) use ($max_booking_amount) {
         $query->where(function ($query) use ($max_booking_amount) {
             $query->where('payment_method', 'cash_after_service')
-<<<<<<< HEAD
-            ->orWhere('payment_method','payment_after_service')
-=======
->>>>>>> newversion/main
                 ->where(function ($query) use ($max_booking_amount) {
                     $query->where('is_verified', 1)
                         ->orWhere('total_booking_amount', '<=', $max_booking_amount);
                 })
-<<<<<<< HEAD
-                ->orWhere('payment_method', '<>', 'cash_after_service')
-                ->orWhere('payment_method', '<>', 'payment_after_service')
-                ;
-=======
                 ->orWhere('payment_method', '<>', 'cash_after_service');
->>>>>>> newversion/main
         });
     })
     ->count();
@@ -31,21 +21,11 @@ $accepted_booking_count = \Modules\BookingModule\Entities\Booking::where('bookin
     ->when($max_booking_amount > 0, function ($query) use ($max_booking_amount) {
         $query->where(function ($query) use ($max_booking_amount) {
             $query->where('payment_method', 'cash_after_service')
-<<<<<<< HEAD
-            ->orWhere('payment_method','payment_after_service')
-=======
->>>>>>> newversion/main
                 ->where(function ($query) use ($max_booking_amount) {
                     $query->where('is_verified', 1)
                         ->orWhere('total_booking_amount', '<=', $max_booking_amount);
                 })
-<<<<<<< HEAD
-                ->orWhere('payment_method', '<>', 'cash_after_service')
-                ->orWhere('payment_method', '<>', 'payment_after_service')
-                ;
-=======
                 ->orWhere('payment_method', '<>', 'cash_after_service');
->>>>>>> newversion/main
         });
     })
     ->count();
@@ -69,11 +49,7 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
     <div class="aside-body" data-trigger="scrollbar">
         <div class="user-profile media gap-3 align-items-center my-3">
             <div class="avatar">
-<<<<<<< HEAD
-                <img class="avatar-img rounded-circle" src="{{auth()->user()->profile_image_full_path }}" alt="{{ translate('profile_image') }}">
-=======
                 <img class="avatar-img rounded-circle aspect-square object-fit-cover" src="{{auth()->user()->profile_image_full_path }}" alt="{{ translate('profile_image') }}">
->>>>>>> newversion/main
             </div>
             <div class="media-body ">
                 <h5 class="card-title">{{\Illuminate\Support\Str::limit(auth()->user()->email,15)}}</h5>
@@ -114,11 +90,7 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
                             <a href="{{route('admin.booking.list.verification', ['booking_status'=>'pending', 'type' => 'pending'])}}"
                                class="{{request()->is('admin/booking/list/verification') && request()->query('booking_status')=='pending' ?'active-menu':''}}"><span
                                     class="link-title">{{translate('verify_requests')}} <span
-<<<<<<< HEAD
-                                        class="count">{{\Modules\BookingModule\Entities\Booking::where('is_verified', '0')->where('payment_method', 'cash_after_service')->orWhere('payment_method','payment_after_service')->Where('total_booking_amount', '>', $max_booking_amount)->whereIn('booking_status', ['pending', 'accepted'])->count()}}</span></span></a>
-=======
                                         class="count">{{\Modules\BookingModule\Entities\Booking::where('is_verified', '0')->where('payment_method', 'cash_after_service')->Where('total_booking_amount', '>', $max_booking_amount)->whereIn('booking_status', ['pending', 'accepted'])->count()}}</span></span></a>
->>>>>>> newversion/main
                         </li>
                         <li><a href="{{route('admin.booking.list', ['booking_status'=>'pending','service_type'=>'all'])}}"
                                class="{{request()->is('admin/booking/list') && request()->query('booking_status')=='pending'?'active-menu':''}}"><span
@@ -522,8 +494,6 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
                         </ul>
                     </li>
                 @endcan
-<<<<<<< HEAD
-=======
 
                 @can('point_view')
                     <li>
@@ -534,7 +504,6 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
                         </a>
                     </li>
                 @endcan
->>>>>>> newversion/main
             @endcanany
 
             @canany(['role_view', 'role_add', 'employee_add', 'employee_view'])

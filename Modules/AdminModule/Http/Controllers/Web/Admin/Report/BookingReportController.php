@@ -120,13 +120,8 @@ class BookingReportController extends Controller
 
         $booking_amount = [];
         $booking_amount['total_booking_amount'] = $bookings_for_amount->sum('total_booking_amount');
-<<<<<<< HEAD
-        $booking_amount['total_paid_booking_amount'] = $bookings_for_amount->where('payment_method', '!=', 'payment_after_service')->where('booking_status', 'completed')->sum('total_booking_amount');
-        $booking_amount['total_unpaid_booking_amount'] = $bookings_for_amount->where('payment_method', '!=', 'payment_after_service')->where('booking_status', '!=', 'completed')->sum('total_booking_amount');
-=======
         $booking_amount['total_paid_booking_amount'] = $bookings_for_amount->where('payment_method', '!=', 'cash_after_service')->where('booking_status', 'completed')->sum('total_booking_amount');
         $booking_amount['total_unpaid_booking_amount'] = $bookings_for_amount->where('payment_method', '!=', 'cash_after_service')->where('booking_status', '!=', 'completed')->sum('total_booking_amount');
->>>>>>> newversion/main
 
 
         $date_range = $request['date_range'];

@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-<<<<<<< HEAD
 use Modules\BidModule\Entities\PostBid;
 use Illuminate\Support\Facades\Validator;
 use Modules\BookingModule\Entities\BookingRepeat;
-=======
 use Illuminate\Support\Facades\Hash;
 use Modules\BidModule\Entities\PostBid;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +17,6 @@ use Modules\BookingModule\Entities\BookingOfflinePayment;
 use Modules\BookingModule\Entities\BookingPartialPayment;
 use Modules\BookingModule\Entities\BookingRepeat;
 use Modules\PaymentModule\Entities\PaymentRequest;
->>>>>>> newversion/main
 use Modules\UserManagement\Entities\User;
 use Modules\BookingModule\Entities\Booking;
 use Modules\PaymentModule\Entities\OfflinePayment;
@@ -27,11 +24,8 @@ use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\CustomerModule\Traits\CustomerAddressTrait;
 use Modules\BookingModule\Entities\BookingStatusHistory;
 use Modules\BidModule\Http\Controllers\APi\V1\Customer\PostBidController;
-<<<<<<< HEAD
 use Modules\TransactionModule\Entities\Account;
 
-=======
->>>>>>> newversion/main
 
 class BookingController extends Controller
 {
@@ -63,11 +57,8 @@ class BookingController extends Controller
      */
     public function placeRequest(Request $request): JsonResponse
     {
-<<<<<<< HEAD
-=======
         $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
 
->>>>>>> newversion/main
         $validator = Validator::make($request->all(), [
             'payment_method' => 'required|in:' . implode(',', array_column(PAYMENT_METHODS, 'key')),
             'zone_id' => 'required|uuid',
@@ -78,13 +69,10 @@ class BookingController extends Controller
             'provider_id' => 'nullable|uuid',
 
             'guest_id' => $this->isCustomerLoggedIn ? 'nullable' : 'required|uuid',
-<<<<<<< HEAD
             'offline_payment_id' => 'required_if:payment_method,offline_payment',
             'customer_information' => 'required_if:payment_method,offline_payment',
             'service_address' => is_null($request['service_address_id']) ? [
-=======
             'service_address' => is_null($request['service_address_id']) && $request['service_location'] == 'customer' ? [
->>>>>>> newversion/main
                 'required',
                 'json',
                 function ($attribute, $value, $fail) {
@@ -104,9 +92,6 @@ class BookingController extends Controller
                 },
             ] : '',
 
-<<<<<<< HEAD
-            'is_partial' => 'nullable|in:0,1'
-=======
             'is_partial' => 'nullable|in:0,1',
             'service_location' => 'required|in:customer,provider',
             function ($attribute, $value, $fail) use ($serviceAtProviderPlace) {
@@ -114,14 +99,12 @@ class BookingController extends Controller
                     $fail('The selected service location cannot be "provider" because the service is not available at the provider’s place.');
                 }
             },
->>>>>>> newversion/main
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
-<<<<<<< HEAD
         if ($request['payment_method'] == 'offline_payment') {
             $offlinePaymentData = $this->offlinePayment->find($request['offline_payment_id']);
             $fields = array_column($offlinePaymentData->customer_information, 'field_name');
@@ -131,7 +114,6 @@ class BookingController extends Controller
                 if (!key_exists($field, $customerInformation)) {
                     return response()->json(response_formatter(DEFAULT_400, $fields, null), 400);
                 }
-=======
         $newUserInfo = null;
         // Additional validation and register for new_user_info
         if ($request->has('new_user_info') && !empty($request->get('new_user_info')) && !$this->isCustomerLoggedIn) {
@@ -149,19 +131,13 @@ class BookingController extends Controller
 
             if ($newUserValidator->fails()) {
                 return response()->json(response_formatter(DEFAULT_400, null, error_processor($newUserValidator)), 400);
->>>>>>> newversion/main
             }
         }
 
         $customerUserId = $this->customerUserId;
-<<<<<<< HEAD
-        if (is_null($request['service_address_id'])) {
-            $request['service_address_id'] = $this->add_address(json_decode($request['service_address']), null, !$this->isCustomerLoggedIn);
-=======
 
         if (is_null($request['service_address_id'])) {
             $request['service_address_id'] = $this->add_address(json_decode($request['service_address']), null, !$this->isCustomerLoggedIn, $request->service_location);
->>>>>>> newversion/main
         }
 
         $minimumBookingAmount = (float)(business_config('min_booking_amount', 'booking_setup'))?->live_values;
@@ -170,16 +146,10 @@ class BookingController extends Controller
         if (!isset($request['post_id']) && $minimumBookingAmount > 0 && $totalBookingAmount < $minimumBookingAmount) {
             return response()->json(response_formatter(MINIMUM_BOOKING_AMOUNT_200), 200);
         }
-<<<<<<< HEAD
-        if ($request['payment_method'] == 'wallet_payment') {
-            if (!isset($request['post_id'])) {
-                $response = $this->placeBookingRequest($customerUserId, $request, 'wallet_payment');
-=======
 
         if ($request['payment_method'] == 'wallet_payment') {
             if (!isset($request['post_id'])) {
                 $response = $this->placeBookingRequest(userId: $customerUserId, request: $request, transactionId: 'wallet_payment', newUserInfo: $newUserInfo);
->>>>>>> newversion/main
             } else {
                 $postBid = PostBid::with(['post'])
                     ->where('post_id', $request['post_id'])
@@ -197,14 +167,10 @@ class BookingController extends Controller
                     'category_id' => $postBid->post->category_id,
                     'sub_category_id' => $postBid->post->category_id,
                     'service_address_id' => !is_null($request['service_address_id']) ? $request['service_address_id'] : $postBid->post->service_address_id,
-<<<<<<< HEAD
-                    'is_partial' => $request['is_partial'],
                       'paid_by' => 'customer',
 
 
-=======
                     'is_partial' => $request['is_partial']
->>>>>>> newversion/main
                 ];
 
                 $user = User::find($customerUserId);
@@ -220,16 +186,9 @@ class BookingController extends Controller
                 }
             }
 
-<<<<<<< HEAD
-
-        }elseif ($request['payment_method'] == 'offline_payment') {
-            if (!isset($request['post_id'])) {
-                $response = $this->placeBookingRequest($customerUserId, $request, 'offline-payment', !$this->isCustomerLoggedIn);
-=======
         } elseif ($request['payment_method'] == 'offline_payment') {
             if (!isset($request['post_id'])) {
                 $response = $this->placeBookingRequest($customerUserId, $request, 'offline-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
->>>>>>> newversion/main
             } else {
                 $postBid = PostBid::with(['post'])
                     ->where('post_id', $request['post_id'])
@@ -258,15 +217,9 @@ class BookingController extends Controller
             }
         } else {
             if ($request['service_type'] == 'repeat'){
-<<<<<<< HEAD
-                $response = $this->placeRepeatBookingRequest($customerUserId, $request, 'cash-payment', !$this->isCustomerLoggedIn);
-            }else{
-                $response = $this->placeBookingRequest($customerUserId, $request, 'cash-payment', !$this->isCustomerLoggedIn);
-=======
                 $response = $this->placeRepeatBookingRequest($customerUserId, $request, 'cash-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
             }else{
                 $response = $this->placeBookingRequest($customerUserId, $request, 'cash-payment', newUserInfo: $newUserInfo, isGuest: !$this->isCustomerLoggedIn);
->>>>>>> newversion/main
             }
         }
 
@@ -334,22 +287,6 @@ class BookingController extends Controller
      */
     public function show(Request $request, string $id): JsonResponse
     {
-<<<<<<< HEAD
-        $booking = $this->booking->where(['customer_id' => $request->user()->id])->with([
-            'detail.service', 'schedule_histories.user', 'status_histories.user', 'service_address', 'customer', 'provider', 'category', 'subCategory:id,name', 'serviceman.user', 'booking_partial_payments', 'repeat.scheduleHistories', 'repeat.repeatHistories'
-        ])->where(['id' => $id])->first();
-
-        if (isset($booking)) {
-            $offlinePayment = $booking->booking_offline_payments?->first()?->customer_information;
-            unset($booking->booking_offline_payments);
-
-            if ($offlinePayment) {
-                $booking->booking_offline_payment = collect($offlinePayment)->map(function ($value, $key) {
-                    return ["key" => $key, "value" => $value];
-                })->values()->all();
-            }
-
-=======
         $booking = $this->booking
             ->where(['customer_id' => $request->user()->id])
             ->with([
@@ -386,7 +323,6 @@ class BookingController extends Controller
 
             unset($booking->booking_offline_payments, $booking->service_address_location);
 
->>>>>>> newversion/main
             if (isset($booking->provider)){
                 $booking->provider->chatEligibility = chatEligibility($booking->provider_id);
             }
@@ -403,11 +339,8 @@ class BookingController extends Controller
                 $sortedRepeats = $booking->repeat->sortBy(function ($repeat) {
                     $parts = explode('-', $repeat->readable_id);
                     $suffix = end($parts);
-<<<<<<< HEAD
-=======
                     $repeat['service_address'] = json_decode($repeat->service_address_location);
                     unset($repeat->service_address_location);
->>>>>>> newversion/main
                     return $this->readableIdToNumber($suffix);
                 });
                 $booking['repeats'] = $sortedRepeats->values()->toArray();
@@ -462,17 +395,11 @@ class BookingController extends Controller
     public function singleDetails(Request $request, string $id): JsonResponse
     {
         $booking = $this->bookingRepeat->with([
-<<<<<<< HEAD
-            'detail.service', 'scheduleHistories.user', 'statusHistories.user', 'booking.service_address', 'booking.customer', 'provider', 'serviceman.user'
-        ])->where(['id' => $id])->first();
-
-=======
             'detail.service', 'scheduleHistories.user', 'statusHistories.user', 'booking.customer', 'provider', 'serviceman.user'
         ])->where(['id' => $id])->first();
 
         $booking->booking->service_address = $booking->booking->service_address_location != null ? json_decode($booking->booking->service_address_location) : $booking->booking->service_address;
 
->>>>>>> newversion/main
         if (isset($booking)) {
             if (isset($booking->provider)){
                 $booking->provider->chatEligibility = chatEligibility($booking->provider_id);
@@ -498,22 +425,15 @@ class BookingController extends Controller
         }
 
         $booking = $this->booking
-<<<<<<< HEAD
-            ->with(['detail.service', 'schedule_histories.user', 'status_histories.user', 'service_address', 'customer', 'provider', 'zone', 'serviceman.user'])
-=======
             ->with(['detail.service', 'schedule_histories.user', 'status_histories.user', 'customer', 'provider', 'zone', 'serviceman.user'])
->>>>>>> newversion/main
             ->where(['readable_id' => $id])
             ->whereHas('service_address', fn($query) => $query->where('contact_person_number', $request['phone']))
             ->first();
 
-<<<<<<< HEAD
-=======
         $booking->service_address = $booking->service_address_location != null ? json_decode($booking->service_address_location) : $booking->service_address;
 
         unset($booking->service_address_location);
 
->>>>>>> newversion/main
         if (isset($booking)) return response()->json(response_formatter(DEFAULT_200, $booking), 200);
 
         return response()->json(response_formatter(DEFAULT_404, $booking), 404);
@@ -528,36 +448,13 @@ class BookingController extends Controller
     public function statusUpdate(Request $request, string $booking_id): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-<<<<<<< HEAD
-            'booking_status' => 'required',
-            'reason_cancel' => 'required_if:booking_status,canceled|string'
-=======
             'booking_status' => 'required|in:canceled',
->>>>>>> newversion/main
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
-<<<<<<< HEAD
-
-        $booking = $this->booking->where('id', $booking_id)->where('customer_id', $request->user()->id)->first();
-        if (isset($booking)) {
-            if($booking->booking_status == 'accepted' && $request['booking_status'] == 'canceled'){
-                return response()->json(response_formatter(BOOKING_ALREADY_ACCEPTED), 200);
-            }
-            if($booking->booking_status == 'ongoing' && $request['booking_status'] == 'canceled'){
-                return response()->json(response_formatter(BOOKING_ALREADY_ONGOING), 200);
-            }
-            if($booking->booking_status == 'completed' && $request['booking_status'] == 'canceled'){
-                return response()->json(response_formatter(BOOKING_ALREADY_COMPLETED), 200);
-            }
-            $booking->booking_status = $request['booking_status'];
-            $booking->reason_cancel = $request['reason_cancel']?? null;
-
-
-=======
         $booking = $this->booking->where('id', $booking_id)->where('customer_id', $request->user()->id)->first();
 
         if (isset($booking)) {
@@ -575,7 +472,6 @@ class BookingController extends Controller
             }
 
             $booking->booking_status = $request['booking_status'];
->>>>>>> newversion/main
 
             $bookingStatusHistory = $this->bookingStatusHistory;
             $bookingStatusHistory->booking_id = $booking_id;
@@ -637,12 +533,6 @@ class BookingController extends Controller
         return response()->json(response_formatter(DEFAULT_204), 200);
     }
 
-<<<<<<< HEAD
-    public function bookingUpdate(Request $request){
-        $validator = Validator::make($request->all(), [
-            'booking_id' => 'required|uuid',
-            'payment_status' => 'nullable|in:0,1'
-=======
     /**
      * @param Request $request
      * @return JsonResponse
@@ -654,30 +544,11 @@ class BookingController extends Controller
             'customer_information' => 'required',
             'booking_id' => 'required',
             'is_partial' => 'required|in:0,1',
->>>>>>> newversion/main
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
-<<<<<<< HEAD
-        $userId = $request->user()->id ?? $request->user_id;
-        $booking = $this->booking
-            ->with('detail')
-            ->where('id', $request['booking_id'])
-            ->where('customer_id', $userId)
-            ->first();
-
-        if(!isset($booking)) return response()->json(response_formatter(DEFAULT_204), 200);
-        if (!is_null($request['payment_status'])) $booking->is_paid = $request['payment_status'];
-        $booking->paid_by = 'customer';
-
-        $booking->save();
-        placeBookingTransactionForPaymentAfterService($booking);
-        return response()->json(response_formatter(BOOKING_STATUS_UPDATE_SUCCESS_200, $booking), 200);
-    }
-
-=======
 
         // Retrieve booking
         $booking = $this->booking->find($request->booking_id);
@@ -891,6 +762,5 @@ class BookingController extends Controller
         return response()->json(response_formatter(DEFAULT_200, $response), 200);
 
     }
->>>>>>> newversion/main
 
 }

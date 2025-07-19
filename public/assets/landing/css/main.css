@@ -259,11 +259,8 @@ textarea {
     padding: 25px 0;
 }
 
-<<<<<<< HEAD
 footer {
-=======
 .main-footer {
->>>>>>> newversion/main
     background: var(--footer);
 }
 
@@ -2331,8 +2328,6 @@ textarea.form--control {
 .navbar-bottom-wrapper .menu li a:focus-visible {
     border: none !important;
 }
-<<<<<<< HEAD
-=======
 
 .subscribe-newsletter {
     background: url("../img/newsletter-bg.png") no-repeat center;
@@ -2350,4 +2345,3 @@ textarea.form--control {
     transform: translateY(-50%);
     z-index: 9;
 }
->>>>>>> newversion/main

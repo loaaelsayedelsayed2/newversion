@@ -12,15 +12,12 @@ class BookingOfflinePayment extends Model
 
     protected $fillable = [
         'booking_id',
-<<<<<<< HEAD
         'customer_information',
-=======
         'offline_payment_id',
         'customer_information',
         'method_name',
         'payment_status',
         'denied_note',
->>>>>>> newversion/main
     ];
     protected $casts = [
         'customer_information' => 'array',

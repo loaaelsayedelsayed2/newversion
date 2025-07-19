@@ -36,11 +36,7 @@ class GenerateAdminRoute extends Command
             'ajax', 'download', 'export', 'edit', 'login', 'logout', 'invoice', 'verify', 'otp',
             'backup-database-backup', 'child', 'channel', 'third', 'party', 'update-default-status', 'check', 'childes',
             'referenced-channel-list', 'channel-list', 'test-send-email', 'get-updated-data', 'update-status', 'provider-info',
-<<<<<<< HEAD
-            'update-dashboard-earning-graph', 'set-message-setting', 'available-provider'
-=======
             'update-dashboard-earning-graph', 'set-message-setting', 'available-provider', 'rebooking'
->>>>>>> newversion/main
         ];
 
         $formattedRoutes = [];

@@ -1618,26 +1618,20 @@ input:-webkit-autofill:active {
 .form-floating > .form-control-plaintext ~ label,
 .form-floating > .form-control:focus ~ label,
 .form-floating > .form-control:not(:placeholder-shown) ~ label,
-<<<<<<< HEAD
 .form-floating > .form-select ~ label {
-=======
 .form-floating > .form-select ~ label,
 .form-floating > .js-select ~ label,
 .form-floating > .multiple-select2 ~ label {
->>>>>>> newversion/main
     opacity: 1;
     transform: scale(1) translateY(-1.3rem) translateX(0rem);
 }
 
 .form-floating > .form-control,
 .form-floating > .form-control-plaintext,
-<<<<<<< HEAD
 .form-floating > .form-select {
-=======
 .form-floating > .form-select,
 .form-floating > .js-select,
 .form-floating > .multiple-select2 {
->>>>>>> newversion/main
     height: 2.8125rem;
 }
 
@@ -1649,10 +1643,7 @@ input:-webkit-autofill:active {
 .form-floating > .form-control,
 .form-floating > .form-control-plaintext {
     padding: 0.625rem 1.25rem;
-<<<<<<< HEAD
-=======
     /* padding: 0.325rem 0.5rem; */
->>>>>>> newversion/main
 }
 
 .form-floating > label {
@@ -1662,11 +1653,9 @@ input:-webkit-autofill:active {
     inline-size: min-content;
     block-size: auto;
     inset-inline-start: 0.5rem;
-<<<<<<< HEAD
     inset-block-start: 0.25rem;
     line-height: 1;
     font-size: 0.875rem;
-=======
     /* inset-block-start: 0.25rem; */
     inset-block-start: 0;
     line-height: 1;
@@ -1676,7 +1665,6 @@ input:-webkit-autofill:active {
 
 .form-floating .form-control + label {
     inset-block-start: 0.5rem !important;
->>>>>>> newversion/main
 }
 
 .form-floating > .form-control-plaintext:not(:-moz-placeholder-shown),
@@ -3064,15 +3052,12 @@ svg.danger circle {
     color: var(--c1);
 }
 
-<<<<<<< HEAD
-=======
 .upload-file__edit.top {
     inset-block-end: unset;
     inset-block-start: -0.625rem;
     pointer-events: none;
 }
 
->>>>>>> newversion/main
 .upload-file__edit .material-icons,
 .upload-file__close .material-icons {
     font-size: 1rem;
@@ -5959,13 +5944,10 @@ body.aside-folded:not(.open-aside-folded) .search--form-group {
     min-width: 92px;
 }
 
-<<<<<<< HEAD
-=======
 .min-w-120 {
     min-width: 120px;
 }
 
->>>>>>> newversion/main
 /* Hide the spin buttons for number inputs */
 input.spin-none[type="number"]::-webkit-inner-spin-button,
 input.spin-none[type="number"]::-webkit-outer-spin-button {
@@ -7808,13 +7790,10 @@ h3 .repeat-icon {
     max-width: 7.5rem !important;
 }
 
-<<<<<<< HEAD
-=======
 .max-w150 {
     max-width: 9.375rem !important;
 }
 
->>>>>>> newversion/main
 .overflow-y-auto {
     overflow-y: auto !important;
 }
@@ -7822,8 +7801,6 @@ h3 .repeat-icon {
 .scrollbar-thin {
     scrollbar-width: thin;
 }
-<<<<<<< HEAD
-=======
 
 .max-w-260px {
     max-width: 260px;
@@ -8020,4 +7997,3 @@ h3 .repeat-icon {
 .btn-outline--primary:focus .c1 {
     color: var(--absolute-white) !important;
 }
->>>>>>> newversion/main

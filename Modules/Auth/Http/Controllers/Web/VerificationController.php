@@ -2,10 +2,7 @@
 
 namespace Modules\Auth\Http\Controllers\Web;
 
-<<<<<<< HEAD
-=======
 use App\Traits\FirebaseAuthTrait;
->>>>>>> newversion/main
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\CarbonInterval;
 use Illuminate\Contracts\Support\Renderable;
@@ -28,10 +25,7 @@ use Modules\PaymentModule\Traits\SmsGateway;
 
 class VerificationController extends Controller
 {
-<<<<<<< HEAD
-=======
     use FirebaseAuthTrait;
->>>>>>> newversion/main
     public function __construct(
         private User             $user,
         private UserVerification $user_verification
@@ -78,36 +72,11 @@ class VerificationController extends Controller
         }
 
         $otp = env('APP_ENV') != 'live' ? '123456' : rand(100000, 999999);
-<<<<<<< HEAD
-        $this->user_verification->updateOrCreate([
-            'identity' => $request['identity'],
-            'identity_type' => $request['identity_type']
-        ], [
-            'identity' => $request['identity'],
-            'identity_type' => $request['identity_type'],
-            'user_id' => null,
-            'otp' => $otp,
-            'expires_at' => now()->addMinute(3),
-        ]);
-=======
->>>>>>> newversion/main
 
         $response = 'error';
         if ($request['identity_type'] == 'phone') {
             $phonePermission = isNotificationActive(null, 'verification', 'sms', 'provider');
             if ($phonePermission) {
-<<<<<<< HEAD
-                $published_status = 0;
-                $payment_published_status = config('get_payment_publish_status');
-                if (isset($payment_published_status[0]['is_published'])) {
-                    $published_status = $payment_published_status[0]['is_published'];
-                }
-
-                if ($published_status == 1) {
-                    $response = SmsGateway::send($request['identity'], $otp);
-                } else {
-                    $response = SMS_gateway::send($request['identity'], $otp);
-=======
 
                 $firebaseOtpConfig = business_config('firebase_otp_verification', 'third_party');
                 $firebaseOtpStatus = (int)$firebaseOtpConfig?->live_values['status'] ?? null;
@@ -128,7 +97,6 @@ class VerificationController extends Controller
                     } else {
                         $response = SMS_gateway::send($request['identity'], $otp);
                     }
->>>>>>> newversion/main
                 }
             }
 
@@ -136,10 +104,6 @@ class VerificationController extends Controller
             $emailPermission = isNotificationActive(null, 'verification', 'email', 'provider');
             if ($emailPermission) {
                 try {
-<<<<<<< HEAD
-                    Mail::to($request['identity'])->send(new OTPMail($otp));
-                    $response = 'success';
-=======
                      $emailStatus = business_config('email_config_status', 'email_config')->live_values;
                      if ($emailStatus){
                          Mail::to($request['identity'])->send(new OTPMail($otp));
@@ -147,7 +111,6 @@ class VerificationController extends Controller
                      }else{
                          $response = 'error';
                      }
->>>>>>> newversion/main
                 } catch (\Exception $exception) {
                     $response = 'error';
                 }
@@ -157,8 +120,6 @@ class VerificationController extends Controller
         }
 
         if ($response == 'success') {
-<<<<<<< HEAD
-=======
             $this->user_verification->updateOrCreate([
                 'identity' => $request['identity'],
                 'identity_type' => $request['identity_type']
@@ -170,7 +131,6 @@ class VerificationController extends Controller
                 'expires_at' => now()->addMinute(3),
             ]);
 
->>>>>>> newversion/main
             Session::put('identity', $request['identity']);
             Session::put('identity_type', $request['identity_type']);
 
@@ -183,10 +143,6 @@ class VerificationController extends Controller
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
     public function verifyOtp(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -196,10 +152,6 @@ class VerificationController extends Controller
         ]);
 
         if ($validator->fails()) {
-<<<<<<< HEAD
-            $error = error_processor($validator);
-            $message = $error[0]['message'] ?? translate(DEFAULT_400['message']);
-=======
             Toastr::error($validator->errors()->first());
             return redirect()->back();
         }
@@ -256,91 +208,10 @@ class VerificationController extends Controller
 
         if (!$verification_data) {
             $message = translate(DEFAULT_400['message']);
->>>>>>> newversion/main
             Toastr::error($message);
             return redirect()->back();
         }
 
-<<<<<<< HEAD
-        $max_otp_hit = business_config('maximum_otp_hit', 'otp_login_setup')->test_values ?? 5;
-        $max_otp_hit_time = business_config('otp_resend_time', 'otp_login_setup')->test_values ?? 60;// seconds
-        $temp_block_time = business_config('temporary_otp_block_time', 'otp_login_setup')->test_values ?? 600; // seconds
-
-        $verify = $this->user_verification->where(['identity' => $request['identity'], 'otp' => $request['otp']])->first();
-        $user = $this->user->orWhere('phone', $request['identity'])->orWhere('email', $request['identity'])->first();
-        if (isset($verify)) {
-            if (isset($verify->temp_block_time) && Carbon::parse($verify->temp_block_time)->DiffInSeconds() <= $temp_block_time) {
-                $time = $temp_block_time - Carbon::parse($verify->temp_block_time)->DiffInSeconds();
-                Toastr::success(translate('please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans());
-                return view('auth::verification.send-otp', compact('user'));
-            }
-
-            if ($request['identity_type'] == 'email') {
-                $user = $this->user->where('email', $request['identity'])->first();
-                $user->is_email_verified = 1;
-                $user->save();
-
-            } else if ($request['identity_type'] == 'phone') {
-                $user = $this->user->where('phone', $request['identity'])->first();
-                $user->is_phone_verified = 1;
-                $user->save();
-            }
-            $this->user_verification->where(['identity' => $request['identity'], 'otp' => $request['otp']])->delete();
-
-            Toastr::success(translate(OTP_VERIFICATION_SUCCESS_200['message']));
-            return redirect(route('provider.auth.login'));
-
-        } else {
-            $verification_data = $this->user_verification->where('identity', $request['identity'])->first();
-
-            if (isset($verification_data)) {
-                if (isset($verification_data->temp_block_time) && Carbon::parse($verification_data->temp_block_time)->DiffInSeconds() <= $temp_block_time) {
-                    $time = $temp_block_time - Carbon::parse($verification_data->temp_block_time)->DiffInSeconds();
-                    Toastr::error(translate('please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans());
-                    return view('auth::verification.send-otp', compact('user'));
-                }
-
-                if ($verification_data->is_temp_blocked == 1 && Carbon::parse($verification_data->updated_at)->DiffInSeconds() >= $max_otp_hit_time) {
-
-                    $user_verify = $this->user_verification->where(['identity' => $request['identity']])->first();
-                    if (!isset($user_verify)) {
-                        $user_verify = $this->user_verification;
-                    }
-                    $user_verify->hit_count = 0;
-                    $user_verify->is_temp_blocked = 0;
-                    $user_verify->temp_block_time = null;
-                    $user_verify->save();
-                }
-
-                if ($verification_data->hit_count >= $max_otp_hit && Carbon::parse($verification_data->updated_at)->DiffInSeconds() < $max_otp_hit_time && $verification_data->is_temp_blocked == 0) {
-
-                    $user_verify = $this->user_verification->where(['identity' => $request['identity']])->first();
-                    if (!isset($user_verify)) {
-                        $user_verify = $this->user_verification;
-                    }
-                    $user_verify->is_temp_blocked = 1;
-                    $user_verify->temp_block_time = now();
-                    $user_verify->save();
-
-                    $time = $temp_block_time - Carbon::parse($verification_data->temp_block_time)->DiffInSeconds();
-                    Toastr::error(translate('Too_many_attempts. please_try_again_after_') . CarbonInterval::seconds($time)->cascade()->forHumans());
-                    return view('auth::verification.send-otp', compact('user'));
-                }
-            }
-
-            $user_verify = $this->user_verification->where(['identity' => $request['identity']])->first();
-            if (!isset($user_verify)) {
-                $user_verify = $this->user_verification;
-            }
-            $user_verify->hit_count += 1;
-            $user_verify->temp_block_time = null;
-            $user_verify->save();
-        }
-
-        Toastr::error(translate(OTP_VERIFICATION_FAIL_403['message']));
-        return view('auth::verification.send-otp', compact('user'));
-    }
-=======
         // Handle temporary block
         if ($verification_data->temp_block_time && Carbon::parse($verification_data->temp_block_time)->DiffInSeconds() <= $config['temp_block_time']) {
             $time_left = $config['temp_block_time'] - Carbon::parse($verification_data->temp_block_time)->DiffInSeconds();
@@ -498,5 +369,4 @@ class VerificationController extends Controller
 //        $user_verify->temp_block_time = null;
 //        $user_verify->save();
 //    }
->>>>>>> newversion/main
 }
