@@ -38,11 +38,7 @@
                                         <div class="form-floating form-floating__icon">
                                             <input type="text" class="form-control" value="{{old('company_name')}}"
                                                     name="company_name"
-<<<<<<< HEAD
-                                                    placeholder="{{translate('Company_/_Individual_Name')}}" required>
-=======
                                                     placeholder="{{translate('Company_/_Individual_Name')}}" maxlength="191" required>
->>>>>>> newversion/main
                                             <label>{{translate('Company_/_Individual_Name')}}</label>
                                             <span class="material-icons">store</span>
                                         </div>
@@ -128,12 +124,6 @@
                                                 <option value="driving_license"
                                                     {{old('identity_type') == 'driving_license' ? 'selected': ''}}>
                                                     {{translate('Driving_License')}}</option>
-<<<<<<< HEAD
-                                                <option value="residency_permit"
-                                                    {{old('identity_type') == 'residency_permit' ? 'selected': ''}}>
-                                                    {{translate('residency_permit')}}</option>
-=======
->>>>>>> newversion/main
                                                 <option value="nid"
                                                     {{old('identity_type') == 'passport' ? 'selected': ''}}>
                                                     {{translate('nid')}}</option>
@@ -169,11 +159,7 @@
                                     <div class="mb-30">
                                         <div class="form-floating form-floating__icon">
                                             <input type="text" class="form-control" name="contact_person_name"
-<<<<<<< HEAD
-                                                    value="{{old('contact_person_name')}}" placeholder="name" required>
-=======
                                                     value="{{old('contact_person_name')}}" placeholder="name" maxlength="191" required>
->>>>>>> newversion/main
                                             <label>{{translate('Name')}}</label>
                                             <span class="material-icons">account_circle</span>
                                         </div>

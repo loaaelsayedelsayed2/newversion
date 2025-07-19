@@ -88,12 +88,7 @@
                                             @endif
 
 
-<<<<<<< HEAD
-                                            <select class="zone-select theme-input-style w-100" name="zone_ids[]"
-                                                    multiple="multiple" id="zone_selector__select">
-=======
                                             <select class="zone-select theme-input-style w-100" name="zone_ids[]" multiple="multiple" id="zone_selector__select">
->>>>>>> newversion/main
                                                 <option value="all">{{translate('Select All')}}</option>
                                                 @foreach($zones as $zone)
                                                     <option
@@ -155,8 +150,6 @@
             }
         });
 
-<<<<<<< HEAD
-=======
         $(document).ready(function () {
             let originalSelection = $('#zone_selector__select').val();
 
@@ -165,6 +158,5 @@
             });
         });
 
->>>>>>> newversion/main
     </script>
 @endpush

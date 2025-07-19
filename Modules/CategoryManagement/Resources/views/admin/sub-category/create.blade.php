@@ -44,13 +44,8 @@
                                     <div class="row">
                                         <div class="col-lg-8 mb-5 mb-lg-0">
                                             <div class="d-flex flex-column">
-<<<<<<< HEAD
-                                                <select class="js-select theme-input-style w-100" name="parent_id">
-                                                    <option value="0" selected
-=======
                                                 <select class="js-select theme-input-style w-100" name="parent_id" id="category_selector" required>
                                                     <option value="" selected
->>>>>>> newversion/main
                                                             disabled>{{translate('Select_Category_Name')}}</option>
                                                     @foreach($mainCategories as $item)
                                                         <option value="{{$item['id']}}">{{$item->name}}</option>
@@ -61,61 +56,31 @@
                                                     <div class="lang-form" id="default-form">
                                                         <div class="form-floating form-floating__icon mb-30 mt-30">
                                                             <input type="text" name="name[]" class="form-control"
-<<<<<<< HEAD
-                                                                   placeholder="{{translate('sub_category_name')}}"
-                                                                   required
-                                                            >
-                                                            <label>{{translate('sub_category_name')}}
-                                                                ({{ translate('default') }})</label>
-=======
                                                                    placeholder="{{translate('sub_category_name')}}" value="{{old('name.0')}}"
                                                                    required>
                                                             <label>{{translate('sub_category_name')}}({{ translate('default') }})</label>
->>>>>>> newversion/main
                                                             <span class="material-icons">subtitles</span>
                                                         </div>
 
                                                         <div class="form-floating mb-30">
-<<<<<<< HEAD
-                                                <textarea type="text" name="short_description[]"
-                                                          class="form-control resize-none" required
-                                                ></textarea>
-                                                            <label>{{translate('short_description')}}
-                                                                ({{ translate('default') }})</label>
-=======
                                                             <textarea type="text" name="short_description[]" class="form-control resize-none" required>{{ old('short_description.0') }}</textarea>
                                                             <label>{{translate('short_description')}}({{ translate('default') }})</label>
->>>>>>> newversion/main
                                                         </div>
                                                     </div>
 
                                                     <input type="hidden" name="lang[]" value="default">
-<<<<<<< HEAD
-                                                    @foreach ($language?->live_values as $lang)
-                                                        <div class="lang-form d-none" id="{{ $lang['code'] }}-form">
-                                                            <div class="form-floating form-floating__icon mb-30 mt-30">
-                                                                <input type="text" name="name[]" class="form-control"
-                                                                       placeholder="{{translate('sub_category_name')}} ">
-                                                                <label>{{translate('sub_category_name')}}
-                                                                    ({{ strtoupper($lang['code']) }})</label>
-=======
                                                     @foreach ($language?->live_values as $index => $lang)
                                                         <div class="lang-form d-none" id="{{ $lang['code'] }}-form">
                                                             <div class="form-floating form-floating__icon mb-30 mt-30">
                                                                 <input type="text" name="name[]" class="form-control"
                                                                        placeholder="{{translate('sub_category_name')}}" value="{{ old('name.' . ($index + 1)) }}">
                                                                 <label>{{translate('sub_category_name')}}({{ strtoupper($lang['code']) }})</label>
->>>>>>> newversion/main
                                                                 <span class="material-icons">subtitles</span>
                                                             </div>
 
                                                             <div class="form-floating mb-30">
                                                             <textarea type="text" name="short_description[]"
-<<<<<<< HEAD
-                                                                      class="form-control resize-none"></textarea>
-=======
                                                                       class="form-control resize-none">{{ old('short_description.' . ($index + 1)) }}</textarea>
->>>>>>> newversion/main
                                                                 <label>{{translate('short_description')}}
                                                                     ({{ strtoupper($lang['code']) }})</label>
                                                             </div>
@@ -126,11 +91,7 @@
                                                 @else
                                                     <div class="form-floating mb-30 mt-30 lang-form">
                                                         <input type="text" name="name[]" class="form-control"
-<<<<<<< HEAD
-                                                               value="{{old('name')}}"
-=======
                                                                value="{{old('name.0')}}"
->>>>>>> newversion/main
                                                                placeholder="{{translate('sub_category_name')}}"
                                                                required>
                                                         <label>{{translate('sub_category_name')}}
@@ -158,11 +119,7 @@
                                                 <div class="d-flex flex-column align-items-center">
                                                     <div class="upload-file">
                                                         <input type="file" class="upload-file__input" name="image"
-<<<<<<< HEAD
-                                                               accept=".{{ implode(',.', array_column(IMAGEEXTENSION, 'key')) }}, |image/*">
-=======
                                                                accept=".{{ implode(',.', array_column(IMAGEEXTENSION, 'key')) }}, |image/*" required>
->>>>>>> newversion/main
                                                         <div class="upload-file__img">
                                                             <img
                                                                 src="{{asset('public/assets/admin-module')}}/img/media/upload-file.png"
@@ -359,12 +316,9 @@
             form_alert('delete-' + itemId, '{{translate('want_to_delete_this')}}?')
             @endif
         })
-<<<<<<< HEAD
-=======
 
         $('button[type="reset"]').on('click', function (e) {
             $('#category_selector').val('').trigger('change');
         });
->>>>>>> newversion/main
     </script>
 @endpush

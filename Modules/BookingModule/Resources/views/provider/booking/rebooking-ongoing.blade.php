@@ -50,7 +50,6 @@
                 </div>
                 <div class="d-flex flex-wrap flex-xxl-nowrap gap-3">
                     <div class="d-flex flex-wrap gap-3">
-<<<<<<< HEAD
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -58,8 +57,6 @@
                                 <span class="material-symbols-outlined">edit</span>{{ translate('Edit Services') }}
                             </button>
                         @endif
-=======
->>>>>>> newversion/main
                         @if (in_array($booking['booking_status'], ['accepted', 'ongoing']) && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'])
                             <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -90,7 +87,6 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
@@ -100,8 +96,6 @@
                 @endif
                 @if (
                     $booking->is_verified == 2 &&
-=======
->>>>>>> newversion/main
                         $booking->payment_method == 'cash_after_service' &&
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
@@ -144,11 +138,7 @@
                                         <p>
                                             <span>{{ translate('Payment by') }} : </span>
                                             <span
-<<<<<<< HEAD
                                                 class="c1">{{ ($booking->booking->customer->first_name . ' ' . $booking->booking->customer->last_name) }}</span>
-=======
-                                                class="c1">{{ ($booking?->booking?->customer?->first_name . ' ' . $booking?->booking?->customer?->last_name) }}</span>
->>>>>>> newversion/main
                                         </p>
                                         @endif
                                     </div>
@@ -158,11 +148,8 @@
                                             <span class="ms-3 badge badge-{{ $booking->is_paid ? 'success' : 'danger' }}"
                                                   id="payment_status__span">{{ $booking->is_paid ? translate('Paid') : translate('Unpaid') }}</span>
                                         </p>
-<<<<<<< HEAD
                                         <p class="mb-2"><span>{{ translate('Booking_Otp') }} :</span> <span
                                                 class="c1 text-capitalize">{{ $booking?->booking_otp ?? '' }}</span></p>
-=======
->>>>>>> newversion/main
 
                                             @if($booking?->scheduleHistories->count() > 1)
                                                 <h5 class="d-flex gap-1 flex-wrap align-items-center">
@@ -342,11 +329,7 @@
                                                 </td>
                                             </tr>
 
-<<<<<<< HEAD
                                             @if ($booking->payment_method != 'cash_after_service' && $booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                                            @if ($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                                                 <tr>
                                                     <td>{{ translate('Refund') }}</td>
                                                     <td class="text--end pe--4">
@@ -406,12 +389,9 @@
                                             <option
                                                     value="completed" {{$booking['booking_status'] == 'completed' ? 'selected' : ''}}>{{translate('Completed')}}</option>
                                             @endif
-<<<<<<< HEAD
                                             @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'payment_after_service')
                                                 <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>
                                             @endif
-=======
->>>>>>> newversion/main
                                             @if((business_config('provider_can_cancel_booking', 'provider_config'))->live_values && !$booking->is_paid && $booking->payment_method == 'cash_after_service')
                                                 <option value="canceled" {{$booking['booking_status'] == 'canceled' ? 'selected' : ''}}>{{translate('Canceled')}}</option>
                                             @endif
@@ -526,8 +506,6 @@
                                     </div>
                                 @endif
 
-<<<<<<< HEAD
-=======
                                 @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
                                 <div class="c1-light-bg radius-10">
                                     <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
@@ -586,7 +564,6 @@
                                         @endif
                                     </div>
                                 </div>
->>>>>>> newversion/main
 
                                     <div class="c1-light-bg radius-10">
                                         <div
@@ -620,12 +597,10 @@
                                             @php($customer_name = $booking?->booking?->service_address?->contact_person_name)
                                             @php($customer_phone = $booking?->booking?->service_address?->contact_person_number)
 
-<<<<<<< HEAD
                                             <div class="media gap-2 flex-wrap">
                                                 @if (!$booking?->is_guest && $booking?->booking?->customer)
                                                     <img width="58" height="58"
                                                          class="rounded-circle border border-white"
-=======
                                             @php($name = $booking->service_address?->contact_person_name)
                                             @php($phone = $booking->service_address?->contact_person_number)
 
@@ -633,16 +608,11 @@
                                                 @if (!$booking?->is_guest && $booking?->booking?->customer)
                                                     <img width="58" height="58"
                                                          class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                          src="{{ $booking?->booking?->customer?->profile_image_full_path }}"
                                                          alt="{{ translate('user_image') }}">
                                                 @else
                                                     <img width="58" height="58"
-<<<<<<< HEAD
-                                                         class="rounded-circle border border-white"
-=======
                                                          class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                          src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                          alt="{{ translate('user_image') }}">
                                                 @endif
@@ -659,13 +629,6 @@
                                                                         href="tel:{{ $customer_phone }}">{{ $customer_phone }}</a>
                                                             </li>
                                                         @endif
-<<<<<<< HEAD
-                                                        <li>
-                                                            <span class="material-icons">map</span>
-                                                            <p>{{ Str::limit($booking?->booking?->service_address?->address ?? translate('not_available'), 100) }}
-                                                            </p>
-                                                        </li>
-=======
                                                             @if(!empty($booking?->booking?->service_address?->address))
                                                                 <li>
                                                                     <span class="material-icons">map</span>
@@ -673,7 +636,6 @@
                                                                     </p>
                                                                 </li>
                                                             @endif
->>>>>>> newversion/main
                                                     </ul>
                                                 </div>
                                             </div>
@@ -711,11 +673,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                     class="rounded-circle border border-white"
-=======
                                                      class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                      src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                      alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">
@@ -881,13 +839,10 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
 
     @include('bookingmodule::provider.booking.partials.details._repeat-ongoing-service-location-modal')
 
     @include('bookingmodule::provider.booking.partials.details._update-customer-address-modal')
->>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -1442,8 +1397,6 @@
                 }
             });
         });
-<<<<<<< HEAD
-=======
 
         // for update service location from update customer address modal
         $(document).ready(function() {
@@ -1638,7 +1591,6 @@
                 $('.customer-address-update-btn').attr('disabled', true);
             }
         })
->>>>>>> newversion/main
     </script>
     <script>
         $(document).ready(function() {
@@ -1646,8 +1598,6 @@
                 minimumResultsForSearch: Infinity
             });
         });
-<<<<<<< HEAD
-=======
 
         $(document).ready(function () {
             try {
@@ -1660,6 +1610,5 @@
                 console.log(error)
             }
         });
->>>>>>> newversion/main
     </script>
 @endpush

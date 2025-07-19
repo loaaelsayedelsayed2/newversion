@@ -168,10 +168,7 @@
                                     <tr>
                                         <th>{{translate('SL')}}</th>
                                         <th>{{translate('Booking_ID')}}</th>
-<<<<<<< HEAD
-=======
                                         <th>{{ translate('Where_Service_will_be_Provided') }}</th>
->>>>>>> newversion/main
                                         <th>{{translate('Customer_Info')}}</th>
                                         <th>{{translate('Total_Amount')}}</th>
                                         <th>{{translate('Payment_Status')}}</th>
@@ -208,8 +205,6 @@
                                                 @endif
                                             </td>
                                             <td>
-<<<<<<< HEAD
-=======
                                                 @if($booking->service_location == 'provider')
                                                     {{ translate('Provider Location') }}
                                                 @else
@@ -217,7 +212,6 @@
                                                 @endif
                                             </td>
                                             <td>
->>>>>>> newversion/main
                                                 <div class="d-flex flex-column gap-1">
                                                     @if($booking->customer)
                                                         <a href="{{route('admin.customer.detail',[$booking?->customer?->id, 'web_page'=>'overview'])}}">

@@ -26,7 +26,6 @@
                 </div>
                 <div class="d-flex flex-wrap flex-xxl-nowrap gap-3">
                     <div class="d-flex flex-wrap gap-3">
-<<<<<<< HEAD
                         @if ($booking['payment_method'] == 'offline_payment' && !$booking['is_paid'])
                             <span class="btn btn--primary offline-payment" data-id="{{ $booking->id }}">
                                 <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}
@@ -36,17 +35,6 @@
 
                         @if (
                             $booking['payment_method'] == 'payment_after_service' &&
-=======
-{{--                        @if ($booking['payment_method'] == 'offline_payment' && !$booking['is_paid'])--}}
-{{--                            <span class="btn btn--primary offline-payment" data-id="{{ $booking->id }}">--}}
-{{--                                <span class="material-icons">done</span>{{ translate('Verify Offline Payment') }}--}}
-{{--                            </span>--}}
-{{--                        @endif--}}
-                        @php($maxBookingAmount = business_config('max_booking_amount', 'booking_setup')->live_values)
-
-                        @if (
-                            $booking['payment_method'] == 'cash_after_service' &&
->>>>>>> newversion/main
                                 $booking->is_verified == '0' &&
                                 $booking->total_booking_amount >= $maxBookingAmount)
                             @can('booking_can_approve_or_deny')
@@ -110,11 +98,7 @@
                                 </div>
                             </div>
                         @endif
-<<<<<<< HEAD
                         @if ($booking['payment_method'] == 'payment_after_service' && $booking->is_verified == '2')
-=======
-                        @if ($booking['payment_method'] == 'cash_after_service' && $booking->is_verified == '2')
->>>>>>> newversion/main
                             <span class="btn btn--primary change-booking-request" data-id="{{ $booking->id }}"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal--{{ $booking->id }}">
                                 <span class="material-icons">done</span>{{ translate('Change Request Status') }}
@@ -122,11 +106,7 @@
 
                             <div class="modal fade" id="exampleModal--{{ $booking->id }}" tabindex="-1"
                                 aria-labelledby="exampleModalLabel--{{ $booking->id }}" aria-hidden="true">
-                                <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <div class="modal-body p-4 py-5">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
                                             <div class="text-center mb-4 pb-3">
                                                 <img class="mb-4"
                                                     src="{{ asset('/public/assets/admin-module/img/booking-req-status.png') }}"
@@ -163,11 +143,7 @@
                         @endif
 
                         @if (in_array($booking['booking_status'], ['pending', 'accepted', 'ongoing']) &&
-<<<<<<< HEAD
                                 $booking->booking_partial_payments->isEmpty() && $booking['payment_method'] == 'payment_after_service' && !$booking['is_paid'])
-=======
-                                $booking->booking_partial_payments->isEmpty() && $booking['payment_method'] == 'cash_after_service' && !$booking['is_paid'] && empty($booking->customizeBooking))
->>>>>>> newversion/main
                             @can('booking_edit')
                                 <button class="btn btn--primary" data-bs-toggle="modal"
                                     data-bs-target="#serviceUpdateModal--{{ $booking['id'] }}" data-toggle="tooltip"
@@ -200,11 +176,7 @@
 
                 @if (
                     $booking->is_verified == 2 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
-=======
-                        $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -214,11 +186,7 @@
 
                 @if (
                     $booking->is_verified == 0 &&
-<<<<<<< HEAD
                         $booking->payment_method == 'payment_after_service' &&
-=======
-                        $booking->payment_method == 'cash_after_service' &&
->>>>>>> newversion/main
                         $max_booking_amount <= $booking->total_booking_amount)
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span class="text-danger"># {{ translate('Note: ') }}</span>
@@ -229,14 +197,14 @@
                     </div>
                 @endif
 
-<<<<<<< HEAD
                 @if ($booking->is_paid == 0 && $booking->payment_method == 'offline_payment')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         <span>
                             <span class="text-danger fw-semibold"> # {{ translate('Note: ') }} </span>
                             {{ translate('Please Check & Verify the payment information weather it is correct or not before confirm the booking. ') }}
                         </span>
-=======
+                    </div>
+                @endif
                 @if ($booking->booking_offline_payments->isNotEmpty() && $booking->payment_method == 'offline_payment' && $booking?->booking_offline_payments?->first()?->payment_status != 'approved')
                     <div class="border border-danger-light bg-soft-danger rounded py-3 px-3 text-dark">
                         @if($booking?->booking_offline_payments?->first()?->payment_status == 'pending')
@@ -252,7 +220,6 @@
                             </span>
                         @endif
 
->>>>>>> newversion/main
                     </div>
                 @endif
 
@@ -278,20 +245,6 @@
                                             <span>{{ translate('Amount') }} : </span>
                                             {{ with_currency_symbol($booking->total_booking_amount) }}
                                         </p>
-<<<<<<< HEAD
-                                        @if ($booking->payment_method == 'offline_payment')
-                                            <h4 class="mb-2">{{ translate('Payment_Info') }}</h4>
-                                            <div class="d-flex gap-1 flex-column">
-                                                @foreach ($booking?->booking_offline_payments?->first()?->customer_information ?? [] as $key => $item)
-                                                    <div><span>{{ translate($key) }}</span>:
-                                                        <span>{{ translate($item) }}</span>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="text-start text-sm-end">
-=======
                                     </div>
                                     <div class="text-start text-sm-end">
                                         @if($booking->payment_method == 'offline_payment' && $booking->booking_offline_payments->isNotEmpty())
@@ -308,7 +261,6 @@
                                             </p>
                                         @endif
 
->>>>>>> newversion/main
                                         <p class="mb-2">
                                             <span>{{ translate('Payment_Status') }} : </span>
                                             <span class="text-{{ $booking->is_paid ? 'success' : 'danger' }}"
@@ -405,11 +357,6 @@
                             <hr>
 
                             <div class="py-3 d-flex flex-column gap-3 mb-2">
-<<<<<<< HEAD
-                                <div class="c1-light-bg radius-10">
-                                    <div
-                                        class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
-=======
 
                                 @if($booking->payment_method == 'offline_payment')
                                     <div class="border border-color-primary">
@@ -476,7 +423,6 @@
 
                                 <div class="c1-light-bg radius-10">
                                     <div class="border-bottom d-flex align-items-center justify-content-between gap-2 py-3 px-4 mb-2">
->>>>>>> newversion/main
                                         <h4 class="d-flex align-items-center gap-2">
                                             <span class="material-icons title-color">person</span>
                                             {{ translate('Customer_Information') }}
@@ -526,20 +472,12 @@
                                         <div class="media gap-2 flex-wrap">
                                             @if (!$booking?->is_guest && $booking?->customer)
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->customer?->profile_image_full_path }}"
                                                     alt="{{ translate('user_image') }}">
                                             @else
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ asset('public/assets/provider-module/img/user2x.png') }}"
                                                     alt="{{ translate('user_image') }}">
                                             @endif
@@ -626,11 +564,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->provider?->logo_full_path }}"
                                                     alt="{{ translate('provider') }}">
                                                 <div class="media-body">
@@ -676,11 +610,7 @@
                                         <div class="py-3 px-4">
                                             <div class="media gap-2 flex-wrap">
                                                 <img width="58" height="58"
-<<<<<<< HEAD
-                                                    class="rounded-circle border border-white"
-=======
                                                     class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                                                     src="{{ $booking?->serviceman?->user?->profile_image_full_path }}"
                                                     alt="{{ translate('serviceman') }}">
                                                 <div class="media-body">
@@ -771,8 +701,6 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
 
     <div class="modal fade" id="deniedModal-{{$booking->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -800,15 +728,12 @@
             </div>
         </div>
     </div>
->>>>>>> newversion/main
 @endsection
 
 @push('script')
     <script>
         'use strict'
 
-<<<<<<< HEAD
-=======
         $(".change-booking-status").on('click', function() {
             var booking_status = 'canceled';
             var route = '{{ route('admin.booking.status_update', [$booking->id]) }}' + '?booking_status=' + booking_status;
@@ -853,18 +778,13 @@
         }
 
 
->>>>>>> newversion/main
         $('.reassign-provider').on('click', function() {
             let id = $(this).data('provider-reassign');
             updateProvider(id)
         })
 
         $('.offline-payment').on('click', function() {
-<<<<<<< HEAD
-            let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}';
-=======
             let route = '{{ route('admin.booking.offline-payment.verify', ['booking_id' => $booking->id]) }}'+ '&payment_status=' + 'approved';
->>>>>>> newversion/main
             route_alert_reload(route, '{{ translate('Want to verify the payment') }}', true);
         })
 

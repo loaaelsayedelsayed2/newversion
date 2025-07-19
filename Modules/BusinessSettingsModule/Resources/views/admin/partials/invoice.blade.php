@@ -19,11 +19,7 @@
                     Av: 11, R: 09, Dhaka 1216, BD
                 </div>
                 <div>+8801100000001</div>
-<<<<<<< HEAD
                 <div>Zabbetny@demo.com</div>
-=======
-                <div>demandium@demo.com</div>
->>>>>>> newversion/main
             </div>
         </div>
 
@@ -95,9 +91,5 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
     <div class="invoice-footer">All rights reserved By @ZabbetnyLtd 2024</div>
-=======
-    <div class="invoice-footer">All rights reserved By @DemandiumLtd 2024</div>
->>>>>>> newversion/main
 </div>

@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="ar" dir="rtl">
-=======
-<html>
->>>>>>> newversion/main
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,7 +8,6 @@
     <script src="{{asset('public/assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('public/assets/js/jquery.min.js')}}"></script>
     <style>
-<<<<<<< HEAD
 
         body {
             background-color: #F9FCFF;
@@ -20,11 +15,6 @@
             font-family: 'Arial', 'Tahoma', sans-serif;
             text-align: right;
             direction: rtl !important;
-=======
-        body {
-            background-color: #F9FCFF;
-            font-size: 10px !important;
->>>>>>> newversion/main
         }
 
         a {
@@ -49,10 +39,7 @@
             max-width: 972px;
             margin-left: auto;
             margin-right: auto;
-<<<<<<< HEAD
-=======
 
->>>>>>> newversion/main
         }
 
         .white-box-content {
@@ -93,18 +80,12 @@
             border-collapse: collapse;
             border-spacing: 0;
             margin-bottom: 20px;
-<<<<<<< HEAD
             direction: rtl;
-=======
->>>>>>> newversion/main
         }
 
         .invoice table td, .invoice table th {
             padding: 15px;
-<<<<<<< HEAD
             text-align: right;
-=======
->>>>>>> newversion/main
         }
 
         .invoice table th {
@@ -150,30 +131,6 @@
         .fz-12 {
             font-size: 12px;
         }
-<<<<<<< HEAD
-
-        /* RTL specific adjustments */
-        .text-left {
-            text-align: right !important; /* Override for RTL */
-        }
-        .text-right {
-            text-align: left !important; /* Override for RTL */
-        }
-        .border-left {
-            border-right: 1px solid #dee2e6 !important;
-            border-left: none !important;
-        }
-        .text-uppercase {
-            text-transform: capitalize; /* Arabic/Hebrew typically don't use uppercase */
-        }
-
-        /* Numbers should remain LTR */
-        .number, .currency {
-            direction: ltr;
-            display: inline-block;
-        }
-=======
->>>>>>> newversion/main
     </style>
 </head>
 <body>
@@ -183,11 +140,7 @@
             <header>
                 <div class="row align-items-center">
                     <div class="col">
-<<<<<<< HEAD
-                        <h3 class="fw-700">{{translate("invoice")}}</h3>
-=======
                         <h3 class="text-uppercase fw-700">{{translate("invoice")}}</h3>
->>>>>>> newversion/main
                         <div>{{translate('Booking')}} #{{$booking->readable_id}}</div>
                         <div>{{translate('date')}}: {{date('d-M-Y h:ia',strtotime($booking->created_at))}}</div>
                     </div>
@@ -210,11 +163,8 @@
             @php($customer_name = $booking->customer ? $booking?->customer?->first_name.' '.$booking?->customer?->last_name : $booking?->service_address?->contact_person_name)
             @php($customer_phone = $booking->customer ? $booking?->customer?->phone : $booking?->service_address?->contact_person_number)
 
-<<<<<<< HEAD
             @php($provider_name = $booking->provider ? $booking?->provider?->user?->first_name.' '.$booking?->provider?->user?->last_name : $booking?->service_address?->contact_person_name)
 
-=======
->>>>>>> newversion/main
             <div class="white-box-content border rounded-12 border">
                 <div class="border-bottom p-3">
                     <div class="row align-items-center justify-content-between">
@@ -233,7 +183,6 @@
                                     <div>{{$booking?->customer?->email}}</div>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <div class="row align-items-center">
                                 <div class="col">
                                     <div class="fs-9">{{translate('Provider')}}</div>
@@ -251,11 +200,6 @@
                         </div>
                         <div class="col">
                             <div class="text-left">
-=======
-                        </div>
-                        <div class="col">
-                            <div class="text-right">
->>>>>>> newversion/main
                                 <div>Invoice of ({{currency_code()}})</div>
                                 <h5 class="text-primary fw-700 mb-0 lh-1 mt-1">{{with_currency_symbol($booking->total_booking_amount)}}</h5>
                             </div>
@@ -265,20 +209,12 @@
 
                 <div class="p-3">
                     <div class="row contacts">
-<<<<<<< HEAD
                         <div class="col">
                             <div>
                                 <div class="fs-9">{{translate('Payment')}}</div>
                                 <div class="mt-1">
                                     {{ str_replace(['_', '-'], ' ', $booking->payment_method) }}
                                 </div>
-=======
-
-                        <div class="col">
-                            <div>
-                                <div class="fs-9">{{translate('Payment')}}</div>
-                                <div class="mt-1">{{ str_replace(['_', '-'], ' ', $booking->payment_method) }}</div>
->>>>>>> newversion/main
                             </div>
                             <div class="mt-3">
                                 <div class="fs-9">{{translate('Reference ID')}}</div>
@@ -288,11 +224,9 @@
 
                         <div class="col border-left">
                             <h6 class="fz-12">{{translate('Service Address')}}</h6>
-<<<<<<< HEAD
                             <div class="fs-9">{{$customer_name}}</div>
                             <div class="fs-9">{{$customer_phone}}</div>
                             <div class="fs-9">{{$booking?->service_address?->address??translate('not_available')}}</div>
-=======
                             <div class="fs-9">
                                 @if($booking->service_location == 'provider')
                                     @if($booking->provider_id != null)
@@ -316,7 +250,6 @@
                                     #{{ translate('Note') }} : {{ translate('Provider will be arrived at Service location') }} <b>({{ translate('Customer location') }})</b> {{ translate('to provide the selected services') }}
                                 @endif
                             </div>
->>>>>>> newversion/main
                         </div>
 
                         <div class="col border-left">
@@ -326,7 +259,6 @@
                         </div>
                     </div>
 
-<<<<<<< HEAD
                     <table cellspacing="0" cellpadding="0">
                         <thead>
                             <tr>
@@ -335,7 +267,6 @@
                                 <th>{{translate('qty')}}</th>
                                 <th>{{translate('cost')}}</th>
                                 <th>{{translate('total')}}</th>
-=======
 
                     <table cellspacing="0" cellpadding="0">
                         <thead>
@@ -345,23 +276,12 @@
                                 <th class="text-center text-uppercase">{{translate('qty')}}</th>
                                 <th class="text-right text-uppercase">{{translate('cost')}}</th>
                                 <th class="text-right text-uppercase">{{translate('total')}}</th>
->>>>>>> newversion/main
                             </tr>
                         </thead>
                         <tbody>
                             @php($sub_total=0)
                             @foreach($booking->detail as $index=>$item)
                                 <tr>
-<<<<<<< HEAD
-                                    <td class="border-bottom">{{(strlen($index+1)<2?'0':'').$index+1}}</td>
-                                    <td class="border-bottom">
-                                        <div>{{$item->service->name??''}}</div>
-                                        <div>{{$item->variant_key}}</div>
-                                    </td>
-                                    <td class="border-bottom">{{$item->quantity}}</td>
-                                    <td class="border-bottom">{{with_currency_symbol($item->service_cost)}}</td>
-                                    <td class="border-bottom">{{with_currency_symbol($item->total_cost)}}</td>
-=======
                                     <td class="border-bottom text-left">{{(strlen($index+1)<2?'0':'').$index+1}}</td>
                                     <td class="border-bottom text-left">
                                         <div>{{$item->service->name??''}}</div>
@@ -370,7 +290,6 @@
                                     <td class="border-bottom text-center">{{$item->quantity}}</td>
                                     <td class="border-bottom text-right">{{with_currency_symbol($item->service_cost)}}</td>
                                     <td class="border-bottom text-right">{{with_currency_symbol($item->total_cost)}}</td>
->>>>>>> newversion/main
                                 </tr>
                                 @php($sub_total+=$item->service_cost*$item->quantity)
                             @endforeach
@@ -436,7 +355,6 @@
                                 $dueAmount = $booking->booking_partial_payments->first()?->due_amount;
                             }
 
-<<<<<<< HEAD
                             if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'payment_after_service' && $booking->additional_charge > 0) {
                                 $dueAmount += $booking->additional_charge;
                             }
@@ -444,12 +362,6 @@
                             if (!$booking->is_paid && $booking->payment_method == 'payment_after_service') {
                                 $dueAmount = $booking->total_booking_amount;
                             }
-=======
-                            if (in_array($booking->booking_status, ['pending', 'accepted', 'ongoing']) && $booking->payment_method != 'cash_after_service' && $booking->additional_charge > 0) {
-                                $dueAmount += $booking->additional_charge;
-                            }
-
->>>>>>> newversion/main
                             if (!$booking->is_paid && $booking->payment_method == 'cash_after_service') {
                                 $dueAmount = $booking->total_booking_amount;
                             }
@@ -463,11 +375,7 @@
                             </tr>
                             @endif
 
-<<<<<<< HEAD
                             @if($booking->payment_method != 'payment_after_service' && $booking->additional_charge < 0)
-=======
-                            @if($booking->payment_method != 'cash_after_service' && $booking->additional_charge < 0)
->>>>>>> newversion/main
                                 <tr>
                                     <td colspan="3"></td>
                                     <td class="fw-700">{{translate('Refund')}}</td>
@@ -490,11 +398,7 @@
         <div class="footer p-3">
             <div class="row">
                 <div class="col">
-<<<<<<< HEAD
                     <div class="text-right">
-=======
-                    <div class="text-left">
->>>>>>> newversion/main
                         {{Request()->getHttpHost()}}
                     </div>
                 </div>
@@ -504,11 +408,7 @@
                     </div>
                 </div>
                 <div class="col">
-<<<<<<< HEAD
                     <div class="text-left">
-=======
-                    <div class="text-right">
->>>>>>> newversion/main
                         {{$business_email->live_values}}
                     </div>
                 </div>

@@ -112,22 +112,14 @@
                                 <a href="#" class="header-icon user-icon" data-bs-toggle="dropdown">
                                     <div>
                                         <img width="30" height="30" src="{{auth()->user()->provider->logo_full_path}}"
-<<<<<<< HEAD
-                                            class="rounded-circle" alt="{{ translate('logo') }}">
-=======
                                             class="rounded-circle aspect-square object-fit-cover" alt="{{ translate('logo') }}">
->>>>>>> newversion/main
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="{{route('provider.profile_update')}}"
                                        class="dropdown-item-text media gap-3 align-items-center">
                                         <div class="avatar">
-<<<<<<< HEAD
-                                            <img class="avatar-img rounded-circle" width="50" height="50" src="{{auth()->user()->provider->logo_full_path}}"
-=======
                                             <img class="avatar-img rounded-circle aspect-square object-fit-cover" width="50" height="50" src="{{auth()->user()->provider->logo_full_path}}"
->>>>>>> newversion/main
                                                  alt="{{ translate('logo') }}">
                                         </div>
                                         <div class="media-body ">
@@ -153,22 +145,14 @@
 
 <div class="modal fade removeSlideDown" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-<<<<<<< HEAD
-        <div class="modal-content modal-content__search border-0">
-=======
         <div class="modal-content modal-content__search border-0 {{env('APP_ENV') == 'demo' ? 'mt-5' : ''}}">
->>>>>>> newversion/main
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex gap-2 align-items-center rounded bg-card py-2 px-3">
                     <form class="flex-grow-1" id="searchForm" method="post" action="{{ route('provider.search.routing') }}">
                         @csrf
                         <div class="d-flex align-items-center global-search-container">
                             <span class="material-symbols-outlined">search</span>
-<<<<<<< HEAD
-                            <input class="form-control flex-grow-1 border-0 search-input" name="search" id="searchInput" type="search" placeholder="Search" aria-label="Search">
-=======
                             <input class="form-control flex-grow-1 border-0 search-input" name="search" id="searchInput" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
->>>>>>> newversion/main
                         </div>
                     </form>
                     <button class="border-0 rounded-3 px-2 py-1" type="button" data-bs-dismiss="modal">Esc</button>

@@ -1,11 +1,7 @@
 <div class="modal-header border-0 pb-1 pb-lg-1 p-lg-5">
     <div class="d-flex flex-column gap-1">
         <h5>{{translate('Available Providers')}}</h5>
-<<<<<<< HEAD
-        <div class="fs-12">{{$providers->count()}} {{translate('Providers are available right now')}}</div>
-=======
         <div class="fs-12">{{count($providers)}} {{translate('Providers are available right now')}}</div>
->>>>>>> newversion/main
     </div>
     <button type="button" class="btn-close provider-cross" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
@@ -55,14 +51,7 @@
             <div class="d-flex gap-2 justify-content-between align-items-center mt-4 pb-3 flex-wrap">
                 <div class="media gap-2">
                     <img width="60" class="rounded"
-<<<<<<< HEAD
-                         src="{{onErrorImage($provider->logo,
-                        asset('storage/app/public/provider/logo').'/' . $provider->logo,
-                        asset('public/assets/admin-module/img/placeholder.png') ,
-                        'provider/logo/')}}"
-=======
                          src="{{$provider->logo_full_path}}"
->>>>>>> newversion/main
                          alt="{{ translate('image') }}">
                     <div class="media-body">
                         <h5 class="mb-2">{{$provider->company_name}}</h5>

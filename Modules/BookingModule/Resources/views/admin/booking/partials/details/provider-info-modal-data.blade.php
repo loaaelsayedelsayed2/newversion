@@ -1,19 +1,15 @@
 <div class="modal-header border-0 pb-1 pb-lg-1 p-lg-5">
     <div class="d-flex flex-column gap-1">
         <h5>{{translate('Available Providers')}}</h5>
-<<<<<<< HEAD
         <div class="fs-12">{{$providers->count()}} {{translate('Providers are available right now')}}</div>
-=======
         @php
             $count = isset($currentlyAssignProvider) ? count($providers) +1 : count($providers)
         @endphp
         <div class="fs-12"><span class="provider-count">{{ $count }}</span> {{translate('Providers are available right now')}}</div>
->>>>>>> newversion/main
     </div>
     <button type="button" class="btn-close provider-cross" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body p-lg-5 pt-lg-3">
-<<<<<<< HEAD
 {{--    @if($booking->provider_id)--}}
 {{--    <div class="bg-soft-danger rounded py-3 px-3 title-color mb-3">--}}
 {{--        <span>--}}
@@ -21,8 +17,6 @@
 {{--        </span>--}}
 {{--    </div>--}}
 {{--    @endif--}}
-=======
->>>>>>> newversion/main
     <div class="d-flex gap-2">
         <form action="#" class="search-form flex-grow-1" autocomplete="off">
             <div class="input-group position-relative search-form__input_group rounded-3">
@@ -34,7 +28,6 @@
                        placeholder="{{translate('Search Here')}}'" value="{{$search ?? ''}}">
             </div>
         </form>
-<<<<<<< HEAD
         <div class="dropdown">
             <button type="button" class="btn px-3 py-2 border text-capitalize rounded-3 title-color apply-filter-button"
                     data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
@@ -91,7 +84,6 @@
                     <div class="media-body">
                         <h5 class="mb-2">{{$matchedProvider->company_name}}</h5>
                         <div class="mb-1 fs-12"><a href="tel:88013756987564">{{$matchedProvider->contact_person_phone}}</a></div>
-=======
         @if($count > 0)
             <div class="dropdown">
                 <button type="button" class="btn px-3 py-2 border text-capitalize rounded-3 title-color apply-filter-button"
@@ -138,23 +130,15 @@
                     <div class="media-body">
                         <h5 class="mb-2">{{$currentlyAssignProvider->company_name}}</h5>
                         <div class="mb-1 fs-12"><a href="tel:{{$currentlyAssignProvider->contact_person_phone}}">{{$currentlyAssignProvider->contact_person_phone}}</a></div>
->>>>>>> newversion/main
                         <div class="provider-devider">
                             <ol class="breadcrumb fs-12 mb-0">
                                 <li class="breadcrumb-item">
                                 <span class="common-list_rating d-flex gap-1 text-secondary">
                                     <span class="material-icons">star</span>
-<<<<<<< HEAD
-                                    {{$matchedProvider->avg_rating}} ({{$matchedProvider->reviews_count}})
-                                </span>
-                                </li>
-                                <li class="breadcrumb-item active">{{translate('Bookings')}} - {{$matchedProvider->bookings_count}}</li>
-=======
                                     {{$currentlyAssignProvider->avg_rating}} ({{$currentlyAssignProvider->reviews_count}})
                                 </span>
                                 </li>
                                 <li class="breadcrumb-item active">{{translate('Bookings')}} - {{$currentlyAssignProvider->bookings_count}}</li>
->>>>>>> newversion/main
                             </ol>
                         </div>
                     </div>
@@ -166,11 +150,7 @@
         @endif
 
         {{-- Display other providers --}}
-<<<<<<< HEAD
-        @foreach($otherProviders as $provider)
-=======
         @foreach($providers as $provider)
->>>>>>> newversion/main
             <div class="d-flex gap-2 justify-content-between align-items-center mt-4 pb-3 flex-wrap">
                 <div class="media gap-2">
                     <img width="60" class="rounded"
@@ -178,11 +158,7 @@
                          alt="{{ translate('provider-logo') }}">
                     <div class="media-body">
                         <h5 class="mb-2">{{$provider->company_name}}</h5>
-<<<<<<< HEAD
-                        <div class="mb-1 fs-12"><a href="tel:88013756987564">{{$provider->contact_person_phone}}</a></div>
-=======
                         <div class="mb-1 fs-12"><a href="tel:{{$provider->contact_person_phone}}">{{$provider->contact_person_phone}}</a></div>
->>>>>>> newversion/main
                         <div class="provider-devider">
                             <ol class="breadcrumb fs-12 mb-0">
                                 <li class="breadcrumb-item">
@@ -203,14 +179,8 @@
                 </div>
             </div>
         @endforeach
-<<<<<<< HEAD
-    </div>
-
-</div>
-=======
 
     </div>
 
 </div>
 
->>>>>>> newversion/main

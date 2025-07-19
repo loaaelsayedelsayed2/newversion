@@ -94,14 +94,11 @@
     </div>
 </main>
 
-<<<<<<< HEAD
-=======
 <?php
 $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
 $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id, key: 'service_location', type: 'provider_config') ?? ['customer'];
 ?>
 
->>>>>>> newversion/main
 
 <script src="{{asset('public/assets/provider-module')}}/js/jquery-3.6.0.min.js"></script>
 <script src="{{asset('public/assets/provider-module')}}/js/bootstrap.bundle.min.js"></script>
@@ -273,11 +270,7 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
         $('#searchForm input[name="search"]').keyup(function () {
             var searchKeyword = $(this).val().trim();
 
-<<<<<<< HEAD
-            if (searchKeyword.length >= 2) {
-=======
             if (searchKeyword.length >= 0) {
->>>>>>> newversion/main
                 $.ajax({
                     type: 'POST',
                     url: $('#searchForm').attr('action'),
@@ -288,18 +281,12 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
                         } else {
                             var resultHtml = '';
                             response.forEach(function (route) {
-<<<<<<< HEAD
-                                resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" aria-current="true">';
-=======
                                 resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" data-route-name="' + route.routeName + '" data-route-uri="' + route.URI + '" data-route-full-url="' + route.fullRoute + '" aria-current="true">';
->>>>>>> newversion/main
                                 resultHtml += '<h5>' + route.routeName + '</h5>';
                                 resultHtml += '<p class="text-muted fs-12">' + route.URI + '</p>';
                                 resultHtml += '</a>';
                             });
                             $('#searchResults').html('<div class="search-list d-flex flex-column">' + resultHtml + '</div>');
-<<<<<<< HEAD
-=======
 
                             $('.search-list-item').click(function () {
                                 var routeName = $(this).data('route-name');
@@ -324,7 +311,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
                                     }
                                 });
                             });
->>>>>>> newversion/main
                         }
                     },
                     error: function (xhr, status, error) {
@@ -332,17 +318,11 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
                     }
                 });
             } else {
-<<<<<<< HEAD
-                $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a minimum of two characters.')}}.</div>');
-=======
                 $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a character.')}}.</div>');
->>>>>>> newversion/main
             }
         });
     });
 
-<<<<<<< HEAD
-=======
     $(document).ready(function () {
         $("#staticBackdrop").on("shown.bs.modal", function () {
             $(this).find("#searchForm input[type=search]").val('');
@@ -400,7 +380,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
         });
     });
 
->>>>>>> newversion/main
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'k') {
             event.preventDefault();
@@ -412,11 +391,7 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
     $(document).ready(function () {
         $("#staticBackdrop").on("shown.bs.modal", function () {
             $(this).find("#searchForm input[type=search]").val('');
-<<<<<<< HEAD
-            $('#searchResults').html('<div class="text-center text-muted py-5">It appears that you have not yet searched.</div>');
-=======
             $('#searchResults').html('<div class="text-center text-muted py-5">{{ translate('It appears that you have not yet searched') }}.</div>');
->>>>>>> newversion/main
             $(this).find("#searchForm input[type=search]").focus();
         });
     });
@@ -424,11 +399,7 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('search', function() {
         if (!this.value.trim()) {
-<<<<<<< HEAD
-            $('#searchResults').html('<div class="text-center text-muted py-5">It appears that you have not yet searched.</div>');
-=======
             $('#searchResults').html('<div class="text-center text-muted py-5">{{ translate('It appears that you have not yet searched') }}.</div>');
->>>>>>> newversion/main
         }
     });
 
@@ -534,10 +505,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
 <script>
     @php($admin_order_notification = (int) business_config('booking_notification', 'business_information')->live_values)
     @php($admin_order_notification_type = business_config('booking_notification_type', 'business_information')->live_values)
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
     @if($admin_order_notification)
 
         var audio = document.getElementById("audio-element");
@@ -633,9 +600,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
                                 return messaging.getToken();
                             })
                             .then(function(token) {
-<<<<<<< HEAD
-                                subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_booking_message');
-=======
                                 subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_{{ auth()->user()->provider->id }}_booking_message');
                                 @if($serviceAtProviderPlace)
                                     @if(in_array('customer', $serviceLocations))
@@ -647,7 +611,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
                                 @else
                                    subscribeTokenToBackend(token, 'demandium_provider_{{auth()->user()->provider->zone_id}}_booking_message');
                                 @endif
->>>>>>> newversion/main
                             }).catch(function(error) {
                             console.error('Error getting permission or token:', error);
                         });

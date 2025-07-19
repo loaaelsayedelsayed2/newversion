@@ -141,21 +141,12 @@
                                             <label for="account_phone">{{translate('Phone')}}</label>
                                             <input
                                                 oninput="this.value = this.value.replace(/[^+\d]+$/g, '').replace(/(\..*)\./g, '$1');"
-<<<<<<< HEAD
-                                                type="tel" class="form-control company_phone phone-input-with-country-picker3 iti__tel-input" name="account_phone"
-                                                id="account_phone"
-                                                value="{{ $provider->owner->phone }}"
-                                                placeholder="{{translate('Phone')}}">
-                                            <div class="">
-                                                <input type="text" class="country-picker-phone-number3 w-50" value="{{old('account_phone')}}" name="account_phone" hidden  readonly>
-=======
                                                 type="tel" class="form-control company_phone phone-input-with-country-picker99 iti__tel-input" name="account_phone"
                                                 id="account_phone"
                                                 value="{{ $provider->owner->phone }}"
                                                 placeholder="{{translate('Phone')}}" readonly>
                                             <div class="">
                                                 <input type="text" class="country-picker-phone-number99 w-50" value="{{old('account_phone')}}" name="account_phone" hidden  readonly>
->>>>>>> newversion/main
                                             </div>
                                         </div>
 
@@ -197,20 +188,12 @@
                                             <label for="contact_person_phone">{{translate('Phone')}}</label>
                                             <input
                                                 oninput="this.value = this.value.replace(/[^+\d]+$/g, '').replace(/(\..*)\./g, '$1');"
-<<<<<<< HEAD
-                                                type="tel" class="form-control company_phone phone-input-with-country-picker2 iti__tel-input" name="contact_person_phone"
-=======
                                                 type="tel" class="form-control company_phone phone-input-with-country-picker100 iti__tel-input" name="contact_person_phone"
->>>>>>> newversion/main
                                                 id="contact_person_phone"
                                                 value="{{ $provider->contact_person_phone }}"
                                                 placeholder="{{translate('Phone')}}">
                                             <div class="">
-<<<<<<< HEAD
-                                                <input type="text" class="country-picker-phone-number2 w-50" value="{{old('contact_person_phone')}}" name="contact_person_phone" hidden  readonly>
-=======
                                                 <input type="text" class="country-picker-phone-number100 w-50" value="{{old('contact_person_phone')}}" name="contact_person_phone" hidden  readonly>
->>>>>>> newversion/main
                                             </div>
                                         </div>
                                         <div class="form-floating form-floating__icon mb-30">
@@ -520,8 +503,6 @@
                 $(this).find('i').removeClass('tio-hidden-outlined')
             }
         })
-<<<<<<< HEAD
-=======
 
         try {
             initializePhoneInput(
@@ -536,6 +517,5 @@
             console.log(error)
         }
 
->>>>>>> newversion/main
     </script>
 @endpush

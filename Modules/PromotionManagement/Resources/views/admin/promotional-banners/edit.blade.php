@@ -27,11 +27,7 @@
                                         <div class="form-floating form-floating__icon mb-30">
                                             <input type="text" class="form-control" name="banner_title"
                                                    value="{{$banner->banner_title}}"
-<<<<<<< HEAD
-                                                   placeholder="{{translate('title')}} *"
-=======
                                                    placeholder="{{translate('title')}} *" maxlength="190"
->>>>>>> newversion/main
                                                    required="">
                                             <label>{{translate('title')}} *</label>
                                             <span class="material-icons">title</span>
@@ -87,11 +83,7 @@
                                         <div class="form-floating form-floating__icon mb-30"
                                              style="display: {{$banner->resource_type=='link'?'block':'none'}}"
                                              id="link_selector">
-<<<<<<< HEAD
-                                            <input type="url" class="form-control"
-=======
                                             <input type="url" class="form-control" name="redirect_link"
->>>>>>> newversion/main
                                                    placeholder="{{translate('redirect_link')}}"
                                                    value="{{$banner->redirect_link}}">
                                             <label>{{translate('redirect_link')}}</label>

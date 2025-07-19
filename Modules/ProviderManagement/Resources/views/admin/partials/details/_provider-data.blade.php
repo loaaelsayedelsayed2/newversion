@@ -49,11 +49,7 @@
 @if(isset($booking->provider))
     <div class="py-3 px-4">
         <div class="media gap-2 flex-wrap">
-<<<<<<< HEAD
-            <img width="58" height="58" class="rounded-circle border border-white"
-=======
             <img width="58" height="58" class="rounded-circle border border-white aspect-square object-fit-cover"
->>>>>>> newversion/main
                  src="{{asset('public/assets/admin-module/img/user.png')}}" alt="">
             <div class="meida-body">
                 <h5 class="c1 mb-3">{{Str::limit($booking->provider->company_name??'', 30)}}</h5>

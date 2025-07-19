@@ -131,7 +131,6 @@
                                     <td>{{ \Carbon\Carbon::parse($transaction?->created_at)->format('M d, Y, g:i A') }}</td>
                                     <td>
                                         <div class="d-flex gap-1 flex-column">
-<<<<<<< HEAD
                                             <h6>{{ $transaction?->packageLog?->provider?->company_name ?? 'No Provider' }}</h6>
                                             @if($transaction?->packageLog?->provider?->company_email)
                                                 <a class="fs-12 title-color" href="mailto:{{ $transaction->packageLog->provider->company_email }}">
@@ -140,10 +139,6 @@
                                             @else
                                                 <span class="fs-12 text-muted">No email available</span>
                                             @endif
-=======
-                                            <h6>{{ $transaction?->packageLog?->provider?->company_name }}</h6>
-                                            <a class="fs-12 title-color " href="mailto:{{ $transaction?->packageLog?->provider?->company_email }}">{{ $transaction?->packageLog?->provider?->company_email }}</a>
->>>>>>> newversion/main
                                         </div>
                                     </td>
                                     <td>{{ with_currency_symbol($transaction?->packageLog?->package_price) }}</td>

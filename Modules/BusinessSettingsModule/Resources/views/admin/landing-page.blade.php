@@ -202,8 +202,6 @@
                                                             <div class="mb-30">
                                                                 <div class="form-floating">
                                                                     <input type="text" class="form-control"
-<<<<<<< HEAD
-=======
                                                                            name="newsletter_title[]"
                                                                            value="{{$dataValues->where('key','newsletter_title')->first()?->getRawOriginal('value') ?? ''}}"
                                                                     >
@@ -225,7 +223,6 @@
                                                             <div class="mb-30">
                                                                 <div class="form-floating">
                                                                     <input type="text" class="form-control"
->>>>>>> newversion/main
                                                                            name="bottom_title[]"
                                                                            value="{{$dataValues->where('key','bottom_title')->first()?->getRawOriginal('value') ?? ''}}"
                                                                     >
@@ -246,11 +243,8 @@
                                                         $aboutUsDescription = $dataValues->where('key', 'about_us_description')->where('type', 'landing_text_setup')->first();
                                                         $registrationTitle = $dataValues->where('key', 'registration_title')->where('type', 'landing_text_setup')->first();
                                                         $registrationDescription = $dataValues->where('key', 'registration_description')->where('type', 'landing_text_setup')->first();
-<<<<<<< HEAD
-=======
                                                         $newsletterTitle = $dataValues->where('key', 'newsletter_title')->where('type', 'landing_text_setup')->first();
                                                         $newsletterDescription = $dataValues->where('key', 'newsletter_description')->where('type', 'landing_text_setup')->first();
->>>>>>> newversion/main
                                                         $bottomTitle = $dataValues->where('key', 'bottom_title')->where('type', 'landing_text_setup')->first();
                                                         if (isset($topTitle['translations']) && count($topTitle['translations'])) {
                                                             $topTitleTranslation = [];
@@ -325,8 +319,6 @@
                                                             }
                                                         }
 
-<<<<<<< HEAD
-=======
                                                         if (isset($newsletterTitle['translations']) && count($newsletterTitle['translations'])) {
                                                             $newsletterTitleTranslation = [];
                                                             foreach ($newsletterTitle['translations'] as $t) {
@@ -345,7 +337,6 @@
                                                             }
                                                         }
 
->>>>>>> newversion/main
                                                         if (isset($bottomTitle['translations']) && count($bottomTitle['translations'])) {
                                                             $bottomTitleTranslation = [];
                                                             foreach ($bottomTitle['translations'] as $t) {
@@ -446,8 +437,6 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-=======
                                                                                name="newsletter_title[]"
                                                                                value="{{ $newsletterTitleTranslation[$lang['code']]['newsletter_title'] ?? ''}}"
                                                                                @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
@@ -470,7 +459,6 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
->>>>>>> newversion/main
                                                                                name="bottom_title[]"
                                                                                value="{{ $bottomTitleTranslation[$lang['code']]['bottom_title'] ?? ''}}"
                                                                                @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
@@ -717,11 +705,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="title[]">
-=======
-                                                                               name="title[]" maxlength="255">
->>>>>>> newversion/main
+\                                                                               name="title[]" maxlength="255">
                                                                         <label>
                                                                             {{translate('speciality_title')}}
                                                                         </label>
@@ -731,11 +715,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="description[]">
-=======
                                                                                name="description[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('speciality_description')}}
                                                                         </label>
@@ -749,11 +729,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="title[]"
-=======
                                                                                    name="title[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>
                                                                                 {{translate('speciality_title')}}
@@ -764,11 +740,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="description[]"
-=======
                                                                                    name="description[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>
                                                                                 {{translate('speciality_description')}}
@@ -784,11 +756,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="title[]">
-=======
                                                                                name="title[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('speciality_title')}}
                                                                         </label>
@@ -798,11 +766,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="description[]">
-=======
                                                                                name="description[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('speciality_description')}}
                                                                         </label>
@@ -929,11 +893,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="name[]">
-=======
                                                                                name="name[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('reviewer_name')}}
                                                                         </label>
@@ -943,11 +903,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="designation[]">
-=======
                                                                                name="designation[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('reviewer_designation')}}
                                                                         </label>
@@ -956,11 +912,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="review[]">
-=======
                                                                                name="review[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('review')}}
                                                                         </label>
@@ -974,11 +926,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="name[]"
-=======
                                                                                    name="name[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>
                                                                                 {{translate('reviewer_name')}}
@@ -989,11 +937,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="designation[]"
-=======
                                                                                    name="designation[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>
                                                                                 {{translate('reviewer_designation')}}
@@ -1003,11 +947,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="review[]"
-=======
                                                                                    name="review[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>
                                                                                 {{translate('review')}}
@@ -1023,11 +963,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="name[]">
-=======
                                                                                name="name[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('reviewer_name')}}
                                                                         </label>
@@ -1037,11 +973,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="designation[]">
-=======
                                                                                name="designation[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('reviewer_designation')}}
                                                                         </label>
@@ -1050,11 +982,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="review[]">
-=======
                                                                                name="review[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>
                                                                             {{translate('review')}}
                                                                         </label>
@@ -1185,11 +1113,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="title[]">
-=======
                                                                                name="title[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>{{translate('feature_title')}}</label>
                                                                     </div>
                                                                 </div>
@@ -1197,11 +1121,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="sub_title[]">
-=======
                                                                                name="sub_title[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>{{translate('feature_sub_title')}}</label>
                                                                     </div>
                                                                 </div>
@@ -1213,11 +1133,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="title[]"
-=======
                                                                                    name="title[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>{{translate('feature_title')}}</label>
                                                                         </div>
@@ -1226,11 +1142,7 @@
                                                                     <div class="mb-30">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                                   name="sub_title[]"
-=======
                                                                                    name="sub_title[]" maxlength="255"
->>>>>>> newversion/main
                                                                                    @if($lang['status'] == '1') oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                                             <label>{{translate('feature_sub_title')}}</label>
                                                                         </div>
@@ -1244,11 +1156,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="title[]">
-=======
                                                                                name="title[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>{{translate('feature_title')}}</label>
                                                                     </div>
                                                                 </div>
@@ -1256,11 +1164,7 @@
                                                                 <div class="mb-30">
                                                                     <div class="form-floating">
                                                                         <input type="text" class="form-control"
-<<<<<<< HEAD
-                                                                               name="sub_title[]">
-=======
                                                                                name="sub_title[]" maxlength="255">
->>>>>>> newversion/main
                                                                         <label>{{translate('feature_sub_title')}}</label>
                                                                     </div>
                                                                 </div>

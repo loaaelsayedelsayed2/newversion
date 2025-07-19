@@ -27,11 +27,7 @@
                                         <div class="col-lg-6 mb-4 mb-lg-0">
                                             <div class="form-floating form-floating__icon mb-30">
                                                 <input type="text" class="form-control" id="floatingInput" name="title"
-<<<<<<< HEAD
-                                                       placeholder="Title" required="">
-=======
                                                        placeholder="Title" maxlength="191" required="">
->>>>>>> newversion/main
                                                 <label for="floatingInput">{{translate('title')}}</label>
                                                 <span class="material-icons">title</span>
                                             </div>

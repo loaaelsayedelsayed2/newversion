@@ -28,7 +28,6 @@
                         </ul>
                     </div>
 
-<<<<<<< HEAD
                     @php($language= Modules\BusinessSettingsModule\Entities\BusinessSettings::where('key_name','system_language')->first())
                     @php($defaultLanguage = str_replace('_', '-', app()->getLocale()))
                     @if($language)
@@ -47,13 +46,10 @@
                             @endforeach
                         </ul>
                     @endif
-=======
->>>>>>> newversion/main
                     @foreach($dataValues as $pageData)
                         <div class="tab-content">
                             <div class="tab-pane fade {{$webPage==$pageData->key?'active show':''}}">
                                 <div class="card">
-<<<<<<< HEAD
                                     <form action="{{route('admin.business-settings.set-pages-setup')}}" method="POST">
                                         @csrf
                                         <div class="card-header page-settings">
@@ -69,7 +65,6 @@
                                             @else
                                                 <input name="is_active" value="1" class="hide-div">
                                             @endif
-=======
                                     <form action="{{route('admin.business-settings.set-pages-setup')}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="card-header page-settings align-items-center flex-wrap">
@@ -111,13 +106,10 @@
                                                 </a>
                                             @endif
 
->>>>>>> newversion/main
                                         </div>
                                         <div class="card-body p-30">
                                             <div class="row">
                                                 <div class="col-md-12">
-<<<<<<< HEAD
-=======
                                                     <div class="mb-30">
                                                         <div class="d-flex flex-column align-items-center gap-3">
                                                             <p class="title-color mb-0"><span class="fw-bold text-uppercase">{{ translate('Header Image') }}</span> ({{ translate('Resolution: 1280px X 186px') }})</p>
@@ -157,7 +149,6 @@
                                                             @endforeach
                                                         </ul>
                                                     @endif
->>>>>>> newversion/main
                                                     @if ($language)
                                                         <div class="mb-30 dark-support lang-form default-form">
                                                             <input name="page_name" value="{{$pageData->key}}"
@@ -246,8 +237,6 @@
             $("." + lang + "-form").removeClass('d-none');
         });
     </script>
-<<<<<<< HEAD
-=======
 
     <!-- Image Upload Handlr -->
     <script>
@@ -262,5 +251,4 @@
             })
         });
     </script>
->>>>>>> newversion/main
 @endpush

@@ -25,7 +25,6 @@
                         @endcan
                     </div>
 
-<<<<<<< HEAD
                     <div
                         class="d-flex flex-wrap justify-content-between align-items-center border-bottom mx-lg-4 mb-10 gap-3">
                         <ul class="nav nav--tabs">
@@ -49,7 +48,6 @@
                             </li>
                         </ul>
 
-=======
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="mb-3 fz-16">{{translate('Search_Filter')}}</div>
@@ -123,7 +121,6 @@
                                 </a>
                             </li>
                         </ul>
->>>>>>> newversion/main
                         <div class="d-flex gap-2 fw-medium">
                             <span class="opacity-75">{{translate('Total_Customers')}}:</span>
                             <span class="title-color">{{$customers->total()}}</span>
@@ -137,12 +134,7 @@
                                     <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
                                         <form action="{{url()->current()}}?status={{$status}}"
                                               class="search-form search-form_style-two"
-<<<<<<< HEAD
-                                              method="POST">
-                                            @csrf
-=======
                                               method="GET">
->>>>>>> newversion/main
                                             <div class="input-group search-form__input_group">
                                             <span class="search-form__icon">
                                                 <span class="material-icons">search</span>
@@ -151,8 +143,6 @@
                                                        value="{{$search}}" name="search"
                                                        placeholder="{{translate('search_here')}}">
                                             </div>
-<<<<<<< HEAD
-=======
 
                                             <!-- Preserve all other filters -->
                                             <input type="hidden" name="from" value="{{ $queryParam['from'] ?? '' }}">
@@ -161,7 +151,6 @@
                                             <input type="hidden" name="limit" value="{{ $queryParam['limit'] ?? '' }}">
                                             <input type="hidden" name="status" value="{{ $queryParam['status'] ?? '' }}">
 
->>>>>>> newversion/main
                                             <button type="submit"
                                                     class="btn btn--primary">{{translate('search')}}</button>
                                         </form>
@@ -176,16 +165,12 @@
                                                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                                                         <li>
                                                             <a class="dropdown-item"
-<<<<<<< HEAD
-                                                               href="{{env('APP_ENV') !='demo' ?route('admin.customer.download').'?search='.$search:'javascript:demo_mode()'}}">
-=======
                                                                href="{{env('APP_ENV') !='demo' ?route('admin.customer.download', '?search='. ($queryParam['search'] ?? '') .
                                                                          '&from='. ($queryParam['from'] ?? '') .
                                                                          '&to='. ($queryParam['to'] ?? '') .
                                                                          '&limit='. ($queryParam['limit'] ?? '') .
                                                                          '&status='. ($queryParam['status'] ?? '') .
                                                                          '&sort_by='. ($queryParam['sort_by'] ?? '') ).'?search='.$search:'javascript:demo_mode()'}}">
->>>>>>> newversion/main
                                                                 {{translate('excel')}}
                                                             </a>
                                                         </li>
@@ -211,11 +196,6 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
-                                            @foreach($customers as $key => $customer)
-                                                <tr>
-                                                    <td>{{$key+$customers->firstItem()}}</td>
-=======
                                             @php
                                                 $count= 0;
                                             @endphp
@@ -223,7 +203,6 @@
                                             @foreach($customers as $key => $customer)
                                                 <tr>
                                                     <td>{{ (request()->get('limit') ?  $count++ : $key  )+ $customers->firstItem() }}</td>
->>>>>>> newversion/main
                                                     <td>
                                                         <a href="{{route('admin.customer.detail',[$customer->id, 'web_page'=>'overview'])}}">
                                                             {{$customer->first_name}} {{$customer->last_name}}

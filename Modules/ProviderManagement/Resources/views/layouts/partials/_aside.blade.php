@@ -2,10 +2,6 @@
 $booking = \Modules\BookingModule\Entities\Booking::where('provider_id', auth()->user()->provider->id)->get();
 $maxBookingAmount = (business_config('max_booking_amount', 'booking_setup'))->live_values;
 $subscribed_sub_category_ids = \Modules\ProviderManagement\Entities\SubscribedService::where(['provider_id' => auth()->user()->provider->id])->ofSubscription(1)->pluck('sub_category_id')->toArray();
-<<<<<<< HEAD
-
-$pending_booking_count = \Modules\BookingModule\Entities\Booking::providerPendingBookings(auth()->user()->provider, $maxBookingAmount)->count();
-=======
 $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
 $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id, key: 'service_location', type: 'provider_config') ?? ['customer'];
 
@@ -17,7 +13,6 @@ $pending_booking_count = \Modules\BookingModule\Entities\Booking::providerPendin
     })
 
     ->count();
->>>>>>> newversion/main
 $accepted_booking_count = \Modules\BookingModule\Entities\Booking::providerAcceptedBookings(auth()->user()->provider->id, $maxBookingAmount)->count();
 
 $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'business_information', path: 'business/',  defaultPath : 'public/assets/admin-module/img/placeholder.png');
@@ -26,11 +21,7 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
 @php($provider = auth()->user()->provider)
 <aside class="aside">
     <div class="aside-header">
-<<<<<<< HEAD
-        <a href="{{route('admin.dashboard')}}" class="logo d-flex gap-2">
-=======
         <a href="{{route('provider.dashboard')}}" class="logo d-flex gap-2">
->>>>>>> newversion/main
             <img src="{{ $logo }}"
                  style="max-height: 50px" alt="{{translate('image')}}"
                  class="main-logo">
@@ -44,11 +35,7 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
     <div class="aside-body" data-trigger="scrollbar">
         <div class="user-profile media gap-3 align-items-center my-3">
             <div class="avatar">
-<<<<<<< HEAD
-                <img class="avatar-img rounded-circle" src="{{$provider->logo_full_path}}"
-=======
                 <img class="avatar-img rounded-circle aspect-square object-fit-cover" src="{{$provider->logo_full_path}}"
->>>>>>> newversion/main
                      alt="{{translate('provider logo')}}">
             </div>
             <div class="media-body ">
