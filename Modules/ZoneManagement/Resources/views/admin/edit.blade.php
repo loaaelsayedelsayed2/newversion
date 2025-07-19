@@ -361,11 +361,8 @@
         })
 
         function performValidation(event) {
-<<<<<<< HEAD
-=======
             return true;
 
->>>>>>> newversion/main
             if (!lastpolygon) {
                 event.preventDefault();
             }

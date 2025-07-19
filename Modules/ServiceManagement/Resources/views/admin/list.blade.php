@@ -94,11 +94,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
-                                            @foreach($services as $key=>$service)
-=======
                                             @forelse($services as $key=>$service)
->>>>>>> newversion/main
                                                 <tr>
                                                     <td>{{$services->firstitem()+$key}}</td>
                                                     <td>
@@ -107,15 +103,11 @@
                                                         </a>
                                                     </td>
                                                     <td>
-<<<<<<< HEAD
                                                         {{$service->category->name ?? translate('Unavailable') }}
                                                     </td>
                                                     <td>
                                                         @if($service->category)
                                                             {{implode(', ',$service->category->zonesBasicInfo->pluck('name')->toArray())}}
-=======
-                                                        @if($service->category)
-                                                            {{$service->category->name}}
                                                         @else
                                                             <div class="d-flex">
                                                                 <span>{{ translate('Unavailable') }}</span>
@@ -136,7 +128,6 @@
                                                                    title="{{translate('This category is not under any zone. Kindly update the category with zone')}}">info
                                                                 </i>
                                                             @endif
->>>>>>> newversion/main
                                                         @endif
                                                     </td>
                                                     <td>
@@ -192,15 +183,12 @@
                                                         </td>
                                                     @endcan
                                                 </tr>
-<<<<<<< HEAD
                                             @endforeach
-=======
                                             @empty
                                                 <tr class="text-center">
                                                     <td colspan="8">{{translate('no data available')}}</td>
                                                 </tr>
                                             @endforelse
->>>>>>> newversion/main
                                             </tbody>
                                         </table>
                                     </div>

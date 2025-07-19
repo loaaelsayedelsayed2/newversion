@@ -158,11 +158,7 @@ class WithdrawnController extends Controller
         }
 
         Toastr::success(translate(DEFAULT_STORE_200['message']));
-<<<<<<< HEAD
-        return back();
-=======
         return redirect()->route('admin.withdraw.method.list');
->>>>>>> newversion/main
     }
 
     /**
@@ -262,11 +258,7 @@ class WithdrawnController extends Controller
         }
 
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));
-<<<<<<< HEAD
-        return back();
-=======
         return redirect()->route('admin.withdraw.method.list');
->>>>>>> newversion/main
     }
 
     /**

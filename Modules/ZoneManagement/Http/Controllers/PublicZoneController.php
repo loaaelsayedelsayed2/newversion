@@ -37,10 +37,7 @@ class PublicZoneController extends Controller
         }
 
         $zones = $this->zone
-<<<<<<< HEAD
-=======
             ->ofStatus(1)
->>>>>>> newversion/main
             ->withCount(['providers'])
             ->when($request->has('string'), function ($query) use ($request) {
                 $keys = explode(' ', base64_decode($request['string']));

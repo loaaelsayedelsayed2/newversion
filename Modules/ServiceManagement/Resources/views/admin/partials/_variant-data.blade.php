@@ -8,20 +8,12 @@
             </th>
             <td>
                 <input type="number" value="{{$item['price']}}" class="theme-input-style" id="default-set-{{$key}}"
-<<<<<<< HEAD
-                       onkeyup="set_values('{{$key}}')" step="any">
-=======
                        onkeyup="set_values('{{$key}}')" min="0.00001" step="any" required>
->>>>>>> newversion/main
             </td>
             @foreach($zones as $zone)
                 <td>
                     <input type="number" name="{{$item['variant_key']}}_{{$zone->id}}_price" value="{{$item['price']}}"
-<<<<<<< HEAD
-                           class="theme-input-style default-get-{{$key}}" step="any">
-=======
                            class="theme-input-style default-get-{{$key}}" min="0.00001" step="any" required>
->>>>>>> newversion/main
                 </td>
             @endforeach
             <td>

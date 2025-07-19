@@ -8,11 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Modules\BidModule\Entities\PostBid;
 use Modules\BidModule\Http\Controllers\APi\V1\Customer\PostBidController;
-<<<<<<< HEAD
-=======
 use Modules\BookingModule\Entities\Booking;
 use Modules\BookingModule\Entities\BookingPartialPayment;
->>>>>>> newversion/main
 use Modules\BookingModule\Entities\BookingRepeat;
 use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\PaymentModule\Entities\PaymentRequest;
@@ -47,23 +44,16 @@ class PaymentResponse
             'is_partial' => $additional_data['is_partial'] ?? null,
             'post_id' => $additional_data['post_id'] ?? null,
             'provider_id' => $additional_data['provider_id'] ?? null,
-<<<<<<< HEAD
-=======
             'register_new_customer' => $additional_data['register_new_customer'] ?? 0,
             'first_name' => $additional_data['first_name'] ?? null,
             'phone' => $additional_data['phone'] ?? null,
             'password' => $additional_data['password'] ?? null,
             'service_location' => $additional_data['service_location'] ?? 'customer',
->>>>>>> newversion/main
         ]);
 
         if (!$request->has('post_id') || is_null($request['post_id'])) {
             $is_guest = !User::where('id', $customer_user_id)->exists();
-<<<<<<< HEAD
-            $response = (new PaymentResponse)->placeBookingRequest($customer_user_id, $request, $tran_id, $is_guest);
-=======
             $response = (new PaymentResponse)->placeBookingRequest(userId: $customer_user_id, request:  $request, transactionId:  $tran_id, isGuest: $is_guest);
->>>>>>> newversion/main
 
         } else {
             //for bidding
@@ -92,8 +82,6 @@ class PaymentResponse
             }
         }
 
-<<<<<<< HEAD
-=======
 //        if ($request['register_new_customer'] == 1){
 //            $user = new User();
 //            $user->first_name = $request['first_name'];
@@ -109,7 +97,6 @@ class PaymentResponse
 //            $response['loginToken'] = $loginToken;
 //        }
 
->>>>>>> newversion/main
         //update payment request
         if ($response['flag'] == 'success' && $response['readable_id']) {
             $payment_request = PaymentRequest::find($payment_request_id);
@@ -171,8 +158,6 @@ class PaymentResponse
 
     /**
      * @param $data
-<<<<<<< HEAD
-=======
      * @return array
      */
     public static function switchOfflineToDigitalPaymentSuccess($data): array
@@ -251,7 +236,6 @@ class PaymentResponse
 
     /**
      * @param $data
->>>>>>> newversion/main
      * @return array|RedirectResponse
      */
     public static function purchaseSubscriptionSuccess($data): array|RedirectResponse|string

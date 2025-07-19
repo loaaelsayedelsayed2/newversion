@@ -44,18 +44,15 @@ if (!function_exists('repeat_booking_payment_success')) {
     }
 }
 
-<<<<<<< HEAD
 if (!function_exists('repeat_booking_payment_fail')) {
-=======
+    function repeat_booking_payment_fail($data): void
+    {}
+}
 if (!function_exists('switch_offline_to_digital_payment_success')) {
->>>>>>> newversion/main
     /**
      * @param $data
      * @return void
      */
-<<<<<<< HEAD
-    function repeat_booking_payment_fail($data): void
-=======
     function switch_offline_to_digital_payment_success($data): void
     {
         PaymentResponse::switchOfflineToDigitalPaymentSuccess($data);
@@ -68,7 +65,6 @@ if (!function_exists('switch_offline_to_digital_payment_fail')) {
      * @return void
      */
     function switch_offline_to_digital_payment_fail($data): void
->>>>>>> newversion/main
     {
         //
     }

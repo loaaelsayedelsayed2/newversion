@@ -8,11 +8,8 @@
             <div class="page-title-wrap mb-3">
                 <h2 class="page-title">{{translate('Add_New_Serviceman')}}</h2>
             </div>
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> newversion/main
+
             <form action="{{route('provider.serviceman.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card">
@@ -85,10 +82,7 @@
                                     <option disabled selected>{{translate('Select_Identity_Type')}}</option>
                                     <option value="passport">{{translate('Passport')}}</option>
                                     <option value="driving_license">{{translate('Driving_License')}}</option>
-<<<<<<< HEAD
                                     <option value="residency_permit">{{translate('residency_permit')}}</option>
-=======
->>>>>>> newversion/main
                                     <option value="nid">{{translate('nid')}}</option>
                                     <option value="trade_license">{{translate('Trade_License')}}</option>
                                 </select>

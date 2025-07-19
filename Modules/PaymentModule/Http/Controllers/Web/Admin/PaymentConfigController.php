@@ -83,12 +83,8 @@ class PaymentConfigController extends Controller
                 'merchant_id' => 'required_if:status,1',
                 'merchant_website_link' => 'required_if:status,1'
             ];
-<<<<<<< HEAD
         }  elseif ($request['gateway'] == 'cash_after_service' || $request['gateway'] == 'payment_after_service') {
 
-=======
-        } elseif ($request['gateway'] == 'cash_after_service') {
->>>>>>> newversion/main
             $additionalData = [
                 'status' => 'required|in:1,0'
             ];

@@ -153,22 +153,12 @@
                     <div class="card mb-30">
                         <div class="card-body">
                             <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
-<<<<<<< HEAD
-                                <form action="{{url()->current()}}" class="search-form search-form_style-two"
-                                      method="POST">
-                                    @csrf
-=======
                                 <form action="{{url()->current()}}" class="search-form search-form_style-two"  method="GET">
->>>>>>> newversion/main
                                     <div class="input-group search-form__input_group">
                                             <span class="search-form__icon">
                                                 <span class="material-icons">search</span>
                                             </span>
-<<<<<<< HEAD
-                                        <input type="search" class="theme-input-style search-form__input"
-=======
                                         <input type="search" class="theme-input-style search-form__input zone-search-input"
->>>>>>> newversion/main
                                                value="{{$search}}" name="search"
                                                placeholder="{{translate('search_here')}}">
                                     </div>
@@ -194,7 +184,6 @@
                                 </div>
                             </div>
 
-<<<<<<< HEAD
                             <div class="table-responsive">
                                 <table id="example" class="table align-middle">
                                     <thead>
@@ -265,10 +254,8 @@
                             </div>
                             <div class="d-flex justify-content-end">
                                 {!! $zones->links() !!}
-=======
                             <div id="ListTableContainer">
                                 @include('zonemanagement::admin.partials._table')
->>>>>>> newversion/main
                             </div>
                         </div>
                     </div>
@@ -276,12 +263,9 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
 
     <input type="hidden" id="offset" value="{{ request()->page }}">
 
->>>>>>> newversion/main
 @endsection
 
 @push('script')
@@ -450,13 +434,10 @@
         function performValidation(event) {
             if (!lastpolygon) {
                 event.preventDefault();
-<<<<<<< HEAD
-=======
                 toastr.warning('{{ translate('Please draw your zone on the map') }}', {
                     CloseButton: true,
                     ProgressBar: true,
                 });
->>>>>>> newversion/main
             }
         }
 
@@ -480,8 +461,6 @@
             let lang = form_id.substring(0, form_id.length - 5);
             $("#" + lang + "-form").removeClass('d-none');
         });
-<<<<<<< HEAD
-=======
 
         let selectedItem;
         let selectedRoute;
@@ -617,6 +596,5 @@
             const newUrl = `${window.location.pathname}?${params.toString()}`;
             window.history.replaceState({}, '', newUrl);
         }
->>>>>>> newversion/main
     </script>
 @endpush
