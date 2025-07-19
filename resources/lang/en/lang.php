@@ -5,11 +5,8 @@
   'user_not_found' => 'User not found',
   'wrong_credentials' => 'Wrong credentials',
   'logout_successful' => 'Logout successful',
-<<<<<<< HEAD
   'Reason_for_canceled' => 'Reason for canceled',
   'Source_of_service_amount' => 'Source Of Service Amount',
-=======
->>>>>>> newversion/main
   'The role name field is required.' => 'The role name field is required.',
   'The create field is required.' => 'The create field is required.',
   'The read field is required.' => 'The read field is required.',
@@ -296,10 +293,7 @@
   'Provider_login' => 'Provider login',
   'Bank_Information' => 'Bank Information',
   'Account_Information' => 'Account Information',
-<<<<<<< HEAD
     'provider_dashboard' => 'Provider DashBoard',
-=======
->>>>>>> newversion/main
   'Account' => 'Account',
   'Canceled' => 'Canceled',
   'Completed' => 'Completed',
@@ -416,10 +410,7 @@
   'nid' => 'Nid',
   'Company_Id' => 'Company Id',
   'Driving_License' => 'Driving License',
-<<<<<<< HEAD
   'residency_permit' => 'Residency Permit',
-=======
->>>>>>> newversion/main
   'Passport' => 'Passport',
   'Identity_Number' => 'Identity Number',
   'Select_Identity_Type' => 'Select Identity Type',
@@ -534,10 +525,7 @@
   'notification' => 'Notification',
   'notification_setup' => 'Notification setup',
   'booking_place_message' => 'Booking place message',
-<<<<<<< HEAD
   'invoice_sent' => 'Invoice sent',
-=======
->>>>>>> newversion/main
   'booking_service_complete' => 'Booking service complete',
   'want_to_update' => 'Want to update',
   'booking_cancel_message' => 'Booking cancel message',
@@ -674,11 +662,8 @@
   'Lead_Service_Information' => 'Lead Service Information',
   'Vat' => 'Vat',
   'Booking_Amount' => 'Booking Amount',
-<<<<<<< HEAD
   'Addattion_Cost' => 'Addattion Cost',
   'Addation_Cost' => 'Addattion Cost',
-=======
->>>>>>> newversion/main
   'available_services' => 'Available services',
   'campaign_name' => 'Campaign name',
   'coupon_code' => 'Coupon code',
@@ -831,10 +816,7 @@
   'Transaction_Date' => 'Transaction Date',
   'Transaction_Id' => 'Transaction Id',
   'total_transactions' => 'Total transactions',
-<<<<<<< HEAD
   'Payment_ID' => ' Payment ID',
-=======
->>>>>>> newversion/main
   'To_user' => 'To user',
   'From_user' => 'From user',
   't/date' => 'T/date',
@@ -915,10 +897,7 @@
   'update_discount' => 'Update discount',
   'Discount' => 'Discount',
   'cash_after_service' => 'Cash after service',
-<<<<<<< HEAD
   'payment_after_service' => 'Payment after service',
-=======
->>>>>>> newversion/main
   'stripe' => 'Stripe',
   'ssl_commerz' => 'Ssl commerz',
   'Provider_Information' => 'Provider Information',
@@ -3626,11 +3605,8 @@ _Message' => 'Customer notification for provider bid offer
   'No Lead Service Information' => 'No Lead Service Information',
   'No Uploaded Images' => 'No Uploaded Images',
   'Change of mind is not applicable as a reason for refund' => 'Change of mind is not applicable as a reason for refund',
-<<<<<<< HEAD
   'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.',
-  
-=======
->>>>>>> newversion/main
+
   'user_image' => 'User image',
   'Edited' => 'Edited',
   4799 => '4799',
@@ -4831,7 +4807,6 @@ _Message' => 'Customer notification for provider bid offer
   'Custom Range' => 'Custom Range',
   'Canceled_Amount' => 'Canceled Amount',
   'for 3 Bookings' => 'For 3 Bookings',
-<<<<<<< HEAD
   'No provider or service is available within this zone' => 'No provider or service is available within this zone',
   'provider_can_reply_review' => 'Provider can reply review',
   'Customers providers can pay with digital payments' => 'Customers providers can pay with digital payments',
@@ -4877,7 +4852,6 @@ _Message' => 'Customer notification for provider bid offer
   'A new joining request has been submitted by' => 'A new joining request has been submitted by',
   'to' => 'To',
 );
-=======
   'Next' => 'Next',
   'The phone format is invalid.' => 'The phone format is invalid.',
   'create_user_account_from_guest_info' => 'Create user account from guest info',
@@ -5110,4 +5084,3 @@ _Message' => 'Customer notification for provider bid offer
   'Are you sure to Turn On the Category Status' => 'Are you sure to Turn On the Category Status',
   'Customer have to go to Service location' => 'Customer have to go to Service location',
 );
->>>>>>> newversion/main

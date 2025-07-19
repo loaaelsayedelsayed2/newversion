@@ -29,21 +29,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Madnest\Madzipper\Facades\Madzipper;
-<<<<<<< HEAD
-=======
 use Modules\BusinessSettingsModule\Emails\ServiceLocationUpdateMail;
->>>>>>> newversion/main
 use Modules\BusinessSettingsModule\Entities\BusinessSettings;
 use Modules\BusinessSettingsModule\Entities\DataSetting;
 use Modules\BusinessSettingsModule\Entities\NotificationSetup;
 use Modules\BusinessSettingsModule\Entities\Translation;
-<<<<<<< HEAD
-use Modules\ProviderManagement\Entities\Provider;
-=======
 use Modules\PromotionManagement\Entities\PushNotification;
 use Modules\ProviderManagement\Entities\Provider;
 use Modules\ZoneManagement\Entities\Zone;
->>>>>>> newversion/main
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -61,22 +54,14 @@ class BusinessInformationController extends Controller
     private BusinessSettings $businessSetting;
     private DataSetting $dataSetting;
     private NotificationSetup $notificationSetup;
-<<<<<<< HEAD
-
-    public function __construct(BusinessSettings $businessSetting, DataSetting $dataSetting, NotificationSetup $notificationSetup)
-=======
     private Provider $provider;
 
     public function __construct(BusinessSettings $businessSetting, DataSetting $dataSetting, NotificationSetup $notificationSetup, Provider $provider)
->>>>>>> newversion/main
     {
         $this->businessSetting = $businessSetting;
         $this->dataSetting = $dataSetting;
         $this->notificationSetup = $notificationSetup;
-<<<<<<< HEAD
-=======
         $this->provider = $provider;
->>>>>>> newversion/main
 
         if (request()->isMethod('get')) {
             $response = $this->actch();
@@ -203,10 +188,7 @@ class BusinessInformationController extends Controller
         $webPage = $request->has('web_page') ? $request['web_page'] : 'business_setup';
         $businessLogoFullPath = '';
         $businessFaviconFullPath = '';
-<<<<<<< HEAD
-=======
         $providerCount = $this->provider->count();
->>>>>>> newversion/main
 
         if ($webPage == 'business_setup') {
             $dataValues = $this->businessSetting->where('settings_type', 'business_information')->get();
@@ -226,11 +208,7 @@ class BusinessInformationController extends Controller
             $dataValues = $this->businessSetting->whereIn('settings_type', ['booking_setup', 'bidding_system'])->get();
         }
 
-<<<<<<< HEAD
-        return view('businesssettingsmodule::admin.business', compact('dataValues', 'webPage', 'businessLogoFullPath', 'businessFaviconFullPath','config'));
-=======
         return view('businesssettingsmodule::admin.business', compact('dataValues', 'webPage', 'businessLogoFullPath', 'businessFaviconFullPath','config', 'providerCount'));
->>>>>>> newversion/main
     }
 
     /**
@@ -251,12 +229,9 @@ class BusinessInformationController extends Controller
         if (!$request->has('booking_notification')) {
             $request['booking_notification'] = '0';
         }
-<<<<<<< HEAD
-=======
         if (!$request->has('create_user_account_from_guest_info')) {
             $request['create_user_account_from_guest_info'] = '0';
         }
->>>>>>> newversion/main
 
         $validator = Validator::make($request->all(), [
             'business_name' => 'required',
@@ -282,10 +257,7 @@ class BusinessInformationController extends Controller
             'direct_provider_booking' => 'required|in:0,1',
             'booking_notification_type' => 'required',
             'booking_notification' => 'required|in:0,1',
-<<<<<<< HEAD
-=======
             'create_user_account_from_guest_info' => 'required|in:0,1',
->>>>>>> newversion/main
         ]);
 
         if ($validator->fails()) {
@@ -481,28 +453,23 @@ class BusinessInformationController extends Controller
         $this->authorize('business_update');
         collect([
             'cash_after_service',
-<<<<<<< HEAD
             'payment_after_service',
-            'digital_payment', 'partial_payment', 'offline_payment', 'guest_checkout'
+            'digital_payment',
+            'partial_payment',
+            'offline_payment',
+            'guest_checkout'
         ])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
+
         $validator = Validator::make($request->all(), [
-            'cash_after_service' => 'nullable|in:1,0',
-            'payment_after_service' => 'required|in:1,0',
+            'cash_after_service' => 'required|in:1,0',
+            'payment_after_service' => 'sometimes|in:1,0',
             'digital_payment' => 'required|in:1,0',
             'partial_payment' => 'required|in:1,0',
             'partial_payment_combinator' => 'required|in:digital_payment,cash_after_service,offline_payment,all,payment_after_service',
-=======
-            'digital_payment', 'partial_payment', 'offline_payment', 'guest_checkout'
-        ])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
-        $validator = Validator::make($request->all(), [
-            'cash_after_service' => 'required|in:1,0',
-            'digital_payment' => 'required|in:1,0',
-            'partial_payment' => 'required|in:1,0',
-            'partial_payment_combinator' => 'required|in:digital_payment,cash_after_service,offline_payment,all',
->>>>>>> newversion/main
             'offline_payment' => 'required|in:1,0',
             'guest_checkout' => 'required|in:1,0',
         ]);
+
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
@@ -604,11 +571,7 @@ class BusinessInformationController extends Controller
     public function providerSetup(Request $request): JsonResponse|RedirectResponse
     {
         $this->authorize('business_update');
-<<<<<<< HEAD
-        collect(['provider_can_cancel_booking', 'provider_can_edit_booking', 'provider_self_registration', 'suspend_on_exceed_cash_limit_provider', 'provider_self_delete', 'provider_subscription', 'provider_commision', 'provider_can_reply_review'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
-=======
         collect(['provider_can_cancel_booking', 'provider_can_edit_booking', 'provider_self_registration', 'suspend_on_exceed_cash_limit_provider', 'provider_self_delete', 'provider_subscription', 'provider_commision', 'provider_can_reply_review', 'service_at_provider_place'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
->>>>>>> newversion/main
 
         $validated = $request->validate([
             'provider_can_cancel_booking' => 'required|in:0,1',
@@ -621,10 +584,7 @@ class BusinessInformationController extends Controller
             'provider_commision' => 'required|in:0,1',
             'provider_subscription' => 'required|in:0,1',
             'provider_can_reply_review' => 'required|in:0,1',
-<<<<<<< HEAD
-=======
             'service_at_provider_place' => 'required|in:0,1',
->>>>>>> newversion/main
         ]);
 
         $maxCash = $request->input('max_cash_in_hand_limit_provider');
@@ -635,10 +595,7 @@ class BusinessInformationController extends Controller
         }
 
         $oldMaximumLimitAmount = $this->businessSetting->where('key_name', 'max_cash_in_hand_limit_provider')->where('settings_type', 'provider_config')?->first()?->live_values;
-<<<<<<< HEAD
-=======
         $oldServiceLocation = $this->businessSetting->where('key_name', 'service_at_provider_place')->where('settings_type', 'provider_config')?->first()?->live_values;
->>>>>>> newversion/main
 
         foreach ($validated as $key => $value) {
             $this->businessSetting->updateOrCreate(['key_name' => $key], [
@@ -653,10 +610,7 @@ class BusinessInformationController extends Controller
 
         $currentMaxLimitAmount = $this->businessSetting->where('key_name', 'max_cash_in_hand_limit_provider')->where('settings_type', 'provider_config')->first()->live_values;
         $providers = Provider::ofApproval(1)->ofStatus(1)->get();
-<<<<<<< HEAD
-=======
         $newServiceLocation = $this->businessSetting->where('key_name', 'service_at_provider_place')->where('settings_type', 'provider_config')?->first()?->live_values;
->>>>>>> newversion/main
 
         if($oldMaximumLimitAmount && $oldMaximumLimitAmount != $currentMaxLimitAmount){
             foreach ($providers as $provider){
@@ -680,8 +634,6 @@ class BusinessInformationController extends Controller
             }
         }
 
-<<<<<<< HEAD
-=======
         if ($oldServiceLocation != $newServiceLocation){
             $title = $newServiceLocation == 1 ?
                 translate('service_at_provider_place_has_been_actived') :
@@ -715,7 +667,6 @@ class BusinessInformationController extends Controller
 
         }
 
->>>>>>> newversion/main
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));
         return back();
     }
@@ -746,10 +697,7 @@ class BusinessInformationController extends Controller
 
             //payment
             'cash_after_service' => 'in:0,1',
-<<<<<<< HEAD
             'payment_after_service' => 'in:0,1',
-=======
->>>>>>> newversion/main
             'digital_payment' => 'in:0,1',
             'wallet_payment' => 'in:0,1',
         ]);
@@ -873,12 +821,8 @@ class BusinessInformationController extends Controller
         $this->authorize('page_view');
         $webPage = $request->has('web_page') ? $request['web_page'] : 'about_us';
         $dataValues = $this->dataSetting->where('type', 'pages_setup')->withoutGlobalScope('translate')->with('translations')->orderBy('key')->get();
-<<<<<<< HEAD
-        return view('businesssettingsmodule::admin.page-settings', compact('dataValues', 'webPage'));
-=======
         $dataImages = $this->dataSetting->where('type', 'pages_setup_image')->orderBy('key')->get();
         return view('businesssettingsmodule::admin.page-settings', compact('dataValues', 'webPage','dataImages'));
->>>>>>> newversion/main
     }
 
     /**
@@ -893,28 +837,20 @@ class BusinessInformationController extends Controller
         $request->validate([
             'page_name' => 'required|in:about_us,privacy_policy,terms_and_conditions,refund_policy,cancellation_policy',
             'page_content.0' => 'required',
-<<<<<<< HEAD
-=======
             'cover_image' =>'nullable|image|mimes:jpeg,jpg,png,gif|max:10240',
->>>>>>> newversion/main
         ], [
             'page_content.0.required' => 'The default content is required.',
         ]);
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> newversion/main
         $businessData = $this->dataSetting->updateOrCreate(['key' => $request['page_name'], 'type' => 'pages_setup'], [
             'key' => $request['page_name'],
             'value' => $request->page_content[array_search('default', $request->lang)],
             'type' => 'pages_setup',
             'is_active' => $request['is_active'] ?? 0,
         ]);
-<<<<<<< HEAD
 
-=======
         $page = $this->dataSetting->where(['key' => $request['page_name'].'_image', 'type' => 'pages_setup_image'])->first();
         if ($request->has('cover_image')) {
             if (isset($page)) {
@@ -934,7 +870,6 @@ class BusinessInformationController extends Controller
                 saveBusinessImageDataToStorage(model: $page, modelColumn : 'cover_image', storageType : $storageType);
             }
         }
->>>>>>> newversion/main
         $defaultLanguage = str_replace('_', '-', app()->getLocale());
 
         foreach ($request->lang as $index => $key) {

@@ -43,11 +43,8 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'middleware' => ['aut
             Route::post('purchase',  [SubscriptionPackageController::class, 'purchase']);
             Route::post('commission',  [SubscriptionPackageController::class, 'commission']);
             Route::post('cancel',  [SubscriptionPackageController::class, 'cancel']);
-<<<<<<< HEAD
             Route::post('new-subscription', [SubscriptionPackageController::class, 'newSubscription']);
             Route::post('convert-subscription', [SubscriptionPackageController::class, 'convertSubscription']);
-=======
->>>>>>> newversion/main
         });
     });
 

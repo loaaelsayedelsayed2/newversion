@@ -645,9 +645,9 @@ if (!function_exists('getSingleImageFullPath')) {
         try {
             if ($s3Storage && $s3Storage->storage_type == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
                 return Storage::disk('s3')->url($imagePath);
-//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                $awsBucket = config('filesystems.disks.s3.bucket');
-//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+        //                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+        //                $awsBucket = config('filesystems.disks.s3.bucket');
+        //                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
             }
         }catch(\Exception $exception){
             //
@@ -668,9 +668,9 @@ if (!function_exists('getSingleImageFullPath')) {
 if (!function_exists('getIdentityImageFullPath')) {
     function getIdentityImageFullPath($identityImages, $path, $defaultPath = null)
     {
-//        if (empty($identityImages)) {
-//            return $defaultPath ? [$defaultPath] : [];
-//        }
+    //        if (empty($identityImages)) {
+    //            return $defaultPath ? [$defaultPath] : [];
+    //        }
         $identityImageFullPath = [];
 
         foreach ($identityImages as $identityImage) {
@@ -680,9 +680,9 @@ if (!function_exists('getIdentityImageFullPath')) {
 
             try {
                 if ($identityImage['storage'] == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
-//                    $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                    $awsBucket = config('filesystems.disks.s3.bucket');
-//                    $fullPath = $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+        //                    $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+        //                    $awsBucket = config('filesystems.disks.s3.bucket');
+        //                    $fullPath = $awsUrl . '/' . $awsBucket . '/' . $imagePath;
                     $fullPath = Storage::disk('s3')->url($imagePath);
                 }
             }catch(\Exception $exception){
@@ -717,9 +717,9 @@ if (!function_exists('getBusinessSettingsImageFullPath')) {
         try {
             if ($s3Storage && $s3Storage->storage_type == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
                 return Storage::disk('s3')->url($imagePath);
-//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                $awsBucket = config('filesystems.disks.s3.bucket');
-//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+    //                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+    //                $awsBucket = config('filesystems.disks.s3.bucket');
+    //                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
             }
         }catch(\Exception $exception){
             //
@@ -752,9 +752,9 @@ if (!function_exists('getDataSettingsImageFullPath')) {
         try {
             if ($s3Storage && $s3Storage->storage_type == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
                 return Storage::disk('s3')->url($imagePath);
-//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                $awsBucket = config('filesystems.disks.s3.bucket');
-//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+    //                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+    //                $awsBucket = config('filesystems.disks.s3.bucket');
+    //                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
             }
         }catch(\Exception $exception){
             //
@@ -801,9 +801,9 @@ if (!function_exists('getPaymentGatewayImageFullPath')) {
         try {
             if ($additionalData['storage'] == 's3' && \Illuminate\Support\Facades\Storage::disk('s3')->exists($imagePath)) {
                 return Storage::disk('s3')->url($imagePath);
-//                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
-//                $awsBucket = config('filesystems.disks.s3.bucket');
-//                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
+    //                $awsUrl = rtrim(config('filesystems.disks.s3.url'), '/');
+    //                $awsBucket = config('filesystems.disks.s3.bucket');
+    //                return $awsUrl . '/' . $awsBucket . '/' . $imagePath;
             }
         }catch(\Exception $exception){
             //
@@ -825,7 +825,7 @@ if (!function_exists('getPaymentGatewayImageFullPath')) {
 if (!function_exists('nextBookingEligibility')) {
     function nextBookingEligibility($providerId): bool
     {
-        $now = \Carbon\Carbon::now()->subDay();
+        $now = Carbon::now()->subDay();
         $packageSubscriber = PackageSubscriber::where('provider_id', $providerId)->first();
         $packageSubscriberLogId = $packageSubscriber?->package_subscriber_log_id;
         $providerUserId = $packageSubscriber?->provider?->user_id;
@@ -837,47 +837,49 @@ if (!function_exists('nextBookingEligibility')) {
         if ($packageSubscriber && $packageSubscriber->payment_id != null) {
             if ($isPaid || $isPaidMoyasar) {
 
-        if ($packageSubscriber && $packageSubscriber->payment_id != null) {
-            if ($isPaid){
-                if ($packageSubscriber->is_canceled){
-                    return false;
-                }
-                foreach ($packageSubscriber->limits->where('provider_id', $providerId) as $limit) {
-                    if ($limit->key === 'booking') {
-                        if ($limit->is_limited) {
-                            $limitLeft = $limit->limit_count;
+                if ($packageSubscriber && $packageSubscriber->payment_id != null) {
+                    if ($isPaid){
+                        if ($packageSubscriber->is_canceled){
+                            return false;
+                        }
+                        foreach ($packageSubscriber->limits->where('provider_id', $providerId) as $limit) {
+                            if ($limit->key === 'booking') {
+                                if ($limit->is_limited) {
+                                    $limitLeft = $limit->limit_count;
 
-                            $startDate = $packageSubscriber->package_start_date;
-                            $endDate = $packageSubscriber->package_end_date;
+                                    $startDate = $packageSubscriber->package_start_date;
+                                    $endDate = $packageSubscriber->package_end_date;
 
-                            if ($startDate && $endDate) {
-                                if($now > $endDate){
-                                    return false;
-                                }
+                                    if ($startDate && $endDate) {
+                                        if($now > $endDate){
+                                            return false;
+                                        }
 
 
-//                                $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)
-//                                    ->whereBetween('updated_at', [$startDate, $endDate])
-//                                    ->count();
+                                            //                                $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)
+                                            //                                    ->whereBetween('updated_at', [$startDate, $endDate])
+                                            //                                    ->count();
 
-                                $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)->where('package_subscriber_log_id',$packageSubscriberLogId)
-                                    ->whereBetween(DB::raw('DATE(updated_at)'), [date('Y-m-d', strtotime($startDate)), date('Y-m-d', strtotime($endDate))])
-                                    ->count();
+                                        $bookingCount = SubscriptionSubscriberBooking::where('provider_id', $providerId)->where('package_subscriber_log_id',$packageSubscriberLogId)
+                                            ->whereBetween(DB::raw('DATE(updated_at)'), [date('Y-m-d', strtotime($startDate)), date('Y-m-d', strtotime($endDate))])
+                                            ->count();
 
-                                $leftBookingCount = $limitLeft - $bookingCount;
-                                if ($leftBookingCount > 0) {
+                                        $leftBookingCount = $limitLeft - $bookingCount;
+                                        if ($leftBookingCount > 0) {
+                                            return true;
+                                        }
+                                    }
+                                } else {
                                     return true;
                                 }
                             }
-                        } else {
-                            return true;
                         }
                     }
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
-        return true;
     }
 }
 
@@ -1356,10 +1358,5 @@ if (!function_exists('getProviderSettings')) {
 
     }
 }
-
-
-
-
-
 
 

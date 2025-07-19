@@ -3,21 +3,12 @@
 @section('title',translate('business_setup'))
 
 @push('css_or_js')
-<<<<<<< HEAD
-    <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/plugins/select2/select2.min.css"/>
-    <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/plugins/dataTables/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/plugins/dataTables/select.dataTables.min.css"/>
-
-
-    <link rel="stylesheet" href="{{asset('public/assets/admin-module/plugins/swiper/swiper-bundle.min.css')}}">
-=======
     <link rel="stylesheet" href="{{asset('public/assets/new/admin-module')}}/plugins/select2/select2.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/new/admin-module')}}/plugins/dataTables/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/new/admin-module')}}/plugins/dataTables/select.dataTables.min.css"/>
 
 
     <link rel="stylesheet" href="{{asset('public/assets/new/admin-module/plugins/swiper/swiper-bundle.min.css')}}">
->>>>>>> newversion/main
 @endpush
 
 @section('content')
@@ -478,8 +469,6 @@
                                                         </select>
                                                     </div>
 
-<<<<<<< HEAD
-=======
                                                     <div class="col-md-6 col-12 mb-30">
                                                         @php($value=$dataValues->where('key_name','create_user_account_from_guest_info')->first()->live_values??null)
                                                         <div class="border p-3 rounded d-flex justify-content-between">
@@ -498,7 +487,6 @@
                                                         </div>
                                                     </div>
 
->>>>>>> newversion/main
                                                     <div class="col-12 mb-30">
                                                         <div class="form-floating form-floating__icon">
                                                             <input type="text" class="form-control" name="footer_text"
@@ -550,10 +538,7 @@
                                             <div class="row">
                                                     <?php
                                                     $cashAfterService = collect([['key' => 'cash_after_service', 'info_message' => 'Customer can pay with cash after receiving the service', 'title' => 'Cash After Service']]);
-<<<<<<< HEAD
                                                     $paymentAfterService = collect([['key' => 'payment_after_service', 'info_message' => 'Customer can pay with payment after receiving the service', 'title' => 'Payment After Service']]);
-=======
->>>>>>> newversion/main
                                                     $digitalPayment = collect([['key' => 'digital_payment', 'info_message' => 'Customers providers can pay with digital payments', 'title' => 'Digital Payment']]);
                                                     $partialPayment = collect([['key' => 'partial_payment', 'title' => 'Partial Payment', 'info_message' => 'Customer can pay partially with their wallet balance']]);
                                                     $partialPaymentCombinator = collect([['key' => 'partial_payment_combinator', 'title' => 'Can Combine Payment', 'info_message' => 'Admin can set how customers will make the partial payment by clicking on the preferred radio button. This section will be hidden if Partial Payment feature is disabled']]);
@@ -638,17 +623,13 @@
                                                     <div
                                                         class="border p-3 rounded d-flex justify-content-between gap-2">
                                                         <div class="d-flex align-items-start gap-3 gap-xl-4">
-<<<<<<< HEAD
                                                             {{-- <div class="custom-radio">
-=======
                                                             <div class="custom-radio">
->>>>>>> newversion/main
                                                                 <input type="radio" id="cash_after_service_combinator"
                                                                        name="partial_payment_combinator"
                                                                        value="cash_after_service" {{$dataValues->where('key_name', $partialPaymentCombinator[0]['key'])->first()->live_values == 'cash_after_service' ? 'checked' : ''}}>
                                                                 <label
                                                                     for="cash_after_service_combinator">{{translate('Cash After Service')}}</label>
-<<<<<<< HEAD
                                                             </div> --}}
                                                             <div class="custom-radio">
                                                                 <input type="radio" id="payment_after_service_combinator"
@@ -656,8 +637,6 @@
                                                                        value="payment_after_service" {{$dataValues->where('key_name', $partialPaymentCombinator[0]['key'])->first()->live_values == 'payment_after_service' ? 'checked' : ''}}>
                                                                 <label
                                                                     for="payment_after_service_combinator">{{translate('Cash After Service')}}</label>
-=======
->>>>>>> newversion/main
                                                             </div>
                                                             <div class="custom-radio">
                                                                 <input type="radio" id="digital_payment_combinator"
@@ -763,11 +742,7 @@
                                     <div class="card-body p-30">
                                         <div class="d-flex gap-2 align-items-center mb-4">
                                             <img width="20"
-<<<<<<< HEAD
-                                                 src="{{asset('public/assets/admin-module/img/icons/announcement.png')}}"
-=======
                                                  src="{{asset('public/assets/new/admin-module/img/icons/announcement.png')}}"
->>>>>>> newversion/main
                                                  alt="">
                                             <h4>{{translate('Bookings_Setup')}}</h4>
                                         </div>
@@ -1432,11 +1407,7 @@
                                         <div class="card-header">
                                             <div class="d-flex gap-2 align-items-center">
                                                 <img width="20"
-<<<<<<< HEAD
-                                                     src="{{asset('public/assets/admin-module/img/icons/announcement.png')}}"
-=======
                                                      src="{{asset('public/assets/new/admin-module/img/icons/announcement.png')}}"
->>>>>>> newversion/main
                                                      alt="">
                                                 <h4>{{translate('customer_Setup')}}</h4>
                                             </div>
@@ -1773,10 +1744,7 @@
                                         @php($providerCommision = collect([ ['key' => 'provider_commision','info_message' => 'If enabled, providers have to give a certain percentage of commission to admin for every booking request', 'title' => 'Commision Base'] ]))
                                         @php($providerSubscription = collect([ ['key' => 'provider_subscription','info_message' => 'If enabled, providers have to pay a certain amount in every month / year to admin as subscription fee', 'title' => 'Subscription Base'] ]))
                                         @php($providerReviewReply = collect([ ['key' => 'provider_can_reply_review','info_message' => 'If enabled, providers have to review reply', 'title' => 'Provider can reply review'] ]))
-<<<<<<< HEAD
-=======
                                         @php($serviceAtProviderPlace = collect([ ['key' => 'service_at_provider_place','info_message' => 'When enabled, providers can choose where they want to provide service. Customers can book services at the providers location when this feature is active', 'title' => 'Service at Provider Place'] ]))
->>>>>>> newversion/main
 
                                         <div class="col-md-6 col-12 mb-30">
                                             <div class="border p-3 rounded d-flex justify-content-between">
@@ -1930,11 +1898,7 @@
                                                 <label class="switcher">
                                                     @php($value = $dataValues->where('key_name', $providerCommision[0]['key'])?->first()?->live_values ?? null)
                                                     <input class="switcher_input {{ $value ? '' : 'switch_alert' }}"
-<<<<<<< HEAD
-                                                           @if($value) data-bs-toggle="modal" data-bs-target="#commissionToSubscription" @endif
-=======
                                                            @if($value && $providerCount > 0) data-bs-toggle="modal" data-bs-target="#commissionToSubscription" @endif
->>>>>>> newversion/main
                                                            id="{{$providerCommision[0]['key']}}"
                                                            type="checkbox"
                                                            name="{{$providerCommision[0]['key']}}"
@@ -1959,11 +1923,7 @@
                                                 <label class="switcher">
                                                     @php($value = $dataValues->where('key_name', $providerSubscription[0]['key'])?->first()?->live_values ?? null)
                                                     <input class="switcher_input {{ $value ? '' : 'switch_alert' }}"
-<<<<<<< HEAD
-                                                           @if($value) data-bs-toggle="modal" data-bs-target="#subscriptionToCommission" @endif
-=======
                                                            @if($value && $providerCount > 0) data-bs-toggle="modal" data-bs-target="#subscriptionToCommission" @endif
->>>>>>> newversion/main
                                                            id="{{$providerSubscription[0]['key']}}"
                                                            type="checkbox"
                                                            name="{{$providerSubscription[0]['key']}}"
@@ -2012,8 +1972,6 @@
                                             </div>
                                         </div>
 
-<<<<<<< HEAD
-=======
                                         <div class="col-md-12 col-12 mb-30">
                                             <div class="border p-3 rounded d-flex justify-content-between">
                                                 <div>
@@ -2034,7 +1992,6 @@
                                             </div>
                                         </div>
 
->>>>>>> newversion/main
                                     </div>
                                     @can('business_update')
                                         <div class="d-flex gap-2 justify-content-end mt-4">
@@ -2061,11 +2018,7 @@
                 <div class="modal-body p-30">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="d-flex flex-column gap-2 align-items-center text-center">
-<<<<<<< HEAD
-                        <img class="mb-3" src="{{asset('public/assets/admin-module')}}/img/ad_delete.svg" alt="">
-=======
                         <img class="mb-3" src="{{asset('public/assets/new/admin-module')}}/img/ad_delete.svg" alt="">
->>>>>>> newversion/main
                         <h3 class="mb-2">{{ translate('Switch commission base')}}</h3>
                         <p class="old-subscription-name" id="old_subscription_name">{{ translate('If disabled Subscription, All subscriber moved to commission and providers have to give a certain percentage of commission to admin for every booking request')}}</p>
                         <form action="{{ route('admin.subscription.package.subscription-to-commission') }}" method="post">
@@ -2095,11 +2048,7 @@
                 <div class="modal-body p-30">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="d-flex flex-column gap-2 align-items-center text-center">
-<<<<<<< HEAD
-                        <img class="mb-3" src="{{asset('public/assets/admin-module')}}/img/ad_delete.svg" alt="">
-=======
                         <img class="mb-3" src="{{asset('public/assets/new/admin-module')}}/img/ad_delete.svg" alt="">
->>>>>>> newversion/main
                         <h3 class="mb-2">{{ translate('Want to switch existing business plan')}}?</h3>
                         <p class="old-subscription-name" id="old_subscription_name"></p>
                         <form class="w-100" action="{{ route('admin.subscription.package.commission-to-subscription') }}" method="post">
@@ -2144,11 +2093,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-<<<<<<< HEAD
-                <form method="post" action="{{route('admin.business-settings.maintenance-mode-setup')}}">
-=======
                 <form method="post" action="{{route('admin.business-settings.maintenance-mode-setup')}}" id="maintenanceModeForm">
->>>>>>> newversion/main
                         <?php
                             $selectedMaintenanceSystem      = ((business_config('maintenance_system_setup', 'maintenance_mode'))?->live_values) ?? [];
                             $selectedMaintenanceDuration    = ((business_config('maintenance_duration_setup', 'maintenance_mode'))?->live_values) ?? [];
@@ -2167,11 +2112,7 @@
                                         <h5 class="mb-0">{{translate('maintenance_mode')}}</h5>
 
                                         <label class="switcher ml-auto mb-0">
-<<<<<<< HEAD
-                                            <input type="checkbox" class="switcher_input" name="maintenance_mode"
-=======
                                             <input type="checkbox" class="switcher_input" name="maintenance_mode"  id="maintenance-mode-checkbox"
->>>>>>> newversion/main
                                                 {{ $maintenanceMode ?'checked':''}}>
                                             <span class="switcher_control"></span>
                                         </label>
@@ -2345,11 +2286,7 @@
                     <div class="modal-footer">
                         <div class="btn--container justify-content-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ translate('Cancel') }}</button>
-<<<<<<< HEAD
-                            <button type="{{env('APP_MODE')!='demo'?'submit':'button'}}" class="btn btn--primary demo_check">{{ translate('Save') }}</button>
-=======
                             <button type="{{env('APP_MODE')!='demo'?'button':'button'}}" onclick="validateMaintenanceMode()" class="btn btn--primary demo_check">{{ translate('Save') }}</button>
->>>>>>> newversion/main
                         </div>
                     </div>
                 </form>
@@ -2397,15 +2334,9 @@
 @endsection
 
 @push('script')
-<<<<<<< HEAD
-    <script src="{{asset('public/assets/admin-module')}}/plugins/select2/select2.min.js"></script>
-    <script src="{{asset('public/assets/admin-module')}}/plugins/dataTables/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/assets/admin-module')}}/plugins/dataTables/dataTables.select.min.js"></script>
-=======
     <script src="{{asset('public/assets/new/admin-module')}}/plugins/select2/select2.min.js"></script>
     <script src="{{asset('public/assets/new/admin-module')}}/plugins/dataTables/jquery.dataTables.min.js"></script>
     <script src="{{asset('public/assets/new/admin-module')}}/plugins/dataTables/dataTables.select.min.js"></script>
->>>>>>> newversion/main
 
 
     <script>
@@ -2806,8 +2737,6 @@
     </script>
 
     <script>
-<<<<<<< HEAD
-=======
 
         function validateMaintenanceMode() {
             const maintenanceModeChecked = $('#maintenance-mode-checkbox').is(':checked');
@@ -2830,7 +2759,6 @@
             $('#maintenanceModeForm').submit();
         }
 
->>>>>>> newversion/main
         $(document).ready(function() {
 
             $('.route-alert-reload').on('click', function () {

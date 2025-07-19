@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 <?php return array (
-=======
-<?php
-
-return array (
->>>>>>> newversion/main
   'user_authentication_failed' => 'فشلت مصادقة المستخدم',
   'The email or phone field is required.' => 'حقل البريد الإلكتروني أو الهاتف مطلوب.',
   'The password field is required.' => 'حقل كلمة المرور مطلوب.',
@@ -19,11 +13,8 @@ return array (
   'The role name has already been taken.' => 'لقد تم بالفعل أخذ اسم الدور.',
   'The selected update is invalid.' => 'التحديث المحدد غير صالح.',
   'successfully_added' => 'تمت الإضافة بنجاح',
-<<<<<<< HEAD
   'Reason_for_canceled' => 'سبب الالغاء',
   'Source_of_service_amount' => 'مصدر مبلغ الخدمه',
-=======
->>>>>>> newversion/main
   'The name has already been taken.' => 'لقد تم أخذ الاسم بالفعل.',
   'The name field is required.' => 'حقل الاسم مطلوب.',
   'The position field is required.' => 'حقل الموقف مطلوب.',
@@ -302,18 +293,15 @@ return array (
   'Provider_login' => 'تسجيل الدخول للمزود',
   'Bank_Information' => 'معلومات البنك',
   'Account_Information' => 'معلومات الحساب',
-<<<<<<< HEAD
   'Provider_DashBoard' =>'لوحة تحكم مزود الخدمة',
   'Account' => 'حساب',
   'Canceled' => 'تم الإلغاء',
   'Completed' => 'مكتمل',
   'Ongoing' => 'جاري التنفيذ',
-=======
   'Account' => 'حساب',
   'Canceled' => 'تم الإلغاء',
   'Completed' => 'مكتمل',
   'Ongoing' => 'مستمر',
->>>>>>> newversion/main
   'Accepted' => 'مقبول',
   'Booking_Requests' => 'طلبات الحجز',
   'Bookings' => 'الحجوزات',
@@ -359,11 +347,7 @@ return array (
   'total_services' => 'إجمالي الخدمات',
   'total_bookings' => 'إجمالي الحجوزات',
   'canceled' => 'تم الإلغاء',
-<<<<<<< HEAD
   'ongoing' => 'جاري التنفيذ',
-=======
-  'ongoing' => 'مستمر',
->>>>>>> newversion/main
   'subscribed_providers' => 'مقدمي الخدمات المشتركين',
   'reviews' => 'المراجعات',
   'faq' => 'التعليمات',
@@ -426,18 +410,11 @@ return array (
   'Image_removed' => 'تمت إزالة الصورة',
   'Submit' => 'يُقدِّم',
   'Reset' => 'إعادة ضبط',
-<<<<<<< HEAD
   'Trade_License' => 'سجل تجاري',
   'nid' => 'نيد',
   'Company_Id' => 'معرف الشركة',
   'Driving_License' => 'رخصة القيادة',
   'residency_permit' => 'اقامه نظاميه ساريه المفعول',
-=======
-  'Trade_License' => 'رخصة تجارية',
-  'nid' => 'نيد',
-  'Company_Id' => 'معرف الشركة',
-  'Driving_License' => 'رخصة القيادة',
->>>>>>> newversion/main
   'Passport' => 'جواز سفر',
   'Identity_Number' => 'رقم الهوية',
   'Select_Identity_Type' => 'اختر نوع الهوية',
@@ -657,11 +634,7 @@ return array (
   'profile_image' => 'صورة الملف الشخصي',
   'role' => 'دور',
   'company_id' => 'معرف الشركة',
-<<<<<<< HEAD
   'trade_license' => 'سجل تجاري',
-=======
-  'trade_license' => 'رخصة تجارية',
->>>>>>> newversion/main
   'driving_licence' => 'رخصة القيادة',
   'transactions' => 'المعاملات',
   'withdraw_requests' => 'سحب الطلبات',
@@ -692,10 +665,7 @@ return array (
   'Lead_Service_Information' => 'معلومات الخدمة الرائدة',
   'Vat' => 'ضريبة القيمة المضافة',
   'Booking_Amount' => 'مبلغ الحجز',
-<<<<<<< HEAD
   'Addattion_Cost' => 'مبلغ  اضافي',
-=======
->>>>>>> newversion/main
   'available_services' => 'الخدمات المتاحة',
   'campaign_name' => 'اسم الحملة',
   'coupon_code' => 'رمز القسيمة',
@@ -779,10 +749,7 @@ return array (
                                                 Ratio - 2:1',
   'Provider Information' => 'معلومات المزود',
   'driving_license' => 'رخصة القيادة',
-<<<<<<< HEAD
   'residency_permit' => 'اقامه نظاميه ساريه المفعول' ,
-=======
->>>>>>> newversion/main
   'passport' => 'جواز سفر',
   'The password must be at least 8 characters.' => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.',
   'update_serviceman' => 'تحديث خادم',
@@ -851,10 +818,7 @@ return array (
   'Transaction_From' => 'المعاملة من',
   'Transaction_Date' => 'تاريخ المعاملة',
   'Transaction_Id' => 'معرف المعاملة',
-<<<<<<< HEAD
   'Payment_ID' => ' معرف المعاملة في بوابه الدفع',
-=======
->>>>>>> newversion/main
   'total_transactions' => 'إجمالي المعاملات',
   'To_user' => 'للمستخدم',
   'From_user' => 'من المستخدم',
@@ -936,10 +900,7 @@ return array (
   'update_discount' => 'خصم التحديث',
   'Discount' => 'تخفيض',
   'cash_after_service' => 'نقدا بعد الخدمة',
-<<<<<<< HEAD
   'payment_after_service' => 'دفع بعد الخدمة',
-=======
->>>>>>> newversion/main
   'stripe' => 'شريط',
   'ssl_commerz' => 'com.sslcommerz',
   'Provider_Information' => 'معلومات المزود',
@@ -1024,11 +985,7 @@ return array (
   'success_rate' => 'معدل النجاح',
   'Transaction_ID' => 'معرف المعاملة',
   'Schedule_Time' => 'جدولة الوقت',
-<<<<<<< HEAD
   'flutterwave' => 'Flutterwave',
-=======
-  'flutterwave' => 'com.flutterwave',
->>>>>>> newversion/main
   'published_key' => 'المفتاح المنشور',
   'access_token' => 'رمز الوصول',
   'mercadopago' => 'mercadopago',
@@ -1634,10 +1591,7 @@ return array (
   'paid_amount' => 'المبلغ المدفوع',
   'booking_amount' => 'مبلغ الحجز',
   'payable_amount' => 'المبلغ المستحق',
-<<<<<<< HEAD
   'Adattion Cost' => 'مبلغ القيمه المضافه',
-=======
->>>>>>> newversion/main
   'expenses' => 'نفقات',
   'campaign_discount' => 'خصم الحملة',
   'normal_discount' => 'الخصم العادي',
@@ -1720,11 +1674,7 @@ return array (
   'add_Fund' => 'إضافة الصندوق',
   'Add_Fund' => 'أضف الصندوق',
   'messages.add_fund' => 'الرسائل.إضافة صندوق',
-<<<<<<< HEAD
   'messages.customer' => 'الرسائل.العميل',
-=======
-  'messages.customer' => 'messages.customer',
->>>>>>> newversion/main
   'messages.select_customer' => 'الرسائل.اختر العميل',
   'messages.amount' => 'الرسائل. المبلغ',
   'messages.reference' => 'الرسائل. مرجع',
@@ -1943,11 +1893,7 @@ return array (
   'No_data_available' => 'لا توجد بيانات متاحة',
   'search_by_Customer' => 'البحث حسب العميل',
   'The category ids must be an array.' => 'يجب أن تكون معرفات الفئة عبارة عن مصفوفة.',
-<<<<<<< HEAD
   'wallet_payment' => 'محفظة  الكترونية',
-=======
-  'wallet_payment' => 'دفع المحفظة',
->>>>>>> newversion/main
   'House Cleaning' => 'تنظيف المنزل',
   'Painting & Renovation' => 'الطلاء والتجديد',
   'ABC Category' => 'فئة ABC',
@@ -2699,11 +2645,7 @@ return array (
   'Can not remove the only service' => 'لا يمكن إزالة الخدمة الوحيدة',
   'booking_refund' => 'استرداد الحجز',
   'To Integrate add-on to your system please follow the instruction below' => 'لدمج الوظيفة الإضافية في نظامك، يرجى اتباع التعليمات أدناه',
-<<<<<<< HEAD
-  'After purchasing Demandium from codecanyon. You will find a file download option.' => NULL,
-=======
   'After purchasing Demandium from codecanyon. You will find a file download option.' => 'بعد شراء Demandium من codecanyon. ',
->>>>>>> newversion/main
   'Download the file. It will be downloaded as Zip format Filename.Zip' => 'قم بتنزيل الملف. ',
   'Extract the file you will get a file name payment.zip.' => 'قم باستخراج الملف وستحصل على اسم الملف Payment.zip.',
   'Upload the file here and your Addon uploading is complete !' => 'قم بتحميل الملف هنا واكتمل تحميل الملحق الخاص بك!',
@@ -2779,11 +2721,7 @@ return array (
   'receivable_extra_fee' => 'رسوم اضافية المستحقة',
   'Collect Cash' => 'جمع النقدية',
   'withdraw' => 'ينسحب',
-<<<<<<< HEAD
   'payment' => 'طريقه الدفع',
-=======
-  'payment' => 'قسط',
->>>>>>> newversion/main
   'commission' => 'عمولة',
   'Select_Type' => 'حدد النوع',
   'Transaction Type' => 'نوع المعاملة',
@@ -2799,12 +2737,7 @@ return array (
   'Send Withdraw Request' => 'إرسال طلب السحب',
   'Attention Please' => 'الاهتمام من فضلك',
   'Your limit to hold cash is exceeded. Your account will be suspended until you pay the due.
-<<<<<<< HEAD
                                     You will not receive any new service request from now.' => 'لقد تجاوزت الحد الأقصى للاحتفاظ بالنقود. سيتم تعليق حسابك حتى تقوم بسداد المبلغ المستحق. لن تتلقى أي طلب خدمة جديد من الآن فصاعدًا.',
-=======
-                                    You will not receive any new service request from now.' => 'Your limit to hold cash is exceeded. Your account will be suspended until you pay the due.
-                                    You will not receive any new service request from now.',
->>>>>>> newversion/main
   'Pay the Due' => 'دفع المستحق',
   'Map Api' => 'خريطة واجهة برمجة التطبيقات',
   'Sms Config' => 'تكوين الرسائل القصيرة',
@@ -2913,11 +2846,7 @@ return array (
   'remarks' => 'ملاحظات',
   'eewed' => 'eewed',
   'fvfd' => 'fvfd',
-<<<<<<< HEAD
-  'fdvgdf' => 'FDVGDF',
-=======
   'fdvgdf' => 'com.fdvgdf',
->>>>>>> newversion/main
   'reference' => 'مرجع',
   'customer_name' => 'اسم العميل',
   'transaction_id' => 'معرف المعاملة',
@@ -2941,12 +2870,7 @@ return array (
   'Providers are available right now' => 'مقدمي الخدمة متاحة الآن',
   'Refund_Message' => 'رسالة استرداد الأموال',
   'customer notification for provider bid offer
-<<<<<<< HEAD
 _Message' => 'إشعار العميل برسالة أن مقدم الخدمة أرسل عرضاً',
-=======
-_Message' => 'Customer notification for provider bid offer
- Message',
->>>>>>> newversion/main
   'the name of the provider.' => 'اسم المزود.',
   'the name of the service man name.' => 'اسم اسم رجل الخدمة.',
   'the unique ID of the Booking.' => 'المعرف الفريد للحجز.',
@@ -3101,12 +3025,7 @@ _Message' => 'Customer notification for provider bid offer
   'default_400' => 'الافتراضي 400',
   'invalid or missing information' => 'معلومات غير صالحة أو مفقودة',
   'Wallet bonus is only applicable when a customer add fund to wallet via outside
-<<<<<<< HEAD
                         payment gateway ' => 'لا تنطبق مكافأة المحفظة إلا عندما يقوم العميل بإضافة أموال إلى المحفظة عبر بوابة دفع خارجية',
-=======
-                        payment gateway ' => 'Wallet bonus is only applicable when a customer add fund to wallet via outside
-                        payment gateway ',
->>>>>>> newversion/main
   'Customer will get extra amount to his' => 'سيحصل العميل على مبلغ إضافي له',
   'her wallet additionally with the amount he' => 'محفظتها بالإضافة إلى المبلغ الذي هو',
   'she added
@@ -3511,20 +3430,10 @@ _Message' => 'Customer notification for provider bid offer
   'justina_marsh' => 'جوستينا مارش',
   'cassidy_mendoza' => 'كاسيدي مندوزا',
   'Wallet bonus is only applicable when a customer add fund to
-<<<<<<< HEAD
                                             wallet via outside payment gateway' => 'لا تنطبق مكافأة المحفظة إلا عندما يقوم العميل بإضافة أموال إلى المحفظة عبر بوابة دفع خارجية',
   'Customer will get extra amount to his / her wallet additionally with the
                                             amount he / she added from other payment gateways. The bonus amount will
                                             consider as admin expense' => 'سيحصل العميل على مبلغ إضافي في محفظته بالإضافة إلى المبلغ الذي أضافه من بوابات الدفع الأخرى. سيتم اعتبار مبلغ المكافأة بمثابة نفقات إدارية',
-=======
-                                            wallet via outside payment gateway' => 'Wallet bonus is only applicable when a customer add fund to
-                                            wallet via outside payment gateway',
-  'Customer will get extra amount to his / her wallet additionally with the
-                                            amount he / she added from other payment gateways. The bonus amount will
-                                            consider as admin expense' => 'Customer will get extra amount to his / her wallet additionally with the
-                                            amount he / she added from other payment gateways. The bonus amount will
-                                            consider as admin expense',
->>>>>>> newversion/main
   'velit_et_in_sapiente' => 'velit et in sapiente',
   'hashim_lucas' => 'هاشم لوكاس',
   'Verify_Booking_Request' => 'التحقق من طلب الحجز',
@@ -3542,13 +3451,7 @@ _Message' => 'Customer notification for provider bid offer
   'gateway image' => 'صورة البوابة',
   'Please Collect OTP from your customer
                                                         &
-<<<<<<< HEAD
                                                         Insert Here' => 'يرجى طلب رمز OTP من عميلك وإدخاله هنا',
-=======
-                                                        Insert Here' => 'Please Collect OTP from your customer
-                                                        &
-                                                        Insert Here',
->>>>>>> newversion/main
   'identity-image' => 'صورة الهوية',
   'Offline payment list' => 'قائمة الدفع دون اتصال',
   'Request Verify Status:' => 'طلب التحقق من الحالة:',
@@ -3564,11 +3467,7 @@ _Message' => 'Customer notification for provider bid offer
   'Employee Details' => 'تفاصيل الموظف',
   'Are you sure you want to delete the post?' => 'هل أنت متأكد أنك تريد حذف هذه المشاركة',
   'sub_category' => 'فئة فرعية',
-<<<<<<< HEAD
   'gdgxfff' => 'com.gdgxfff',
-=======
-  'gdgxfff' => 'gdgxfff',
->>>>>>> newversion/main
   'bxhc' => 'com.bxhc',
   'fgg' => 'fgg',
   'Payment_Info' => 'معلومات الدفع',
@@ -3585,13 +3484,10 @@ _Message' => 'Customer notification for provider bid offer
   '"Project settings"' => 'إعدادات المشروع',
   'Verify_Request' => 'التحقق من الطلب',
   'Sl' => 'س',
-<<<<<<< HEAD
   'number' => 'رقم',
     'Booking Request' => 'طلب الحجز',
     'Service Time' => 'توقيت الخدمه ',
     'Request Time' => 'توقيت الطلب',
-=======
->>>>>>> newversion/main
   'Customized Booking Request Delete_Message' => 'طلب حجز مخصص حذف الرسالة',
   'Not provided yet' => 'لم تقدم بعد',
   'accept' => 'يقبل',
@@ -3682,11 +3578,7 @@ _Message' => 'Customer notification for provider bid offer
   'only applicable for chosen zone' => 'ينطبق فقط على المنطقة المختارة',
   'coupon applied successfully' => 'تم تطبيق القسيمة بنجاح',
   'user account has been disabled, please talk to the admin.' => 'تم تعطيل حساب المستخدم، يرجى التحدث إلى المسؤول.',
-<<<<<<< HEAD
-  'Your Account Registration Is Currently Under Review By Our Admin. Thank You For Your Patience.' => 'تسجيل حسابك قيد المراجعة حاليًا من قبل المشرف لدينا.',
-=======
   'Your Account Registration Is Currently Under Review By Our Admin. Thank You For Your Patience.' => 'تسجيل حسابك قيد المراجعة حاليًا من قبل المشرف لدينا. ',
->>>>>>> newversion/main
   'Your account is currently under review. Contact with admin for any kind of query' => 'حسابك قيد المراجعة حاليًا. ',
   'Booking Placed successfully' => 'تم الحجز بنجاح',
   'Time Format' => 'تنسيق الوقت',
@@ -3713,11 +3605,8 @@ _Message' => 'Customer notification for provider bid offer
   'No Lead Service Information' => 'لا توجد معلومات خدمة الرصاص',
   'No Uploaded Images' => 'لا توجد صور تم تحميلها',
   'Change of mind is not applicable as a reason for refund' => 'لا ينطبق تغيير الرأي كسبب لاسترداد الأموال',
-<<<<<<< HEAD
   'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'يرجى الملاحظه ان الغاء الخدمة بسبب تغير الراي أو عدم الرغبة فى اتمامها، لا يعتبر سببا مقبولا لاسترجاع المبلغ بعد تاكيد الطلب',
 
-=======
->>>>>>> newversion/main
   'user_image' => 'صورة المستخدم',
   'Edited' => 'تم تحريره',
   4799 => '4799',
@@ -4334,11 +4223,7 @@ _Message' => 'Customer notification for provider bid offer
   'Switch & Turn Of The Status' => 'تبديل وتحويل الحالة',
   'Switch existing business plan' => 'تبديل خطة العمل الحالية',
   'Shift' => 'يحول',
-<<<<<<< HEAD
   'Payment' => 'طريقه الدفع',
-=======
-  'Payment' => 'قسط',
->>>>>>> newversion/main
   'Invoice of' => 'فاتورة',
   'INVOICE' => 'فاتورة',
   'Shift Plan' => 'خطة التحول',
@@ -4463,12 +4348,7 @@ _Message' => 'Customer notification for provider bid offer
   'Free Trial' => 'تجربة مجانية',
   'Use the system free for' => 'استخدم النظام مجانا ل',
   'After that you
-<<<<<<< HEAD
                                                         have to complete payments to continue' => 'بعد ذلك عليك اكمال الدفعات للمتابعة',
-=======
-                                                        have to complete payments to continue' => 'After that you
-                                                        have to complete payments to continue',
->>>>>>> newversion/main
   'Get the best experience of on demand service business' => 'احصل على أفضل تجربة لأعمال الخدمات حسب الطلب',
   'Run your on demand business with the most popular platform' => 'قم بإدارة أعمالك حسب الطلب باستخدام المنصة الأكثر شعبية',
   'Days left in free trial' => 'الأيام المتبقية في النسخة التجريبية المجانية',
@@ -4769,7 +4649,6 @@ _Message' => 'Customer notification for provider bid offer
   'If you close the tab, the progress made will be saved but remaining content will not be translated.' => 'إذا قمت بإغلاق علامة التبويب، فسيتم حفظ التقدم المحرز ولكن لن تتم ترجمة المحتوى المتبقي.',
   'Be patient, don’t close or terminate your tab or browser.' => 'كن صبورًا ولا تغلق أو تنهي علامة التبويب أو المتصفح.',
   'If you close now, the progress made so far will be saved. The remaining content will not be translated.' => 'إذا قمت بإغلاق الآن سيتم حفظ التقدم المحرز حتى الآن. ',
-<<<<<<< HEAD
   'Custom Range' => 'نطاق مخصص',
   'subscription_earning' => 'كسب الاشتراك',
   'Adattion_Cost' => 'تكلفة التكيف',
@@ -4924,6 +4803,4 @@ _Message' => 'Customer notification for provider bid offer
     jpeg, gif Image Size - maximum size 2 MB Image Ratio -
     1:1',
   'Failed to sent OTP' => 'Failed to sent OTP',
-=======
->>>>>>> newversion/main
 );

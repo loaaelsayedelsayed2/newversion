@@ -27,10 +27,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
         Route::get('ajax-childes/{id}', 'CategoryController@ajaxChildes')->name('ajax-childes');
         Route::get('ajax-childes-only/{id}', 'CategoryController@ajaxChildesOnly')->name('ajax-childes-only');
         Route::get('download', 'CategoryController@download')->name('download');
-<<<<<<< HEAD
-=======
         Route::get('table', 'CategoryController@getTable')->name('table');
->>>>>>> newversion/main
     });
 
     Route::group(['prefix' => 'sub-category', 'as' => 'sub-category.'], function () {

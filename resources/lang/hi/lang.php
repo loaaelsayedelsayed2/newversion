@@ -256,10 +256,7 @@ return array (
   'add_new_service' => 'नई सेवा जोड़ें',
   'service_details' => 'सेवा विवरण',
   'service_list' => 'सेवा सूची',
-<<<<<<< HEAD
   'Provider_DashBoard' => 'प्रदाता डैशबोर्ड',
-=======
->>>>>>> newversion/main
   'service_setup' => 'सेवा सेटअप',
   'choose_category' => 'श्रेणी का चयन करें',
   'service_name' => 'सेवा का नाम',
@@ -895,10 +892,7 @@ return array (
   'update_discount' => 'अद्यतन छूट',
   'Discount' => 'छूट',
   'cash_after_service' => 'सेवा के बाद नकद',
-<<<<<<< HEAD
   "payment_after_service" => "सेवा के बाद भुगतान",
-=======
->>>>>>> newversion/main
   'stripe' => 'धारी',
   'ssl_commerz' => 'sslcommerz',
   'Provider_Information' => 'प्रदाता सूचना',
@@ -3583,10 +3577,7 @@ _Message' => 'Customer notification for provider bid offer
   'Thanks for using our service' => 'हमारी सेवा का उपयोग करने के लिए धन्यवाद',
   'Terms & Conditions' => 'नियम एवं शर्तें',
   'Change of mind is not applicable as a reason for refund' => 'मन में बदलाव धनवापसी के कारण के रूप में लागू नहीं होता है',
-<<<<<<< HEAD
   'Please note that canceling the service due to a change of mind or unwillingness to complete it is not considered an acceptable reason for refunding the amount after confirming the order.' => 'कृपया ध्यान दें कि मन में बदलाव या इसे पूरा करने की अनिच्छा के कारण सेवा को रद्द करना ऑर्डर की पुष्टि के बाद राशि वापस करने का स्वीकार्य कारण नहीं माना जाता है।',
-=======
->>>>>>> newversion/main
   'get_all_updates_&_exciting_news' => 'सभी अपडेट और रोमांचक समाचार प्राप्त करें',
   'Subcribe to out newsletters to receive all the latest activty we provide for you' => 'हमारे द्वारा आपके लिए प्रदान की जाने वाली सभी नवीनतम गतिविधि प्राप्त करने के लिए हमारे न्यूज़लेटर्स की सदस्यता लें',
   'Type email...' => 'ईमेल टाइप करें...',

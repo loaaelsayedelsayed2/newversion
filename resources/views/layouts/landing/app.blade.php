@@ -22,11 +22,8 @@
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/owl.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/landing')}}/css/main.css"/>
-<<<<<<< HEAD
     {{--  <link rel="stylesheet" href="{{ asset('assets/landing/css/main.css') }}"/>  --}}
-=======
     <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/css/toastr.css">
->>>>>>> newversion/main
 
     <link rel="shortcut icon"
           href="{{asset('storage/app/public/business')}}/{{bs_data($settings,'business_favicon', 1)}}"
@@ -149,7 +146,6 @@
                             <span>{{translate('privacy_policy')}}</span>
                         </a>
                     </li>
-<<<<<<< HEAD
                     @if($settings->where('key_name', 'terms_and_conditions')->first()->is_active == '1')
                         <li>
                             <a href="{{route('page.terms-and-conditions')}}"
@@ -215,13 +211,11 @@
                         </div>
                     </li> --}}
                     {{-- old language dropdown ends --}}
-=======
                     <li>
                         <a href="{{route('page.terms-and-conditions')}}" class="{{request()->is('page/terms-and-conditions')?'active':''}}">
                             <span>{{translate('terms_&_conditions')}}</span>
                         </a>
                     </li>
->>>>>>> newversion/main
                 </ul>
                 <div class="nav-toggle d-lg-none ms-auto me-2 me-sm-4">
                     <span></span>
@@ -236,7 +230,6 @@
 
 @yield('content')
 
-<<<<<<< HEAD
 <footer>
     <div class="footer-top">
         <div class="container">
@@ -318,7 +311,6 @@
                             {{translate('find_us_here')}}
                         </h6>
                         <div><span>{{bs_data($settings,'business_address', 1)}}</span></div>
-=======
 <div class="py-75 subscribe-newsletter">
     <div class="container">
         <div class="row justify-content-between">
@@ -422,20 +414,16 @@
                             </h6>
                             <div><span>{{bs_data($settings,'business_address', 1)}}</span></div>
                         </div>
->>>>>>> newversion/main
                     </div>
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
     </div>
     <div class="footer-bottom text-center py-3">
         {{bs_data($settings,'footer_text', 1)}}
-=======
         <div class="footer-bottom text-center py-3">
             {{bs_data($settings,'footer_text', 1)}}
         </div>
->>>>>>> newversion/main
     </div>
 </footer>
 
@@ -445,16 +433,13 @@
 <script src="{{asset('public/assets/landing')}}/js/owl.min.js"></script>
 <script src="{{asset('public/assets/landing')}}/js/swiper-bundle.min.js"></script>
 <script src="{{asset('public/assets/landing')}}/js/bootstrap.min.js"></script>
-<<<<<<< HEAD
 <script src="{{asset('public/assets/landing')}}/js/custom.js"></script>
 
-=======
 <script src="{{asset('public/assets/admin-module')}}/js/toastr.js"></script>
 <script src="{{asset('public/assets/landing')}}/js/custom.js"></script>
 
 {!! Toastr::message() !!}
 
->>>>>>> newversion/main
 <script>
     "use strict";
 
@@ -816,8 +801,6 @@
         }
     });
     // ---- service section active end
-<<<<<<< HEAD
-=======
 
     @if ($errors->any())
         @foreach($errors->all() as $error)
@@ -827,7 +810,6 @@
         });
         @endforeach
     @endif
->>>>>>> newversion/main
 </script>
 
 </body>

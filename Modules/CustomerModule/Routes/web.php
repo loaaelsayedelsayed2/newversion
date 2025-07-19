@@ -14,10 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\CustomerModule\Http\Controllers\Web\Admin\LoyaltyPointController;
 use Modules\CustomerModule\Http\Controllers\Web\Admin\WalletController;
-<<<<<<< HEAD
-=======
 use Modules\CustomerModule\Http\Controllers\Web\Admin\SubscribeNewsletterController;
->>>>>>> newversion/main
 use Stevebauman\Location\Facades\Location;
 
 Route::get('about-us', 'PagesController@aboutUs')->name('about-us');
@@ -51,13 +48,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
             Route::any('report', [LoyaltyPointController::class, 'getLoyaltyPointReport'])->name('report');
             Route::any('report/download', [LoyaltyPointController::class, 'getLoyaltyPointReportDownload'])->name('report.download');
         });
-<<<<<<< HEAD
-=======
 
         Route::group(['prefix' => 'newsletter', 'as' => 'newsletter.'], function () {
             Route::get('list', [SubscribeNewsletterController::class, 'index'])->name('index');
             Route::any('download', [SubscribeNewsletterController::class, 'download'])->name('download');
         });
->>>>>>> newversion/main
     });
 });

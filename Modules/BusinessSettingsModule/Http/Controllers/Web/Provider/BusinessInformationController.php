@@ -74,14 +74,10 @@ class BusinessInformationController extends Controller
         $weekEnds = provider_config('weekends', 'service_schedule', $providerId)->live_values ?? '';
         $weekEnds = json_decode($weekEnds);
 
-<<<<<<< HEAD
-        return view('businesssettingsmodule::provider.business', compact('dataValues', 'providerId', 'webPage', 'timeSchedule', 'weekEnds'));
-=======
         $serviceLocation = $this->providerSetting->where(['key_name' => 'service_location', 'provider_id' => $providerId, 'settings_type' => 'provider_config'])->first();
         $serviceLocations = $serviceLocation ? json_decode($serviceLocation->live_values, true) : [];
 
         return view('businesssettingsmodule::provider.business', compact('dataValues', 'providerId', 'webPage', 'timeSchedule', 'weekEnds', 'serviceLocations'));
->>>>>>> newversion/main
     }
 
     /**
@@ -93,10 +89,6 @@ class BusinessInformationController extends Controller
     public function businessInformationSet(Request $request): JsonResponse|RedirectResponse
     {
         collect(['provider_serviceman_can_edit_booking', 'provider_serviceman_can_cancel_booking'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
-<<<<<<< HEAD
-=======
-
->>>>>>> newversion/main
         $validator = Validator::make($request->all(), [
             'provider_serviceman_can_edit_booking' => 'required|in:0,1',
             'provider_serviceman_can_cancel_booking' => 'required|in:0,1',
@@ -106,10 +98,7 @@ class BusinessInformationController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> newversion/main
         foreach ($validator->validated() as $key => $value) {
             $this->providerSetting->updateOrCreate(['key_name' => $key, 'provider_id' => auth()->user()->provider->id, 'settings_type' => 'serviceman_config'], [
                 'key_name' => $key,
@@ -121,8 +110,6 @@ class BusinessInformationController extends Controller
             ]);
         }
 
-<<<<<<< HEAD
-=======
         // Collect only checked service location options
         $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
 
@@ -164,7 +151,6 @@ class BusinessInformationController extends Controller
             'is_active' => 1,
         ]);
 
->>>>>>> newversion/main
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));
         return back();
     }

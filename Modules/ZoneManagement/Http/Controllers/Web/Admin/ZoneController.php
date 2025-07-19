@@ -66,8 +66,6 @@ class ZoneController extends Controller
         return view('zonemanagement::admin.create', compact('zones', 'search'));
     }
 
-<<<<<<< HEAD
-=======
     public function getTable(Request $request)
     {
         $search = $request->input('search', '');
@@ -113,7 +111,6 @@ class ZoneController extends Controller
         ]);
     }
 
->>>>>>> newversion/main
     /**
      * Store a newly created resource in storage.
      * @param Request $request

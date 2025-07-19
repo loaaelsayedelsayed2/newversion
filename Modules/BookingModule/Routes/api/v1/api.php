@@ -19,31 +19,25 @@ use Modules\BookingModule\Http\Controllers\Api\V1\Serviceman\BookingController a
 Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V1\Customer', 'middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'booking', 'as' => 'booking.'], function () {
         Route::get('/', [BookingController::class, 'index']);
-<<<<<<< HEAD
         Route::get('/testall', function(){
             return 'ok';
         })->withoutMiddleware('auth:api');
-=======
->>>>>>> newversion/main
         Route::get('/{booking_id}', [BookingController::class, 'show']);
         Route::get('single/{booking_id}', [BookingController::class, 'singleDetails']);
         Route::post('request/send', [BookingController::class, 'placeRequest'])->middleware('hitLimiter')->withoutMiddleware('auth:api');
         Route::put('status-update/{booking_id}', [BookingController::class, 'statusUpdate']);
         Route::post('single-repeat-cancel/{repeat_id}', [BookingController::class, 'singleBookingCancel']);
-<<<<<<< HEAD
         Route::put('service/edit/update-booking', [BookingController::class, 'bookingUpdate']);
         Route::post('track/{readable_id}', [BookingController::class, 'track'])->withoutMiddleware('auth:api');
     });
 });
 
-=======
         Route::post('track/{readable_id}', [BookingController::class, 'track'])->withoutMiddleware('auth:api');
         Route::post('store-offline-payment-data', [BookingController::class, 'storeOfflinePaymentData'])->withoutMiddleware('auth:api');
         Route::post('switch-payment-method', [BookingController::class, 'switchPaymentMethod'])->withoutMiddleware('auth:api');
     });
 });
 Route::any('digital-payment-booking-response', [BookingController::class, 'digitalPaymentBookingResponse']);
->>>>>>> newversion/main
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'booking', 'as' => 'booking.'], function () {
@@ -76,11 +70,8 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Api\V
         Route::put('service/edit/update-booking', [ProviderBookingController::class, 'updateBooking']);
         Route::put('repeat/service/edit/update-booking', [ProviderBookingController::class, 'updateBookingRepeat']);
         Route::put('service/edit/remove-service', [ProviderBookingController::class, 'removeService']);
-<<<<<<< HEAD
-=======
         Route::post('change-service-location', [ProviderBookingController::class, 'changeServiceLocation']);
 
->>>>>>> newversion/main
     });
 });
 
@@ -100,13 +91,10 @@ Route::group(['prefix' => 'serviceman', 'as' => 'serviceman.', 'namespace' => 'A
         Route::put('service/edit/update-booking', [ServicemanBookingController::class, 'updateBooking']);
         Route::put('repeat/service/edit/update-booking', [ServicemanBookingController::class, 'updateBookingRepeat']);
         Route::put('service/edit/remove-service', [ServicemanBookingController::class, 'removeService']);
-<<<<<<< HEAD
 
 
         Route::post('/add-new-fees', [ServicemanBookingController::class, 'addNewFees'])->withoutMiddleware('auth:api');
         Route::post('/send-invoice', [ServicemanBookingController::class, 'sendInvoice'])->withoutMiddleware('auth:api');
         Route::get('/check-invoice/{booking_id}', [ServicemanBookingController::class, 'checkInvoice'])->withoutMiddleware('auth:api');
-=======
->>>>>>> newversion/main
     });
 });

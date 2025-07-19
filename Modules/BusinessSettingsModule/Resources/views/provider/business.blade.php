@@ -185,9 +185,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-<<<<<<< HEAD
 
-=======
                                                 @php($serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0))
                                                 @if($serviceAtProviderPlace)
                                                     <div class="col-12">
@@ -225,7 +223,6 @@
                                                         </div>
                                                     </div>
                                                 @endif
->>>>>>> newversion/main
                                             </div>
 
                                             <div class="d-flex gap-2 justify-content-end mt-4">
@@ -328,8 +325,6 @@
         $(document).ready(function () {
             $('.js-select').select2();
         });
-<<<<<<< HEAD
-=======
 
         $(document).ready(function () {
             $('.service-location').on('change', function () {
@@ -343,6 +338,5 @@
                 }
             });
         });
->>>>>>> newversion/main
     </script>
 @endpush

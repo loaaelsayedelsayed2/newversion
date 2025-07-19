@@ -32,9 +32,6 @@ class BusinessInformationController extends Controller
             ->when(!is_null($request['key']), fn($query) => $query->whereIn('key_name', $request['key'])->where('provider_id', $request->user()->provider->id))
             ->get();
 
-<<<<<<< HEAD
-        return response()->json(response_formatter(DEFAULT_200, $dataValues), 200);
-=======
         $serviceLocation = $this->providerSetting->where(['key_name' => 'service_location', 'provider_id' => $request->user()->provider->id, 'settings_type' => 'provider_config'])->first();
         $serviceLocations = $serviceLocation ? json_decode($serviceLocation->live_values, true) : [];
 
@@ -44,7 +41,6 @@ class BusinessInformationController extends Controller
         ];
 
         return response()->json(response_formatter(DEFAULT_200, $data), 200);
->>>>>>> newversion/main
     }
 
     /**
@@ -65,9 +61,6 @@ class BusinessInformationController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
         }
 
-<<<<<<< HEAD
-        foreach (collect(json_decode($request['data'], true)) as $key => $item) {
-=======
         $customerLocationData = collect(json_decode($request->data, true))->firstWhere('key', 'customer_location');
         $providerLocationData = collect(json_decode($request->data, true))->firstWhere('key', 'provider_location');
 
@@ -89,7 +82,6 @@ class BusinessInformationController extends Controller
             $key = $item['key'];
             $value = $item['value'];
 
->>>>>>> newversion/main
             $settingType = in_array($item['key'], ['provider_serviceman_can_edit_booking', 'provider_serviceman_can_cancel_booking']) ? 'serviceman_config' : null;
 
             if (!is_null($settingType)) {
@@ -102,8 +94,6 @@ class BusinessInformationController extends Controller
                     'is_active' => 1,
                 ]);
             }
-<<<<<<< HEAD
-=======
 
             // Collect service location settings
             if ($key == 'customer_location' && $value == '1') {
@@ -132,7 +122,6 @@ class BusinessInformationController extends Controller
                     'is_active' => 1,
                 ]
             );
->>>>>>> newversion/main
         }
 
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);

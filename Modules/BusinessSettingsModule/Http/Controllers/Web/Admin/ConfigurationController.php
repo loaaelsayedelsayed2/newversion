@@ -107,7 +107,7 @@ class ConfigurationController extends Controller
     public function messageSettingsSet(Request $request): RedirectResponse
     {
         $this->authorize('configuration_update');
-<<<<<<< HEAD
+
         collect(['status'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
 
         $columnName = $request->id . '_message';
@@ -117,17 +117,9 @@ class ConfigurationController extends Controller
         $request->validate([
             'type' => 'required|in:customers,providers,serviceman',
             $columnName . '.0' => 'required'
-        ],
-            [
-                $requiredMessage => translate($requiredMessageValue),
-            ]
-        );
-
-=======
-
-        collect(['status'])->each(fn($item, $key) => $request[$item] = $request->has($item) ? (int)$request[$item] : 0);
-
->>>>>>> newversion/main
+        ], [
+            $requiredMessage => translate($requiredMessageValue),
+        ]);
         if ($request->type === 'customers') {
             $notificationArray = NOTIFICATION_FOR_USER;
             $settingsType = 'customer_notification';
@@ -142,55 +134,53 @@ class ConfigurationController extends Controller
             $settingsType = '';
         }
 
-<<<<<<< HEAD
-=======
-        if ($request->has('change_type') && $request->change_type == 'status'){
-            $existingData = $this->businessSetting->where('key_name', $request->id)->first();
+        if ($request->has('change_type') && $request->change_type == 'status') {
+    $existingData = $this->businessSetting->where('key_name', $request->id)->first();
 
-            // Check if `live_values` exists and is an array or JSON string
-            if ($existingData && is_string($existingData->live_values)) {
-                $existingLiveValues = json_decode($existingData->live_values, true);
-            } elseif ($existingData && is_array($existingData->live_values)) {
-                $existingLiveValues = $existingData->live_values;
-            } else {
-                $existingLiveValues = [];
-            }
+    if ($existingData && is_string($existingData->live_values)) {
+        $existingLiveValues = json_decode($existingData->live_values, true);
+    } elseif ($existingData && is_array($existingData->live_values)) {
+        $existingLiveValues = $existingData->live_values;
+    } else {
+        $existingLiveValues = [];
+    }
 
-            // Update only the status field, keeping the rest of the data unchanged
-            $updatedLiveValues = array_merge($existingLiveValues, [
-                $request->id . '_status' => $request['status'],
-            ]);
+    $updatedLiveValues = array_merge($existingLiveValues, [
+        $request->id . '_status' => $request['status'],
+    ]);
 
-            $this->businessSetting->updateOrCreate(
-                ['key_name' => $request->id, 'settings_type' => $settingsType],
-                [
-                    'key_name' => $request->id,
-                    'live_values' => $updatedLiveValues,
-                    'test_values' => $updatedLiveValues,
-                    'is_active' => $request['status'],
-                ]
-            );
+    $this->businessSetting->updateOrCreate(
+        ['key_name' => $request->id, 'settings_type' => $settingsType],
+        [
+            'key_name' => $request->id,
+            'live_values' => $updatedLiveValues,
+            'test_values' => $updatedLiveValues,
+            'is_active' => $request['status'],
+        ]
+    );
 
-            Toastr::success(translate(DEFAULT_UPDATE_200['message']));
-            return back();
-        }
+    Toastr::success(translate(DEFAULT_UPDATE_200['message']));
+    return back();
+}
 
+    $columnName = $request->id . '_message';
+    $requiredMessage = $columnName . '.0.' . 'required';
+    $requiredMessageValue = "default_{$columnName}_is_required";
 
-        $columnName = $request->id . '_message';
-        $requiredMessage = $columnName . '.0.' . 'required';
-        $requiredMessageValue = "default_{$columnName}_is_required";
+    $request->validate([
+        'type' => 'required|in:customers,providers,serviceman',
+        'id' => 'required|in:' . implode(',', array_column($notificationArray, 'key')),
+        "$columnName.0" => 'required'
+    ], [
+        $requiredMessage => translate($requiredMessageValue),
+    ]);
 
-        $request->validate([
-            'type' => 'required|in:customers,providers,serviceman',
-            $columnName . '.0' => 'required'
-        ],
             [
                 $requiredMessage => translate($requiredMessageValue),
             ]
         );
 
 
->>>>>>> newversion/main
         $request->validate([
             'id' => 'required|in:' . implode(',', array_column($notificationArray, 'key')),
             "$columnName.0" => 'required'
