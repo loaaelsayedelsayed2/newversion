@@ -4851,7 +4851,6 @@ _Message' => 'Customer notification for provider bid offer
   'New joining' => 'New joining',
   'A new joining request has been submitted by' => 'A new joining request has been submitted by',
   'to' => 'To',
-);
   'Next' => 'Next',
   'The phone format is invalid.' => 'The phone format is invalid.',
   'create_user_account_from_guest_info' => 'Create user account from guest info',
