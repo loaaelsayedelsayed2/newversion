@@ -223,10 +223,6 @@ trait BookingTrait
                 $bookingNotificationType = (business_config('booking_notification_type', 'business_information'))?->live_values;
                 if ($bookingNotification && $bookingNotificationType == 'firebase') {
                     try {
-                        $topic = 'demandium_provider_' . $booking->zone_id . '_booking_message';
-
-                if ($bookingNotification && $bookingNotificationType == 'firebase') {
-                    try {
                         $serviceAtProviderPlace = (int)(business_config('service_at_provider_place', 'provider_config')->live_values ?? 0);
                         $serviceLocation = $booking->service_location;
                         $zoneId = $booking->zone_id;

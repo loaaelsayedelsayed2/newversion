@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Mail;
 use Modules\BidModule\Entities\Post;
 use Modules\BookingModule\Http\Traits\BookingTrait;
 use Modules\BookingModule\Http\Traits\BookingScopes;
@@ -470,7 +469,7 @@ class Booking extends Model
                 }
             }
         }
-        });
+        );
 
         self::updated(function ($model) {
             $status = $model->booking_status;
