@@ -1,26 +1,25 @@
-name: 🚀 Deploy to Hostingar
+name: Deploy via FTP
 
 on:
   push:
-    # branches:
-      
-    #   - mergeNewWithOld
-      
-   branches: [main,dev] 
+    branches: [ "main" ]
+
 jobs:
   ftp-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: 📥 Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: 🚀 FTP Deploy to Hostingar
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.FTP_HOST }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        verbose: true 
-        port: ${{ secrets.FTP_PORT }}
-        server-dir: /public_html/panel/
+      - name: FTP deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp               # أو "ftps" لو عايز تشفير
+          port: 21                    # غيّره لو عندك بورت مختلف
+          local-dir: ./build          # المجلد اللي عايز ترفعه
+          server-dir: /public_html    # على السيرفر فين يتحط
+          log-level: info
+          exclude: .git*
