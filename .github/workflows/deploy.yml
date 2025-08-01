@@ -1,25 +1,37 @@
-name: Deploy via FTP
+name: 🚀 Deploy to Hostinger via SSH
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  ftp-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: FTP deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    steps:
+      - name: ✅ Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Deploy to Hostinger via SSH
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp               # أو "ftps" لو عايز تشفير
-          port: 21                    # غيّره لو عندك بورت مختلف
-          local-dir: ./build          # المجلد اللي عايز ترفعه
-          server-dir: /public_html    # على السيرفر فين يتحط
-          log-level: info
-          exclude: .git*
+          host: 147.93.92.189                
+          username: u807721656             
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}  
+          port: 65002                      
+          script: |
+            cd domains/zabbetny.com/public_html/panel
+          
+            # تحديث الكود من GitHub بدون حذف الملفات الخاصة
+            git fetch origin main
+            git reset --mixed origin/main
+            git checkout .
+          
+            # استخدام composer 2 من الملف المحلي
+            php ~/composer.phar install --no-dev --optimize-autoloader
+          
+            # Laravel commands
+            php artisan migrate --force
+            php artisan config:cache
+            
