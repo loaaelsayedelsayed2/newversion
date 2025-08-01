@@ -6,7 +6,7 @@ on:
       
     #   - mergeNewWithOld
       
-   branches: [main] 
+   branches: [main,dev] 
 jobs:
   ftp-deploy:
     runs-on: ubuntu-latest
