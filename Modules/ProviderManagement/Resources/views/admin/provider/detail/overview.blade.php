@@ -51,7 +51,7 @@
 
             <div class="card">
                 <div class="card-body p-30">
-                    @if($provider->is_approved == 1)
+                    @if(isset($provider->is_approved) && $provider->is_approved == 1)
                         <div class="provider-details-overview mb-30">
                             <div class="provider-details-overview__collect-cash">
                                 <div class="statistics-card statistics-card__collect-cash h-100">
@@ -100,7 +100,7 @@
                     <div class="d-flex align-items-center flex-wrap-reverse justify-content-between gap-3 mb-3">
                         <h2>{{translate('Information_Details')}}</h2>
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            @if($provider->is_approved == 2)
+                            @if(isset($provider->is_approved) && $provider->is_approved == 2)
                                 <a type="button"
                                    class="btn btn-soft--danger text-capitalize provider_approval"
                                    id="button-deny-{{$provider->id}}" data-approve="{{$provider->id}}"
@@ -108,7 +108,7 @@
                                     {{translate('Deny')}}
                                 </a>
                             @endif
-                            @if($provider->is_approved == 0 || $provider->is_approved == 2)
+                            @if(isset($provider->is_approved) && ($provider->is_approved == 0 || $provider->is_approved == 2))
                                 <a type="button" class="btn btn--success text-capitalize approval_provider"
                                    id="button-{{$provider->id}}" data-approve="{{$provider->id}}"
                                    data-approve="approve">

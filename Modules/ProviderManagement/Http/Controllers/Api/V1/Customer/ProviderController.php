@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Modules\UserManagement\Entities\User;
 use Modules\ProviderManagement\Services\ProviderFilterService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
